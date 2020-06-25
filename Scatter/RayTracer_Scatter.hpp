@@ -23,7 +23,7 @@
 
 
 // Enum
-enum ScatterStatus {
+enum ScatterState {
 	SCATTER_NONE,
 	SCATTER_NEXT,
 	SCATTER_YIELD
@@ -52,18 +52,19 @@ struct ScatterRecord {
 class Scatter {
 	// Data
 	public:
+		// TODO: use the linux style linked list later
 		std::vector<Scatter*>	scatter_list;
 
 	// Operation
 	public:
 		// operation
-		ScatterStatus	scatter		(ScatterRecord *dst, ScatterRecord *src) const;
+		ScatterState	scatter		(ScatterRecord *dst, ScatterRecord *src) const;
 		bool			addChild	(Scatter *scatter);
 		bool    		rmChild		(Scatter *scatter);
 
 	protected:
 		// interface
-		virtual ScatterStatus	_scatter_	(ScatterRecord *dst, ScatterRecord *src) const = 0;
+		virtual ScatterState	_scatter_	(ScatterRecord *dst, ScatterRecord *src) const = 0;
 };
 
 

@@ -5,8 +5,8 @@
 // 2020/06/11   initial update
 
 
-#ifndef RAYTRACER_SCENEOBJECT_SPHERE_HPP
-#define RAYTRACER_SCENEOBJECT_SPHERE_HPP
+#ifndef RAYTRACER_SCENEOBJECT_HITABLE_SPHERE_HPP
+#define RAYTRACER_SCENEOBJECT_HITABLE_SPHERE_HPP
 
 
 #include "RayTracer_SceneObject_Hitable.hpp"
@@ -95,4 +95,4 @@ bool SceneObject_Sphere::hit(const Ray &r, float t_min, float t_max, HitRecord &
 // ...
 
 
-#endif  // RAYTRACER_OBJECT_SPHERE_HPP
+#endif  // RAYTRACER_SCENEOBJECT_HITABLE_SPHERE_HPP

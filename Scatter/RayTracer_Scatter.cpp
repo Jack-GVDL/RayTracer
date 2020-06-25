@@ -14,11 +14,11 @@
 
 
 // Operation Handling
-ScatterStatus Scatter::scatter(ScatterRecord *dst, ScatterRecord *src) const {
+ScatterState Scatter::scatter(ScatterRecord *dst, ScatterRecord *src) const {
 	if (src->depth <= 0) return SCATTER_NONE;
 
 	// interface
-	ScatterStatus status = _scatter_(dst, src);
+	ScatterState status = _scatter_(dst, src);
 
 	switch (status) {
 		case SCATTER_NONE:

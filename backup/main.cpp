@@ -1,5 +1,30 @@
 #include <iostream>
-#include "RayTracer.hpp"
+#include "RayTracer_Vec3f.hpp"
+#include "RayTracer_Ray.hpp"
+#include "RayTracer_SceneObject_Sphere.hpp"
+#include "RayTracer_Camera.hpp"
+#include "RayTracer_Material.hpp"
+
+
+
+Vec3f color(const Ray& r, Hitable *world, int depth) {
+	HitRecord record;
+
+	if (world->hit(r, 0.001, MAXFLOAT, record)) {
+		Ray		scattered;
+		Vec3f	attenuation;
+		if (depth < 50 && record.material->scatter(r, record, attenuation, scattered)) {
+			return attenuation * color(scattered, world, depth + 1);
+		} else {
+			return Vec3f(0, 0, 0);
+		}
+	} else {
+		Vec3f unit_direction = r.getDirection().normalize();
+		float t = 0.5 * (unit_direction[1] + 1.0);
+		return (1.0 - t) * Vec3f(1.0, 1.0, 1.0) + t * Vec3f(0.5, 0.7, 1.0);
+	}
+
+}
 
 
 int main() {
@@ -10,9 +35,6 @@ int main() {
 	std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
 	// scene object
-    Scene scene;
-    scene.addChild_Hitable(new SceneObject_Sphere())
-
 	Hitable *list[5];
 	list[0] = new SceneObject_Sphere(Vec3f(0, 0, -1), 0.5, new Material_Empty(Vec3f(0.0, 0.0, 0.0)));
 	list[0] = new SceneObject_Sphere(Vec3f(0, 0, -1), 0.5, new Material_Lambertian(Vec3f(0.8, 0.3, 0.3)));

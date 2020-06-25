@@ -26,10 +26,14 @@
 
 // Data Structure
 class SceneObject_Light: public SceneElement {
+	// Data
+	public:
+		Vec3f	color;
+		
 	// Operation
 	public:
 		// interface
-		virtual Vec3f	getShadowAttenuation	(const Vec3f &point) const	= 0;
+		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const	= 0;
 		virtual double	getDistanceAttenuation	(const Vec3f &point) const	= 0;
 		virtual Vec3f	getColor				(const Vec3f &point) const	= 0;
 		virtual Vec3f	getDirection			(const Vec3f &point) const	= 0;
@@ -49,7 +53,7 @@ class SceneObject_Light_Directional: public SceneObject_Light {
 		{}
 
 		// interface
-		virtual Vec3f	getShadowAttenuation	(const Vec3f &point) const;
+		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const;
 		virtual double	getDistanceAttenuation	(const Vec3f &point) const;
 		virtual Vec3f	getColor				(const Vec3f &point) const;
 		virtual Vec3f	getDirection			(const Vec3f &point) const;
@@ -69,7 +73,7 @@ class SceneObject_Light_Point: public SceneObject_Light {
 		{}
 
 		// interface
-		virtual Vec3f	getShadowAttenuation	(const Vec3f &point) const;
+		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const;
 		virtual double	getDistanceAttenuation	(const Vec3f &point) const;
 		virtual Vec3f	getColor				(const Vec3f &point) const;
 		virtual Vec3f	getDirection			(const Vec3f &point) const;

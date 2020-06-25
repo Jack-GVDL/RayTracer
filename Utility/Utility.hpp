@@ -3,10 +3,11 @@
 //
 // Log
 // 2020/06/23   initial update
+// 2020/06/24   change the file name from RayTracer_Utility.hpp to Utility.hpp
 
 
-#ifndef RAYTRACER_UTILITY_HPP
-#define RAYTRACER_UTILITY_HPP
+#ifndef UTILITY_HPP
+#define UTILITY_HPP
 
 
 #include "RayTracer_Base.hpp"
@@ -39,4 +40,4 @@
 // ...
 
 
-#endif  // RAYTRACER_UTILITY_HPP
+#endif  // UTILITY_HPP

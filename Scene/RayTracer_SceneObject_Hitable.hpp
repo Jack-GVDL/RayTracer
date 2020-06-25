@@ -47,8 +47,12 @@ class SceneObject_Hitable: public SceneElement {
 
 	// Operation
 	public:
+		// operation
+		bool			hit	(const Ray &ray, HitRecord *record) const;
+		bool			hit	(const Ray &ray, float t_min, HitRecord *record) const;
+
 		// interface
-		virtual bool hit(const Ray &r, float t_min, float t_max, HitRecord &record) const = 0;
+		virtual bool	hit	(const Ray &ray, float t_min, float t_max, HitRecord *record) const = 0;
 };
 
 
@@ -61,17 +65,17 @@ class SceneObject_HitableList: public SceneObject_Hitable {
 	public:
 		// interface
 		// TODO: move to cpp
-		virtual bool hit(const Ray &r, float t_min, float t_max, HitRecord &record) const override {
+		virtual bool hit(const Ray &ray, float t_min, float t_max, HitRecord *record) const override {
 			HitRecord	temp_record;
 			bool		is_hit			= false;
 			double		closest			= t_max;
 
 			for (int i = 0; i < hitable_list.size(); i++) {
-				if (!hitable_list[i]->hit(r, t_min, closest, temp_record)) continue;
+				if (!hitable_list[i]->hit(ray, t_min, closest, &temp_record)) continue;
 
 				is_hit	= true;
 				closest	= temp_record.distance;
-				record	= temp_record;
+				*record = temp_record;  // TODO: not sure if this can be copy constructor or not
 			}
 
 			return is_hit;

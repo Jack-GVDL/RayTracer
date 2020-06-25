@@ -87,6 +87,10 @@ class Vec3f {
 			return n[0] * v[0] + n[1] * v[1] + n[2] * v[2];
 		}
 
+		Vec3f prod(const Vec3f &v) const {
+			return Vec3f(n[0] * v[0], n[1] * v[1], n[2] * v[2]);
+		}
+
 		Vec3f normalize() const {
 			Vec3f ret (*this);
 			ret /= length();
