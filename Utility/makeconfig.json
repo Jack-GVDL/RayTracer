@@ -1,0 +1,16 @@
+{
+    "CONFIG_IS_TREE_ENABLE"     : "false",
+    "CONFIG_IS_COMPILE_ENABLE"  : "true",
+    "CONFIG_IS_ARCHIVE_ENABLE"  : "false",
+    "CONFIG_IS_LINK_ENABLE"     : "false",
+    "CONFIG_IS_C_STANDALONE"    : "false",
+    "CONFIG_MACHINE"            : "x64",
+
+    "NODE_NAME"                 : "Utility",
+
+    "ASM_PATH"                  : "asm",
+    "SRC_PATH"                  : "src",
+    "OBJ_PATH"                  : "obj",
+
+    "OBJ_FILE"                  : [""]
+}

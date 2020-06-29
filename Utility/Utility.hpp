@@ -10,10 +10,10 @@
 #define UTILITY_HPP
 
 
-#include "RayTracer_Base.hpp"
-#include "RayTracer_Vec3f.hpp"
-#include "RayTracer_Ray.hpp"
-#include "RayTracer_Material.hpp"
+#include "./inc/RayTracer_Base.hpp"
+#include "./inc/RayTracer_Vec3f.hpp"
+#include "./inc/RayTracer_Ray.hpp"
+#include "./inc/RayTracer_Material.hpp"
 
 
 // Define

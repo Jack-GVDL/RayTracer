@@ -53,7 +53,7 @@ MAKE 				= make
 C_MACRO 			= -D
 C_FLAGS 			= -c -Wall -ggdb -gstabs+ -I include
 CPP_MACRO			=
-CPP_FLAGS			= -Wall
+CPP_FLAGS			= -c -Wall
 ASM_FLAGS 			= -f elf -g -F stabs
 LD_FLAGS 			= 
 AR_FLAGS			= 
@@ -332,5 +332,3 @@ var_list:
 # --------------------------------------------------
 # User Operation
 # --------------------------------------------------
-.PHONY custom_link: all
-	@$(CPP) $(CPP_FLAGS) $(CPP_MACRO) $(OBJ_FILE) $(EXT_OBJ_FILE) RayTracer.cpp main.cpp -o ./$(BIN_PATH)/$(BIN_FILE)

@@ -35,9 +35,20 @@ class RayTracer {
 
 	// Operation
 	public:
+		// init
+		RayTracer():
+		scene(nullptr),
+		scatter(nullptr)
+		{}
+
+		RayTracer(Scene *scene, Scatter *scatter):
+		scene(scene),
+		scatter(scatter)
+		{}
+		
 		// operation
 		Vec3f	trace	(const Camera *camera, int x, int y, int depth) const;
-		Vec3f	trace	(const Ray &ray, int depth) const;
+		Vec3f	trace	(const Ray *ray, int depth) const;
 		Vec3f	trace	(ScatterRecord *record) const;
 };
 

@@ -15,24 +15,24 @@
 
 // Operation Handling
 Vec3f RayTracer::trace(const Camera *camera, int x, int y, int depth) const {
-	Ray ray = camera.getRay(x, y);
-	return trace(ray, depth);
+	Ray ray = camera->getRay(x, y);
+	return trace(&ray, depth);
 }
 
 
-Vec3f RayTracer::trace(const Ray &ray, int depth) const {
+Vec3f RayTracer::trace(const Ray *ray, int depth) const {
 	// init scatter record
 	ScatterRecord scatter_record;
 	scatter_record.parent		= nullptr;
 	scatter_record.scene		= scene;
 	scatter_record.scatter		= scatter;
 	scatter_record.depth		= depth;
-	scatter_record.ray			= ray;
+	scatter_record.ray			= *ray;
 	scatter_record.thresh		= Vec3f(1.0, 1.0, 1.0);
 	scatter_record.intensity	= Vec3f(0.0, 0.0, 0.0);
 
 	// TODO: currently not to use cuda so recursion is ok
-	trace(&scatter_record);
+	return trace(&scatter_record);
 }
 
 
@@ -40,8 +40,8 @@ Vec3f RayTracer::trace(const Ray &ray, int depth) const {
 Vec3f RayTracer::trace(ScatterRecord *record) const {
 	// first check if hit something or not
 	HitRecord hit_record;
-	if (scene->hit(record->ray, 0.0, MAXFLOT, hit_record))	record->is_hit = true;
-	else													record->is_hit = false;
+	if (scene->hit(&(record->ray), 0.0, MAXFLOAT, &hit_record))	record->is_hit = true;
+	else														record->is_hit = false;
 	
 	// foreach scatter, check if needed to fire a new ray or not
 	for (auto *scatter : record->scatter->scatter_list) {

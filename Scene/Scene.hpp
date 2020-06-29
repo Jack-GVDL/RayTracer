@@ -9,13 +9,13 @@
 #define SCENE_HPP
 
 
-#include "RayTracer_Camera.hpp"
-#include "RayTracer_SceneElement.hpp"
-#include "RayTracer_SceneObject_Hitable.hpp"
-#include "RayTracer_SceneObject_Light.hpp"
-#include "RayTracer_Scene.hpp"
+#include "./inc/RayTracer_Camera.hpp"
+#include "./inc/RayTracer_SceneElement.hpp"
+#include "./inc/RayTracer_SceneObject_Hitable.hpp"
+#include "./inc/RayTracer_SceneObject_Light.hpp"
+#include "./inc/RayTracer_Scene.hpp"
 
-#include "RayTracer_SceneObject_Hitable_Sphere.hpp"
+#include "./inc/RayTracer_SceneObject_Hitable_Sphere.hpp"
 
 
 // Define
