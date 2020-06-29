@@ -56,8 +56,8 @@ void Camera::update() {
 	// v: y-axis
 	// corss product of two normalized vectors should also be a normalized vector
 	w	= (look_at - look_from).normalize();
-	u	= up.cross(w).normalize();
-	v	= w.cross(u);
+	u	= w.cross(up).normalize();
+	v	= u.cross(w);
 
 	u	*= half_width;
 	v	*= half_height; 

@@ -47,7 +47,7 @@ class RayTracer {
 		{}
 		
 		// operation
-		Vec3f	trace	(const Camera *camera, int x, int y, int depth) const;
+		Vec3f	trace	(const Camera *camera, double x, double y, int depth) const;
 		Vec3f	trace	(const Ray *ray, int depth) const;
 		Vec3f	trace	(ScatterRecord *record) const;
 };

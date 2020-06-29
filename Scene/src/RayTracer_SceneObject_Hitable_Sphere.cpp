@@ -17,9 +17,9 @@
 bool SceneObject_Sphere::hit(const Ray *r, float t_min, float t_max, HitRecord *record) const {
 	Vec3f oc = r->getPosition() - center;
 
-	float a = RayTracer::dot(r->getDirection() , r->getDirection());
-	float b = RayTracer::dot(oc, r->getDirection());
-	float c = RayTracer::dot(oc, oc) - radius * radius;
+	float a = VecMath::dot(r->getDirection() , r->getDirection());
+	float b = VecMath::dot(oc, r->getDirection());
+	float c = VecMath::dot(oc, oc) - radius * radius;
 	float discriminant = b * b - a * c;
 
 	// no intersection

@@ -42,10 +42,10 @@ class Material {
 	public:
 		// init
 		Material():
-		emissive		(Vec3f(0.0, 0.0, 0.0)),
+		emissive		(Vec3f(0.0, 0.2, 0.1)),
 		ambient			(Vec3f(0.0, 0.0, 0.0)),
 		specular		(Vec3f(0.4, 0.4, 0.0)),
-		diffuse			(Vec3f(0.4, 0.2, 0.1)),
+		diffuse			(Vec3f(0.8, 0.4, 0.2)),
 		reflective		(Vec3f(0.0, 0.0, 0.0)),
 		transmissive	(Vec3f(0.0, 0.0, 0.0)),
 		shininess		(0.5),

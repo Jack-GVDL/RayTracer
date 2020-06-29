@@ -46,7 +46,7 @@ bool Scene::hit(const Ray *ray, float t_min, float t_max, HitRecord *record) con
 	double		closest			= t_max;
 
 	for (auto *hitable : hitable_list) {
-		if (hitable->hit(ray, t_min, closest, &temp_record)) continue;
+		if (!hitable->hit(ray, t_min, closest, &temp_record)) continue;
 
 		is_hit	= true;
 		closest	= temp_record.distance;

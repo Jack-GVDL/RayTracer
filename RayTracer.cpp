@@ -14,7 +14,7 @@
 
 
 // Operation Handling
-Vec3f RayTracer::trace(const Camera *camera, int x, int y, int depth) const {
+Vec3f RayTracer::trace(const Camera *camera, double x, double y, int depth) const {
 	Ray ray = camera->getRay(x, y);
 	return trace(&ray, depth);
 }
@@ -38,11 +38,14 @@ Vec3f RayTracer::trace(const Ray *ray, int depth) const {
 
 // TODO: return nothing is still ok, as the result is already in the ScatterRecord *record
 Vec3f RayTracer::trace(ScatterRecord *record) const {
+	// depth limit check
+	if (record->depth == 0) return Vec3f();
+
 	// first check if hit something or not
-	HitRecord hit_record;
-	if (scene->hit(&(record->ray), 0.0, MAXFLOAT, &hit_record))	record->is_hit = true;
-	else														record->is_hit = false;
-	
+	// HitRecord hit_record;
+	if (scene->hit(&(record->ray), 0.0, MAXFLOAT, &(record->hit_record)))	record->is_hit = true;
+	else																	record->is_hit = false;
+
 	// foreach scatter, check if needed to fire a new ray or not
 	for (auto *scatter : record->scatter->scatter_list) {
 		
@@ -58,8 +61,8 @@ Vec3f RayTracer::trace(ScatterRecord *record) const {
 		// add result intensity to parent intensity immediate
 		if (state == SCATTER_YIELD) {
 			const Vec3f &result = scatter_record.intensity;
-			record->intensity	= result * scatter_record.thresh;
-			continue;
+			record->intensity	= result * record->thresh;
+			break;
 		}
 
 		// if (state == SCATTER_NEXT)

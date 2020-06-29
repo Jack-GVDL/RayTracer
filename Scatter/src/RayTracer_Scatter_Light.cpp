@@ -40,6 +40,9 @@ ScatterState Scatter_Light::_scatter_(ScatterRecord *dst, ScatterRecord *src) co
 	// intensity remain = 1 - kt, where 0 <= kt <= 1
 	// TODO: not yet completed
 	const Vec3f &intensity_ambient = Vec3f(0.0, 0.0, 0.0);
+	
+	// TODO: intensity_result += prod(prod(ka, vec3f(ambient, ambient, ambient)), raw_one - kt);
+	// intensity_result += intensity_ambient + intensity_emission;
 
 	// intensity - light
 	for (auto *light : src->scene->light_list) {
@@ -78,9 +81,7 @@ ScatterState Scatter_Light::_scatter_(ScatterRecord *dst, ScatterRecord *src) co
 		intensity_result += term_result.prod(attenuation.prod(intensity_light));
 	}
 
-	intensity_result = intensity_ambient + intensity_emission;
-	src->intensity = intensity_result;
-
+	dst->intensity = intensity_result;
 	return SCATTER_YIELD;
 }
 

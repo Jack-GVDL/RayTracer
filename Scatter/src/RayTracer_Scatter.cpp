@@ -51,5 +51,10 @@ bool Scatter::rmChild(Scatter *scatter) {
 }
 
 
+ScatterState Scatter_Empty::_scatter_(ScatterRecord *dst, ScatterRecord *src) const {
+	return SCATTER_NONE;
+}
+
+
 // Static Function Implementation
 // ...

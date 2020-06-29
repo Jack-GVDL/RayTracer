@@ -334,3 +334,4 @@ var_list:
 # --------------------------------------------------
 .PHONY custom_link: all
 	@$(CPP) $(CPP_FLAGS) $(CPP_MACRO) $(OBJ_FILE) $(EXT_OBJ_FILE) RayTracer.cpp main.cpp -o ./$(BIN_PATH)/$(BIN_FILE)
+	@./bin/Tracer > output.ppm

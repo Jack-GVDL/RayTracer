@@ -69,6 +69,15 @@ class Scatter {
 };
 
 
+
+class Scatter_Empty: public Scatter {
+	// Operation
+	protected:
+		// interface
+		virtual ScatterState	_scatter_	(ScatterRecord *dst, ScatterRecord *src) const;
+};
+
+
 // Macro Function
 // ...
 
