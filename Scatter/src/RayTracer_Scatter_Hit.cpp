@@ -14,7 +14,7 @@
 
 
 // Operation Handling
-ScatterState Scatter_Hit::_scatter_(ScatterRecord *dst, ScatterRecord *src) const {
+ScatterState Scatter_Hit::scatter_shootRay(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
 	if (!src->is_hit)	dst->intensity = Vec3f(0, 0, 0);
 	else				dst->intensity = color;
 	return SCATTER_YIELD;

@@ -34,11 +34,17 @@ class Vec3f {
 
 	// Operation
 	public:
-		// Init
+		// init
 		Vec3f() { 
 			n[0] = 0.0; 
 			n[1] = 0.0; 
 			n[2] = 0.0;
+		}
+
+		Vec3f(double n0) {
+			n[0] = n0;
+			n[1] = n0;
+			n[2] = n0;
 		}
 
 		Vec3f(double n0, double n1, double n2) {
@@ -53,7 +59,7 @@ class Vec3f {
 			n[2] = v.n[2];
 		}
 
-		// Operator
+		// operator
 		double			operator	[]	( int i )			const { return n[i]; }
 		double&			operator	[]	( int i )			{ return n[i]; }
 
@@ -71,6 +77,13 @@ class Vec3f {
 
 		// Math Operation
 		// TODO: clamp (0.0 <= n[i] <= 1.0)
+
+		Vec3f clamp(double val_min, double val_max) const {
+			return Vec3f(
+				std::max(val_min, std::min(n[0], val_max)),
+				std::max(val_min, std::min(n[1], val_max)),
+				std::max(val_min, std::min(n[2], val_max)));
+		}
 
 		bool isZero() const {
 			return n[0] == 0 && n[1] == 0 && n[2] == 0;

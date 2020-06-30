@@ -14,29 +14,6 @@
 
 
 // Operation Handling
-ScatterState Scatter::scatter(ScatterRecord *dst, ScatterRecord *src) const {
-	if (src->depth <= 0) return SCATTER_NONE;
-
-	// interface
-	ScatterState status = _scatter_(dst, src);
-
-	switch (status) {
-		case SCATTER_NONE:
-			break;
-
-		// build connection between scatter tree
-		case SCATTER_NEXT:
-			dst->parent = src;
-			break;
-
-		case SCATTER_YIELD:
-			break;
-	};
-
-	return status;
-}
-
-
 // TODO: add uniqueness checking
 bool Scatter::addChild(Scatter *scatter) {
 	scatter_list.push_back(scatter);
@@ -51,8 +28,38 @@ bool Scatter::rmChild(Scatter *scatter) {
 }
 
 
-ScatterState Scatter_Empty::_scatter_(ScatterRecord *dst, ScatterRecord *src) const {
+ScatterState Scatter::scatter(ScatterRecord *dst, ScatterRecord *src) const {
+	ScatterState state = SCATTER_NONE;
+	state = scatter_shootRay(dst, src, state);
+	state = scatter_buildTree(dst, src, state);
+	return state;
+}
+
+
+ScatterState Scatter::scatter_shootRay(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
 	return SCATTER_NONE;
+}
+
+
+ScatterState Scatter::scatter_buildTree(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
+	switch (state) {
+		case SCATTER_NONE:
+			break;
+
+		// build connection between scatter tree
+		case SCATTER_NEXT:
+		case SCATTER_EQUAL_SPLIT:
+			dst->parent			= src;
+			dst->scene			= src->scene;
+			dst->scatter		= this;
+			dst->depth			= src->depth - 1;
+			break;
+
+		case SCATTER_YIELD:
+			break;
+	};
+
+	return state;
 }
 
 

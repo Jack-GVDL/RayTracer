@@ -47,6 +47,14 @@ class SceneObject_Hitable: public SceneElement {
 
 	// Operation
 	public:
+		// init
+		SceneObject_Hitable()
+		{}
+
+		SceneObject_Hitable(Material *material):
+		material(*material)
+		{}
+		
 		// operation
 		bool			hit	(const Ray *ray, HitRecord *record) const;
 		bool			hit	(const Ray *ray, float t_max, HitRecord *record) const;

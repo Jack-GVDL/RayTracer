@@ -14,7 +14,7 @@ static inline bool refract(Vec3f &refracted, const Vec3f &incident, const Vec3f 
 
 
 // Operation Handling
-ScatterState Scatter_Refraction::_scatter_(ScatterRecord *dst, ScatterRecord *src) const {
+ScatterState Scatter_Refraction::scatter_shootRay(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
 	// first check if hit a target
 	if (!src->is_hit) return SCATTER_NONE;
 

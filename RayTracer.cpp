@@ -28,8 +28,6 @@ Vec3f RayTracer::trace(const Ray *ray, int depth) const {
 	scatter_record.scatter		= scatter;
 	scatter_record.depth		= depth;
 	scatter_record.ray			= *ray;
-	scatter_record.thresh		= Vec3f(1.0, 1.0, 1.0);
-	scatter_record.intensity	= Vec3f(0.0, 0.0, 0.0);
 
 	// TODO: currently not to use cuda so recursion is ok
 	return trace(&scatter_record);
@@ -39,7 +37,10 @@ Vec3f RayTracer::trace(const Ray *ray, int depth) const {
 // TODO: return nothing is still ok, as the result is already in the ScatterRecord *record
 Vec3f RayTracer::trace(ScatterRecord *record) const {
 	// depth limit check
-	if (record->depth == 0) return Vec3f();
+	if (record->depth <= 0) return Vec3f();
+
+	// first check if scatter exist or not
+	if (record->scatter == nullptr) return Vec3f();
 
 	// first check if hit something or not
 	// HitRecord hit_record;
@@ -47,8 +48,19 @@ Vec3f RayTracer::trace(ScatterRecord *record) const {
 	else																	record->is_hit = false;
 
 	// foreach scatter, check if needed to fire a new ray or not
+	int		loop_count		= 0;
+	bool	is_loop_started	= false;
+
 	for (auto *scatter : record->scatter->scatter_list) {
-		
+
+		// check if there is no threshold left for parent
+		if (record->thresh.isZero()) break;
+
+		// for equal split
+		loop_count		= 0;
+		is_loop_started	= false;
+		SCATTER_LOOP:
+
 		ScatterRecord scatter_record;
 		ScatterState state = scatter->scatter(&scatter_record, record);
 
@@ -60,15 +72,31 @@ Vec3f RayTracer::trace(ScatterRecord *record) const {
 
 		// add result intensity to parent intensity immediate
 		if (state == SCATTER_YIELD) {
-			const Vec3f &result = scatter_record.intensity;
-			record->intensity	= result * record->thresh;
+			const Vec3f &result = scatter_record.intensity.clamp(0, 1);
+			record->intensity	+= result * record->thresh;
+			break;
+		}
+
+		if (state == SCATTER_EQUAL_SPLIT) {
+			if (!is_loop_started) {
+				is_loop_started	= true;
+				loop_count		= scatter->loop_count;
+			}
+
+			const Vec3f &result = trace(&scatter_record).clamp(0, 1);
+			record->intensity	+= result;
+
+			loop_count--;
+			if (loop_count != 0) goto SCATTER_LOOP;
+			record->thresh = 0;
 			break;
 		}
 
 		// if (state == SCATTER_NEXT)
 		// fire a new ray and obtain the result
-		const Vec3f &result	= trace(&scatter_record);
-		record->intensity	+= result * scatter_record.thresh;
+		const Vec3f &result	= trace(&scatter_record).clamp(0, 1);
+		record->intensity	+= result;
+
 	}
 
 	return record->intensity;

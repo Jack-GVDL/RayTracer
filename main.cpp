@@ -9,27 +9,53 @@ int main() {
 	std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
 	// scene object
-    Scene scene;
-	scene.addHitable(new SceneObject_Sphere(Vec3f(0, 0, 0), 1, new Material()));
-    // scene.addHitable(new SceneObject_Sphere(Vec3f(1, 0, -1), 0.5, new Material()));
-	// scene.addHitable(new SceneObject_Sphere(Vec3f(-1, 0, -1), 0.5, new Material()));
-	// scene.addHitable(new SceneObject_Sphere(Vec3f(0, -100.5, -1), 100, new Material()));
+	Material	*material_1	= new Material();
+	Material	*material_2	= new Material();
 
-	SceneObject_Light_Point *light = new SceneObject_Light_Point(Vec3f(0.1, 0.2, 0.4));
-	light->origin	= Vec3f(0, 2, -2);
-	light->color	= Vec3f(1, 0, 0);
-	scene.addLight(light);
+	// material_1->emissive	= Vec3f(0.5, 0.5, 0);
+	material_1->diffuse		= Vec3f(0.5, 0.5, 0);
+	material_1->specular	= Vec3f(0.5, 0.5, 0.5);
+	material_1->reflective	= Vec3f(0.3);
+	material_1->shininess	= 0.2;
+
+	material_2->reflective = Vec3f(0.5);
+
+    Scene scene;
+	scene.addHitable(new SceneObject_Sphere(Vec3f(0, 0, 0), 1, material_1));
+    scene.addHitable(new SceneObject_Sphere(Vec3f(1, 0, -1), 0.5, material_2));
+	scene.addHitable(new SceneObject_Sphere(Vec3f(-1, 0, -1), 0.5, material_2));
+	scene.addHitable(new SceneObject_Sphere(Vec3f(0, -100.5, -1), 100, material_2));
+
+	SceneObject_Light_Point *light_point = new SceneObject_Light_Point(Vec3f(0.1, 0.1, 0.4));
+	light_point->origin	= Vec3f(0, 2, -2);
+	light_point->color	= Vec3f(1);
+	// scene.addLight(light_point);
+
+	SceneObject_Light_Directional *light_directional = new SceneObject_Light_Directional(Vec3f(1, -1, -1));
+	light_directional->color = Vec3f(1);
+	scene.addLight(light_directional);
 
 	// scatter
-	Scatter_Empty		scatter_top			= Scatter_Empty();
+	Scatter				scatter_top			= Scatter();
+	Scatter_RandomGrid	scatter_random		= Scatter_RandomGrid();
 	Scatter_Hit			scatter_hit			= Scatter_Hit();
 	Scatter_Light		scatter_light		= Scatter_Light();
 	Scatter_Reflection	scatter_reflection	= Scatter_Reflection();
+	Scatter_Refraction	scatter_refraction	= Scatter_Refraction();
+	Scatter_Emitter		scatter_emitter		= Scatter_Emitter();
 
-	scatter_hit.color = Vec3f(1, 0, 0);
-	// scatter_top.addChild(&scatter_hit);
-	scatter_top.addChild(&scatter_light);
-	// scatter_top.addChild(&scatter_reflection);
+	scatter_emitter.color		= Vec3f(1);
+	scatter_hit.color			= Vec3f(1, 0, 0);
+	scatter_random.loop_count 	= 20;
+	scatter_random.radius		= 0.05;
+	scatter_random.is_parallel	= true;
+
+	scatter_top.addChild(&scatter_random);
+	// scatter_random.addChild(&scatter_emitter);
+	scatter_random.addChild(&scatter_reflection);
+	scatter_random.addChild(&scatter_light);
+	scatter_reflection.addChild(&scatter_refraction);
+	scatter_reflection.addChild(&scatter_light);
 
 	// camera
 	Camera camera(Vec3f(-2, 2, 0), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 90, double(nx) / double(ny));
@@ -46,7 +72,7 @@ int main() {
 
 			double u = double(x - x_half) / x_half;
 			double v = double(y - y_half) / y_half;
-			Vec3f color	= tracer.trace(&camera, u, v, 1);
+			Vec3f color	= tracer.trace(&camera, u, v, 5);
 			
 			int ir = int(255.99 * color[0]);
 			int ig = int(255.99 * color[1]);

@@ -1,12 +1,12 @@
-// Created by Jack Tse on 2020/06/20
+// Created by Jack Tse on 2020/06/30
 // Follow TrackingStandard 0.1
 //
 // Log
-// 2020/06/20   initial update
+// 2020/06/30   initial update
 
 
-#ifndef RAYTRACER_SCATTER_REFRACTION_HPP
-#define RAYTRACER_SCATTER_REFRACTION_HPP
+#ifndef RAYTRACER_SCATTER_RANDOM_HPP
+#define RAYTRACER_SCATTER_RANDOM_HPP
 
 
 #include "RayTracer_Scatter.hpp"
@@ -25,10 +25,15 @@
 
 
 // Data Structure
-class Scatter_Refraction: public Scatter {
+class Scatter_RandomGrid: public Scatter {
+	// Data
+	public:
+		double	radius		= 1;
+		bool	is_parallel	= true;
+
 	// Operation
 	public:
-		// interface
+		// operation
 		virtual ScatterState	scatter_shootRay	(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const override;
 };
 
@@ -41,4 +46,4 @@ class Scatter_Refraction: public Scatter {
 // ...
 
 
-#endif  // RAYTRACER_SCATTER_REFRACTION_HPP
+#endif  // RAYTRACER_SCATTER_RANDOM_HPP

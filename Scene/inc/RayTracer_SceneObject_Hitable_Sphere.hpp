@@ -30,7 +30,6 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 	public:
 		Vec3f		center;
 		double		radius;
-		Material	*material;
 
 	// Operation
 	public:
@@ -39,9 +38,9 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 		{}
 
 		SceneObject_Sphere(Vec3f center, double radius, Material *material): 
+		SceneObject_Hitable::SceneObject_Hitable(material),
 		center		(center), 
-		radius		(radius), 
-		material	(material)
+		radius		(radius) 
 		{}
 
 		// operation

@@ -14,5 +14,5 @@
 
     "OBJ_FILE"                  : ["RayTracer_SceneElement.o ",
                                    "RayTracer_SceneObject_Hitable.o RayTracer_SceneObject_Hitable_Sphere.o ",
-                                   "RayTracer_Camera.o RayTracer_SceneObject_Light.o RayTracer_Scene.o "]
+                                   "RayTracer_Camera.o RayTracer_SceneObject_Light.o RayTracer_Scene.o"]
 }

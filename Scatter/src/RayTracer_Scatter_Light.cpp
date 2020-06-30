@@ -14,14 +14,10 @@
 
 
 // Operation Handling
-ScatterState Scatter_Light::_scatter_(ScatterRecord *dst, ScatterRecord *src) const {
+ScatterState Scatter_Light::scatter_shootRay(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
 	// first check if hit a target
 	// if not hit a target, which mean the ray come from infinity (background)
-	// TODO: currently assume that there will be no light come from inf.
-	if (!src->is_hit) {
-		src->intensity = Vec3f();
-		return SCATTER_YIELD;
-	}
+	if (!src->is_hit) return SCATTER_NONE;
 
 	// get intensity
 	Vec3f intensity_result = Vec3f();
@@ -42,15 +38,15 @@ ScatterState Scatter_Light::_scatter_(ScatterRecord *dst, ScatterRecord *src) co
 	const Vec3f &intensity_ambient = Vec3f(0.0, 0.0, 0.0);
 	
 	// TODO: intensity_result += prod(prod(ka, vec3f(ambient, ambient, ambient)), raw_one - kt);
-	// intensity_result += intensity_ambient + intensity_emission;
+	intensity_result += intensity_emission;
 
 	// intensity - light
 	for (auto *light : src->scene->light_list) {
-		const double dot_ln = src->hit_record.normal.dot(light->getDirection(point_intersect));
+		const double dot_ln = src->hit_record.normal.dot(-(light->getDirection(point_intersect)));
 
 		// if the light source is behind the plane
 		// then ignore it
-		if (dot_ln <= 0.0) continue;
+		if (dot_ln <= 0) continue;
 
 		// shadow attenuation
 		const Vec3f &atten_shadow = light->getShadowAttenuation(src->scene, point_intersect);
@@ -67,7 +63,7 @@ ScatterState Scatter_Light::_scatter_(ScatterRecord *dst, ScatterRecord *src) co
 
 		// specular term
 		const Vec3f		&ray_reflect	= (2.0 * dot_ln * src->hit_record.normal - light->getDirection(point_intersect)).normalize();
-		const double	dot_rv			= std::max<double>(ray_reflect.dot(src->ray.getDirection()), 0.0);
+		const double	dot_rv			= std::max<double>(ray_reflect.dot(-(src->ray.getDirection())), 0.0);
 		const double	coeff_specular	= pow(dot_rv, material.shininess * 128);
 		const Vec3f		&term_specular	= material.specular * coeff_specular;
 

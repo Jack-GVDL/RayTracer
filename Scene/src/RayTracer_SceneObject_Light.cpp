@@ -37,9 +37,12 @@ Vec3f SceneObject_Light_Directional::getShadowAttenuation(const Scene *scene, co
 	while (!intensity.isZero()) {
 		
 		// check if no intersection or intersection is behind the light source
-		HitRecord	hit_record;
-		Ray			ray	= Ray(point_cur, direction);
+		HitRecord		hit_record;
+		Ray				ray				= Ray(point_cur, direction);
+		const double	length_light	= (origin - point_cur).length();
+
 		if (!scene->hit(&ray, 0.0, MAXFLOAT, &hit_record)) return intensity;
+		if (hit_record.distance >= length_light)			return intensity;
 		
 		// new intensity *= transmissive
 		const Material &material = hit_record.object->material;

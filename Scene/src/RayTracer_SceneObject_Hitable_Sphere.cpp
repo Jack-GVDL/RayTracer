@@ -32,7 +32,7 @@ bool SceneObject_Sphere::hit(const Ray *r, float t_min, float t_max, HitRecord *
 	if (temp < t_max && temp > t_min) {
 		record->distance	= temp;
 		record->point		= r->pointAt(record->distance);
-		record->normal		= (record->point - center) / radius;
+		record->normal		= (center - record->point) / radius;
 		record->object		= (SceneObject_Hitable*)this;
 		return true;
 	}
@@ -41,7 +41,7 @@ bool SceneObject_Sphere::hit(const Ray *r, float t_min, float t_max, HitRecord *
 	if (temp < t_max && temp > t_min) {
 		record->distance	= temp;
 		record->point		= r->pointAt(record->distance);
-		record->normal		= (record->point - center) / radius;
+		record->normal		= (center - record->point) / radius;
 		record->object		= (SceneObject_Hitable*)this;
 		return true;
 	}

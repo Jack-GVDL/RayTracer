@@ -1,12 +1,12 @@
-// Created by Jack Tse on 2020/06/20
+// Created by Jack Tse on 2020/06/30
 // Follow TrackingStandard 0.1
 //
 // Log
-// 2020/06/20   initial update
+// 2020/06/30   initial update
 
 
-#ifndef RAYTRACER_SCATTER_REFRACTION_HPP
-#define RAYTRACER_SCATTER_REFRACTION_HPP
+#ifndef RAYTRACER_SCATTER_EMITTER_HPP
+#define RAYTRACER_SCATTER_EMITTER_HPP
 
 
 #include "RayTracer_Scatter.hpp"
@@ -25,7 +25,11 @@
 
 
 // Data Structure
-class Scatter_Refraction: public Scatter {
+class Scatter_Emitter: public Scatter {
+	// Datga
+	public:
+		Vec3f	color;
+		
 	// Operation
 	public:
 		// interface
@@ -41,4 +45,4 @@ class Scatter_Refraction: public Scatter {
 // ...
 
 
-#endif  // RAYTRACER_SCATTER_REFRACTION_HPP
+#endif  // RAYTRACER_SCATTER_EMITTER_HPP

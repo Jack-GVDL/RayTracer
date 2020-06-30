@@ -29,7 +29,7 @@ class Scatter_Reflection: public Scatter {
 	// Operation
 	public:
 		// interface
-		virtual ScatterState	_scatter_	(ScatterRecord *dst, ScatterRecord *src) const override;
+		virtual ScatterState	scatter_shootRay	(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const override;
 };
 
 

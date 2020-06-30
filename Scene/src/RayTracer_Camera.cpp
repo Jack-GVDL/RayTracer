@@ -65,7 +65,7 @@ void Camera::update() {
 
 
 Ray Camera::getRay(double x, double y) const {
-	return Ray(look_from, w + x * u + y * v);
+	return Ray(look_from, (w + x * u + y * v).normalize());
 }
 
 
