@@ -30,6 +30,9 @@ class Scatter_Refraction: public Scatter {
 	public:
 		// interface
 		virtual ScatterState	scatter_shootRay	(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const override;
+
+		// TODO: find a better way to solve this problem
+		virtual ScatterState	scatter_buildTree	(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const override;
 };
 
 

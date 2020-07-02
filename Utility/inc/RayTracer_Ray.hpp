@@ -36,12 +36,12 @@ class Ray {
 		// init
 		Ray() {}
 
-		Ray(const Vec3f &pos, const Vec3f &dir)
-		: pos(pos), dir(dir)
+		Ray(const Vec3f &pos, const Vec3f &dir): 
+		pos(pos), dir(dir)
 		{}
 
-		Ray(const Ray &r)
-		: pos(r.pos), dir(r.dir)
+		Ray(const Ray &r): 
+		pos(r.pos), dir(r.dir)
 		{}
 
 		// operation

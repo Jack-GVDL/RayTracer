@@ -42,7 +42,7 @@ ScatterState Scatter_Light::scatter_shootRay(ScatterRecord *dst, ScatterRecord *
 
 	// intensity - light
 	for (auto *light : src->scene->light_list) {
-		const double dot_ln = src->hit_record.normal.dot(-(light->getDirection(point_intersect)));
+		const double dot_ln = src->hit_record.normal.dot(light->getDirection(point_intersect));
 
 		// if the light source is behind the plane
 		// then ignore it

@@ -52,6 +52,7 @@ ScatterState Scatter::scatter_buildTree(ScatterRecord *dst, ScatterRecord *src, 
 			dst->parent			= src;
 			dst->scene			= src->scene;
 			dst->scatter		= this;
+			dst->outer			= src->outer;
 			dst->depth			= src->depth - 1;
 			break;
 

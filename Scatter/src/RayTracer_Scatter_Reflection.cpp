@@ -21,14 +21,13 @@ ScatterState Scatter_Reflection::scatter_shootRay(ScatterRecord *dst, ScatterRec
 	// check if the material is reflective
 	if (src->hit_record.object->material.reflective.isZero()) return SCATTER_NONE;
 
-	// if hit a target
-	// then do reflection
+	// reflection
 	const HitRecord	&hit_record	= src->hit_record;
 	const Vec3f		&reflected	= reflect(src->ray.getDirection(), hit_record.normal).normalize();
 
 	// fire a new ray
 	// need to push the point a little bit forward to prevent hit the same point
-	const Vec3f		&point_out	= hit_record.point + reflected * RAY_EPSILON;
+	const Vec3f &point_out = hit_record.point + reflected * RAY_EPSILON;
 	dst->ray = Ray(point_out, reflected);
 
 	// split the threshold of src

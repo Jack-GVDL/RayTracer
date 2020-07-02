@@ -41,7 +41,7 @@ Vec3f SceneObject_Light_Directional::getShadowAttenuation(const Scene *scene, co
 		Ray				ray				= Ray(point_cur, direction);
 		const double	length_light	= (origin - point_cur).length();
 
-		if (!scene->hit(&ray, 0.0, MAXFLOAT, &hit_record)) return intensity;
+		if (!scene->hit(&ray, 0.0, MAXFLOAT, &hit_record))	return intensity;
 		if (hit_record.distance >= length_light)			return intensity;
 		
 		// new intensity *= transmissive
@@ -63,7 +63,7 @@ Vec3f SceneObject_Light_Directional::getColor(const Vec3f &point) const {
 
 
 Vec3f SceneObject_Light_Directional::getDirection(const Vec3f &point) const {
-	return -orientation;
+	return orientation;
 }
 
 
