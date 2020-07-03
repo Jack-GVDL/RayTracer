@@ -33,6 +33,9 @@ class Camera {
 		Vec3f	w, u, v;
 		double	fov, aspect;
 
+		// backup
+		// double	width, height;
+
 	// Operation
 	public:
 		// init

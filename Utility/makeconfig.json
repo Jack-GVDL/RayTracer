@@ -12,5 +12,5 @@
     "SRC_PATH"                  : "src",
     "OBJ_PATH"                  : "obj",
 
-    "OBJ_FILE"                  : [""]
+    "OBJ_FILE"                  : ["RayTracer_Material.o "]
 }

@@ -48,8 +48,12 @@ void Camera::update() {
 	// height = width / aspect
 	// width  = aspect / height
 	double	theta		= fov * M_PI / 180;
-	double	half_height	= tan(theta / 2);
-	double	half_width	= aspect / half_height;
+	double	height_half	= tan(theta / 2);
+	double	width_half	= aspect / height_half;
+
+	// backup
+	// width	= width_half;
+	// height	= height_half;
 
 	// w: direction
 	// u: x-axis
@@ -59,8 +63,8 @@ void Camera::update() {
 	u	= w.cross(up).normalize();
 	v	= u.cross(w);
 
-	u	*= half_width;
-	v	*= half_height; 
+	u	*= width_half;
+	v	*= height_half; 
 }
 
 

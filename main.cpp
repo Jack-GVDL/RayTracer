@@ -2,6 +2,19 @@
 #include "RayTracer.hpp"
 
 
+// Data Structure
+struct TraceData {
+	RayTracer	*tracer;
+	Camera		*camera;
+	int			depth;
+};
+
+
+// Static Function Prototype
+static Vec3f Linker_getColor(double x, double y, void *info);
+
+
+// Operation
 int main() {
 	int nx = 200;
 	int ny = 100;
@@ -79,6 +92,12 @@ int main() {
 	// ray tracer
 	RayTracer tracer = RayTracer(&scene, &scatter_top);
 
+	// super sampler
+	// SuperSampler_Grid		super_sampler;
+	// SuperSampler_Random		super_sampler;
+	SuperSampler_Jittered	super_sampler;
+	super_sampler.setGridSize(3, 3);
+
 	// shoot ray
 	const double x_half = double(nx) / 2;
 	const double y_half = double(ny) / 2;
@@ -88,7 +107,13 @@ int main() {
 
 			double u = double(x - x_half) / x_half;
 			double v = double(y - y_half) / y_half;
-			Vec3f color	= tracer.trace(&camera, u, v, 5);
+
+			TraceData data;
+			data.tracer	= &tracer;
+			data.camera	= &camera;
+			data.depth	= 5;
+			Vec3f color = super_sampler.sample(Vec3f(u, v, 0), Vec3f(0.01, 0.01, 0), 0, Linker_getColor, &data);
+			// Vec3f color	= tracer.trace(&camera, u, v, 5);
 			
 			int ir = int(255.99 * color[0]);
 			int ig = int(255.99 * color[1]);
@@ -98,4 +123,12 @@ int main() {
 			
 		}
 	}
+}
+
+
+// Static Function Implementation
+static Vec3f Linker_getColor(double x, double y, void *info) {
+	const TraceData	*data	= (TraceData*)info;
+	const RayTracer	*tracer	= data->tracer;
+	return tracer->trace(data->camera, x, y, data->depth);
 }

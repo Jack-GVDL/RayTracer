@@ -12,6 +12,7 @@
 #include "./Scatter/Scatter.hpp"
 #include "./Scene/Scene.hpp"
 #include "./Utility/Utility.hpp"
+#include "./SuperSampler/SuperSampler.hpp"
 
 
 // Define

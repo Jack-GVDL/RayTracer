@@ -34,8 +34,8 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 	// Operation
 	public:
 		// init
-		SceneObject_Sphere()
-		{}
+		SceneObject_Sphere() {
+		}
 
 		SceneObject_Sphere(Vec3f center, double radius, Material *material): 
 		SceneObject_Hitable::SceneObject_Hitable(material),
@@ -44,7 +44,7 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 		{}
 
 		// operation
-		virtual bool hit(const Ray *r, float t_min, float t_max, HitRecord *record) const override;
+		virtual bool hit(const Ray *ray, float t_min, float t_max, HitRecord *record) const override;
 };
 
 

@@ -3,12 +3,14 @@
 //
 // Log
 // 2020/06/20   initial update
+// 2020/07/03   add scatter_list
 
 
 #ifndef RAYTRACER_MATERIAL_HPP
 #define RAYTRACER_MATERIAL_HPP
 
 
+#include <vector>
 #include "RayTracer_Ray.hpp"
 
 
@@ -25,6 +27,8 @@
 
 
 // Data Structure
+class Scatter;
+
 class Material {
 	// Data
 	public:
@@ -37,6 +41,8 @@ class Material {
 
 		double	shininess;
 		double	index;
+
+		std::vector<Scatter*>	scatter_list;
 
 	// Operation
 	public:
@@ -51,6 +57,10 @@ class Material {
 		shininess		(0.5),
 		index			(1.0)
 		{}
+
+		// operation
+		bool	addScatter	(Scatter *scatter);
+		bool	rmScatter	(Scatter *scatter);
 };
 
 
