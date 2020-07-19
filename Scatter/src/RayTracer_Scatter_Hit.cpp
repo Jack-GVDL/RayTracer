@@ -31,14 +31,9 @@ ScatterState Scatter_Hit::scatter_shootRay(ScatterRecord *dst, ScatterRecord *sr
 	const double intensity_2 = ((ray_dir[2] + 1) / 2) * multiplier[2];
 
 	// need clamping
-	// TODO: clamp function is only available in and after C++17
-	// dst->intensity[0] = std::clamp<double>(intensity_0, 0.0, 1.0);
-	// dst->intensity[1] = std::clamp<double>(intensity_1, 0.0, 1.0);
-	// dst->intensity[2] = std::clamp<double>(intensity_2, 0.0, 1.0);
-
-	dst->intensity[0] = intensity_0;
-	dst->intensity[1] = intensity_1;
-	dst->intensity[2] = intensity_2;
+	dst->intensity[0] = UtilMath::clamp<double>(intensity_0, 0.0, 1.0);
+	dst->intensity[1] = UtilMath::clamp<double>(intensity_1, 0.0, 1.0);
+	dst->intensity[2] = UtilMath::clamp<double>(intensity_2, 0.0, 1.0);
 
 	return SCATTER_YIELD;
 }

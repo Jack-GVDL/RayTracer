@@ -1,0 +1,185 @@
+# --------------------------------------------------
+# Description
+# --------------------------------------------------
+# ...
+
+
+# --------------------------------------------------
+# Config
+# do not change below setting
+# these setting should be modified in makeconfig.json file
+# --------------------------------------------------
+CONFIG_IS_EXT_CONFIG_ENABLE	:= true
+CONFIG_MACHINE				:= invalid
+
+# --------------------------------------------------
+# Function
+# --------------------------------------------------
+rwildcard	=	$(wildcard $1/$2) $(foreach d,$(wildcard $1/*),$(call rwildcard,$(d),$2))
+
+# function: get_config(config_name, file, ...) -> string
+define get_config
+	$(eval $(1) $(3)= $(shell $(SHELL_PREFIX) $(PY) $(CONFIG_PARSER_PATH) $(2) $(1) $($(1)) $(SHELL_SUFFIX)))
+endef
+
+# function: get_config_return(return_to, config_name, file, ...)
+define get_config_return
+	$(eval $(1) $(4)= $(shell $(SHELL_PREFIX) $(PY) $(CONFIG_PARSER_PATH) $(3) $(2) $($(1)) $(SHELL_SUFFIX)))
+endef
+
+# function: get_channel_output(return_to, direction, name, is_path, ...)
+# the config name should be CONFIG_IMPORT_$(return_to)
+define get_channel_output
+	$(eval $(1) $(5)= $(shell $(SHELL_PREFIX) $(MAKE) --f=Makefile_Channel INPUT_CHANNEL_DIRECTION=$(2) INPUT_CHANNEL_NAME=$(3) INPUT_IS_PATH=$(4) --no-print-directory $(SHELL_SUFFIX)))
+endef
+
+# function module
+ifeq ($(OS),Windows_NT)
+FOR_START		= for %%i in 
+FOR_DO			= do
+FOR_END			= 
+FOR_ITEM		= %%i
+
+else
+FOR_START		= for i in 
+FOR_DO			= ; do 
+FOR_END			= ; done
+FOR_ITEM		= $$d
+
+endif
+
+
+# --------------------------------------------------
+# Data
+# --------------------------------------------------
+MODULE				= Custom
+WORK_DIR			= ..
+
+CONFIG_PARSER_PATH 	= Make_Parse.py
+CONFIG_JSON_GLOBAL	= makeconfig.json
+CONFIG_JSON_LOCAL	= makeconfig_$(MODULE).json
+
+PY					= py
+LD					= g++
+
+OBJ_FILE			= 
+
+
+# --------------------------------------------------
+# Initiation
+# --------------------------------------------------
+# config based on host platform
+ifeq ($(OS),Windows_NT)
+PY				= py
+SHELL_PREFIX	= 
+SHELL_SUFFIX	= 
+SPACE_PREFIX	= 
+SPACE_SUFFIX	=
+PATH_SEPARATOR	= /
+
+else
+PY				= python3
+SHELL_PREFIX	= sh -c "
+SHELL_SUFFIX	= "
+SPACE_PREFIX	= "
+SPACE_SUFFIX	= "
+PATH_SEPARATOR	= \
+
+endif
+
+
+# read the config from makeconfig
+# TODO: find a better way to do this thing, now is too slow
+ifeq ($(CONFIG_IS_EXT_CONFIG_ENABLE),false)
+else
+
+$(call get_config, CONFIG_MACHINE,				$(CONFIG_JSON_GLOBAL),	 )
+$(call get_config, WORK_DIR,					$(CONFIG_JSON_GLOBAL),	 )
+
+endif  # CONFIG_IS_EXT_CONFIG_ENABLE
+
+
+# config machine
+# x386
+ifeq ($(CONFIG_MACHINE),x386)
+OBJ_PATH 	:= $(OBJ_PATH)_x386
+
+# x64
+else ifeq ($(CONFIG_MACHINE),x64)
+OBJ_PATH 	:= $(OBJ_PATH)_x64
+
+# arm
+else ifeq ($(CONFIG_MACHINE),arm)
+LD			:= arm-none-eabi-gcc
+OBJ_PATH	:= $(OBJ_PATH)_arm
+
+endif  # CONFIG_MACHINE
+
+
+# --------------------------------------------------
+# Preprocessing
+# --------------------------------------------------
+$(call get_channel_output, OBJ_FILE	,0	,OBJ_FILE	,true,	+)
+
+OBJ_FILE	:= $(foreach p,$(OBJ_FILE),$(WORK_DIR)/$(p))
+
+
+# --------------------------------------------------
+# Operation
+# --------------------------------------------------
+# TODO: -Map
+# $(EXE_PATH)/$(EXE_FILE):
+##	@echo LD $(SPACE_PREFIX)		$(SPACE_SUFFIX) $(@)
+#	@echo LD $(SPACE_PREFIX)        $(SPACE_SUFFIX) $(@)
+#	$(LD) $(FLAG) $(LIB) -T$(LD_PATH)/$(LD_FILE) $(OBJ_FILE) -o $(@)
+
+
+.PHONY: all
+all: header self
+
+
+.PHONY: header
+header:
+#	@echo MODULE $(SPACE_PREFIX)	$(SPACE_SUFFIX) $(MODULE)
+	@echo MODULE $(SPACE_PREFIX)    $(SPACE_SUFFIX) $(MODULE)
+
+
+.PHONY: self
+self:
+	@$(LD) $(OBJ_FILE) ../obj_x64/RayTracer.o ../obj_x64/main.o -o ../bin/Tracer
+	@..\bin\Tracer.exe > output.ppm
+
+
+.PHONY: clean
+clean:
+
+
+# --------------------------------------------------
+# Helper
+# --------------------------------------------------
+.PHONY: var_list
+var_list:
+# config setting
+	@echo CONFIG_IS_EXT_CONFIG_ENABLE $(SPACE_PREFIX)  $(SPACE_SUFFIX) $(CONFIG_IS_EXT_CONFIG_ENABLE)
+	@echo CONFIG_MACHINE $(SPACE_PREFIX)               $(SPACE_SUFFIX) $(CONFIG_MACHINE)
+
+# working directory
+	@echo WORK_DIR $(SPACE_PREFIX)                     $(SPACE_SUFFIX) $(WORK_DIR)
+
+# channel
+# ...
+
+# executable
+	@echo PY $(SPACE_PREFIX)                           $(SPACE_SUFFIX) $(PY)
+	@echo LD $(SPACE_PREFIX)                           $(SPACE_SUFFIX) $(LD)
+
+# path
+# ...
+
+# file
+	@echo OBJ_FILE $(SPACE_PREFIX)                     $(SPACE_SUFFIX) $(OBJ_FILE)
+
+
+# --------------------------------------------------
+# User Operation
+# --------------------------------------------------

@@ -1,0 +1,14 @@
+{
+    "CONFIG_IS_TREE_ENABLE"         : "true",
+    "CONFIG_IS_ROOT"                : "false",
+    "CONFIG_IS_EXPORT_RECURSIVE"    : "false",
+    "CONFIG_MACHINE"                : "x64",
+
+    "NODE"          : "SuperSampler",
+    "CHILD"         : [""],
+
+    "MODULE"        : ["CPP ",
+                       ""],
+    
+    "WORK_DIR"      : ".."
+}

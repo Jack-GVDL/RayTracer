@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <limits>
 #include "../../Utility/Utility.hpp"
 #include "../inc/RayTracer_SceneObject_Light.hpp"
 #include "../inc/RayTracer_SceneObject_Hitable.hpp"
@@ -41,7 +42,7 @@ Vec3f SceneObject_Light_Directional::getShadowAttenuation(const Scene *scene, co
 		Ray				ray				= Ray(point_cur, direction);
 		const double	length_light	= (origin - point_cur).length();
 
-		if (!scene->hit(&ray, 0.0, MAXFLOAT, &hit_record))	return intensity;
+		if (!scene->hit(&ray, 0.0, std::numeric_limits<float>::max(), &hit_record))	return intensity;
 		if (hit_record.distance >= length_light)			return intensity;
 		
 		// new intensity *= transmissive
@@ -98,7 +99,7 @@ Vec3f SceneObject_Light_Point::getShadowAttenuation(const Scene *scene, const Ve
 		Ray				ray				= Ray(point_cur, direction);
 		const double	length_light	= (origin - point_cur).length();
 		
-		if (!scene->hit(&ray, 0.0, MAXFLOAT, &hit_record))	return intensity;
+		if (!scene->hit(&ray, 0.0, std::numeric_limits<float>::max(), &hit_record))	return intensity;
 		if (hit_record.distance >= length_light)			return intensity;
 
 		// new intensity *= transmissive
@@ -124,7 +125,25 @@ Vec3f SceneObject_Light_Point::getDirection(const Vec3f &point) const {
 }
 
 
-// point light
+// ambient light
+Vec3f SceneObject_Light_Ambient::getShadowAttenuation(const Scene *scene, const Vec3f &point) const {
+	return Vec3f(0);
+}
+
+
+double SceneObject_Light_Ambient::getDistanceAttenuation(const Vec3f &point) const {
+	return 0;
+}
+
+
+Vec3f SceneObject_Light_Ambient::getColor(const Vec3f &point) const {
+	return color;
+}
+
+
+Vec3f SceneObject_Light_Ambient::getDirection(const Vec3f &point) const {
+	return Vec3f(0);
+}
 
 
 // Static Function Implementation

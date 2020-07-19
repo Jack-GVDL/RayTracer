@@ -92,6 +92,21 @@ class SceneObject_Light_Point: public SceneObject_Light {
 };
 
 
+class SceneObject_Light_Ambient: public SceneObject_Light {
+	// Data
+	public:
+		// ...
+		
+	// Operation
+	public:
+		// interface
+		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const override;
+		virtual double	getDistanceAttenuation	(const Vec3f &point) const override;
+		virtual Vec3f	getColor				(const Vec3f &point) const override;
+		virtual Vec3f	getDirection			(const Vec3f &point) const override;
+};
+
+
 // Macro Function
 // ...
 

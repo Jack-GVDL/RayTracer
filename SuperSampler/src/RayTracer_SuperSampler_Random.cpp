@@ -27,8 +27,8 @@ Vec3f SuperSampler_Random::sample(const Vec3f &point, const Vec3f &region, int d
 	const double 	h_half		= region[1];
 
 	for (int i = 0; i < int(point_list.size()); i++) {
-		const double random_w	= (drand48() * 2 - 1) * w_half;
-		const double random_h	= (drand48() * 2 - 1) * h_half;
+		const double random_w	= (UtilMath::randDouble() * 2 - 1) * w_half;
+		const double random_h	= (UtilMath::randDouble() * 2 - 1) * h_half;
 		point_list[i] = Vec3f(random_w, random_h, 0);
 	}
 

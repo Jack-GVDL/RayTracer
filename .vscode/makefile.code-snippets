@@ -1,0 +1,9 @@
+{
+    "Template_VarList" : {
+        "scope" : "makefile",
+        "prefix" : "varlist",
+        "body" : [
+            "@echo ${1:config_name} $(SPACE_PREFIX) ${2:spacing}$(SPACE_SUFFIX) $(${1:config_name})"
+        ]
+    }
+}

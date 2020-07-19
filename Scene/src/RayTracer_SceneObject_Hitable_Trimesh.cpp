@@ -38,13 +38,11 @@ bool SceneObject_Trimesh::hit(const Ray *ray, float t_min, float t_max, HitRecor
 	// TODO: find a better name for dot_temp_1
 	Vec3f	n				= normal;			// backup the normal
 	Vec3f	vec_pos_normal	= (a - ray_pos); 	// vector from ray position to point A
-	double dot_temp_1		= vec_pos_normal.dot(normal);
-	if (dot_temp_1 > 0) normal = -normal;
+	VecMath::reverseNormal_incidentRay(normal, vec_pos_normal);
 
 	// check if the ray is away from the plane
 	// including ray that is perpendicular to the plane
-	double dot_dir_normal = ray_dir.dot(-normal);
-	if (-dot_dir_normal > RAY_EPSILON) return false;
+	if (VecMath::checkDirection_oppose(ray_dir, -normal)) return false;
 
 	// find the intersection point of the ray on the plane
 	// first project vec_pos_normal onto the reversed normal
@@ -60,20 +58,6 @@ bool SceneObject_Trimesh::hit(const Ray *ray, float t_min, float t_max, HitRecor
 	// check if the intersection point is inside the triangle
 	if (!VecMath::checkInside_convexPolygon(result_point, point, 3, n)) return false;
 
-	// const Vec3f &ab		= b - a;
-	// const Vec3f &bc		= c - b;
-	// const Vec3f &ca		= a - c;
-	// Vec3f		vec_temp_1;  // TODO find a better name for this
-
-	// vec_temp_1 = ab.cross(result_point - a);
-	// if (n.dot(vec_temp_1) < 0) return false;
-
-	// vec_temp_1 = bc.cross(result_point - b);
-	// if (n.dot(vec_temp_1) < 0) return false;
-
-	// vec_temp_1 = ca.cross(result_point - c);
-	// if (n.dot(vec_temp_1) < 0) return false;
-
 	// configure hit record
 	// but first check if is between t_min and t_max
 	// TODO: find a beter name for this
@@ -82,7 +66,7 @@ bool SceneObject_Trimesh::hit(const Ray *ray, float t_min, float t_max, HitRecor
 
 	record->distance	= temp;
 	record->point		= result_point;
-	record->normal		= normal;
+	record->normal		= normal;						// normal is correct is early step
 	record->object		= (SceneObject_Hitable*)this;
 	return true;
 }

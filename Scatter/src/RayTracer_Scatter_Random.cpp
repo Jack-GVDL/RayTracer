@@ -35,8 +35,8 @@ ScatterState Scatter_RandomGrid::scatter_shootRay(ScatterRecord *dst, ScatterRec
 	}
 
 	// set the length of the radius vectors	
-	const double length_1 = radius * (drand48() - 0.5) * 2;
-	const double length_2 = radius * (drand48() - 0.5) * 2;
+	const double length_1 = radius * (UtilMath::randDouble() - 0.5) * 2;
+	const double length_2 = radius * (UtilMath::randDouble() - 0.5) * 2;
 
 	vector_radius_1 = vector_radius_1.prod(Vec3f(length_1));
 	vector_radius_2 = vector_radius_2.prod(Vec3f(length_2));

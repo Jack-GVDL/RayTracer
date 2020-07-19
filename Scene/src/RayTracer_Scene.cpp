@@ -40,6 +40,19 @@ bool Scene::rmLight(SceneObject_Light *light) {
 }
 
 
+// TODO: missing uniqueness checking
+bool Scene::addAmbientLight(SceneObject_Light *light) {
+	ambient_list.push_back(light);
+	return true;
+}
+
+
+// TODO: not yet completed
+bool Scene::rmAmbientLight(SceneObject_Light *light) {
+	return false;
+}
+
+
 bool Scene::hit(const Ray *ray, float t_min, float t_max, HitRecord *record) const {
 	HitRecord	temp_record;
 	bool		is_hit			= false;

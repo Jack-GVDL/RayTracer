@@ -28,6 +28,11 @@
 
 // Data Structure
 class Vec3f {
+	// Static Data
+	public:
+		const static Vec3f vec_one;
+		const static Vec3f vec_zero;
+
 	// Data
 	public:
 		double n[3];
@@ -181,23 +186,6 @@ inline Vec3f operator/(Vec3f v, float t) {
 
 inline Vec3f operator*(const Vec3f &v, float t) {
 	return Vec3f(t * v[0], t * v[1], t * v[2]);
-}
-
-
-namespace VecMath {
-
-	inline double dot(const Vec3f &v1, const Vec3f &v2) {
-		return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
-	}
-
-
-	inline Vec3f cross(const Vec3f &v1, const Vec3f &v2) {
-		return Vec3f(
-			v1[1] * v2[2] - v1[2] * v2[1],
-			v1[2] * v2[0] - v1[0] * v2[2],
-			v1[0] * v2[1] - v1[1] * v2[0]);
-	}
-
 }
 
 

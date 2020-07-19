@@ -1,0 +1,10 @@
+{
+    "OBJ_FILE"  : ["obj_x64/RayTracer_Camera.o ",
+                   "obj_x64/RayTracer_Scene.o ",
+                   "obj_x64/RayTracer_SceneElement.o ",
+                   "obj_x64/RayTracer_SceneObject_Hitable.o ",
+                   "obj_x64/RayTracer_SceneObject_Hitable_Sphere.o ",
+                   "obj_x64/RayTracer_SceneObject_Hitable_Trimesh.o ",
+                   "obj_x64/RayTracer_SceneObject_Light.o ",
+                   ""]
+}

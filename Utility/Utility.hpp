@@ -4,6 +4,7 @@
 // Log
 // 2020/06/23   initial update
 // 2020/06/24   change the file name from RayTracer_Utility.hpp to Utility.hpp
+// 2020/07/20   add RayTracer_UtilMath
 
 
 #ifndef UTILITY_HPP
@@ -12,6 +13,7 @@
 
 #include "./inc/RayTracer_Base.hpp"
 #include "./inc/RayTracer_Vec3f.hpp"
+#include "./inc/RayTracer_UtilMath.hpp"
 #include "./inc/RayTracer_Ray.hpp"
 #include "./inc/RayTracer_Material.hpp"
 

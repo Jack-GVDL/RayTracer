@@ -10,7 +10,8 @@
 
 
 // Static Function Prototype
-// ...
+static inline Vec3f get_emissive	(const Material *material);
+static inline Vec3f	get_ambient		(const Material *material, const Scene *scene);
 
 
 // Operation Handling
@@ -23,25 +24,17 @@ ScatterState Scatter_Light::scatter_shootRay(ScatterRecord *dst, ScatterRecord *
 	Vec3f intensity_result = Vec3f();
 
 	const Vec3f		point_intersect	= src->hit_record.point;
-	const Vec3f		raw_one			= Vec3f(1.0, 1.0, 1.0);
-	const Material	&material		= src->hit_record.object->material;
+	const Material	*material		= &(src->hit_record.object->material);
+	const Scene		*scene			= src->scene;
 
 	// intensity - emission
-	const Vec3f intensity_emission = material.emissive;
-
-	// intensity - ambient
-	// explanation to kt
-	// some light will directly pass through the material
-	// causing the intensity reduction
-	// intensity remain = 1 - kt, where 0 <= kt <= 1
-	// TODO: not yet completed
-	const Vec3f &intensity_ambient = Vec3f(0.0, 0.0, 0.0);
+	intensity_result += get_emissive(material);
 	
-	// TODO: intensity_result += prod(prod(ka, vec3f(ambient, ambient, ambient)), raw_one - kt);
-	intensity_result += intensity_emission;
+	// intensity - ambient
+	intensity_result += get_ambient(material, src->scene);
 
 	// intensity - light
-	for (auto *light : src->scene->light_list) {
+	for (auto *light : scene->light_list) {
 		const double dot_ln = src->hit_record.normal.dot(light->getDirection(point_intersect));
 
 		// if the light source is behind the plane
@@ -59,13 +52,13 @@ ScatterState Scatter_Light::scatter_shootRay(ScatterRecord *dst, ScatterRecord *
 		const Vec3f &attenuation = atten_shadow * atten_distance;
 
 		// diffuse term
-		const Vec3f &term_diffuse = (material.diffuse * dot_ln).prod(raw_one - material.transmissive);
+		const Vec3f &term_diffuse = (material->diffuse * dot_ln).prod(Vec3f::vec_one - material->transmissive);
 
 		// specular term
 		const Vec3f		&ray_reflect	= (2.0 * dot_ln * src->hit_record.normal - light->getDirection(point_intersect)).normalize();
 		const double	dot_rv			= std::max<double>(ray_reflect.dot(-(src->ray.getDirection())), 0.0);
-		const double	coeff_specular	= pow(dot_rv, material.shininess * 128);
-		const Vec3f		&term_specular	= material.specular * coeff_specular;
+		const double	coeff_specular	= pow(dot_rv, material->shininess * 128);
+		const Vec3f		&term_specular	= material->specular * coeff_specular;
 
 		// diffuse term + specular term
 		const Vec3f &term_result = term_diffuse + term_specular;
@@ -83,4 +76,25 @@ ScatterState Scatter_Light::scatter_shootRay(ScatterRecord *dst, ScatterRecord *
 
 
 // Static Function Implementation
-// ...
+static inline Vec3f get_emissive(const Material *material) {
+	return material->emissive;
+}
+
+
+static inline Vec3f get_ambient(const Material *material, const Scene *scene) {
+	Vec3f result = Vec3f(0);
+	for (auto *light : scene->ambient_list) {
+		result += light->getColor(Vec3f());
+	}
+
+	// explanation to kt (transmissive)
+	// some light will directly pass through the material
+	// causing the intensity reduction
+	// intensity remain = 1 - kt, where 0 <= kt <= 1
+	//
+	// (ambient_coeff * ambient_light) * (raw_one - tranmissive_coeff)
+	// where * is "product" but not "dot"
+	const Vec3f	temp_1	= material->ambient.prod(result.clamp(0, 1));
+	const Vec3f	temp_2	= temp_1.prod(Vec3f::vec_one - material->transmissive);
+	return temp_2;
+}

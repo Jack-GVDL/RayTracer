@@ -1,0 +1,6 @@
+{
+    "OBJ_FILE"  : ["obj_x64/RayTracer_SuperSampler_Grid.o ",
+                   "obj_x64/RayTracer_SuperSampler_Jittered.o ",
+                   "obj_x64/RayTracer_SuperSampler_Random.o ",
+                   ""]
+}

@@ -32,13 +32,17 @@ class Scene: public SceneElement {
 	public:
 		std::vector<SceneObject_Hitable*>	hitable_list;
 		std::vector<SceneObject_Light*>		light_list;
+		std::vector<SceneObject_Light*>		ambient_list;
 
 	// Operation
 	public:
-		bool	addHitable	(SceneObject_Hitable *hitable);
-		bool	rmHitable	(SceneObject_Hitable *hitable);
-		bool	addLight	(SceneObject_Light *light);
-		bool	rmLight		(SceneObject_Light *light);
+		bool	addHitable		(SceneObject_Hitable *hitable);
+		bool	rmHitable		(SceneObject_Hitable *hitable);
+		bool	addLight		(SceneObject_Light *light);
+		bool	rmLight			(SceneObject_Light *light);
+		bool	addAmbientLight	(SceneObject_Light *light);
+		bool	rmAmbientLight	(SceneObject_Light *light);
+
 		bool	hit			(const Ray *ray, float t_min, float t_max, HitRecord *record) const;
 };
 

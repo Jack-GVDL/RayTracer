@@ -25,28 +25,30 @@ bool SceneObject_Sphere::hit(const Ray *r, float t_min, float t_max, HitRecord *
 	// no intersection
 	if (discriminant <= 0) return false;
 
-	// ...
-	float temp;
+	// find the length of the ray
+	// check if the ray is hit within the range
+	double ray_length;
 
-	temp = (-b - sqrt(b * b - a * c)) / a;
-	if (temp < t_max && temp > t_min) {
-		record->distance	= temp;
-		record->point		= r->pointAt(record->distance);
-		record->normal		= (record->point - center).normalize();
-		record->object		= (SceneObject_Hitable*)this;
-		return true;
-	}
+	ray_length = (-b - sqrt(b * b - a * c)) / a;
+	if (ray_length < t_max && ray_length > t_min) goto RAY_HIT;
 
-	temp = (-b + sqrt(b * b - a * c)) / a;
-	if (temp < t_max && temp > t_min) {
-		record->distance	= temp;
-		record->point		= r->pointAt(record->distance);
-		record->normal		= (record->point - center).normalize();
-		record->object		= (SceneObject_Hitable*)this;
-		return true;
-	}
+	ray_length = (-b + sqrt(b * b - a * c)) / a;
+	if (ray_length < t_max && ray_length > t_min) goto RAY_HIT;
 
 	return false;
+
+	// ray hit the object within the range
+	// need to set the content of hit record
+	RAY_HIT:
+	record->distance	= ray_length;
+	record->point		= r->pointAt(record->distance);
+	record->normal		= (record->point - center).normalize();
+	record->object		= (SceneObject_Hitable*)this;
+
+	// adjust the normal
+	VecMath::reverseNormal_incidentRay(record->normal, r->getDirection());
+
+	return true;
 }
 
 

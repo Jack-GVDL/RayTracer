@@ -32,8 +32,8 @@ Vec3f SuperSampler_Jittered::sample(const Vec3f &point, const Vec3f &region, int
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
 
-			const double random_w	= (drand48() * 2 - 1) * w_pixel;
-			const double random_h	= (drand48() * 2 - 1) * h_pixel;
+			const double random_w	= (UtilMath::randDouble() * 2 - 1) * w_pixel;
+			const double random_h	= (UtilMath::randDouble() * 2 - 1) * h_pixel;
 			
 			point_list[index] = Vec3f(
 				-w_half + x * w_pixel + random_w,  

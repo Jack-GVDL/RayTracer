@@ -1,3 +1,4 @@
+#include <limits>
 #include "../inc/RayTracer_SceneObject_Hitable.hpp"
 
 
@@ -15,7 +16,7 @@
 
 // Operation Handling
 bool SceneObject_Hitable::hit(const Ray *ray, HitRecord *record) const {
-	return hit(ray, 0.0, MAXFLOAT, record);
+	return hit(ray, 0.0, std::numeric_limits<float>::max(), record);
 }
 
 
