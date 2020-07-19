@@ -37,13 +37,16 @@ int main() {
 	// material_2->emissive		= Vec3f(0.5, 0.5, 0.5);
 	material_2->reflective 		= Vec3f(0.1, 0.3, 0.8);
 
-	material_3->reflective		= Vec3f(0.8, 0.3, 0.1);
+	material_3->reflective		= Vec3f(0);
+	material_3->transmissive	= Vec3f(0);
+	material_3->diffuse			= Vec3f(0.5, 0.5, 0);
 
     Scene scene;
 	scene.addHitable(new SceneObject_Sphere(Vec3f(0, 0.5, 0), 1, material_1));
-    scene.addHitable(new SceneObject_Sphere(Vec3f(1, 0, -1), 0.5, material_2));
-	scene.addHitable(new SceneObject_Sphere(Vec3f(-1, 0, -1), 0.5, material_2));
+    scene.addHitable(new SceneObject_Sphere(Vec3f(2, 0, 0), 0.5, material_2));
+	scene.addHitable(new SceneObject_Sphere(Vec3f(-2, 0, 0), 0.5, material_2));
 	scene.addHitable(new SceneObject_Sphere(Vec3f(0, -100.5, -1), 100, material_2));
+	scene.addHitable(new SceneObject_Trimesh(Vec3f(0, 0, 0), Vec3f(10, 0, 0), Vec3f(5, 5, 0), material_3));
 
 	SceneObject_Light_Point *light_point = new SceneObject_Light_Point(Vec3f(0.1, 0.1, 0.4));
 	light_point->origin	= Vec3f(0, 2, -2);
@@ -64,12 +67,17 @@ int main() {
 	Scatter_Emitter		scatter_emitter		= Scatter_Emitter();
 
 	scatter_emitter.color		= Vec3f(0.1, 0.3, 0.8);
-	scatter_hit.color			= Vec3f(1, 0, 0);
+	scatter_hit.multiplier		= Vec3f(1);
 	scatter_random.loop_count 	= 20;
 	scatter_random.radius		= 0.01;
 	scatter_random.is_parallel	= true;
 
-	scatter_top.addChild(&scatter_random);
+	// scatter_top.addChild(&scatter_reflection);
+	// scatter_top.addChild(&scatter_refraction);
+	scatter_top.addChild(&scatter_light);
+	// scatter_top.addChild(&scatter_hit);
+	// scatter_top.addChild(&scatter_random);
+
 	scatter_random.addChild(&scatter_reflection);
 	scatter_random.addChild(&scatter_refraction);
 	scatter_random.addChild(&scatter_light);
@@ -87,7 +95,7 @@ int main() {
 	// scatter_refraction.addChild(&scatter_emitter);
 
 	// camera
-	Camera camera(Vec3f(-2, 0, 2), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 90, double(nx) / double(ny));
+	Camera camera(Vec3f(0, 0, -2), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 90, double(nx) / double(ny));
 
 	// ray tracer
 	RayTracer tracer = RayTracer(&scene, &scatter_top);

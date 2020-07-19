@@ -51,7 +51,7 @@ PY					= python3
 MAKE 				= make
 
 C_MACRO 			= -D
-C_FLAGS 			= -c -Wall -ggdb -gstabs+ -I include
+C_FLAGS 			= -Wall -ggdb -gstabs+ -I include
 CPP_MACRO			=
 CPP_FLAGS			= -Wall
 ASM_FLAGS 			= -f elf -g -F stabs

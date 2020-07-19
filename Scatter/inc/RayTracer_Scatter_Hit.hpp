@@ -28,7 +28,7 @@
 class Scatter_Hit: public Scatter {
 	// Data
 	public:
-		Vec3f	color	=	Vec3f(0, 0, 0);
+		Vec3f	multiplier	= Vec3f(1);
 
 	// Operation
 	public:
