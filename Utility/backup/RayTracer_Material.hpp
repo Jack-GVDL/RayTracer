@@ -29,6 +29,7 @@
 // Data Structure
 class Scatter;
 
+
 class Material {
 	// Data
 	public:

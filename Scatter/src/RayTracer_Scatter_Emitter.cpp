@@ -14,7 +14,7 @@
 
 
 // Operation Handling
-ScatterState Scatter_Emitter::scatter_shootRay(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
+ScatterState Scatter_Emitter::scatter_shootRay(RecordScatter *dst, RecordScatter *src, ScatterState state) const {
 	dst->intensity = color;
 	return SCATTER_YIELD;
 }

@@ -147,7 +147,7 @@ header:
 .PHONY: self
 self:
 	@$(LD) $(OBJ_FILE) ../obj_x64/RayTracer.o ../obj_x64/main.o -o ../bin/Tracer
-	@..\bin\Tracer.exe > output.ppm
+	@..\bin\Tracer.exe > ..\bin\output.ppm
 
 
 .PHONY: clean

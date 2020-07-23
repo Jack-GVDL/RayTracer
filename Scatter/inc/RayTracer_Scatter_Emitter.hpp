@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/06/30   initial update
+// 2020/07/20   change to new structure
 
 
 #ifndef RAYTRACER_SCATTER_EMITTER_HPP
@@ -33,7 +34,7 @@ class Scatter_Emitter: public Scatter {
 	// Operation
 	public:
 		// interface
-		virtual ScatterState	scatter_shootRay	(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const override;
+		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
 };
 
 

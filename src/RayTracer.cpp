@@ -23,47 +23,51 @@ Vec3f RayTracer::trace(const Camera *camera, double x, double y, int depth) cons
 
 Vec3f RayTracer::trace(const Ray *ray, int depth) const {
 	// init scatter record
-	ScatterRecord scatter_record;
+	RecordScatter scatter_record;
 	scatter_record.parent		= nullptr;
 	scatter_record.scene		= scene;
-	scatter_record.scatter		= scatter;
+	scatter_record.scatter		= nullptr;
 	scatter_record.depth		= depth;
-	scatter_record.ray			= *ray;
 
-	// TODO: currently not to use cuda so recursion is ok
+	scatter_record.record_hit.ray = *ray;
+
+	// TODO: use cuda in future
 	return trace(&scatter_record);
 }
 
 
 // TODO: return nothing is still ok, as the result is already in the ScatterRecord *record
-Vec3f RayTracer::trace(ScatterRecord *record) const {
+Vec3f RayTracer::trace(RecordScatter *record) const {
 	// depth limit check
 	if (record->depth <= 0) return Vec3f();
 
-	// first check if scatter exist or not
-	if (record->scatter == nullptr) return Vec3f();
+	// first check if hit something or nothing
+	// if hit, then use hit shader
+	// else, use not hit shader
+	record->is_hit = scene->hit(&(record->record_hit));
 
-	// first check if hit something or not
-	// HitRecord hit_record;
-	if (scene->hit(&(record->ray), 0.0, std::numeric_limits<float>::max(), &(record->hit_record)))	record->is_hit = true;
-	else																	record->is_hit = false;
+	const Shader *shader;
+	if (record->is_hit) {
+		const SceneObject_Hitable *object = record->record_hit.object;
+		if (object->shader == nullptr) shader = &shader_hit;
+		else shader = object->shader;
+
+	} else {
+		shader = &shader_not_hit;
+
+	}
+
+	// reset intensity
+	record->intensity = Vec3f();
 
 	// foreach scatter, check if needed to fire a new ray or not
-	int		loop_count		= 0;
-	bool	is_loop_started	= false;
-
-	for (auto *scatter : record->scatter->scatter_list) {
+	for (auto *scatter : shader->scatter_list) {
 
 		// check if there is no threshold left for parent
-		if (record->thresh.isZero()) break;
+		if (record->threshold.isZero()) break;
 
-		// for equal split
-		loop_count		= 0;
-		is_loop_started	= false;
-		SCATTER_LOOP:
-
-		ScatterRecord scatter_record;
-		ScatterState state = scatter->scatter(&scatter_record, record);
+		RecordScatter	scatter_record;
+		ScatterState	state = scatter->scatter(&scatter_record, record);
 
 		// nothing to deal with current scatter
 		// skip it
@@ -74,22 +78,12 @@ Vec3f RayTracer::trace(ScatterRecord *record) const {
 		// add result intensity to parent intensity immediate
 		if (state == SCATTER_YIELD) {
 			const Vec3f &result = scatter_record.intensity.clamp(0, 1);
-			record->intensity	+= result * record->thresh;
+			record->intensity	+= result * record->threshold;
 			break;
 		}
 
-		if (state == SCATTER_EQUAL_SPLIT) {
-			if (!is_loop_started) {
-				is_loop_started	= true;
-				loop_count		= scatter->loop_count;
-			}
-
-			const Vec3f &result = trace(&scatter_record).clamp(0, 1);
-			record->intensity	+= result;
-
-			loop_count--;
-			if (loop_count != 0) goto SCATTER_LOOP;
-			record->thresh = 0;
+		// TODO: not yet completed
+		if (state == SCATTER_SPLIT) {
 			break;
 		}
 

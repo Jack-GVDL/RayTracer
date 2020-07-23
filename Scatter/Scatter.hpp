@@ -16,7 +16,7 @@
 #include "./inc/RayTracer_Scatter_Light.hpp"
 #include "./inc/RayTracer_Scatter_Reflection.hpp"
 #include "./inc/RayTracer_Scatter_Refraction.hpp"
-#include "./inc/RayTracer_Scatter_Random.hpp"
+// #include "./inc/RayTracer_Scatter_Random.hpp"
 #include "./inc/RayTracer_Scatter_Emitter.hpp"
 
 

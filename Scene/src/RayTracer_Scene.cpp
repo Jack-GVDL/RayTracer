@@ -53,17 +53,30 @@ bool Scene::rmAmbientLight(SceneObject_Light *light) {
 }
 
 
-bool Scene::hit(const Ray *ray, float t_min, float t_max, HitRecord *record) const {
-	HitRecord	temp_record;
+Vec3f Scene::getAmbientIntensity() const {
+	Vec3f result = Vec3f(0);
+	for (auto *light : ambient_list) result += light->getColor(Vec3f());
+	return result;
+}
+
+
+
+bool Scene::hit(RecordHit *record) const {
+	RecordHit	temp_record;
 	bool		is_hit			= false;
-	double		closest			= t_max;
+	double		closest			= std::numeric_limits<double>::max();
 
+	// set ray
+	temp_record.ray = record->ray;
+
+	// search for hitable in child
 	for (auto *hitable : hitable_list) {
-		if (!hitable->hit(ray, t_min, closest, &temp_record)) continue;
+		if (!hitable->hit(&temp_record, 0.0, closest)) continue;
+		// if (temp_record.distance > closest) continue;
 
-		is_hit	= true;
-		closest	= temp_record.distance;
-		*record	= temp_record;
+		is_hit			= true;
+		closest			= temp_record.distance;
+		*record			= temp_record;
 	}
 
 	return is_hit;

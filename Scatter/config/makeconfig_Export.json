@@ -3,7 +3,6 @@
                    "obj_x64/RayTracer_Scatter_Emitter.o ",
                    "obj_x64/RayTracer_Scatter_Hit.o ",
                    "obj_x64/RayTracer_Scatter_Light.o ",
-                   "obj_x64/RayTracer_Scatter_Random.o ",
                    "obj_x64/RayTracer_Scatter_Reflection.o ",
                    "obj_x64/RayTracer_Scatter_Refraction.o ",
                    ""]

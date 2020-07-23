@@ -14,27 +14,30 @@ static inline Vec3f reflect(const Vec3f &incident, const Vec3f &normal);
 
 
 // Operation Handling
-ScatterState Scatter_Reflection::scatter_shootRay(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
+ScatterState Scatter_Reflection::scatter_shootRay(RecordScatter *dst, RecordScatter *src, ScatterState state) const {
 	// first check if hit a target
-	if (!src->is_hit) return SCATTER_NONE;
+	if (!src->is_hit)				return SCATTER_NONE;
+
+	// variable preparation
+	const Ray	*ray		= &(src->record_hit.ray);
+	const Vec3f	&hit_point	= src->record_hit.point;
+	const Vec3f	&hit_normal	= src->record_hit.normal;
 
 	// check if the material is reflective
-	if (src->hit_record.object->material.reflective.isZero()) return SCATTER_NONE;
+	const Vec3f &vec_reflective = reflective->getPixel(hit_point);
+	if (vec_reflective.isZero())	return SCATTER_NONE;
 
 	// reflection
-	const HitRecord	&hit_record	= src->hit_record;
-	const Vec3f		&reflected	= reflect(src->ray.getDirection(), hit_record.normal).normalize();
+	const Vec3f &reflected = reflect(ray->getDirection(), hit_normal).normalize();
 
 	// fire a new ray
 	// need to push the point a little bit forward to prevent hit the same point
-	const Vec3f &point_out = hit_record.point + reflected * RAY_EPSILON;
-	dst->ray = Ray(point_out, reflected);
+	const Vec3f &point_out = hit_point + reflected * RAY_EPSILON;
 
-	// split the threshold of src
-	const Material	&material			= src->hit_record.object->material;
-	const Vec3f		&threshold_child	= src->thresh.prod(material.reflective);
-	dst->thresh							= threshold_child;
-	src->thresh							-= threshold_child;
+	// create new child record
+	createRecord_tree(dst, src);
+	createRecord_ray(dst, src, Ray(point_out, reflected));
+	createRecord_threshold(dst, src, vec_reflective);
 
 	return SCATTER_NEXT;
 }

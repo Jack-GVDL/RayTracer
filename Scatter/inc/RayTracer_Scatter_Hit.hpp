@@ -33,7 +33,7 @@ class Scatter_Hit: public Scatter {
 	// Operation
 	public:
 		// interface
-		virtual ScatterState	scatter_shootRay	(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const override;
+		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
 };
 
 

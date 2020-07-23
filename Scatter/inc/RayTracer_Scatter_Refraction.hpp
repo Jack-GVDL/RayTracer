@@ -26,13 +26,21 @@
 
 // Data Structure
 class Scatter_Refraction: public Scatter {
+	// Data
+	public:
+		// ...
+
 	// Operation
 	public:
+		// init
+		Scatter_Refraction()
+		{}
+		
 		// interface
-		virtual ScatterState	scatter_shootRay	(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const override;
+		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
 
-		// TODO: find a better way to solve this problem
-		virtual ScatterState	scatter_buildTree	(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const override;
+	protected:
+		bool createRecord_outer	(RecordScatter *dst, RecordScatter *src, double *index_from, double *index_to) const;
 };
 
 

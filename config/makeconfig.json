@@ -6,8 +6,10 @@
 
     "NODE"          : ".",
     "CHILD"         : ["Utility ",
+                       "Material ",
                        "Scene ",
                        "Scatter ",
+                       "Shader ",
                        "SuperSampler ",
                        ""],
 

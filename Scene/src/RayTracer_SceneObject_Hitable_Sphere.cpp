@@ -14,11 +14,12 @@
 
 
 // Operation Handling
-bool SceneObject_Sphere::hit(const Ray *r, float t_min, float t_max, HitRecord *record) const {
-	Vec3f oc = r->getPosition() - center;
+bool SceneObject_Sphere::hit(RecordHit *record, double t_min, double t_max) const {
+	const Ray	*ray	= &(record->ray);
+	Vec3f		oc		= ray->getPosition() - center;
 
-	float a = VecMath::dot(r->getDirection() , r->getDirection());
-	float b = VecMath::dot(oc, r->getDirection());
+	float a = VecMath::dot(ray->getDirection() , ray->getDirection());
+	float b = VecMath::dot(oc, ray->getDirection());
 	float c = VecMath::dot(oc, oc) - radius * radius;
 	float discriminant = b * b - a * c;
 
@@ -41,12 +42,13 @@ bool SceneObject_Sphere::hit(const Ray *r, float t_min, float t_max, HitRecord *
 	// need to set the content of hit record
 	RAY_HIT:
 	record->distance	= ray_length;
-	record->point		= r->pointAt(record->distance);
+	record->point		= ray->pointAt(record->distance);
 	record->normal		= (record->point - center).normalize();
 	record->object		= (SceneObject_Hitable*)this;
 
 	// adjust the normal
-	VecMath::reverseNormal_incidentRay(record->normal, r->getDirection());
+	// normal and incident ray should somehow "opposite"
+	VecMath::reverseNormal_incidentRay(record->normal, ray->getDirection());
 
 	return true;
 }

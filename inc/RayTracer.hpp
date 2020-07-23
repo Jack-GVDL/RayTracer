@@ -10,9 +10,10 @@
 #define RAYTRACER_HPP
 
 
-#include "../Scatter/Scatter.hpp"
-#include "../Scene/Scene.hpp"
 #include "../Utility/Utility.hpp"
+#include "../Scatter/Scatter.hpp"
+#include "../Shader/Shader.hpp"
+#include "../Scene/Scene.hpp"
 #include "../SuperSampler/SuperSampler.hpp"
 
 
@@ -33,25 +34,25 @@ class RayTracer {
 	// Data
 	public:
 		Scene	*scene;
-		Scatter	*scatter;
+
+		Shader	shader_not_hit;
+		Shader	shader_hit;
 
 	// Operation
 	public:
 		// init
 		RayTracer():
-		scene(nullptr),
-		scatter(nullptr)
+		scene			(nullptr)
 		{}
 
-		RayTracer(Scene *scene, Scatter *scatter):
-		scene(scene),
-		scatter(scatter)
+		RayTracer(Scene *scene):
+		scene			(scene)
 		{}
 		
 		// operation
 		Vec3f	trace	(const Camera *camera, double x, double y, int depth) const;
 		Vec3f	trace	(const Ray *ray, int depth) const;
-		Vec3f	trace	(ScatterRecord *record) const;
+		Vec3f	trace	(RecordScatter *record) const;
 };
 
 

@@ -38,16 +38,16 @@ Vec3f SceneObject_Light_Directional::getShadowAttenuation(const Scene *scene, co
 	while (!intensity.isZero()) {
 		
 		// check if no intersection or intersection is behind the light source
-		HitRecord		hit_record;
-		Ray				ray				= Ray(point_cur, direction);
+		RecordHit		hit_record;
 		const double	length_light	= (origin - point_cur).length();
+		hit_record.ray					= Ray(point_cur, direction);
 
-		if (!scene->hit(&ray, 0.0, std::numeric_limits<float>::max(), &hit_record))	return intensity;
-		if (hit_record.distance >= length_light)			return intensity;
+		if (!scene->hit(&hit_record))				return intensity;
+		if (hit_record.distance >= length_light)	return intensity;
 		
 		// new intensity *= transmissive
-		const Material &material = hit_record.object->material;
-		intensity *= material.transmissive;
+		const Material *material = &(hit_record.object->material);
+		intensity *= material->transmissive->getPixel(Vec3f());
 
 		// push the ray froward a little bit
 		point_cur = hit_record.point + direction * RAY_EPSILON;
@@ -95,16 +95,16 @@ Vec3f SceneObject_Light_Point::getShadowAttenuation(const Scene *scene, const Ve
 	while (!intensity.isZero()) {
 
 		// check if no intersection or intersection is behind the light source
-		HitRecord		hit_record;
-		Ray				ray				= Ray(point_cur, direction);
+		RecordHit		hit_record;
 		const double	length_light	= (origin - point_cur).length();
-		
-		if (!scene->hit(&ray, 0.0, std::numeric_limits<float>::max(), &hit_record))	return intensity;
-		if (hit_record.distance >= length_light)			return intensity;
+		hit_record.ray					= Ray(point_cur, direction);
+
+		if (!scene->hit(&hit_record))				return intensity;
+		if (hit_record.distance >= length_light)	return intensity;
 
 		// new intensity *= transmissive
-		const Material &material = hit_record.object->material;
-		intensity *= material.transmissive;
+		const Material *material = &(hit_record.object->material);
+		intensity *= material->transmissive->getPixel(Vec3f());
 
 		// push the ray forward a little bit
 		point_cur = hit_record.point + direction * RAY_EPSILON;

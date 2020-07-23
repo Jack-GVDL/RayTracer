@@ -14,53 +14,37 @@
 
 
 // Operation Handling
-// TODO: add uniqueness checking
-bool Scatter::addChild(Scatter *scatter) {
-	scatter_list.push_back(scatter);
-	return true;
-}
-
-
-// TODO: add uniqueness checking
-// TODO: not yet completed
-bool Scatter::rmChild(Scatter *scatter) {
-	return false;
-}
-
-
-ScatterState Scatter::scatter(ScatterRecord *dst, ScatterRecord *src) const {
+ScatterState Scatter::scatter(RecordScatter *dst, RecordScatter *src) const {
 	ScatterState state = SCATTER_NONE;
 	state = scatter_shootRay(dst, src, state);
-	state = scatter_buildTree(dst, src, state);
+	// state = scatter_buildTree(dst, src, state);
 	return state;
 }
 
 
-ScatterState Scatter::scatter_shootRay(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
-	return SCATTER_NONE;
+void Scatter::createRecord_tree(RecordScatter *dst, RecordScatter *src) const {
+	// if (dst->parent == nullptr)		dst->parent		= src;
+	// if (dst->scene == nullptr)		dst->scene		= src->scene;
+	// if (dst->scatter == nullptr)	dst->scatter	= this;
+	// if (dst->outer == nullptr)		dst->outer		= src->outer;
+	// dst->depth		= src->depth - 1;
+
+	dst->parent		= src;
+	dst->scene		= src->scene;
+	dst->scatter	= this;
+	dst->outer		= src->outer;
+	dst->depth		= src->depth - 1;
 }
 
 
-ScatterState Scatter::scatter_buildTree(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
-	switch (state) {
-		case SCATTER_NONE:
-			break;
+void Scatter::createRecord_ray(RecordScatter *dst, RecordScatter *src, const Ray &ray) const {
+	dst->record_hit.ray = ray;
+}
 
-		// build connection between scatter tree
-		case SCATTER_NEXT:
-		case SCATTER_EQUAL_SPLIT:
-			dst->parent			= src;
-			dst->scene			= src->scene;
-			dst->scatter		= this;
-			dst->outer			= src->outer;
-			dst->depth			= src->depth - 1;
-			break;
 
-		case SCATTER_YIELD:
-			break;
-	};
-
-	return state;
+void Scatter::createRecord_threshold(RecordScatter *dst, RecordScatter *src, const Vec3f &ratio) const {
+	dst->threshold	= src->threshold.prod(ratio);
+	src->threshold	-= dst->threshold;
 }
 
 

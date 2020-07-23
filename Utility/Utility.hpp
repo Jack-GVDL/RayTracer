@@ -15,7 +15,6 @@
 #include "./inc/RayTracer_Vec3f.hpp"
 #include "./inc/RayTracer_UtilMath.hpp"
 #include "./inc/RayTracer_Ray.hpp"
-#include "./inc/RayTracer_Material.hpp"
 
 
 // Define

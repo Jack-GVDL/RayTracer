@@ -3,7 +3,6 @@
     "OBJ_PATH"  : "obj",
     
     "OBJ_FILE"  : ["RayTracer_Vec3f.o ",
-                   "RayTracer_Material.o ",
                    ""],
 
     "MACRO"     : [""],

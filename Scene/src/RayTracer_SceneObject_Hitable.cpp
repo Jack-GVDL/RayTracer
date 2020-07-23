@@ -15,27 +15,33 @@
 
 
 // Operation Handling
-bool SceneObject_Hitable::hit(const Ray *ray, HitRecord *record) const {
-	return hit(ray, 0.0, std::numeric_limits<float>::max(), record);
+// hitable
+bool SceneObject_Hitable::hit(RecordHit *record) const {
+	return hit(record, std::numeric_limits<double>::max());
 }
 
 
-bool SceneObject_Hitable::hit(const Ray *ray, float t_max, HitRecord *record) const {
-	return hit(ray, 0.0, t_max, record);
+bool SceneObject_Hitable::hit(RecordHit *record, double t_max) const {
+	return hit(record, 0.0, t_max);
 }
 
 
-bool SceneObject_HitableList::hit(const Ray *ray, float t_min, float t_max, HitRecord *record) const {
-	HitRecord	temp_record;
+// hitable list
+bool SceneObject_HitableList::hit(RecordHit *record, double t_min, double t_max) const {
+	RecordHit	temp_record;
 	bool		is_hit			= false;
 	double		closest			= t_max;
 
-	for (int i = 0; i < (int)(hitable_list.size()); i++) {
-		if (!hitable_list[i]->hit(ray, t_min, closest, &temp_record)) continue;
+	// set ray
+	temp_record.ray = record->ray;
 
-		is_hit	= true;
-		closest	= temp_record.distance;
-		*record = temp_record;  // TODO: not sure if this can be copy constructor or not
+	// search for hitable in child
+	for (auto *hitable : hitable_list) {
+		if (!hitable->hit(&temp_record, t_min, closest)) continue;
+
+		is_hit			= true;
+		closest			= temp_record.distance;
+		*record			= temp_record;
 	}
 
 	return is_hit;

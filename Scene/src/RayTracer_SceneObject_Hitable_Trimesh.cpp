@@ -16,13 +16,14 @@
 // Operation Handling
 // reference
 // 1. https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
-bool SceneObject_Trimesh::hit(const Ray *ray, float t_min, float t_max, HitRecord *record) const {
+bool SceneObject_Trimesh::hit(RecordHit *record, double t_min, double t_max) const {
 	const Vec3f	&a	= point[0];
 	const Vec3f	&b	= point[1];
 	const Vec3f	&c	= point[2];
 
-	Vec3f ray_pos	= ray->getPosition();
-	Vec3f ray_dir	= ray->getDirection();
+	const Ray	*ray	= &(record->ray);
+	Vec3f		ray_pos	= ray->getPosition();
+	Vec3f		ray_dir	= ray->getDirection();
 
 	const Vec3f &ab		= b - a;
 	const Vec3f &ac		= c - a;
@@ -35,7 +36,6 @@ bool SceneObject_Trimesh::hit(const Ray *ray, float t_min, float t_max, HitRecor
 
 	// check if the normal is need to be reversed
 	// normal should be somehow oppose to the direction of incoming ray
-	// TODO: find a better name for dot_temp_1
 	Vec3f	n				= normal;			// backup the normal
 	Vec3f	vec_pos_normal	= (a - ray_pos); 	// vector from ray position to point A
 	VecMath::reverseNormal_incidentRay(normal, vec_pos_normal);
@@ -60,13 +60,13 @@ bool SceneObject_Trimesh::hit(const Ray *ray, float t_min, float t_max, HitRecor
 
 	// configure hit record
 	// but first check if is between t_min and t_max
-	// TODO: find a beter name for this
+	// TODO: find a beter name for this - "temp"
 	double temp = result_ray.length();
 	if (temp <= t_min || temp >= t_max) return false;
 
 	record->distance	= temp;
 	record->point		= result_point;
-	record->normal		= normal;						// normal is correct is early step
+	record->normal		= normal;						// normal is corrected in early step
 	record->object		= (SceneObject_Hitable*)this;
 	return true;
 }

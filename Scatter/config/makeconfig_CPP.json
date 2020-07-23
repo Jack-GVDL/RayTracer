@@ -6,7 +6,6 @@
                    "RayTracer_Scatter_Emitter.o ",
                    "RayTracer_Scatter_Hit.o ",
                    "RayTracer_Scatter_Light.o ",
-                   "RayTracer_Scatter_Random.o ",
                    "RayTracer_Scatter_Reflection.o ",
                    "RayTracer_Scatter_Refraction.o ",
                    ""],

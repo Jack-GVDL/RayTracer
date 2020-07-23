@@ -11,6 +11,7 @@
 
 #include <vector>
 #include "../../Utility/Utility.hpp"
+#include "../../Material/Material.hpp"
 
 
 // Define

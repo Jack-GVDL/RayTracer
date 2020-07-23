@@ -15,14 +15,14 @@
 
 
 // Operation Handling
-ScatterState Scatter_Hit::scatter_shootRay(ScatterRecord *dst, ScatterRecord *src, ScatterState state) const {
+ScatterState Scatter_Hit::scatter_shootRay(RecordScatter *dst, RecordScatter *src, ScatterState state) const {
 	if (!src->is_hit) {
 		dst->intensity = Vec3f(0);
 		return SCATTER_YIELD;
 	}
 
 	// get ray direction
-	const Vec3f &ray_dir = src->ray.getDirection();
+	const Vec3f &ray_dir = src->record_hit.ray.getDirection();
 	
 	// before multiplication
 	// the value of ray_dir is adjusted to range [0, 1]

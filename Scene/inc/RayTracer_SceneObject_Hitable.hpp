@@ -30,20 +30,29 @@
 
 // Data Structure
 class SceneObject_Hitable;
+class Shader;
 
 
-struct HitRecord {
-	float					distance;
-	Vec3f					point;
-	Vec3f					normal;
+struct RecordHit {
+	// incident ray
+	Ray						ray;
+
+	// object intersected
 	SceneObject_Hitable		*object;
+
+	// info on the point of intersection
+	Vec3f					normal;
+	Vec3f					point;
+	double					distance;
 };
 
 
 class SceneObject_Hitable: public SceneElement {
 	// Data
 	public:
+		// TODO: but the problem is that not all the hitable need the material
 		Material	material;
+		Shader		*shader		= nullptr;
 
 	// Operation
 	public:
@@ -56,11 +65,11 @@ class SceneObject_Hitable: public SceneElement {
 		{}
 		
 		// operation
-		bool			hit	(const Ray *ray, HitRecord *record) const;
-		bool			hit	(const Ray *ray, float t_max, HitRecord *record) const;
+		bool			hit		(RecordHit *record) const;
+		bool			hit		(RecordHit *record, double t_max) const;
 
 		// interface
-		virtual bool	hit	(const Ray *ray, float t_min, float t_max, HitRecord *record) const = 0;
+		virtual bool	hit		(RecordHit *record, double t_min, double t_max) const = 0;
 };
 
 
@@ -72,11 +81,11 @@ class SceneObject_HitableList: public SceneObject_Hitable {
 	// Operation
 	public:
 		// interface
-		virtual bool hit(const Ray *ray, float t_min, float t_max, HitRecord *record) const override;
+		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
 
 		// operation
-		virtual bool addHitable	(SceneObject_Hitable *hitable);
-		virtual bool rmHitable	(SceneObject_Hitable *hitable);
+		virtual bool	addHitable	(SceneObject_Hitable *hitable);
+		virtual bool	rmHitable	(SceneObject_Hitable *hitable);
 };
 
 
