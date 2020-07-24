@@ -11,6 +11,7 @@
 
 #include "../../External/External.hpp"
 #include "RayTracer_Surface.hpp"
+#include "RayTracer_Texture_Image.hpp"
 
 
 // Define
@@ -29,16 +30,16 @@
 class Surface_BMP: public Surface {
 	// Data
 	public:
-		uint8_t		*data	= nullptr;
 		File_BMP	*file	= nullptr;
 	
 	// Operation
 	public:
 		// operation
-		void			setBMP				(File_BMP *bmp);
+		void			setBMP	(File_BMP *bmp);
 
 		// interface
-		virtual bool	convertToTexture	(Texture *texture) const override;
+		virtual bool	load	() override;
+		virtual bool	dump	() override;
 };
 
 

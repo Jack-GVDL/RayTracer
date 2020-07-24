@@ -89,8 +89,58 @@ bool File_BMP::read(const char *f) {
 }
 
 
-bool File_BMP::write(const char *file) {
-	return false;
+bool File_BMP::write(const char *f) {
+	// open file
+	std::ofstream file(f, std::ios_base::binary);
+	if (!file) return false;
+
+	// check if headers are valid or not
+	// bit count == 32
+	if (info_header.bit_count == 32) {
+		write_header_and_data(&file);
+	}
+	
+	// bit count == 24
+	// need to check need padding
+	else if (info_header.bit_count == 24) {
+		if (info_header.width % 4 == 0) write_header_and_data(&file);
+
+		// padding
+		uint32_t row_stride = info_header.width * info_header.bit_count / 8;
+		uint32_t new_stride = make_stride_aligned(row_stride, 4);
+		std::vector<uint8_t> padding_row(new_stride - row_stride);
+
+		write_header(&file);
+
+		for (int y = 0; y < info_header.height; y++) {
+			file.write((const char*)(data.data() + row_stride * y), row_stride);
+			file.write((const char*)padding_row.data(), padding_row.size());
+		}
+	}
+
+	// bit count invalid
+	else {
+		file.close();
+		return false;
+	}
+
+	// close the file
+	file.close();
+
+	return true;
+}
+
+
+void File_BMP::write_header_and_data(std::ofstream *file) {
+	write_header(file);
+	file->write((const char*)data.data(), data.size());
+}
+
+
+void File_BMP::write_header(std::ofstream *file) {
+	file->write((const char*)&file_header, sizeof(File_BMP_FileHeader));
+	file->write((const char*)&info_header, sizeof(File_BMP_InfoHeader));
+	if (info_header.bit_count == 32) file->write((const char*)&color_header, sizeof(File_BMP_ColorHeader));
 }
 
 

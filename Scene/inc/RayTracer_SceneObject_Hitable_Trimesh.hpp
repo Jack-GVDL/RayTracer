@@ -45,9 +45,7 @@ class SceneObject_Trimesh: public SceneObject_Hitable {
 		// 	point[2]	= p2;
 		// }
 
-		SceneObject_Trimesh(Vec3f p0, Vec3f p1, Vec3f p2, Material *material):
-		SceneObject_Hitable::SceneObject_Hitable(material)
-		{
+		SceneObject_Trimesh(Vec3f p0, Vec3f p1, Vec3f p2) {
 			point[0]	= p0;
 			point[1]	= p1;
 			point[2]	= p2;

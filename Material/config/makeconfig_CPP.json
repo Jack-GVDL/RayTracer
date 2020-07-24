@@ -4,6 +4,7 @@
     
     "OBJ_FILE"  : ["RayTracer_Material.o ",
                    "RayTracer_Texture.o ",
+                   "RayTracer_Texture_CheckerBoard.o ",
                    ""],
 
     "MACRO"     : [""],

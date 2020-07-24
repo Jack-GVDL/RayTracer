@@ -12,6 +12,9 @@
 #include <stdint.h>
 #include <vector>
 
+// TODO: remove below later
+#include <fstream>
+
 
 // Define
 // ...
@@ -46,7 +49,7 @@ struct File_BMP_InfoHeader {
 	int32_t		height				= 0;		// height of bitmap in pixel
 
 	uint16_t	plane				= 1;
-	uint16_t	bit_count			= 0;
+	uint16_t	bit_count			= 0;		// number of bit per pixel
 	uint32_t	compression			= 0;
 	uint32_t	size_image			= 0;
 	int32_t		x_pixel_per_meter	= 0;
@@ -82,6 +85,10 @@ class File_BMP {
 	public:
 		bool	read	(const char *file);
 		bool	write	(const char *file);
+
+	protected:
+		void	write_header_and_data	(std::ofstream *file);
+		void	write_header			(std::ofstream *file);
 };
 
 

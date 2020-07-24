@@ -12,6 +12,7 @@
 #include "./inc/RayTracer_Material.hpp"
 #include "./inc/RayTracer_Texture.hpp"
 // #include "./inc/RayTracer_Texture_Constant.hpp"
+#include "./inc/RayTracer_Texture_CheckerBoard.hpp"
 
 
 // Define

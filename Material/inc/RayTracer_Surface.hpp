@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/07/20   initial update
+// 2020/07/24   change interface: add load, dump, remove convertToTexture
 
 
 #ifndef RAYTRACER_SURFACE_HPP
@@ -10,6 +11,7 @@
 
 
 #include "RayTracer_Texture.hpp"
+#include "RayTracer_Texture_Image.hpp"
 
 
 // Define
@@ -28,11 +30,22 @@
 class Surface {
 	// Data
 	public:
-		int size_data;	// size of data (in byte: 8 bit)
+		uint8_t	*data	= nullptr;
+
+		int 	width, height;		// image width and height (in pixel)
+		int 	byte_data;			// byte size of data
+		int 	bit_pixel;			// bit size per pixel
+		int 	bit_channel;		// bit size per channel
+		int 	size_channel;		// number of channel per pixel
 
 	// Operation
 	public:
-		virtual bool	convertToTexture	(Texture *texture) const = 0;
+		// operation
+		bool			convertToTexture	(Texture_Image *texture);
+
+		// interface
+		virtual bool	load				() = 0;
+		virtual bool	dump				() = 0;
 };
 
 
