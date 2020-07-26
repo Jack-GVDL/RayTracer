@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/07/20   initial update
+// 2020/07/26   add mapper_list
 
 
 #ifndef RAYTRACER_TEXTURE_HPP
@@ -10,7 +11,9 @@
 
 
 #include <stdint.h>
+#include <vector>
 #include "../../Utility/Utility.hpp"
+#include "RayTracer_Mapper.hpp"
 
 
 // Define
@@ -27,10 +30,26 @@
 
 // Data Structure
 class Texture {
+	// Data
+	public:
+		// better to call it mapper_chain
+		// as order matter
+		std::vector<Mapper*> mapper_list;
+
 	// Operation
 	public:
-		virtual Vec3f	getPixel	(const Vec3f &point) const = 0;
+		// operation
+		bool			addMapper	(Mapper *mapper);
+		bool			rmMapper	(Mapper *mapper);
+		Vec3f			getPixel	(const Vec3f &point) const;
+		Vec3f			getPixel	(const Ray *ray) const;
+
+		// interface
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) = 0;
+
+	protected:
+		// interface
+		virtual Vec3f	_getPixel_	(const Ray *ray) const = 0;
 };
 
 
@@ -49,9 +68,12 @@ class Texture_Constant: public Texture {
 		color(color)
 		{}
 
-		// operation
-		virtual Vec3f	getPixel	(const Vec3f &point) const override;
+		// interface
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
+
+	protected:
+		// interface
+		virtual Vec3f	_getPixel_	(const Ray *ray) const override;
 };
 
 

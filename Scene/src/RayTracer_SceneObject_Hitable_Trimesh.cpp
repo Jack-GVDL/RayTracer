@@ -34,40 +34,28 @@ bool SceneObject_Trimesh::hit(RecordHit *record, double t_min, double t_max) con
 	if (normal.isZero()) return false;
 	normal = normal.normalize();
 
-	// check if the normal is need to be reversed
-	// normal should be somehow oppose to the direction of incoming ray
-	Vec3f	n				= normal;			// backup the normal
-	Vec3f	vec_pos_normal	= (a - ray_pos); 	// vector from ray position to point A
-	VecMath::reverseNormal_incidentRay(normal, vec_pos_normal);
-
-	// check if the ray is away from the plane
-	// including ray that is perpendicular to the plane
-	if (VecMath::checkDirection_oppose(ray_dir, -normal)) return false;
-
-	// find the intersection point of the ray on the plane
-	// first project vec_pos_normal onto the reversed normal
-	// then project ray_dir onto the reversed normal
-	// it is noticed that the direction of vec_project_1 and vec_project_2 should be the same
-	Vec3f	vec_project_1	= vec_pos_normal.projectOn(-normal);
-	Vec3f	vec_project_2	= ray_dir.projectOn(-normal);
-	double	ratio			= vec_project_1.length() / vec_project_2.length();
-
-	Vec3f	result_ray		= ratio * ray_dir;
-	Vec3f	result_point	= ray_pos + result_ray;
+	// get point of intersection
+	Vec3f	result_point;
+	double	result_length;
+	Ray		plane			= Ray(a, normal);
+	if (!VecMath::intersectPoint_rayPlane(result_point, result_length, ray, &plane)) return false;
 
 	// check if the intersection point is inside the triangle
-	if (!VecMath::checkInside_convexPolygon(result_point, point, 3, n)) return false;
+	if (!VecMath::checkInside_convexPolygon(result_point, point, 3, normal)) return false;
 
 	// configure hit record
 	// but first check if is between t_min and t_max
-	// TODO: find a beter name for this - "temp"
-	double temp = result_ray.length();
-	if (temp <= t_min || temp >= t_max) return false;
+	// double ray_length = result_ray.length();  
+	if (result_length <= t_min || result_length >= t_max) return false;
 
-	record->distance	= temp;
+	record->distance	= result_length;
 	record->point		= result_point;
-	record->normal		= normal;						// normal is corrected in early step
+	record->normal		= normal;
 	record->object		= (SceneObject_Hitable*)this;
+
+	// adjust normal
+	VecMath::reverseNormal_incidentRay(record->normal, ray->getDirection());
+	
 	return true;
 }
 

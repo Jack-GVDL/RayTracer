@@ -3,8 +3,13 @@
     "OBJ_PATH"  : "obj",
     
     "OBJ_FILE"  : ["RayTracer_Material.o ",
+                   "RayTracer_Mapper_Math.o ",
+                   "RayTracer_Surface.o ",
+                   "RayTracer_Surface_BMP.o ",
                    "RayTracer_Texture.o ",
+                   "RayTracer_Texture_Gradient.o ",
                    "RayTracer_Texture_CheckerBoard.o ",
+                   "RayTracer_Texture_Image.o ",
                    ""],
 
     "MACRO"     : [""],

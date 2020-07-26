@@ -37,7 +37,7 @@ bool Surface_BMP::load() {
 
 	// it should also be
 	// byte_data = width * height;
-	byte_data	= info_header->size_image;
+	byte_data	= file->data.size();
 
 	// check if able to flush data
 	// TODO: currently only can handle RGB_888
@@ -49,7 +49,22 @@ bool Surface_BMP::load() {
 	// allocate space for data
 	// then set the content of data
 	data = new uint8_t[((bit_pixel + 7) / 8) * (width * height)];
-	memcpy(data, file->data.data(), byte_data);
+
+	// TODO: need to find a way to do custom conversion
+	// TODO: currently only can handle RGB_888
+	// it should be noticed that
+	// for Surface
+	// RGB (from low bit to high bit)
+	//
+	// for BMP
+	// BGR (from low bit to high bit), actually need to see mask header
+	for (int i = 0; i < width * height; i++) {
+		data[i * 3 + 0] = file->data.data()[i * 3 + 2];
+		data[i * 3 + 1] = file->data.data()[i * 3 + 1];
+		data[i * 3 + 2] = file->data.data()[i * 3 + 0];
+	}
+
+	// memcpy(data, file->data.data(), byte_data);
 
 	return true;
 }

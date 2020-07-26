@@ -6,6 +6,7 @@
 
     "NODE"          : ".",
     "CHILD"         : ["Utility ",
+                       "External ",
                        "Material ",
                        "Scene ",
                        "Scatter ",

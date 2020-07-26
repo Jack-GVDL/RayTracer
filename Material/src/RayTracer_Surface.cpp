@@ -37,7 +37,6 @@ bool Surface::convertToTexture(Texture_Image *texture) {
 	const int	offset_b		= 2;
 
 	for (int i = 0; i < width * height; i++) {
-
 		// get RGB and convert it double
 		// where the range is [0, 1] (0, 1 is inclusive)
 		// TODO: currently assume the range of a single channel is [0, 255]
@@ -47,6 +46,8 @@ bool Surface::convertToTexture(Texture_Image *texture) {
 
 		texture->color[i] = Vec3f(color_r, color_g, color_b);
 	}
+
+	return true;
 }
 
 

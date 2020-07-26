@@ -4,7 +4,7 @@
     "CONFIG_IS_EXPORT_RECURSIVE"    : "false",
     "CONFIG_MACHINE"                : "x64",
 
-    "NODE"          : "SuperSampler",
+    "NODE"          : "External",
     "CHILD"         : [""],
 
     "MODULE"        : ["CPP ",

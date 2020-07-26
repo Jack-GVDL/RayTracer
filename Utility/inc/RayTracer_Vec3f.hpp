@@ -109,11 +109,14 @@ class Vec3f {
 			return Vec3f(n[0] * v[0], n[1] * v[1], n[2] * v[2]);
 		}
 
+		// reference
+		// 1. https://en.wikipedia.org/wiki/Vector_projection
+		// projection of a on b = a.dot(b) / b.lengthSquared() * b
 		Vec3f projectOn(const Vec3f &v) const {
 			double dot_result	= dot(v);
 			double length_v2	= v.lengthSquared();
 			double temp_1		= dot_result / length_v2;
-			return Vec3f(temp_1 * n[0], temp_1 * n[1], temp_1 * n[2]);
+			return Vec3f(temp_1 * v[0], temp_1 * v[1], temp_1 * v[2]);
 		}
 
 		Vec3f normalize() const {

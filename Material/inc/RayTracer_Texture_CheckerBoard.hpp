@@ -37,11 +37,14 @@ class Texture_CheckerBoard: public Texture {
 		{}
 
 		// operation
-		void setBoardSize(const Vec3f &size);
+		void			setBoardSize	(const Vec3f &size);
 
 		// interface
-		virtual Vec3f	getPixel	(const Vec3f &point) const override;
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
+
+	protected:
+		// interface
+		virtual Vec3f	_getPixel_	(const Ray *ray) const override;
 };
 
 

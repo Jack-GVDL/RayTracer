@@ -11,8 +11,9 @@ struct TraceData {
 
 
 // Static Function Prototype
-static void		buildScene		(Scene *scene);
-static Vec3f	Linker_getColor	(double x, double y, void *info);
+static void		buildScene				(Scene *scene);
+static void		buildScene_imageTexture	(Scene *scene);
+static Vec3f	Linker_getColor			(double x, double y, void *info);
 
 
 // Operation
@@ -25,34 +26,31 @@ int main() {
 	// scene object
     Scene scene;
 	buildScene(&scene);
+	buildScene_imageTexture(&scene);
 
-	SceneObject_Light_Point *light_point_1 = new SceneObject_Light_Point(Vec3f(0, 0.05, 0.4));
-	light_point_1->origin	= Vec3f(0, 2, 2);
+	SceneObject_Light_Point *light_point_1 = new SceneObject_Light_Point(Vec3f(0, 0.05, 0.1));
+	light_point_1->origin	= Vec3f(0, 0.5, 1);
 	light_point_1->color	= Vec3f(1);
 	scene.addLight(light_point_1);
 
 	SceneObject_Light_Point *light_point_2 = new SceneObject_Light_Point(Vec3f(0, 0.05, 0.4));
 	light_point_2->origin	= Vec3f(-2, 2, 0);
 	light_point_2->color	= Vec3f(1);
-	scene.addLight(light_point_2);
+	// scene.addLight(light_point_2);
 
-	SceneObject_Light_Directional *light_directional = new SceneObject_Light_Directional(Vec3f(-1, 1, -1));
-	light_directional->color = Vec3f(0.8);
-	scene.addLight(light_directional);
+	SceneObject_Light_Directional *light_directional = new SceneObject_Light_Directional(Vec3f(0, 0, -1));
+	light_directional->color = Vec3f(1);
+	// scene.addLight(light_directional);
 
 	SceneObject_Light_Ambient *light_ambient = new SceneObject_Light_Ambient();
 	light_ambient->color = Vec3f(1);
-	scene.addAmbientLight(light_ambient);
+	// scene.addAmbientLight(light_ambient);
 
 	// camera
-	Camera camera(Vec3f(0, 0.5, 2), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 90, double(nx) / double(ny));
+	Camera camera(Vec3f(0, 0.5, 2), Vec3f(0, 0.5, 0), Vec3f(0, 1, 0), 90, double(nx) / double(ny));
 
 	// ray tracer
 	RayTracer tracer = RayTracer(&scene);
-
-	Scatter_Hit *scatter_hit = new Scatter_Hit();
-	scatter_hit->multiplier = Vec3f(1, 0, 0);
-	tracer.shader_hit.addScatter(scatter_hit);
 
 	// super sampler
 	// SuperSampler_Grid		super_sampler;
@@ -91,43 +89,110 @@ int main() {
 // Static Function Implementation
 static void buildScene(Scene *scene) {
 	Shader_Diffuse *shader_diffuse_1 = new Shader_Diffuse();
-	shader_diffuse_1->scatter_reflection.reflective->setPixel	(Vec3f(0.5),	Vec3f());
-	shader_diffuse_1->scatter_light.ambient->setPixel			(Vec3f(0), 		Vec3f());
-	shader_diffuse_1->scatter_light.diffuse->setPixel			(Vec3f(1), 		Vec3f());
-	shader_diffuse_1->scatter_light.specular->setPixel			(Vec3f(1), 		Vec3f());
-	shader_diffuse_1->scatter_light.shininess->setPixel			(Vec3f(1),		Vec3f());
+	shader_diffuse_1->scatter_reflection.reflective->setPixel	(Vec3f(0),		Vec3f(0.5));
+	shader_diffuse_1->scatter_light.ambient->setPixel			(Vec3f(0), 		Vec3f(0));
+	shader_diffuse_1->scatter_light.diffuse->setPixel			(Vec3f(0), 		Vec3f(1));
+	shader_diffuse_1->scatter_light.specular->setPixel			(Vec3f(0), 		Vec3f(1));
+	shader_diffuse_1->scatter_light.shininess->setPixel			(Vec3f(0),		Vec3f(1));
 
 	Shader_Diffuse *shader_diffuse_2 = new Shader_Diffuse();
-	shader_diffuse_2->scatter_reflection.reflective->setPixel	(Vec3f(0),	Vec3f());
-	shader_diffuse_2->scatter_light.ambient->setPixel			(Vec3f(0), 		Vec3f());
-	shader_diffuse_2->scatter_light.diffuse->setPixel			(Vec3f(1), 		Vec3f());
-	shader_diffuse_2->scatter_light.specular->setPixel			(Vec3f(0), 		Vec3f());
-	shader_diffuse_2->scatter_light.shininess->setPixel			(Vec3f(0),		Vec3f());
+	shader_diffuse_2->scatter_reflection.reflective->setPixel	(Vec3f(0),		Vec3f(0));
+	shader_diffuse_2->scatter_light.ambient->setPixel			(Vec3f(0), 		Vec3f(0));
+	shader_diffuse_2->scatter_light.diffuse->setPixel			(Vec3f(0), 		Vec3f(1));
+	shader_diffuse_2->scatter_light.specular->setPixel			(Vec3f(0), 		Vec3f(0));
+	shader_diffuse_2->scatter_light.shininess->setPixel			(Vec3f(0),		Vec3f(0));
+
+	Shader_Diffuse *shader_diffuse_3 = new Shader_Diffuse();
+	shader_diffuse_3->scatter_reflection.reflective->setPixel	(Vec3f(0),		Vec3f(0));
+	shader_diffuse_3->scatter_light.emissive->setPixel			(Vec3f(0),		Vec3f(1));
+	shader_diffuse_3->scatter_light.ambient->setPixel			(Vec3f(0), 		Vec3f(0));
+	shader_diffuse_3->scatter_light.diffuse->setPixel			(Vec3f(0), 		Vec3f(0));
+	shader_diffuse_3->scatter_light.specular->setPixel			(Vec3f(0), 		Vec3f(0));
+	shader_diffuse_3->scatter_light.shininess->setPixel			(Vec3f(0),		Vec3f(0));
 
 	Shader_Glass *shader_glass_1 = new Shader_Glass();
-	shader_glass_1->scatter_reflection.reflective->setPixel		(Vec3f(0.5), Vec3f());
+	shader_glass_1->scatter_reflection.reflective->setPixel		(Vec3f(0), 		Vec3f(0.5));
+
+	Shader *shader_custom_1 = new Shader();
+
+	Scatter_Gradient *scatter_gradient_1 = new Scatter_Gradient();
+	scatter_gradient_1->source		= Scatter_Gradient::GradientSource::POSITION;
+	scatter_gradient_1->additor		= Vec3f(4);
+	scatter_gradient_1->multiplier	= Vec3f(0.25);
+	shader_custom_1->addScatter(scatter_gradient_1);
 
 	Texture_CheckerBoard *texture_checkerboard_1 = new Texture_CheckerBoard();
-	texture_checkerboard_1->setBoardSize(Vec3f(10));
+	texture_checkerboard_1->setBoardSize(Vec3f(5));
 	shader_diffuse_2->scatter_light.diffuse = texture_checkerboard_1;
+
+	Texture_Gradient *texture_gradient_1 = new Texture_Gradient();
+	texture_gradient_1->additor		= Vec3f(5, 5, 0);
+	texture_gradient_1->multiplier	= Vec3f(0.1);
+	shader_diffuse_3->scatter_light.emissive = texture_gradient_1;
 
 	SceneObject_Sphere *scene_sphere_1 = new SceneObject_Sphere(Vec3f(0, 0.5, 0), 0.49);
 	scene_sphere_1->shader = shader_diffuse_1;
-	scene->addHitable(scene_sphere_1);
+	// scene->addHitable(scene_sphere_1);
 
-	SceneObject_Sphere *scene_sphere_2 = new SceneObject_Sphere(Vec3f(0, -50.5, 0), 50);
+	SceneObject_Sphere *scene_sphere_2 = new SceneObject_Sphere(Vec3f(0, -51, 0), 50);
 	scene_sphere_2->shader = shader_diffuse_2;
 	scene->addHitable(scene_sphere_2);
 
-	SceneObject_Sphere *scene_sphere_3 = new SceneObject_Sphere(Vec3f(1, 0.5, 1), 0.49);
+	SceneObject_Sphere *scene_sphere_3 = new SceneObject_Sphere(Vec3f(0.5, 0.5, 1), 0.49);
 	scene_sphere_3->shader = shader_glass_1;
 	scene_sphere_3->material.index = 1.5;
-	scene_sphere_3->material.transmissive->setPixel(Vec3f(0.9), Vec3f());
+	scene_sphere_3->material.transmissive->setPixel(Vec3f(0), Vec3f(0.9));
 	scene->addHitable(scene_sphere_3);
+}
 
-	SceneObject_Trimesh *scene_trimesh_1 = new SceneObject_Trimesh(Vec3f(0, 0, 100), Vec3f(-100, 0, -100), Vec3f(100, 0, -100));
-	scene_trimesh_1->shader = shader_diffuse_2;
-	// scene->addHitable(scene_trimesh_1);
+
+static void buildScene_imageTexture(Scene *scene) {
+	// set texture
+	File_BMP file_bmp = File_BMP();
+	// file_bmp.read("../img/checkerboard.bmp");
+	file_bmp.read("../img/IWS2000.bmp");
+
+	Surface_BMP surface_bmp = Surface_BMP();
+	surface_bmp.setBMP(&file_bmp);
+	surface_bmp.load();
+
+	Texture_Image *texture_image = new Texture_Image();
+	surface_bmp.convertToTexture(texture_image);
+
+	Mapper_Additor *mapper_add_1 = new Mapper_Additor();
+	mapper_add_1->additor = Vec3f(2, 1, 0);
+	texture_image->addMapper(mapper_add_1);
+	
+	Mapper_Multiplier *mapper_multi_1 = new Mapper_Multiplier();
+	mapper_multi_1->multiplier = Vec3f(500);
+	texture_image->addMapper(mapper_multi_1);
+
+	// set shader
+	Shader_Diffuse *shader	= new Shader_Diffuse();
+	shader->scatter_reflection.reflective->setPixel	(Vec3f(),		Vec3f(0.1));
+	shader->scatter_light.emissive->setPixel		(Vec3f(),		Vec3f(0));
+	shader->scatter_light.ambient->setPixel			(Vec3f(), 		Vec3f(0));
+	shader->scatter_light.diffuse->setPixel			(Vec3f(), 		Vec3f(0));
+	shader->scatter_light.specular->setPixel		(Vec3f(), 		Vec3f(0));
+	shader->scatter_light.shininess->setPixel		(Vec3f(),		Vec3f(0));
+
+	shader->scatter_light.diffuse = texture_image;
+
+	// set scene object
+	const double x = -2;
+	const double y = -1.1;
+	const double w = 4;
+	const double h = 6;
+	const double z = 0;
+
+	SceneObject_Trimesh *scene_trimesh_1 = new SceneObject_Trimesh(Vec3f(x, y, z), Vec3f(x, y + h, z), Vec3f(x + w, y, z));
+	scene_trimesh_1->shader = shader;
+	scene_trimesh_1->material.transmissive->setPixel(Vec3f(), Vec3f(0));
+	scene->addHitable(scene_trimesh_1);
+
+	SceneObject_Trimesh *scene_trimesh_2 = new SceneObject_Trimesh(Vec3f(x + w, y, z), Vec3f(x, y + h, z), Vec3f(x + w, y + h, z));
+	scene_trimesh_2->shader = shader;
+	scene->addHitable(scene_trimesh_2);
 }
 
 

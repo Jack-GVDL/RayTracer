@@ -46,7 +46,7 @@ bool SceneObject_Sphere::hit(RecordHit *record, double t_min, double t_max) cons
 	record->normal		= (record->point - center).normalize();
 	record->object		= (SceneObject_Hitable*)this;
 
-	// adjust the normal
+	// adjust normal
 	// normal and incident ray should somehow "opposite"
 	VecMath::reverseNormal_incidentRay(record->normal, ray->getDirection());
 

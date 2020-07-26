@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/07/19   initial update
+// 2020/07/26   add intersection function
 
 
 #ifndef RAYTRACER_UTILMATH_HPP
@@ -11,6 +12,7 @@
 
 #include <cstdlib>
 #include "RayTracer_Vec3f.hpp"
+#include "RayTracer_Ray.hpp"
 
 
 // Define
@@ -83,6 +85,49 @@ namespace VecMath {
 	// reverse the vector based on the incident ray
 	static inline void reverseNormal_incidentRay(Vec3f &normal, const Vec3f &ray) {
 		reverseVector_thresholdLarger(normal, ray, 0);
+	}
+
+
+	// find the intersection point of ray on a plane
+	// it should be noticed that a plane can be defined by a point and a normal vector
+	// reference
+	// 1. https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
+	static inline bool intersectPoint_rayPlane(Vec3f &point, double &length, const Ray *ray, const Ray *plane) {
+		Vec3f normal = plane->getDirection();
+		
+		// check if ray and plane are parallel
+		if (fabs(normal.dot(ray->getDirection())) < RAY_EPSILON) return false;
+
+		// adjust direction of normal
+		if (normal.dot(ray->getDirection()) < 0) normal = -normal;
+
+		// find projection
+		// they should be in same direction
+		Vec3f projection_plane	= (plane->getPosition() - ray->getPosition()).projectOn(normal);
+		Vec3f projection_ray	= ray->getDirection().projectOn(normal);
+		if (projection_plane.dot(projection_ray) <= 0) return false;
+
+		// find point and length
+		point	= ray->getPosition() + (projection_plane.length() / projection_ray.length()) * ray->getDirection();
+		length	= (point - ray->getPosition()).length();
+
+		if (length < 0) return false;
+		return true;
+
+		// another approach
+		// but there are some problem 
+		/*
+		Vec3f	plane_normal			= plane->getDirection();
+		double	distance_origin_plane	= plane_normal.dot(plane->getPosition());
+		double	distance_ray			= -(plane_normal.dot(ray->getPosition()) + distance_origin_plane) / plane_normal.dot(ray->getDirection());
+
+		// get the point of intersection
+		point	= ray->getPosition() + distance_ray * ray->getDirection();
+		length	= distance_ray;
+
+		// there must be intersection
+		return true;
+		*/
 	}
 
 

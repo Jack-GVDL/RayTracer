@@ -30,7 +30,7 @@ Vec3f SceneObject_Light_Directional::getShadowAttenuation(const Scene *scene, co
 	// variable preparation
 	const Vec3f &direction	= getDirection(point);
 	Vec3f       point_cur	= point;
-	Vec3f       intensity	= Vec3f(1.0, 1.0, 1.0);
+	Vec3f       intensity	= Vec3f(1);
 
 	// TODO: should move this part to scatter
 	// first push the ray a little bit forward to prevent hit the same point
@@ -87,7 +87,7 @@ Vec3f SceneObject_Light_Point::getShadowAttenuation(const Scene *scene, const Ve
 	// variable preparation
 	const Vec3f &direction	= getDirection(point);
 	Vec3f		point_cur	= point;
-	Vec3f		intensity	= Vec3f(1.0, 1.0, 1.0);
+	Vec3f		intensity	= Vec3f(1);
 
 	// TODO: should move this part to scatter
 	// first push the ray a little bit forward to prevent hit the same point

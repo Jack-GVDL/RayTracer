@@ -50,10 +50,7 @@ class Scatter_Light: public Scatter {
 
 	protected:
 		// operation
-		Vec3f getEmissive	(const RecordScatter *record) const;
-		Vec3f getAmbient	(const RecordScatter *record) const;
-		Vec3f getDiffuse	(const RecordScatter *record, const SceneObject_Light *light, double dot_ln) const;
-		Vec3f getSpecular	(const RecordScatter *record, const SceneObject_Light *light, double dot_ln) const;
+		// ...
 };
 
 

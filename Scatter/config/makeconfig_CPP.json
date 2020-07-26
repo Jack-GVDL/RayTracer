@@ -4,7 +4,7 @@
     
     "OBJ_FILE"  : ["RayTracer_Scatter.o ",
                    "RayTracer_Scatter_Emitter.o ",
-                   "RayTracer_Scatter_Hit.o ",
+                   "RayTracer_Scatter_Gradient.o ",
                    "RayTracer_Scatter_Light.o ",
                    "RayTracer_Scatter_Reflection.o ",
                    "RayTracer_Scatter_Refraction.o ",

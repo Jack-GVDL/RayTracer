@@ -20,7 +20,11 @@ void Texture_CheckerBoard::setBoardSize(const Vec3f &size) {
 }
 
 
-Vec3f Texture_CheckerBoard::getPixel(const Vec3f &point) const {
+Vec3f Texture_CheckerBoard::_getPixel_(const Ray *ray) const {
+	const Vec3f &point = ray->getPosition();
+
+	// check if point should be black or white
+	// one characteristic of sin / cos is periodic changes of y ranging [1, -1]
 	double sines = sin(size_board[0] * point[0]) * 
 				   sin(size_board[1] * point[1]) * 
 				   sin(size_board[2] * point[2]);

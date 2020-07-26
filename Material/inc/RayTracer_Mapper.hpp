@@ -32,7 +32,8 @@ class Mapper {
 
 	// Operation
 	public:
-		virtual Vec3f	map	(const Vec3f &point) const = 0;
+		// interface
+		virtual void	map	(Vec3f &vector) const = 0;
 };
 
 

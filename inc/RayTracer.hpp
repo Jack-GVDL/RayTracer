@@ -4,6 +4,7 @@
 // Log
 // 2020/06/25   initial update
 // 2020/07/20   change include path
+// 2020/07/26   add External.hpp
 
 
 #ifndef RAYTRACER_HPP
@@ -11,6 +12,7 @@
 
 
 #include "../Utility/Utility.hpp"
+#include "../External/External.hpp"
 #include "../Scatter/Scatter.hpp"
 #include "../Shader/Shader.hpp"
 #include "../Scene/Scene.hpp"
