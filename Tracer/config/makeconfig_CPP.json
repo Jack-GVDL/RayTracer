@@ -2,7 +2,7 @@
     "SRC_PATH"  : "src",
     "OBJ_PATH"  : "obj",
     
-    "OBJ_FILE"  : ["main.o ",
+    "OBJ_FILE"  : ["RayTracer_Tracer.o ",
                    ""],
 
     "MACRO"     : [""],

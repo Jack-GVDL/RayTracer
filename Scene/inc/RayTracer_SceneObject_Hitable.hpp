@@ -52,7 +52,7 @@ class SceneObject_Hitable: public SceneElement {
 	public:
 		// TODO: but the problem is that not all the hitable need the material
 		Material	material;
-		Shader		*shader		= nullptr;
+		Shader		shader;
 
 	// Operation
 	public:

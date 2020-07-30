@@ -4,6 +4,7 @@
 // Log
 // 2020/06/30   initial update
 // 2020/07/20   change to new structure
+// 2020/07/30   add texture_list
 
 
 #ifndef RAYTRACER_SCATTER_EMITTER_HPP
@@ -27,12 +28,22 @@
 
 // Data Structure
 class Scatter_Emitter: public Scatter {
-	// Datga
+	// Enum
+	public:
+		enum ScatterTexture {
+			MAX
+		};
+
+	// Data
 	public:
 		Vec3f	color;
 		
 	// Operation
 	public:
+		// init
+		Scatter_Emitter()
+		{}
+		
 		// interface
 		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
 };

@@ -11,12 +11,12 @@
 #define RAYTRACER_HPP
 
 
-#include "../Utility/Utility.hpp"
-#include "../External/External.hpp"
-#include "../Scatter/Scatter.hpp"
-#include "../Shader/Shader.hpp"
-#include "../Scene/Scene.hpp"
-#include "../SuperSampler/SuperSampler.hpp"
+#include "../../Utility/Utility.hpp"
+#include "../../External/External.hpp"
+#include "../../Scatter/Scatter.hpp"
+#include "../../Shader/Shader.hpp"
+#include "../../Scene/Scene.hpp"
+#include "../../SuperSampler/SuperSampler.hpp"
 
 
 // Define

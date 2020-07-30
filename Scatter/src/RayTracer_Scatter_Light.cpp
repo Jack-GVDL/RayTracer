@@ -32,12 +32,12 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 	Vec3f intensity_result = Vec3f();
 
 	// get coeff
-	const Vec3f &vec_emissive		= emissive->getPixel(hit_point);
-	const Vec3f &vec_ambient		= ambient->getPixel(hit_point);
-	const Vec3f &vec_diffuse		= diffuse->getPixel(hit_point);
+	const Vec3f &vec_emissive		= texture_list[EMISSIVE]->getPixel(hit_point);
+	const Vec3f &vec_ambient		= texture_list[AMBIENT]->getPixel(hit_point);
+	const Vec3f &vec_diffuse		= texture_list[DIFFUSE]->getPixel(hit_point);
+	const Vec3f &vec_specular		= texture_list[SPECULAR]->getPixel(hit_point);
+	const Vec3f &vec_shininess		= texture_list[SHININESS]->getPixel(hit_point);
 	const Vec3f &vec_transmissive	= material->transmissive->getPixel(hit_point);
-	const Vec3f &vec_specular		= specular->getPixel(hit_point);
-	const Vec3f &vec_shininess		= shininess->getPixel(hit_point);
 
 	// emissive intensity and ambient intensity
 	intensity_result += getEmissive(src, vec_emissive);

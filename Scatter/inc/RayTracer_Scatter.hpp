@@ -55,13 +55,25 @@ struct RecordScatter {
 class Scatter {
 	// Data
 	public:
-		Material *material	= nullptr;
+		Material	*material		= nullptr;
+		Texture*	*texture_list	= nullptr;
+		int			texture_size	= 0;
 
 	// Operation
 	public:
-		// operation
-		virtual ScatterState	scatter	(RecordScatter *dst, RecordScatter *src) const;
+		// init, del
+		Scatter()
+		{}
 
+		~Scatter() {
+			delete[] texture_list;
+		}
+
+		// operation
+		ScatterState			scatter					(RecordScatter *dst, RecordScatter *src) const;
+		bool					setTexture				(Texture *texture, int offset);
+		Texture*				getTexture				(int offset);
+	
 	protected:
 		// operation
 		void					createRecord_tree		(RecordScatter *dst, RecordScatter *src) const;

@@ -22,6 +22,21 @@ ScatterState Scatter::scatter(RecordScatter *dst, RecordScatter *src) const {
 }
 
 
+bool Scatter::setTexture(Texture *texture, int offset) {
+	if (texture_list == nullptr)				return false;
+	if (offset < 0 || offset >= texture_size)	return false;
+	
+	texture_list[offset] = texture;
+	return true;
+}
+
+
+Texture* Scatter::getTexture(int offset) {
+	if (offset < 0 || offset >= texture_size) return nullptr;
+	return texture_list[offset];
+}
+
+
 void Scatter::createRecord_tree(RecordScatter *dst, RecordScatter *src) const {
 	// if (dst->parent == nullptr)		dst->parent		= src;
 	// if (dst->scene == nullptr)		dst->scene		= src->scene;

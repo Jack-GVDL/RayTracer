@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/06/29   initial update
+// 2020/07/30   add texture_list
 
 
 #ifndef RAYTRACER_SCATTER_GRADIENT_HPP
@@ -37,6 +38,10 @@ class Scatter_Gradient: public Scatter {
 			SOURCE_MAX
 		};
 
+		enum ScatterTexture {
+			MAX
+		};
+
 	// Data
 	public:
 		Vec3f			additor		= Vec3f(1);
@@ -47,6 +52,10 @@ class Scatter_Gradient: public Scatter {
 
 	// Operation
 	public:
+		// init
+		Scatter_Gradient()
+		{}
+		
 		// interface
 		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
 };

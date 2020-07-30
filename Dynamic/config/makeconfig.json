@@ -12,7 +12,6 @@
                        "Scatter ",
                        "Shader ",
                        "SuperSampler ",
-                       "Tracer ",
                        ""],
 
     "MODULE"        : ["CPP ",

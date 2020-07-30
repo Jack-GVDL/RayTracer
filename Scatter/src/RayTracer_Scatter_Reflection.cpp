@@ -24,7 +24,7 @@ ScatterState Scatter_Reflection::scatter_shootRay(RecordScatter *dst, RecordScat
 	const Vec3f	&hit_normal	= src->record_hit.normal;
 
 	// check if the material is reflective
-	const Vec3f &vec_reflective = reflective->getPixel(hit_point);
+	const Vec3f &vec_reflective = texture_list[REFLECTIVE]->getPixel(hit_point);
 	if (vec_reflective.isZero())	return SCATTER_NONE;
 
 	// reflection

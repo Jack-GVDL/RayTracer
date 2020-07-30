@@ -1,12 +1,15 @@
-// Created by Jack Tse on 2020/07/03
+// Created by Jack Tse on 2020/07/28
 // Follow TrackingStandard 0.1
 //
 // Log
-// 2020/07/03   initial update
+// 2020/07/28   initial update
 
 
-#ifndef RAYTRACER_DYNAMIC_HPP
-#define RAYTRACER_DYNAMIC_HPP
+#ifndef SHARED_DLL_H
+#define SHARED_DLL_H
+
+
+#define EXPORT_DLL(type) extern "C" type __stdcall
 
 
 // Define
@@ -33,4 +36,4 @@
 // ...
 
 
-#endif  // RAYTRACER_DYNAMIC_HPP
+#endif  // SHARED_DLL_H

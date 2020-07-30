@@ -2,7 +2,11 @@
     "SRC_PATH"  : "src",
     "OBJ_PATH"  : "obj",
     
-    "OBJ_FILE"  : ["main.o ",
+    "OBJ_FILE"  : ["RayTracer_DynamicContainer.o ",
+                   "RayTracer_Dynamic_Surface.o ",
+                   "RayTracer_Dynamic_Texture.o ",
+                   "RayTracer_Dynamic_Scatter.o ",
+                   "RayTracer_Dynamic_Hitable.o ",
                    ""],
 
     "MACRO"     : [""],

@@ -10,8 +10,8 @@
 
 
 #include "./inc/RayTracer_Shader.hpp"
-#include "./inc/RayTracer_Shader_Diffuse.hpp"
-#include "./inc/RayTracer_Shader_Glass.hpp"
+// #include "./inc/RayTracer_Shader_Diffuse.hpp"
+// #include "./inc/RayTracer_Shader_Glass.hpp"
 
 
 // Define

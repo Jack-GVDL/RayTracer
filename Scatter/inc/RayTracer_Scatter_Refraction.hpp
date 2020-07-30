@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/06/20   initial update
+// 2020/07/30   add texture_list
 
 
 #ifndef RAYTRACER_SCATTER_REFRACTION_HPP
@@ -26,6 +27,12 @@
 
 // Data Structure
 class Scatter_Refraction: public Scatter {
+	// Enum
+	public:
+		enum ScatterTexture {
+			MAX
+		};
+
 	// Data
 	public:
 		// ...

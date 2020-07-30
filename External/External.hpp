@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/07/20   initial update
+// 2020/07/28   add Shared_DLL
 
 
 #ifndef EXTERNAL_HPP
@@ -10,6 +11,7 @@
 
 
 #include "./inc/File_BMP.hpp"
+#include "./inc/Shared_DLL.h"
 
 
 // Define
