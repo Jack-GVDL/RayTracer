@@ -21,7 +21,6 @@
         "prefix" : "h_file",
         "body" : [
           "// Created by Jack Tse on ${1:year}/${2:month}/${3:day}",
-          "// Follow TrackingStandard 0.1",
           "//",
           "// Log",
 		  "// ${1:year}/${2:month}/${3:day}   initial update",

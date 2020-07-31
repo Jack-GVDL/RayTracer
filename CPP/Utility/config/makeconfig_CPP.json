@@ -1,0 +1,17 @@
+{
+    "SRC_PATH"  : "src",
+    "OBJ_PATH"  : "obj",
+    
+    "OBJ_FILE"  : ["RayTracer_Vec3f.o ",
+                   ""],
+
+    "MACRO"     : [""],
+    "INCLUDE"   : [""],
+    "FLAG"      : ["-fPIC ",
+                   ""],
+
+    "CONFIG_IS_STANDALONE"      : "false",
+    "CONFIG_IMPORT_MACRO"       : "false",
+    "CONFIG_IMPORT_INCLUDE"     : "false",
+    "CONFIG_IMPORT_FLAG"        : "false"
+}

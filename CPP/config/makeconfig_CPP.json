@@ -1,0 +1,23 @@
+{
+    "SRC_PATH"  : "src",
+    "OBJ_PATH"  : "obj",
+    
+    "OBJ_FILE"  : ["RayTracer_DynamicContainer.o ",
+                   "RayTracer_Dynamic_Surface.o ",
+                   "RayTracer_Dynamic_Texture.o ",
+                   "RayTracer_Dynamic_Scatter.o ",
+                   "RayTracer_Dynamic_Hitable.o ",
+                   "RayTracer_Dynamic.o ",
+                   ""],
+
+    "MACRO"     : [""],
+    
+    "INCLUDE"   : [""],
+
+    "FLAG"      : [""],
+
+    "CONFIG_IS_STANDALONE"      : "false",
+    "CONFIG_IMPORT_MACRO"       : "false",
+    "CONFIG_IMPORT_INCLUDE"     : "false",
+    "CONFIG_IMPORT_FLAG"        : "false"
+}
