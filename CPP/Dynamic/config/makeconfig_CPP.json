@@ -7,6 +7,8 @@
                    "RayTracer_Dynamic_Texture.o ",
                    "RayTracer_Dynamic_Scatter.o ",
                    "RayTracer_Dynamic_Hitable.o ",
+                   "RayTracer_Dynamic_Sample.o ",
+                   "RayTracer_Dynamic_Test.o ",
                    "RayTracer_Dynamic.o ",
                    ""],
 

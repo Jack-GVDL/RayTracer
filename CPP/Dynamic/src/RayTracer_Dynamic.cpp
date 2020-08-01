@@ -6,6 +6,7 @@
 #include "../inc/RayTracer_Dynamic_Texture.hpp"
 #include "../inc/RayTracer_Dynamic_Scatter.hpp"
 #include "../inc/RayTracer_Dynamic_Hitable.hpp"
+#include "../inc/RayTracer_Dynamic_Sample.hpp"
 
 
 // Define
@@ -50,15 +51,24 @@ EXPORT_DLL(void) RayTracer_del() {
 
 
 EXPORT_DLL(void) RayTracer_info() {
-	printf("Ray Tracer \n");
+	printf("Ray Tracer, build on %s %s \n", __DATE__, __TIME__);
 }
 
 
-EXPORT_DLL(void) RayTracer_tracer(double *pixel, double x, double y, int depth) {
+// test
+EXPORT_DLL(int) RayTracer_Sample_buildScene(int index) {
+	return RayTracer_Dynamic_Sample_buildScene(index, &camera, &scene);
+}
+
+
+
+// tracer
+EXPORT_DLL(int) RayTracer_Tracer_trace(double *pixel, double x, double y, int depth) {
 	Vec3f result = tracer.trace(&camera, x, y, depth);
 	pixel[0] = result[0];
 	pixel[1] = result[1];
 	pixel[2] = result[2];
+	return 0;
 }
 
 
@@ -93,7 +103,7 @@ EXPORT_DLL(int) RayTracer_Texture_destroy(int index) {
 }
 
 
-EXPORT_DLL(int) RayTracer_Texture_setPixel(int index, double *point, double *pixel) {
+EXPORT_DLL(int) RayTracer_Texture_setPixel(int index, const double *pixel, const double *point) {
 	Dynamic_Container<Texture> *texture = texture_list.get(index);
 	if (texture == nullptr) return -1;
 
@@ -105,14 +115,14 @@ EXPORT_DLL(int) RayTracer_Texture_setPixel(int index, double *point, double *pix
 }
 
 
-EXPORT_DLL(int) RayTracer_Texture_getPixel(int index, double *point) {
+EXPORT_DLL(int) RayTracer_Texture_getPixel(int index, double *pixel, const double *point) {
 	Dynamic_Container<Texture> *texture = texture_list.get(index);
 	if (texture == nullptr) return -1;
 
-	Vec3f pixel = texture->object->getPixel(Vec3f(point[0], point[1], point[2]));
-	point[0] = pixel[0];
-	point[1] = pixel[1];
-	point[2] = pixel[2];
+	Vec3f vec_pixel = texture->object->getPixel(Vec3f(point[0], point[1], point[2]));
+	pixel[0] = vec_pixel[0];
+	pixel[1] = vec_pixel[1];
+	pixel[2] = vec_pixel[2];
 
 	return 0;
 }

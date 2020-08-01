@@ -36,9 +36,14 @@
 EXPORT_DLL(void)	RayTracer_init								();
 EXPORT_DLL(void)	RayTracer_del								();
 EXPORT_DLL(void)	RayTracer_info								();
-EXPORT_DLL(int)     RayTracer_Test_buildScene                   (int index);
 
-EXPORT_DLL(void)	RayTracer_trace								(double *pixel, double x, double y, int depth);
+EXPORT_DLL(void)	RayTracer_Test_testDoubleArray				(double *array, uint32_t size);
+EXPORT_DLL(void)	RayTracer_Test_testUint8Array				(uint8_t *array, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Test_checkStatus					(int index, uint8_t *data, uint32_t size);
+
+EXPORT_DLL(int)     RayTracer_Sample_buildScene					(int index);
+
+EXPORT_DLL(int)		RayTracer_Tracer_trace						(double *pixel, double x, double y, int depth);
 
 EXPORT_DLL(int) 	RayTracer_Surface_create					(int type);
 EXPORT_DLL(int) 	RayTracer_Surface_destroy					(int index);
@@ -46,8 +51,8 @@ EXPORT_DLL(int) 	RayTracer_Surface_config					(int index, int type, uint8_t *dat
 
 EXPORT_DLL(int) 	RayTracer_Texture_create					(int type);
 EXPORT_DLL(int) 	RayTracer_Texture_destroy					(int index);
-EXPORT_DLL(int)		RayTracer_Texture_setPixel					(int index, double *point, double *pixel);
-EXPORT_DLL(int)		RayTracer_Texture_getPixel					(int index, double *point);
+EXPORT_DLL(int)		RayTracer_Texture_setPixel					(int index, const double *pixel, const double *point);
+EXPORT_DLL(int)		RayTracer_Texture_getPixel					(int index, double *pixel, const double *point);
 EXPORT_DLL(int) 	RayTracer_Texture_config					(int index, int type, uint8_t *data, uint32_t size);
 
 EXPORT_DLL(int) 	RayTracer_Scatter_create		            (int type);

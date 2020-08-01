@@ -1,4 +1,5 @@
 from typing import List, Any
+from .Tracer_Ops import Tracer_Ops
 
 
 class Tracer_Base:
@@ -7,8 +8,8 @@ class Tracer_Base:
 		super().__init__()
 
 		# data
-		self._object_index: int = 0
-		self._ops_tracer:	Any = None
+		self._object_index: int			= 0
+		self._ops_tracer:	Tracer_Ops	= None
 
 	# Operation
 	@ property
@@ -18,5 +19,5 @@ class Tracer_Base:
 	def setObjectIndex(self, value: int) -> None:
 		self._object_index = value
 
-	def setOps_tracer(self, ops: Any) -> None:
+	def setOps_tracer(self, ops: Tracer_Ops) -> None:
 		self._ops_tracer = ops

@@ -1,5 +1,8 @@
+from typing import *
+import struct
 import ctypes
 from ctypes import c_int, c_float
+from Tracer_Ops_DLL import Tracer_Ops, Tracer_Ops_DLL
 import os
 
 
@@ -22,3 +25,16 @@ lib_tracer  = ctypes.CDLL(os.path.join(os.getcwd(), "Tracer.dll"))
 # call dll function
 # lib_test.Test_printHelloWorld()
 lib_tracer.RayTracer_info()
+
+# ops
+ops_tracer: Tracer_Ops = Tracer_Ops_DLL()
+ops_tracer.setDLL_tracer(lib_tracer)
+
+# test
+array_double: List[float] = [0, 9.8, -7.6, 5.4];
+ops_tracer.Test_testDoubleArray(array_double, len(array_double))
+print(array_double)
+
+array_uint8: List[bytes] = struct.pack("d", 9.8)
+ops_tracer.Test_testUint8Array(array_uint8, len(array_uint8))
+print(array_uint8)

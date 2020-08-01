@@ -1,3 +1,4 @@
+#include <cmath>
 #include "../inc/RayTracer_Camera.hpp"
 
 
@@ -35,6 +36,17 @@ void Camera::setFOV(double value) {
 
 void Camera::setAspectRatio(double value) {
 	this->aspect = value;
+	update();
+}
+
+
+void Camera::setAll(const Vec3f look_from, const Vec3f look_at, const Vec3f up, double fov, double aspect) {
+	this->look_from	= look_from;
+	this->look_at	= look_at;
+	this->up		= up;
+	this->fov		= fov;
+	this->aspect	= aspect;
+
 	update();
 }
 

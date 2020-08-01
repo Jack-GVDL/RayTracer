@@ -64,6 +64,7 @@ class Camera {
 		void	setLookAt		(const Vec3f look_at, const Vec3f up_dir);
 		void 	setFOV			(double value);
 		void	setAspectRatio	(double value);
+		void	setAll			(const Vec3f look_from, const Vec3f look_at, const Vec3f up, double fov, double aspect);
 
 		// operation
 		Ray		getRay			(double x, double y) const;
