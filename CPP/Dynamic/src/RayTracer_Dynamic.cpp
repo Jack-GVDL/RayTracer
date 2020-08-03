@@ -7,10 +7,19 @@
 #include "../inc/RayTracer_Dynamic_Texture.hpp"
 #include "../inc/RayTracer_Dynamic_Scatter.hpp"
 #include "../inc/RayTracer_Dynamic_Hitable.hpp"
+#include "../inc/RayTracer_Dynamic_Light.hpp"
 #include "../inc/RayTracer_Dynamic_Sample.hpp"
 
 
 // Define
+// ...
+
+
+// Typedef
+// ...
+
+
+// Static Function Prototype
 // ...
 
 
@@ -23,16 +32,14 @@ static Dynamic_ContainerList<Surface>				surface_list;
 static Dynamic_ContainerList<Texture>				texture_list;
 static Dynamic_ContainerList<Scatter>				scatter_list;
 static Dynamic_ContainerList<SceneObject_Hitable>	hitable_list;
+static Dynamic_ContainerList<SceneObject_Light>		light_list;
 
 template<> int Dynamic_Container<Camera>::global_index				= 1;
 template<> int Dynamic_Container<Surface>::global_index				= 1;
 template<> int Dynamic_Container<Texture>::global_index				= 1;
 template<> int Dynamic_Container<Scatter>::global_index				= 1;
 template<> int Dynamic_Container<SceneObject_Hitable>::global_index	= 1;
-
-
-// Static Function Prototype
-// ...
+template<> int Dynamic_Container<SceneObject_Light>::global_index	= 1;
 
 
 // Operation Handling
@@ -41,11 +48,12 @@ EXPORT_DLL(void) RayTracer_init() {
 	tracer	= RayTracer(&scene);
 
 	// init
-	RayTracer_Dynamic_Camera_init(	&(camera_list.init_list),	&(camera_list.config_list	));
-	RayTracer_Dynamic_Surface_init(	&(surface_list.init_list),	&(surface_list.config_list	));
-	RayTracer_Dynamic_Texture_init(	&(texture_list.init_list),	&(texture_list.config_list	));
-	RayTracer_Dynamic_Scatter_init(	&(scatter_list.init_list),	&(scatter_list.config_list	));
-	RayTracer_Dynamic_Hitable_init(	&(hitable_list.init_list),	&(hitable_list.config_list	));
+	RayTracer_Dynamic_Camera_init(	&(camera_list.init_list),	&(camera_list.config_list)	);
+	RayTracer_Dynamic_Surface_init(	&(surface_list.init_list),	&(surface_list.config_list)	);
+	RayTracer_Dynamic_Texture_init(	&(texture_list.init_list),	&(texture_list.config_list)	);
+	RayTracer_Dynamic_Scatter_init(	&(scatter_list.init_list),	&(scatter_list.config_list)	);
+	RayTracer_Dynamic_Hitable_init(	&(hitable_list.init_list),	&(hitable_list.config_list)	);
+	RayTracer_Dynamic_Light_init(	&(light_list.init_list),	&(light_list.config_list)	);
 
 	// create a deafult camera
 	// can / should be used for testing
@@ -59,7 +67,19 @@ EXPORT_DLL(void) RayTracer_del() {
 
 
 EXPORT_DLL(void) RayTracer_info() {
+	// date of build
 	printf("Ray Tracer, build on %s %s \n", __DATE__, __TIME__);
+
+	// list / vector info
+	printf("Camera:              size: %i \n",	camera_list.size()	);
+	printf("Surface:             size: %i \n",	surface_list.size()	);
+	printf("Texture:             size: %i \n",	texture_list.size()	);
+	printf("Scatter:             size: %i \n",	scatter_list.size()	);
+	printf("SceneObject Hitable: size: %i \n",	hitable_list.size()	);
+	printf("SceneObject Light:   size: %i \n",	light_list.size()	);
+
+	// spacing
+	printf("\n");
 }
 
 
@@ -277,6 +297,76 @@ EXPORT_DLL(int) RayTracer_SceneObject_Hitable_rmScatter(int index_hitable, int i
 EXPORT_DLL(int) RayTracer_SceneObject_Hitable_config(int index, int type, uint8_t *data, uint32_t size) {
 	return hitable_list.config(index, type, data, size);
 }
+
+
+// light
+EXPORT_DLL(int) RayTracer_SceneObject_Light_create(int type) {
+	Dynamic_Container<SceneObject_Light> *light = light_list.create(type);
+	if (light == nullptr) return -1;
+	return light->getIndex();
+}
+
+
+EXPORT_DLL(int) RayTracer_SceneObject_Light_destroy(int index) {
+	return light_list.destroy(index);
+}
+
+
+EXPORT_DLL(int) RayTracer_SceneObject_Light_setColor(int index, double *color) {
+	Dynamic_Container<SceneObject_Light> *container_light = light_list.get(index);
+	if (container_light == nullptr) return -1;
+
+	container_light->object->setColor(Vec3f(color[0], color[1], color[2]));
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_SceneObject_Light_config(int index, int type, uint8_t *data, uint32_t size) {
+	return light_list.config(index, type, data, size);
+}
+
+
+// scene
+EXPORT_DLL(int) RayTracer_Scene_addLight(int index_light) {
+	Dynamic_Container<SceneObject_Light> *container_light = light_list.get(index_light);
+	if (container_light == nullptr) return -1;
+
+	SceneObject_Light *light = container_light->object;
+	if (!scene.addLight(light)) return -1;
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Scene_addHitable(int index_hitable) {
+	Dynamic_Container<SceneObject_Hitable> *container_hitable = hitable_list.get(index_hitable);
+	if (container_hitable == nullptr) return -1;
+
+	SceneObject_Hitable *hitable = container_hitable->object;
+	if (!scene.addHitable(hitable)) return -1;
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Scene_rmLight(int index_light) {
+	Dynamic_Container<SceneObject_Light> *container_light = light_list.get(index_light);
+	if (container_light == nullptr) return -1;
+
+	SceneObject_Light *light = container_light->object;
+	if (!scene.rmLight(light)) return -1;
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Scene_rmHitable(int index_hitable) {
+	Dynamic_Container<SceneObject_Hitable> *container_hitable = hitable_list.get(index_hitable);
+	if (container_hitable == nullptr) return -1;
+
+	SceneObject_Hitable *hitable = container_hitable->object;
+	if (!scene.rmHitable(hitable)) return -1;
+	return 0;
+}
+
+
 
 
 // Static Function Implementation

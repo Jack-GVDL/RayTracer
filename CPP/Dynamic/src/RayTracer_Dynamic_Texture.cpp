@@ -10,17 +10,22 @@ typedef int(*config_func_table_t)(void *object, uint8_t *data, uint32_t size);
 
 
 // Static Function Prototype
+// init
 static void*		init_constant						();
 static void*		init_checkerboard					();
 static void*		init_image							();
 
+// config
 static int			config_constant						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_checkerboard					(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_image						(void *object, int type, uint8_t *data, uint32_t size);
 
+// inline
 static inline int	config_table						(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size);
 
-static int			config_checkerboard_setBoardSize	(void *texture, uint8_t *data, uint32_t size);
+// table
+static int			config_checkerboard_setBoardSize	(void *object, uint8_t *data, uint32_t size);
+
 
 // Static Data
 static config_func_table_t	config_table_constant		[]	= {0};

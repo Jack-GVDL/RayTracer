@@ -19,7 +19,18 @@
 
 
 // Operation Handling
+// light
+void SceneObject_Light::setColor(const Vec3f &color) {
+	this->color = color;
+}
+
+
 // directional light
+void SceneObject_Light_Directional::setOrientation(const Vec3f &orientation) {
+	this->orientation = orientation;
+}
+
+
 double SceneObject_Light_Directional::getDistanceAttenuation(const Vec3f &point) const {
 	// distance to light is inf., so f(di) goes to 0
 	return 1.0;
@@ -69,6 +80,11 @@ Vec3f SceneObject_Light_Directional::getDirection(const Vec3f &point) const {
 
 
 // point light
+void SceneObject_Light_Point::setAttenuationCoeff(const Vec3f &coeff) {
+	this->attenuation_coeff = coeff;
+}
+
+
 double SceneObject_Light_Point::getDistanceAttenuation(const Vec3f &point) const {
 	const double	coeff_1	= attenuation_coeff[0];
 	const double	coeff_2	= attenuation_coeff[1];

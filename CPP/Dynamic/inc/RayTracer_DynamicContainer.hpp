@@ -72,6 +72,7 @@ class Dynamic_ContainerList {
 		int						destroy	(int index);
         Dynamic_Container<T>*	get		(int index);
 		int						config	(int index, int type, uint8_t *data, uint32_t size);
+		int						size	();
 };
 
 
@@ -121,6 +122,12 @@ int Dynamic_ContainerList<T>::config(int index, int type, uint8_t *data, uint32_
 
 	config_list[container_type](container->object, type, data, size);
 	return 0;
+}
+
+
+template <class T>
+int Dynamic_ContainerList<T>::size() {
+	return (int)(container_list.size());
 }
 
 

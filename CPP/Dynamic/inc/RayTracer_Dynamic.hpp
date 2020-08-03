@@ -73,6 +73,16 @@ EXPORT_DLL(int) 	RayTracer_SceneObject_Hitable_addScatter	(int index_hitable, in
 EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_rmScatter		(int index_hitable, int index_scatter);
 EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_config		(int index, int type, uint8_t *data, uint32_t size);
 
+EXPORT_DLL(int)		RayTracer_SceneObject_Light_create			(int type);
+EXPORT_DLL(int)		RayTracer_SceneObject_Light_destroy			(int index);
+EXPORT_DLL(int)		RayTracer_SceneObject_Light_setColor		(int index, double *color);
+EXPORT_DLL(int)		RayTracer_SceneObject_Light_config			(int index, int type, uint8_t *data, uint32_t size);
+
+EXPORT_DLL(int)		RayTracer_Scene_addLight					(int index_light);
+EXPORT_DLL(int)		RayTracer_Scene_addHitable					(int index_hitable);
+EXPORT_DLL(int)		RayTracer_Scene_rmLight						(int index_light);
+EXPORT_DLL(int)		RayTracer_Scene_rmHitable					(int index_hitable);
+
 
 // Inline Function Implementation
 // ...

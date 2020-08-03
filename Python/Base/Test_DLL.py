@@ -2,7 +2,7 @@ from typing import *
 import struct
 import ctypes
 from ctypes import c_int, c_float
-from Tracer_Ops_DLL import Tracer_Ops, Tracer_Ops_DLL
+from Base.Tracer_Ops_DLL import Ops_Tracer, Ops_Tracer_DLL
 import os
 
 
@@ -14,12 +14,12 @@ import os
 #     print("64-Bit")
 
 # add dll path
-# it is chnages in 3.8, used to ensure consistency
+# it is changes in 3.8, used to ensure consistency
 os.add_dll_directory("C:/WINDOWS/system32")
 os.add_dll_directory("D:/Anaconda/Library/mingw-w64/bin")  # TODO: it should not use Anaconda
 
 # import dll file
-lib_tracer  = ctypes.CDLL(os.path.join(os.getcwd(), "Tracer.dll"))
+lib_tracer  = ctypes.CDLL(os.path.join(os.getcwd(), "bin/Tracer.dll"))
 # lib_test    = ctypes.CDLL(os.path.join(os.getcwd(), "Test.dll"))
 
 # call dll function
@@ -27,14 +27,14 @@ lib_tracer  = ctypes.CDLL(os.path.join(os.getcwd(), "Tracer.dll"))
 lib_tracer.RayTracer_info()
 
 # ops
-ops_tracer: Tracer_Ops = Tracer_Ops_DLL()
+ops_tracer: Ops_Tracer_DLL = Ops_Tracer_DLL()
 ops_tracer.setDLL_tracer(lib_tracer)
 
 # test
-array_double: List[float] = [0, 9.8, -7.6, 5.4];
+array_double: List[float] = [0, 9.8, -7.6, 5.4]
 ops_tracer.Test_testDoubleArray(array_double, len(array_double))
 print(array_double)
 
-array_uint8: List[bytes] = struct.pack("d", 9.8)
+array_uint8: bytes = struct.pack("d", 9.7)
 ops_tracer.Test_testUint8Array(array_uint8, len(array_uint8))
 print(array_uint8)

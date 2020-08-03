@@ -5,7 +5,7 @@
 // ...
 
 
-// Static Data
+// Typedef
 // ...
 
 
@@ -13,7 +13,22 @@
 // ...
 
 
+// Static Data
+// ...
+
+
 // Operation Handling
+void SceneObject_Sphere::setCenter(const Vec3f &center) {
+	this->origin	= center;
+	this->center	= center;
+}
+
+
+void SceneObject_Sphere::setRadius(double radius) {
+	this->radius	= radius;
+}
+
+
 bool SceneObject_Sphere::hit(RecordHit *record, double t_min, double t_max) const {
 	const Ray	*ray	= &(record->ray);
 	Vec3f		oc		= ray->getPosition() - center;

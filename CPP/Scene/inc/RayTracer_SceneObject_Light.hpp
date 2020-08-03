@@ -36,6 +36,9 @@ class SceneObject_Light: public SceneElement {
 		
 	// Operation
 	public:
+		// operation
+		void			setColor				(const Vec3f &color);
+	
 		// interface
 		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const	= 0;
 		virtual double	getDistanceAttenuation	(const Vec3f &point) const	= 0;
@@ -47,18 +50,20 @@ class SceneObject_Light: public SceneElement {
 class SceneObject_Light_Directional: public SceneObject_Light {
 	// Data
 	public:
-		Vec3f	orientation;
+		Vec3f	orientation		= Vec3f(0, 0, -1);
 
 	// Operation
 	public:
 		// init
-		SceneObject_Light_Directional():
-		orientation(Vec3f())
+		SceneObject_Light_Directional()
 		{}
 
 		SceneObject_Light_Directional(const Vec3f &orientation):
 		orientation(orientation)
 		{}
+
+		// operation
+		void			setOrientation			(const Vec3f &color);
 
 		// interface
 		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const;
@@ -71,18 +76,20 @@ class SceneObject_Light_Directional: public SceneObject_Light {
 class SceneObject_Light_Point: public SceneObject_Light {
 	// Data
 	public:
-		Vec3f	attenuation_coeff;
+		Vec3f	attenuation_coeff	= Vec3f(0, 0, 0.25);
 
 	// Operation
 	public:
 		// init
-		SceneObject_Light_Point():
-		attenuation_coeff(Vec3f(0.0, 0.0, 1.0))
+		SceneObject_Light_Point()
 		{}
 
 		SceneObject_Light_Point(const Vec3f &atten_coeff):
 		attenuation_coeff(atten_coeff)
 		{}
+
+		// operation
+		void			setAttenuationCoeff		(const Vec3f &coeff);
 
 		// interface
 		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const;
@@ -108,6 +115,10 @@ class SceneObject_Light_Ambient: public SceneObject_Light {
 
 
 // Macro Function
+// ...
+
+
+// Operation Handling
 // ...
 
 

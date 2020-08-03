@@ -39,12 +39,6 @@ class SceneObject_Trimesh: public SceneObject_Hitable {
 			point[2]	= Vec3f();
 		}
 
-		// SceneObject_Trimesh(Vec3f p0, Vec3f p1, Vec3f p2) {
-		// 	point[0]	= p0;
-		// 	point[1]	= p1;
-		// 	point[2]	= p2;
-		// }
-
 		SceneObject_Trimesh(Vec3f p0, Vec3f p1, Vec3f p2) {
 			point[0]	= p0;
 			point[1]	= p1;
@@ -52,7 +46,10 @@ class SceneObject_Trimesh: public SceneObject_Hitable {
 		}
 
 		// operation
-		virtual bool hit(RecordHit *record, double t_min, double t_max) const override;
+		void			setPoint	(const Vec3f &p0, const Vec3f &p1, const Vec3f &p2);
+
+		// interface
+		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
 };
 
 

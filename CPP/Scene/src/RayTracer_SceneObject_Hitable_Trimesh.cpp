@@ -14,6 +14,13 @@
 
 
 // Operation Handling
+void SceneObject_Trimesh::setPoint(const Vec3f &p0, const Vec3f &p1, const Vec3f &p2) {
+	this->point[0]	= p0;
+	this->point[1]	= p1;
+	this->point[2]	= p2;
+}
+
+
 // reference
 // 1. https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
 bool SceneObject_Trimesh::hit(RecordHit *record, double t_min, double t_max) const {

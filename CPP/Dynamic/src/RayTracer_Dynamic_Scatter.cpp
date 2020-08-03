@@ -10,18 +10,21 @@ typedef int(*config_func_table_t)(void *object, uint8_t *data, uint32_t size);
 
 
 // Static Function Prototype
+// init
 static void*		init_light							();
 static void*		init_reflection						();
 static void*		init_refraction						();
 static void*		init_gradient						();
 static void*		init_emitter						();
 
+// config
 static int			config_light						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_reflection					(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_refraction					(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_gradient						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_emitter						(void *object, int type, uint8_t *data, uint32_t size);
 
+// inline
 static inline int	config_table						(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size);
 
 

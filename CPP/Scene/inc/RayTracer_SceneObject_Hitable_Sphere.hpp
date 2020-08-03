@@ -28,22 +28,27 @@
 class SceneObject_Sphere: public SceneObject_Hitable {
 	// Data
 	public:
-		Vec3f		center;
-		double		radius;
+		Vec3f		center	= Vec3f();
+		double		radius	= 0;
 
 	// Operation
 	public:
 		// init
-		SceneObject_Sphere() {
-		}
-
-		SceneObject_Sphere(Vec3f center, double radius):
-		center		(center), 
-		radius		(radius) 
+		SceneObject_Sphere()
 		{}
 
+		SceneObject_Sphere(Vec3f center, double radius)
+		{
+			setCenter(center);
+			setRadius(radius);
+		}
+
 		// operation
-		virtual bool hit(RecordHit *record, double t_min, double t_max) const override;
+		void			setCenter	(const Vec3f &center);
+		void			setRadius	(double radius);
+
+		// interface
+		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
 };
 
 
@@ -51,7 +56,7 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 // ...
 
 
-// Operation
+// Operation Handling
 // ...
 
 

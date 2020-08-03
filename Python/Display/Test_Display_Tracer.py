@@ -18,14 +18,23 @@ os.add_dll_directory("D:/Anaconda/Library/mingw-w64/bin")  # TODO: it should not
 path_tracer:	str = os.path.join(os.getcwd(), "../Base/bin/Tracer.dll")
 dll_tracer:		CDLL = ctypes.CDLL(path_tracer)
 
-# print dll info
-dll_tracer.RayTracer_info()
-
 # create ops
-ops_tracer:		Tracer_Ops_DLL = Tracer_Ops_DLL()
+ops_tracer:		Ops_Tracer_DLL = Ops_Tracer_DLL()
 ops_tracer.setDLL_tracer(dll_tracer)
 ops_tracer.RayTracer_init()
 ops_tracer.Sample_buildScene(0)
+
+tracer:			Tracer = Tracer()
+tracer.setOps_tracer(ops_tracer)
+tracer.start()
+
+# check
+ops_tracer.RayTracer_info()
+
+
+""" object creation """
+hitable_sphere_1:	SceneObject_Sphere	= SceneObject_Sphere()
+hitable_trimesh_1:	SceneObject_Trimesh	= SceneObject_Trimesh()
 
 
 """ display """
@@ -59,5 +68,5 @@ display_tracer.update()
 # show
 widget.show()
 
-sys.exit(app.exec_())
+# sys.exit(app.exec_())
 

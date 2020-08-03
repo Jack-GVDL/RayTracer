@@ -13,10 +13,10 @@ class Display_Tracer(QWidget):
 		# data
 		self._x:			int = 200
 		self._y:			int = 100
-		self._ops_tracer:	Tracer_Ops = None
+		self._ops_tracer:	Ops_Tracer = None
 
 	# Operation
-	def setOps_tracer(self, ops: Tracer_Ops) -> None:
+	def setOps_tracer(self, ops: Ops_Tracer) -> None:
 		self._ops_tracer = ops
 
 	def setDisplaySize(self, x: int, y: int) -> None:
