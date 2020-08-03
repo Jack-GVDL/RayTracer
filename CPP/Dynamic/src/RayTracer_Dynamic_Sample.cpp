@@ -40,9 +40,9 @@ static int build_scene_1(Camera *camera, Scene *scene) {
 
 	texture_emissive->setPixel		(Vec3f(),		Vec3f(0));
 	texture_ambient->setPixel		(Vec3f(), 		Vec3f(0));
-	texture_diffuse->setPixel		(Vec3f(), 		Vec3f(0.5));
-	texture_specular->setPixel		(Vec3f(), 		Vec3f(0.5));
-	texture_shininess->setPixel		(Vec3f(),		Vec3f(0));
+	texture_diffuse->setPixel		(Vec3f(), 		Vec3f(1));
+	texture_specular->setPixel		(Vec3f(), 		Vec3f(1));
+	texture_shininess->setPixel		(Vec3f(),		Vec3f(1));
 	// texture_reflective->setPixel	(Vec3f(),		Vec3f(0));
 
 	// scatter
@@ -58,15 +58,21 @@ static int build_scene_1(Camera *camera, Scene *scene) {
 	
 	// scene
 	SceneObject_Sphere *scene_sphere_1 = new SceneObject_Sphere(Vec3f(0), 0.5);
+	scene_sphere_1->shader.addScatter(scatter_light_1);
 	scene->addHitable(scene_sphere_1);
 
 	// light
-	SceneObject_Light_Point *light_point_1 = new SceneObject_Light_Point(Vec3f(1, 1, 1));
+	SceneObject_Light_Point *light_point_1 = new SceneObject_Light_Point(Vec3f(0, 0.05, 0.4));
+	light_point_1->origin	= Vec3f(1, 1, 1);
 	light_point_1->color	= Vec3f(1);
 	scene->addLight(light_point_1);
 
 	// camera
-	camera->setAll(Vec3f(0, 0, 1), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 90, 0.2);
+	camera->setAll(Vec3f(0, 0, 1), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 90, 2);
+
+	// print info
+	// TODO: there show be a boolean variable
+	// printf("Sample: Build Scene\n");
 
 	return 0;
 }

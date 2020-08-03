@@ -1,6 +1,6 @@
 from enum import IntEnum
 from typing import List
-from Tracer_Vec3f import Vec3f
+from .Tracer_Vec3f import Vec3f
 
 
 # backup
@@ -30,6 +30,16 @@ class Tracer_Ops:
 		super().__init__()
 
 	# Operation
+	# main
+	def RayTracer_init(self) -> None:
+		raise NotImplementedError
+
+	def RayTracer_del(self) -> None:
+		raise NotImplementedError
+
+	def RayTracer_info(self) -> None:
+		raise NotImplementedError
+
 	# test
 	def Test_testDoubleArray(self, array: List[float], size: int) -> None:
 		raise NotImplementedError
@@ -45,9 +55,23 @@ class Tracer_Ops:
 		raise NotImplementedError
 
 	# tracer
-	def Tracer_trace(self, pixel: Vec3f, x: float, y: float, depth: int):
+	def Tracer_tracePoint(self, index_camera: int, pixel: Vec3f, x: float, y: float, depth: int) -> int:
 		raise NotImplementedError
-	
+
+	# TODO: not sure pixel_list will be good way
+	def Tracer_tracerRect(self, index_camera: int, pixel_list: List[Vec3f], w: float, h: float, pixel_w: float, pixel_h: float, depth: int) -> int:
+		raise NotImplementedError
+
+	# camera
+	def Camera_create(self, type_: int) -> int:
+		raise NotImplementedError
+
+	def Camera_destroy(self, index: int) -> int:
+		raise NotImplementedError
+
+	def Camera_config(self, index: int, type_: int, data: List[bytes], size: int) -> int:
+		raise NotImplementedError
+
 	# surface
 	def Surface_create(self, type: int) -> int:
 		raise NotImplementedError
@@ -55,7 +79,7 @@ class Tracer_Ops:
 	def Surface_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Surface_config(self, index: int, type: int, data: List[bytes], size: int) -> int:
+	def Surface_config(self, index: int, type_: int, data: List[bytes], size: int) -> int:
 		raise NotImplementedError
 
 	# texture
@@ -71,7 +95,7 @@ class Tracer_Ops:
 	def Texture_getPixel(self, index: int, pixel: Vec3f, point: Vec3f) -> int:
 		raise NotImplementedError
 
-	def Texture_config(self, index: int, type: int, data: List[bytes], size: int) -> int:
+	def Texture_config(self, index: int, type_: int, data: List[bytes], size: int) -> int:
 		raise NotImplementedError
 
 	# scatter
@@ -87,7 +111,7 @@ class Tracer_Ops:
 	def Scatter_rmTexture(self, index_scatter: int, offset: int) -> int:
 		raise NotImplementedError
 
-	def Scatter_config(self, index: int, type: int, data: List[bytes], size: int) -> int:
+	def Scatter_config(self, index: int, type_: int, data: List[bytes], size: int) -> int:
 		raise NotImplementedError
 
 	# hitable
@@ -103,5 +127,5 @@ class Tracer_Ops:
 	def SceneObject_Hitable_rmScatter(self, index_hitable: int, index_scatter: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Hitable_config(self, index: int, type: int, data: List[bytes], size: int) -> int:
+	def SceneObject_Hitable_config(self, index: int, type_: int, data: List[bytes], size: int) -> int:
 		raise NotImplementedError

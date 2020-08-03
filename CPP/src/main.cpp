@@ -79,8 +79,8 @@ int main() {
 			data.tracer	= &tracer;
 			data.camera	= &camera;
 			data.depth	= 5;
-			Vec3f color = super_sampler.sample(Vec3f(u, v, 0), Vec3f(0.0025, 0.005, 0), 0, Linker_getColor, &data);
-			// Vec3f color	= tracer.trace(&camera, u, v, 5);
+			// Vec3f color = super_sampler.sample(Vec3f(u, v, 0), Vec3f(0.0025, 0.005, 0), 0, Linker_getColor, &data);
+			Vec3f color	= tracer.trace(&camera, u, v, 5);
 			
 			int ir = int(255.99 * color[0]);
 			int ig = int(255.99 * color[1]);

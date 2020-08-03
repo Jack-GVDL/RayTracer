@@ -45,8 +45,11 @@ class Dynamic_Container {
 	// Operation
 	public:
 		Dynamic_Container() {
-			global_index++;
+			// so first valid index is 1 instead of 0
+			// 0 is considered as nullptr or ERROR_NO
+			// therefore, it should better not be a valid index
 			index = global_index;
+			global_index++;
 		}
 
 		int getIndex() {

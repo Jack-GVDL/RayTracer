@@ -58,6 +58,9 @@ Vec3f RayTracer::trace(RecordScatter *record) const {
 
 	}
 
+	// check if shader exist or not
+	if (shader == nullptr) return Vec3f();
+
 	// reset intensity
 	record->intensity = Vec3f();
 

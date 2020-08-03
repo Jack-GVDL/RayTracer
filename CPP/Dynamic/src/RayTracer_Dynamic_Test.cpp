@@ -46,5 +46,11 @@ EXPORT_DLL(int) RayTracer_Test_checkStatus(int index, uint8_t *data, uint32_t si
 }
 
 
+// TODO: not yet completed
+EXPORT_DLL(int) RayTracer_Test_setPrintInfo(int is_enabled) {
+	return -1;
+}
+
+
 // Static Function Implementation
 // ...

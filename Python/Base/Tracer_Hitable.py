@@ -1,3 +1,4 @@
+from typing import List
 import struct
 from .Tracer_Vec3f import Vec3f
 from .Tracer_Base import Tracer_Base

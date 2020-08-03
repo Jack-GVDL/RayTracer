@@ -33,7 +33,7 @@
 class RayTracer {
 	// Data
 	public:
-		Scene	*scene;
+		Scene	*scene			= nullptr;
 
 		Shader	shader_not_hit;
 		Shader	shader_hit;

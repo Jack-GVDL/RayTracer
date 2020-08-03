@@ -67,6 +67,7 @@ OBJ_FILE			=
 
 LOCLA_OBJ_FILE		=
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_DynamicContainer.o
+LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Camera.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Surface.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Texture.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Scatter.o
