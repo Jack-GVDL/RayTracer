@@ -1,0 +1,9 @@
+{
+    "OBJ_FILE"  : ["obj_x64/RayTracer_Scatter.o ",
+                   "obj_x64/RayTracer_Scatter_Emitter.o ",
+                   "obj_x64/RayTracer_Scatter_Gradient.o ",
+                   "obj_x64/RayTracer_Scatter_Light.o ",
+                   "obj_x64/RayTracer_Scatter_Reflection.o ",
+                   "obj_x64/RayTracer_Scatter_Refraction.o ",
+                   ""]
+}
