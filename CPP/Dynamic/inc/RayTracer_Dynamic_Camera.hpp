@@ -35,6 +35,7 @@
 
 // Operation Handling
 void	RayTracer_Dynamic_Camera_init	(std::vector<init_func_t>* init_list, std::vector<config_func_t>* config_list);
+void    RayTracer_Dynamic_Camera_info   ();
 void	RayTracer_Dynamic_Camera_del	();
 
 

@@ -27,8 +27,11 @@ static int			config_point_setAttenuationCoeff	(void *object, uint8_t *data, uint
 
 
 // Static Data
-static config_func_table_t	config_table_light_directional		[] = {config_directional_setOrientation};
-static config_func_table_t	config_table_light_point			[] = {config_point_setAttenuationCoeff};
+static config_func_table_t	config_table_light_directional		[] = {
+	config_directional_setOrientation};
+
+static config_func_table_t	config_table_light_point			[] = {
+	config_point_setAttenuationCoeff};
 
 
 // Operation Handling
@@ -38,6 +41,11 @@ void RayTracer_Dynamic_Light_init(std::vector<init_func_t>* init_list, std::vect
 
 	config_list->push_back(config_directional);
 	config_list->push_back(config_point);
+}
+
+
+void RayTracer_Dynamic_Light_info() {
+	
 }
 
 

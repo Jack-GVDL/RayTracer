@@ -24,15 +24,15 @@
 
 
 // Static Data
-static RayTracer									tracer;
-static Scene										scene;
+RayTracer									tracer;
+Scene										scene;
 
-static Dynamic_ContainerList<Camera>				camera_list;
-static Dynamic_ContainerList<Surface>				surface_list;
-static Dynamic_ContainerList<Texture>				texture_list;
-static Dynamic_ContainerList<Scatter>				scatter_list;
-static Dynamic_ContainerList<SceneObject_Hitable>	hitable_list;
-static Dynamic_ContainerList<SceneObject_Light>		light_list;
+Dynamic_ContainerList<Camera>				camera_list;
+Dynamic_ContainerList<Surface>				surface_list;
+Dynamic_ContainerList<Texture>				texture_list;
+Dynamic_ContainerList<Scatter>				scatter_list;
+Dynamic_ContainerList<SceneObject_Hitable>	hitable_list;
+Dynamic_ContainerList<SceneObject_Light>	light_list;
 
 template<> int Dynamic_Container<Camera>::global_index				= 1;
 template<> int Dynamic_Container<Surface>::global_index				= 1;
@@ -58,6 +58,8 @@ EXPORT_DLL(void) RayTracer_init() {
 	// create a deafult camera
 	// can / should be used for testing
 	RayTracer_Camera_create(0);
+	Dynamic_Container<Camera> *container_camera = camera_list.get(1);
+	container_camera->object->setAll(Vec3f(0, 0, 1), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 90, 2);
 }
 
 
@@ -70,13 +72,13 @@ EXPORT_DLL(void) RayTracer_info() {
 	// date of build
 	printf("Ray Tracer, build on %s %s \n", __DATE__, __TIME__);
 
-	// list / vector info
-	printf("Camera:              size: %i \n",	camera_list.size()	);
-	printf("Surface:             size: %i \n",	surface_list.size()	);
-	printf("Texture:             size: %i \n",	texture_list.size()	);
-	printf("Scatter:             size: %i \n",	scatter_list.size()	);
-	printf("SceneObject Hitable: size: %i \n",	hitable_list.size()	);
-	printf("SceneObject Light:   size: %i \n",	light_list.size()	);
+	// module info
+	RayTracer_Dynamic_Camera_info();
+	RayTracer_Dynamic_Surface_info();
+	RayTracer_Dynamic_Texture_info();
+	RayTracer_Dynamic_Scatter_info();
+	RayTracer_Dynamic_Hitable_info();
+	RayTracer_Dynamic_Light_info();
 
 	// spacing
 	printf("\n");
@@ -84,12 +86,15 @@ EXPORT_DLL(void) RayTracer_info() {
 
 
 // test
+// ...
+
+
+// sample
 EXPORT_DLL(int) RayTracer_Sample_buildScene(int index) {
 	// camera 0 is used for testing and is created at init stage
 	Dynamic_Container<Camera> *container_camera = camera_list.get(1);
 	return RayTracer_Dynamic_Sample_buildScene(index, container_camera->object, &scene);
 }
-
 
 
 // tracer
@@ -133,6 +138,7 @@ EXPORT_DLL(int) RayTracer_Tracer_tracerRect(int index_camera, double *pixel, dou
 }
 
 
+// camera
 // TODO: currently type is useless
 EXPORT_DLL(int) RayTracer_Camera_create(int type) {
 	Dynamic_Container<Camera> *container_camera = camera_list.create(type);
@@ -143,6 +149,51 @@ EXPORT_DLL(int) RayTracer_Camera_create(int type) {
 
 EXPORT_DLL(int) RayTracer_Camera_destroy(int index) {
 	return camera_list.destroy(index);
+}
+
+
+EXPORT_DLL(int) RayTracer_Camera_setLookFrom(int index, double *look_from) {
+	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
+	if (container_camera == nullptr) return -1;
+
+	container_camera->object->setLookFrom(Vec3f(look_from[0], look_from[1], look_from[2]));
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Camera_setLookAt(int index, double *look_at) {
+	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
+	if (container_camera == nullptr) return -1;
+
+	container_camera->object->setLookAt(Vec3f(look_at[0], look_at[1], look_at[2]));
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Camera_setUpDirection(int index, double *up_dir) {
+	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
+	if (container_camera == nullptr) return -1;
+
+	container_camera->object->setUpDirection(Vec3f(up_dir[0], up_dir[1], up_dir[2]));
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Camera_setFOV(int index, double value) {
+	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
+	if (container_camera == nullptr) return -1;
+
+	container_camera->object->setFOV(value);
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Camera_setAspectRatio(int index, double value) {
+	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
+	if (container_camera == nullptr) return -1;
+
+	container_camera->object->setAspectRatio(value);
+	return 0;
 }
 
 
@@ -225,7 +276,7 @@ EXPORT_DLL(int) RayTracer_Scatter_destroy(int index) {
 }
 
 
-EXPORT_DLL(int) RayTracer_Scatter_addTexture(int index_scatter, int index_texture, int offset) {
+EXPORT_DLL(int) RayTracer_Scatter_setTexture(int index_scatter, int index_texture, int offset) {
 	// get container
 	Dynamic_Container<Scatter>	*container_scatter	= scatter_list.get(index_scatter);
 	if (container_scatter == nullptr) return -1;
@@ -312,6 +363,15 @@ EXPORT_DLL(int) RayTracer_SceneObject_Light_destroy(int index) {
 }
 
 
+EXPORT_DLL(int) RayTracer_SceneObject_Light_setOrigin(int index, double *origin) {
+	Dynamic_Container<SceneObject_Light> *container_light = light_list.get(index);
+	if (container_light == nullptr) return -1;
+
+	container_light->object->setOrigin(Vec3f(origin[0], origin[1], origin[2]));
+	return 0;
+}
+
+
 EXPORT_DLL(int) RayTracer_SceneObject_Light_setColor(int index, double *color) {
 	Dynamic_Container<SceneObject_Light> *container_light = light_list.get(index);
 	if (container_light == nullptr) return -1;
@@ -365,8 +425,6 @@ EXPORT_DLL(int) RayTracer_Scene_rmHitable(int index_hitable) {
 	if (!scene.rmHitable(hitable)) return -1;
 	return 0;
 }
-
-
 
 
 // Static Function Implementation

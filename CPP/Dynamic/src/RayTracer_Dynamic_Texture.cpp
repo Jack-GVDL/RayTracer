@@ -28,10 +28,14 @@ static int			config_checkerboard_setBoardSize	(void *object, uint8_t *data, uint
 
 
 // Static Data
-static config_func_table_t	config_table_constant		[]	= {0};
-static config_func_table_t	config_table_checkerboard	[]	= {config_checkerboard_setBoardSize,
-															   0};
-static config_func_table_t	config_table_image			[]	= {0};
+static config_func_table_t	config_table_constant		[]	= {
+	0};
+
+static config_func_table_t	config_table_checkerboard	[]	= {
+	config_checkerboard_setBoardSize};
+
+static config_func_table_t	config_table_image			[]	= {
+	0};
 
 
 // Operation Handling
@@ -43,6 +47,14 @@ void RayTracer_Dynamic_Texture_init(std::vector<init_func_t>* init_list, std::ve
 	config_list->push_back(config_constant);
 	config_list->push_back(config_checkerboard);
 	config_list->push_back(config_image);
+}
+
+
+void RayTracer_Dynamic_Texture_info() {
+	printf("Texture Type \n");
+	printf("0.  %s \n", "Constant");
+	printf("1.  %s \n", "Checkerboard");
+	printf("2.  %s \n", "Image");
 }
 
 

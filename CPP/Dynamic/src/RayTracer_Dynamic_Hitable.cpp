@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "../inc/RayTracer_Dynamic_Hitable.hpp"
 
 
@@ -48,6 +49,13 @@ void RayTracer_Dynamic_Hitable_init(std::vector<init_func_t>* init_list, std::ve
 
 	config_list->push_back(config_sphere);
 	config_list->push_back(config_trimesh);
+}
+
+
+void RayTracer_Dynamic_Hitable_info() {
+	printf("Hitable Type: \n");
+	printf("0.  %s \n", "Sphere");
+	printf("1.  %s \n", "Trimesh");
 }
 
 

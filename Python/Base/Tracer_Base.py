@@ -34,8 +34,8 @@ class Tracer_Base:
 	def object_index(self) -> int:
 		return self._object_index
 
-	def setObjectIndex(self, value: int) -> None:
-		self._object_index = value
+	# def setObjectIndex(self, value: int) -> None:
+	# 	self._object_index = value
 
 	def setOps_tracer(self, ops: Ops_Tracer) -> None:
 		self._ops_tracer = ops

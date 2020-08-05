@@ -70,15 +70,15 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	# test
 	def Test_testDoubleArray(self, array: List[float], size: int) -> None:
 		array_pixel = (c_double * size)(*array)
-		self._dll_tracer.RayTracer_Test_testDoubleArray(array_pixel, size)
+		self._dll_tracer.RayTracer_Test_testDoubleArray(array_pixel, c_uint32(size))
 
 	def Test_testUint8Array(self, array: bytes, size: int) -> None:
 		array_pixel = (c_uint8 * size)(*array)
-		self._dll_tracer.RayTracer_Test_testUint8Array(array_pixel, size)
+		self._dll_tracer.RayTracer_Test_testUint8Array(array_pixel, c_uint32(size))
 
-	# TODO: not yet completed
 	def Test_checkStatus(self, index: int, array: bytes, size: int) -> None:
-		raise NotImplementedError
+		array_pixel	= (c_uint8 * size)(*array)
+		self._dll_tracer.RayTracer_Test_checkStatus(c_int(index), array_pixel, c_uint32(size))
 
 	# sample
 	def Sample_buildScene(self, index: int) -> int:
@@ -109,6 +109,24 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def Camera_config(self, index: int, type_: int, data: bytes, size: int) -> int:
 		array_data = (c_uint8 * len(data))(*data)
 		return self._dll_tracer.RayTracer_Camera_config(c_int(index), c_int(type_), array_data, c_uint32(size))
+
+	def Camera_setLookFrom(self, index: int, look_from: Vec3f) -> int:
+		array_data = (c_double * 3)(*look_from)
+		return self._dll_tracer.RayTracer_Camera_setLookFrom(c_int(index), array_data)
+
+	def Camera_setLookAt(self, index: int, look_at: Vec3f) -> int:
+		array_data = (c_double * 3)(*look_at)
+		return self._dll_tracer.RayTracer_Camera_setLookAt(c_int(index), array_data)
+
+	def Camera_setUpDirection(self, index: int, up_dir: Vec3f) -> int:
+		array_data = (c_double * 3)(*up_dir)
+		return self._dll_tracer.RayTracer_Camera_setUpDirection(c_int(index), array_data)
+
+	def Camera_setFOV(self, index: int, value: float) -> int:
+		return self._dll_tracer.RayTracer_Camera_setFOV(c_int(index), c_double(value))
+
+	def Camera_setAspectRatio(self, index: int, value: float) -> int:
+		return self._dll_tracer.RayTracer_Camera_setAspectRatio(c_int(index), c_double(value))
 
 	# surface
 	def Surface_create(self, type_: int) -> int:
@@ -160,8 +178,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def Scatter_destroy(self, index: int) -> int:
 		return self._dll_tracer.RayTracer_Scatter_destroy(c_int(index))
 
-	def Scatter_addTexture(self, index_scatter: int, index_texture: int, offset: int) -> int:
-		return self._dll_tracer.RayTracer_Scatter_addTexture(c_int(index_scatter), c_int(index_texture), c_int(offset))
+	def Scatter_setTexture(self, index_scatter: int, index_texture: int, offset: int) -> int:
+		return self._dll_tracer.RayTracer_Scatter_setTexture(c_int(index_scatter), c_int(index_texture), c_int(offset))
 
 	def Scatter_rmTexture(self, index_scatter: int, offset: int) -> int:
 		return self._dll_tracer.RayTracer_Scatter_rmTexture(c_int(index_scatter), c_int(offset))
@@ -196,10 +214,16 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def SceneObject_Light_destroy(self, index: int) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Light_destroy(c_int(index))
 
+	def SceneObject_Light_setOrigin(self, index: int, origin: Vec3f) -> int:
+		array_origin = (c_double * 3)(*origin.array)
+
+		result: int = self._dll_tracer.RayTracer_SceneObject_Light_setOrigin(c_int(index), array_origin)
+		return result
+
 	def SceneObject_Light_setColor(self, index: int, color: Vec3f) -> int:
 		array_color = (c_double * 3)(*color.array)
 
-		result: int = self._dll_tracer.RayTracer_Light_setColor(c_int(index), array_color)
+		result: int = self._dll_tracer.RayTracer_SceneObject_Light_setColor(c_int(index), array_color)
 		return result
 
 	def SceneObject_Light_config(self, index: int, type_: int, data: bytes, size: int) -> int:

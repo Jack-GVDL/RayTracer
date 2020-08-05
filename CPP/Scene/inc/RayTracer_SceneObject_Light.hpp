@@ -63,7 +63,7 @@ class SceneObject_Light_Directional: public SceneObject_Light {
 		{}
 
 		// operation
-		void			setOrientation			(const Vec3f &color);
+		void			setOrientation			(const Vec3f &orientation);
 
 		// interface
 		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const;

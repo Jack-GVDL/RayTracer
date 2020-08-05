@@ -58,6 +58,9 @@ class SceneElement {
 		{}
 
 		// operation
+		void		setOrigin	(Vec3f origin);
+
+		// interface
 		virtual bool addChild	(SceneElement *scene);
 		virtual bool rmChild	(SceneElement *scene);
 };

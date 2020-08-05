@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "../inc/RayTracer_Dynamic_Scatter.hpp"
 
 
@@ -49,6 +50,16 @@ void RayTracer_Dynamic_Scatter_init(std::vector<init_func_t>* init_list, std::ve
 	config_list->push_back(config_refraction);
 	config_list->push_back(config_gradient);
 	config_list->push_back(config_emitter);
+}
+
+
+void RayTracer_Dynamic_Scatter_info() {
+	printf("Scatter Type \n");
+	printf("0.  %s \n", "Light");
+	printf("1.  %s \n", "Reflection");
+	printf("2.  %s \n", "Refraction");
+	printf("3.  %s \n", "Gradient");
+	printf("4.  %s \n", "Emitter");
 }
 
 

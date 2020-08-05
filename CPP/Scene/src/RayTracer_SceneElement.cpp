@@ -14,6 +14,11 @@
 
 
 // Operation Handling
+void SceneElement::setOrigin(Vec3f origin) {
+	this->origin = origin;
+}
+
+
 bool SceneElement::addChild(SceneElement *scene) {
 	child.push_back(scene);
 	return true;

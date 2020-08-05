@@ -51,6 +51,21 @@ class Ops_Tracer:
 	def Camera_config(self, index: int, type_: int, data: bytes, size: int) -> int:
 		raise NotImplementedError
 
+	def Camera_setLookFrom(self, index: int, look_from: Vec3f) -> int:
+		raise NotImplementedError
+
+	def Camera_setLookAt(self, index: int, look_at: Vec3f) -> int:
+		raise NotImplementedError
+
+	def Camera_setUpDirection(self, index: int, up_dir: Vec3f) -> int:
+		raise NotImplementedError
+
+	def Camera_setFOV(self, index: int, value: float) -> int:
+		raise NotImplementedError
+
+	def Camera_setAspectRatio(self, index: int, value: float) -> int:
+		raise NotImplementedError
+
 	# surface
 	def Surface_create(self, type_: int) -> int:
 		raise NotImplementedError
@@ -84,7 +99,7 @@ class Ops_Tracer:
 	def Scatter_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Scatter_addTexture(self, index_scatter: int, index_texture: int, offset: int) -> int:
+	def Scatter_setTexture(self, index_scatter: int, index_texture: int, offset: int) -> int:
 		raise NotImplementedError
 
 	def Scatter_rmTexture(self, index_scatter: int, offset: int) -> int:
@@ -114,6 +129,9 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	def SceneObject_Light_destroy(self, index: int) -> int:
+		raise NotImplementedError
+
+	def SceneObject_Light_setOrigin(self, index: int, origin: Vec3f) -> int:
 		raise NotImplementedError
 
 	def SceneObject_Light_setColor(self, index: int, color: Vec3f) -> int:

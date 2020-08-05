@@ -49,6 +49,7 @@ class Texture {
 
 	protected:
 		// interface
+		// TODO: change to getPixel for consistency
 		virtual Vec3f	_getPixel_	(const Ray *ray) const = 0;
 };
 

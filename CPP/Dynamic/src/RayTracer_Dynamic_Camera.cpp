@@ -28,6 +28,11 @@ void RayTracer_Dynamic_Camera_init(std::vector<init_func_t>* init_list, std::vec
 }
 
 
+void RayTracer_Dynamic_Camera_info() {
+	
+}
+
+
 void RayTracer_Dynamic_Camera_del() {
 
 }

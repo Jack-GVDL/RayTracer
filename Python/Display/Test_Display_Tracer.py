@@ -22,7 +22,6 @@ dll_tracer:		CDLL = ctypes.CDLL(path_tracer)
 ops_tracer:		Ops_Tracer_DLL = Ops_Tracer_DLL()
 ops_tracer.setDLL_tracer(dll_tracer)
 ops_tracer.RayTracer_init()
-ops_tracer.Sample_buildScene(0)
 
 tracer:			Tracer = Tracer()
 tracer.setOps_tracer(ops_tracer)
@@ -31,10 +30,20 @@ tracer.start()
 # check
 ops_tracer.RayTracer_info()
 
+# build sample scene
+# ops_tracer.Sample_buildScene(0)
+
 
 """ object creation """
-hitable_sphere_1:	SceneObject_Sphere	= SceneObject_Sphere()
-hitable_trimesh_1:	SceneObject_Trimesh	= SceneObject_Trimesh()
+scene:	Scene	= Scene()
+# Tracer_Sample.buildScene_0(scene)
+Tracer_Sample.buildScene_1(scene)
+
+ops_tracer.Test_checkStatus(0, bytes(), 0)
+ops_tracer.Test_checkStatus(1, bytes(), 0)
+
+ops_tracer.Camera_setLookFrom(	1,	Vec3f(0, 1, 1))
+ops_tracer.Camera_setLookAt(	1,	Vec3f(0, 1, 0))
 
 
 """ display """
@@ -68,5 +77,4 @@ display_tracer.update()
 # show
 widget.show()
 
-# sys.exit(app.exec_())
-
+sys.exit(app.exec_())

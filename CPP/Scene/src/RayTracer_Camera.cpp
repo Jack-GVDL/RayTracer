@@ -21,8 +21,13 @@ void Camera::setLookFrom(const Vec3f look_from) {
 }
 
 
-void Camera::setLookAt(const Vec3f look_at, const Vec3f up) {
+void Camera::setLookAt(const Vec3f look_at) {
 	this->look_at	= look_at;
+	update();
+}
+
+
+void Camera::setUpDirection(const Vec3f up) {
 	this->up		= up;
 	update();
 }
