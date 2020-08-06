@@ -44,13 +44,9 @@ class Dynamic_Container {
 
 	// Operation
 	public:
-		Dynamic_Container() {
-			// so first valid index is 1 instead of 0
-			// 0 is considered as nullptr or ERROR_NO
-			// therefore, it should better not be a valid index
-			index = global_index;
-			global_index++;
-		}
+		Dynamic_Container(int index):
+		index(index)
+		{}
 
 		int getIndex() {
 			return index;
@@ -66,8 +62,18 @@ class Dynamic_ContainerList {
 		std::vector<init_func_t>			init_list;
 		std::vector<config_func_t>			config_list;
 
+		// first valid index is 1 instead of 0
+		// 0 is considered as nullptr or ERROR_NO
+		// therefore, it should better not be a valid index
+		int									object_index		= 1;
+
 	// Operation
 	public:
+		// init
+		Dynamic_ContainerList()
+		{}
+
+		// operation
 		Dynamic_Container<T>*	create	(int type);
 		int						destroy	(int index);
         Dynamic_Container<T>*	get		(int index);
@@ -84,10 +90,13 @@ class Dynamic_ContainerList {
 template <class T>
 Dynamic_Container<T>* Dynamic_ContainerList<T>::create(int type) {
 	if (type < 0 || type >= init_list.size()) return nullptr;
-	T *surface = (T*)(init_list[type]());
+	T *o = (T*)(init_list[type]());
+	if (o == nullptr) return nullptr;
 
-	Dynamic_Container<T> *container = new Dynamic_Container<T>();
-	container->object	= surface;
+	Dynamic_Container<T> *container = new Dynamic_Container<T>(object_index);
+	object_index++;
+
+	container->object	= o;
 	container->type		= type;
 
 	container_list.push_back(container);
@@ -116,6 +125,7 @@ Dynamic_Container<T>* Dynamic_ContainerList<T>::get(int index) {
 template <class T>
 int Dynamic_ContainerList<T>::config(int index, int type, uint8_t *data, uint32_t size) {
 	Dynamic_Container<T> *container = get(index);
+	if (container == nullptr) return -1;
 
 	int container_type = container->type;
 	if (container_type < 0 || container_type >= config_list.size()) return -1;

@@ -1,4 +1,3 @@
-from enum import IntEnum
 from typing import List
 from .Tracer_Vec3f import Vec3f
 
@@ -66,11 +65,30 @@ class Ops_Tracer:
 	def Camera_setAspectRatio(self, index: int, value: float) -> int:
 		raise NotImplementedError
 
+	# mapper
+	def Mapper_create(self, type_: int) -> int:
+		raise NotImplementedError
+
+	def Mapper_destroy(self, index: int) -> int:
+		raise NotImplementedError
+
+	def Mapper_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+		raise NotImplementedError
+
 	# surface
 	def Surface_create(self, type_: int) -> int:
 		raise NotImplementedError
 
 	def Surface_destroy(self, index: int) -> int:
+		raise NotImplementedError
+
+	def Surface_load(self, index: int) -> int:
+		raise NotImplementedError
+
+	def Surface_dump(self, index: int) -> int:
+		raise NotImplementedError
+
+	def Surface_convertToTexture(self, index_surface: int, index_texture: int) -> int:
 		raise NotImplementedError
 
 	def Surface_config(self, index: int, type_: int, data: bytes, size: int) -> int:
@@ -81,6 +99,12 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	def Texture_destroy(self, index: int) -> int:
+		raise NotImplementedError
+
+	def Texture_addMapper(self, index_texture: int, index_mapper: int) -> int:
+		raise NotImplementedError
+
+	def Texture_rmMapper(self, index_texture: int, index_mapper: int) -> int:
 		raise NotImplementedError
 
 	def Texture_setPixel(self, index: int, pixel: Vec3f, point: Vec3f) -> int:

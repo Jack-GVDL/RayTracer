@@ -8,6 +8,7 @@
 #include "../inc/RayTracer_Dynamic_Scatter.hpp"
 #include "../inc/RayTracer_Dynamic_Hitable.hpp"
 #include "../inc/RayTracer_Dynamic_Light.hpp"
+#include "../inc/RayTracer_Dynamic_Mapper.hpp"
 #include "../inc/RayTracer_Dynamic_Sample.hpp"
 
 
@@ -28,18 +29,12 @@ RayTracer									tracer;
 Scene										scene;
 
 Dynamic_ContainerList<Camera>				camera_list;
+Dynamic_ContainerList<Mapper>				mapper_list;
 Dynamic_ContainerList<Surface>				surface_list;
 Dynamic_ContainerList<Texture>				texture_list;
 Dynamic_ContainerList<Scatter>				scatter_list;
 Dynamic_ContainerList<SceneObject_Hitable>	hitable_list;
 Dynamic_ContainerList<SceneObject_Light>	light_list;
-
-template<> int Dynamic_Container<Camera>::global_index				= 1;
-template<> int Dynamic_Container<Surface>::global_index				= 1;
-template<> int Dynamic_Container<Texture>::global_index				= 1;
-template<> int Dynamic_Container<Scatter>::global_index				= 1;
-template<> int Dynamic_Container<SceneObject_Hitable>::global_index	= 1;
-template<> int Dynamic_Container<SceneObject_Light>::global_index	= 1;
 
 
 // Operation Handling
@@ -49,6 +44,7 @@ EXPORT_DLL(void) RayTracer_init() {
 
 	// init
 	RayTracer_Dynamic_Camera_init(	&(camera_list.init_list),	&(camera_list.config_list)	);
+	RayTracer_Dynamic_Mapper_init(	&(mapper_list.init_list),	&(mapper_list.config_list)	);
 	RayTracer_Dynamic_Surface_init(	&(surface_list.init_list),	&(surface_list.config_list)	);
 	RayTracer_Dynamic_Texture_init(	&(texture_list.init_list),	&(texture_list.config_list)	);
 	RayTracer_Dynamic_Scatter_init(	&(scatter_list.init_list),	&(scatter_list.config_list)	);
@@ -75,6 +71,7 @@ EXPORT_DLL(void) RayTracer_info() {
 	// module info
 	RayTracer_Dynamic_Camera_info();
 	RayTracer_Dynamic_Surface_info();
+	RayTracer_Dynamic_Mapper_info();
 	RayTracer_Dynamic_Texture_info();
 	RayTracer_Dynamic_Scatter_info();
 	RayTracer_Dynamic_Hitable_info();
@@ -202,6 +199,24 @@ EXPORT_DLL(int) RayTracer_Camera_config(int index, int type, uint8_t *data, uint
 }
 
 
+// mapper
+EXPORT_DLL(int) RayTracer_Mapper_create(int type) {
+	Dynamic_Container<Mapper> *container_mapper = mapper_list.create(type);
+	if (container_mapper == nullptr) return -1;
+	return container_mapper->getIndex();
+}
+
+
+EXPORT_DLL(int) RayTracer_Mapper_destroy(int index) {
+	return mapper_list.destroy(index);
+}
+
+
+EXPORT_DLL(int) RayTracer_Mapper_config(int index, int type, uint8_t *data, uint32_t size) {
+	return mapper_list.config(index, type, data, size);
+}
+
+
 // surface
 EXPORT_DLL(int) RayTracer_Surface_create(int type) {
 	Dynamic_Container<Surface> *surface = surface_list.create(type);
@@ -212,6 +227,40 @@ EXPORT_DLL(int) RayTracer_Surface_create(int type) {
 
 EXPORT_DLL(int) RayTracer_Surface_destroy(int index) {
 	return surface_list.destroy(index);
+}
+
+
+EXPORT_DLL(int) RayTracer_Surface_load(int index) {
+	Dynamic_Container<Surface> *container_surface = surface_list.get(index);
+	if (container_surface == nullptr) return -1;
+
+	if (!container_surface->object->load()) return -1;
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Surface_dump(int index) {
+	Dynamic_Container<Surface> *container_surface = surface_list.get(index);
+	if (container_surface == nullptr) return -1;
+
+	if (!container_surface->object->dump()) return -1;
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Surface_convertToTexture(int index_surface, int index_texture) {
+	Dynamic_Container<Surface> *container_surface = surface_list.get(index_surface);
+	if (container_surface == nullptr) return -1;
+
+	Dynamic_Container<Texture> *container_texture = texture_list.get(index_texture);
+	if (container_texture == nullptr) return -1;
+
+	// need to check type of texture
+	// which need to be Texture_Image
+	if (container_texture->type != TypeTexture::TEXTURE_IMAGE) return -1;
+
+	if (!container_surface->object->convertToTexture((Texture_Image*)(container_texture->object))) return -1;
+	return 0;
 }
 
 
@@ -230,6 +279,30 @@ EXPORT_DLL(int) RayTracer_Texture_create(int type) {
 
 EXPORT_DLL(int) RayTracer_Texture_destroy(int index) {
 	return texture_list.destroy(index);	
+}
+
+
+EXPORT_DLL(int) RayTracer_Texture_addMapper(int index_texture, int index_mapper) {
+	Dynamic_Container<Texture>	*container_texture	= texture_list.get(index_texture);
+	if (container_texture == nullptr) return -1;
+
+	Dynamic_Container<Mapper>	*container_mapper	= mapper_list.get(index_mapper);
+	if (container_mapper == nullptr) return -1;
+
+	if (!container_texture->object->addMapper(container_mapper->object)) return -1;
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_Texture_rmMapper(int index_texture, int index_mapper) {
+	Dynamic_Container<Texture>	*container_texture	= texture_list.get(index_texture);
+	if (container_texture == nullptr) return -1;
+
+	Dynamic_Container<Mapper>	*container_mapper	= mapper_list.get(index_mapper);
+	if (container_mapper == nullptr) return -1;
+
+	if (!container_texture->object->rmMapper(container_mapper->object)) return -1;
+	return 0;
 }
 
 

@@ -6,7 +6,7 @@ class Vec3f:
 
 	def __init__(self, v0: float = None, v1: float = None, v2: float = None):
 		# data
-		self._n:	List[float] = [0, 0, 0]
+		self._n:	List[float] = [0.0, 0.0, 0.0]
 
 		# init
 		if v0 is None:
@@ -16,17 +16,17 @@ class Vec3f:
 			pass
 
 		elif v1 is None:
-			self._n[0]		= v0
-			self._n[1]		= v0
-			self._n[2]		= v0
+			self._n[0]		= float(v0)
+			self._n[1]		= float(v0)
+			self._n[2]		= float(v0)
 
 		elif v2 is None:
 			raise RuntimeError
 
 		else:
-			self._n[0]		= v0
-			self._n[1]		= v1
-			self._n[2]		= v2
+			self._n[0]		= float(v0)
+			self._n[1]		= float(v1)
+			self._n[2]		= float(v2)
 
 		# check
 		# assert type(self._n[0]) is float and type(self._n[1]) is float and type(self._n[2]) is float

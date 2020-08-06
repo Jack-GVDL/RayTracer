@@ -23,7 +23,11 @@
 
 
 // Enum
-// ...
+enum TypeSurface {
+    SURFACE_CONSTANT    = 0,
+    SURFACE_IMAGE,
+    SURFACE_MAX
+};
 
 
 // Data Structure

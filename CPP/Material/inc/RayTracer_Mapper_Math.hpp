@@ -32,7 +32,11 @@ class Mapper_Additor: public Mapper {
 
 	// Operation
 	public:
-		virtual void	map (Vec3f &vector) const override;
+		// operation
+		void			setAdditor		(const Vec3f &value);
+
+		// interface
+		virtual void	map 			(Vec3f &vector) const override;
 };
 
 
@@ -43,7 +47,11 @@ class Mapper_Multiplier: public Mapper {
 
 	// Operation
 	public:
-		virtual void	map	(Vec3f &vector) const override;
+		// operation
+		void			setMultiplier	(const Vec3f &value);
+
+		// interface
+		virtual void	map				(Vec3f &vector) const override;
 };
 
 

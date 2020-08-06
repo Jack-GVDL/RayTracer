@@ -56,12 +56,21 @@ EXPORT_DLL(int)		RayTracer_Camera_setFOV						(int index, double value);
 EXPORT_DLL(int)		RayTracer_Camera_setAspectRatio				(int index, double value);
 EXPORT_DLL(int)		RayTracer_Camera_config						(int index, int type, uint8_t *data, uint32_t size);
 
+EXPORT_DLL(int)		RayTracer_Mapper_create						(int type);
+EXPORT_DLL(int)		RayTracer_Mapper_destroy					(int index);
+EXPORT_DLL(int)		RayTracer_Mapper_config						(int index, int type, uint8_t *data, uint32_t size);
+
 EXPORT_DLL(int) 	RayTracer_Surface_create					(int type);
 EXPORT_DLL(int) 	RayTracer_Surface_destroy					(int index);
+EXPORT_DLL(int)		RayTracer_Surface_load						(int index);
+EXPORT_DLL(int)		RayTracer_Surface_dump						(int index);
+EXPORT_DLL(int)		RayTracer_Surface_convertToTexture			(int index_surface, int index_texture);
 EXPORT_DLL(int) 	RayTracer_Surface_config					(int index, int type, uint8_t *data, uint32_t size);
 
 EXPORT_DLL(int) 	RayTracer_Texture_create					(int type);
 EXPORT_DLL(int) 	RayTracer_Texture_destroy					(int index);
+EXPORT_DLL(int)		RayTracer_Texture_addMapper					(int index_texture, int index_mapper);
+EXPORT_DLL(int)		RayTracer_Texture_rmMapper					(int index_texture, int index_mapper);
 EXPORT_DLL(int)		RayTracer_Texture_setPixel					(int index, const double *pixel, const double *point);
 EXPORT_DLL(int)		RayTracer_Texture_getPixel					(int index, double *pixel, const double *point);
 EXPORT_DLL(int) 	RayTracer_Texture_config					(int index, int type, uint8_t *data, uint32_t size);

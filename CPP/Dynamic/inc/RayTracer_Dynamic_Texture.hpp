@@ -23,7 +23,12 @@
 
 
 // Enum
-// ...
+enum TypeTexture {
+    TEXTURE_CONSTANT        = 0,
+    TEXTURE_CHECKERBOARD,
+    TEXTURE_IMAGE,
+    TEXTURE_MAX
+};
 
 
 // Data Structure

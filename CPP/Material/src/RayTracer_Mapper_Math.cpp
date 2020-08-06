@@ -15,6 +15,11 @@
 
 // Operation Handling
 // additor
+void Mapper_Additor::setAdditor(const Vec3f &value) {
+	this->additor = value;
+}
+
+
 // TODO: currently mapper only handle the point part
 void Mapper_Additor::map(Vec3f &vector) const {
 	vector = vector + additor;
@@ -22,6 +27,11 @@ void Mapper_Additor::map(Vec3f &vector) const {
 
 
 // multiplier
+void Mapper_Multiplier::setMultiplier(const Vec3f &value) {
+	this->multiplier = value;
+}
+
+
 // TODO: currently mapper only handle the point part
 void Mapper_Multiplier::map(Vec3f &vector) const {
 	vector = vector * multiplier;

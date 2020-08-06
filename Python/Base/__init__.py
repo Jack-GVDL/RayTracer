@@ -2,6 +2,10 @@ from .Tracer_Vec3f import Vec3f
 from .Tracer_Ops import Ops_Tracer
 from .Tracer_Ops_DLL import Ops_Tracer_DLL
 
+from .Tracer_Mapper import Mapper
+from .Tracer_Mapper import Mapper_Additor
+from .Tracer_Mapper import Mapper_Multiplier
+
 from .Tracer_Surface import Surface
 # from .Tracer_Surface import Surface_Image
 
