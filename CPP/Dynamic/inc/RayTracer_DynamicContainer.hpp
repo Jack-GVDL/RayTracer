@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/07/29   initial update
+// 2020/08/07   add binary search, complete destroy()
 
 
 #ifndef RAYTRACER_DYNAMICCONTAINER_HPP
@@ -27,50 +28,87 @@ typedef int(*config_func_t)(void*, int, uint8_t*, uint32_t);
 
 
 // Data Structure
-// ...
-
-
-// Data Structure
-template <class T>
-class Dynamic_Container {
+class Dynamic_ContainerBase {
 	// Data
 	protected:
-		static int	global_index;
-		int			index;
-		
+		int		index;
+	
 	public:
-		int			type;
-		T			*object;
-
-	// Operation
-	public:
-		Dynamic_Container(int index):
-		index(index)
-		{}
-
-		int getIndex() {
-			return index;
-		}
-};
-
-
-template <class T>
-class Dynamic_ContainerList {
-	// Data
-	public:
-		std::vector<Dynamic_Container<T>*>	container_list;
-		std::vector<init_func_t>			init_list;
-		std::vector<config_func_t>			config_list;
-
-		// first valid index is 1 instead of 0
-		// 0 is considered as nullptr or ERROR_NO
-		// therefore, it should better not be a valid index
-		int									object_index		= 1;
+		int		type;
+		void	*object;
 
 	// Operation
 	public:
 		// init
-		Dynamic_ContainerList()
+		Dynamic_ContainerBase(int index):
+		index(index)
+		{}
+
+		// operation
+		int	getIndex	();
+};
+
+
+template <class T>
+class Dynamic_Container: public Dynamic_ContainerBase {
+	// Data
+	// there should be no data here
+
+	// Operation
+	public:
+		// init
+		Dynamic_Container(int index):
+		Dynamic_ContainerBase(index)
+		{}
+
+		// operation
+		T* getObject() {
+			return (T*)object;
+		}
+};
+
+
+// use this to hide implementation detail
+class Dynamic_ContainerListBase {
+	// Data
+	public:
+		std::vector<Dynamic_ContainerBase*>		container_list;
+		std::vector<init_func_t>				init_list;
+		std::vector<config_func_t>				config_list;
+
+		// first valid index is 1 instead of 0
+		// 0 is considered as nullptr or ERROR_NO
+		// therefore, it should better not be a valid index
+		int	object_index	= 1;
+
+	// Operation
+	public:
+		// init
+		Dynamic_ContainerListBase()
+		{}
+
+	protected:
+		// operation
+		Dynamic_ContainerBase*	_create_	(int type);
+		int						_destroy_	(int index);
+		Dynamic_ContainerBase*	_get_		(int index);
+		int						_config_	(int index, int type, uint8_t *data, uint32_t size);
+		int						_size_		();
+		int						_indexOf_	(int index);
+
+};
+
+
+template <class T>
+class Dynamic_ContainerList: public Dynamic_ContainerListBase {
+	// Data
+	// ...
+
+	// Operation
+	public:
+		// init
+		Dynamic_ContainerList():
+		Dynamic_ContainerListBase()
 		{}
 
 		// operation
@@ -89,55 +127,31 @@ class Dynamic_ContainerList {
 // Operation Handling
 template <class T>
 Dynamic_Container<T>* Dynamic_ContainerList<T>::create(int type) {
-	if (type < 0 || type >= init_list.size()) return nullptr;
-	T *o = (T*)(init_list[type]());
-	if (o == nullptr) return nullptr;
-
-	Dynamic_Container<T> *container = new Dynamic_Container<T>(object_index);
-	object_index++;
-
-	container->object	= o;
-	container->type		= type;
-
-	container_list.push_back(container);
-	return container;
+	return (Dynamic_Container<T>*)_create_(type);
 }
 
 
-// TODO: not yet completed
 template <class T>
 int Dynamic_ContainerList<T>::destroy(int index) {
-	return -1;
+	return _destroy_(index);
 }
 
 
-// TODO: use binary search
 template <class T>
 Dynamic_Container<T>* Dynamic_ContainerList<T>::get(int index) {
-	for (auto *container : container_list) {
-		if (container->getIndex() != index) continue;
-		return container;
-	}
-	return nullptr;
+	return (Dynamic_Container<T>*)_get_(index);
 }
 
 
 template <class T>
 int Dynamic_ContainerList<T>::config(int index, int type, uint8_t *data, uint32_t size) {
-	Dynamic_Container<T> *container = get(index);
-	if (container == nullptr) return -1;
-
-	int container_type = container->type;
-	if (container_type < 0 || container_type >= config_list.size()) return -1;
-
-	config_list[container_type](container->object, type, data, size);
-	return 0;
+	return _config_(index, type, data, size);
 }
 
 
 template <class T>
 int Dynamic_ContainerList<T>::size() {
-	return (int)(container_list.size());
+	return _size_();
 }
 
 

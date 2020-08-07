@@ -55,7 +55,7 @@ EXPORT_DLL(void) RayTracer_init() {
 	// can / should be used for testing
 	RayTracer_Camera_create(0);
 	Dynamic_Container<Camera> *container_camera = camera_list.get(1);
-	container_camera->object->setAll(Vec3f(0, 0, 1), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 90, 2);
+	container_camera->getObject()->setAll(Vec3f(0, 0, 1), Vec3f(0, 0, 0), Vec3f(0, 1, 0), 90, 2);
 }
 
 
@@ -90,7 +90,7 @@ EXPORT_DLL(void) RayTracer_info() {
 EXPORT_DLL(int) RayTracer_Sample_buildScene(int index) {
 	// camera 0 is used for testing and is created at init stage
 	Dynamic_Container<Camera> *container_camera = camera_list.get(1);
-	return RayTracer_Dynamic_Sample_buildScene(index, container_camera->object, &scene);
+	return RayTracer_Dynamic_Sample_buildScene(index, container_camera->getObject(), &scene);
 }
 
 
@@ -106,7 +106,7 @@ EXPORT_DLL(int) RayTracer_Tracer_tracePoint(int index_camera, double *pixel, dou
 	}
 
 	// get pixel
-	Camera	*camera	= container_camera->object;
+	Camera	*camera	= container_camera->getObject();
 	Vec3f	result	= tracer.trace(camera, x, y, depth);
 
 	// set pixel
@@ -153,7 +153,7 @@ EXPORT_DLL(int) RayTracer_Camera_setLookFrom(int index, double *look_from) {
 	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
 	if (container_camera == nullptr) return -1;
 
-	container_camera->object->setLookFrom(Vec3f(look_from[0], look_from[1], look_from[2]));
+	container_camera->getObject()->setLookFrom(Vec3f(look_from[0], look_from[1], look_from[2]));
 	return 0;
 }
 
@@ -162,7 +162,7 @@ EXPORT_DLL(int) RayTracer_Camera_setLookAt(int index, double *look_at) {
 	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
 	if (container_camera == nullptr) return -1;
 
-	container_camera->object->setLookAt(Vec3f(look_at[0], look_at[1], look_at[2]));
+	container_camera->getObject()->setLookAt(Vec3f(look_at[0], look_at[1], look_at[2]));
 	return 0;
 }
 
@@ -171,7 +171,7 @@ EXPORT_DLL(int) RayTracer_Camera_setUpDirection(int index, double *up_dir) {
 	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
 	if (container_camera == nullptr) return -1;
 
-	container_camera->object->setUpDirection(Vec3f(up_dir[0], up_dir[1], up_dir[2]));
+	container_camera->getObject()->setUpDirection(Vec3f(up_dir[0], up_dir[1], up_dir[2]));
 	return 0;
 }
 
@@ -180,7 +180,7 @@ EXPORT_DLL(int) RayTracer_Camera_setFOV(int index, double value) {
 	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
 	if (container_camera == nullptr) return -1;
 
-	container_camera->object->setFOV(value);
+	container_camera->getObject()->setFOV(value);
 	return 0;
 }
 
@@ -189,7 +189,7 @@ EXPORT_DLL(int) RayTracer_Camera_setAspectRatio(int index, double value) {
 	Dynamic_Container<Camera> *container_camera = camera_list.get(index);
 	if (container_camera == nullptr) return -1;
 
-	container_camera->object->setAspectRatio(value);
+	container_camera->getObject()->setAspectRatio(value);
 	return 0;
 }
 
@@ -234,7 +234,7 @@ EXPORT_DLL(int) RayTracer_Surface_load(int index) {
 	Dynamic_Container<Surface> *container_surface = surface_list.get(index);
 	if (container_surface == nullptr) return -1;
 
-	if (!container_surface->object->load()) return -1;
+	if (!container_surface->getObject()->load()) return -1;
 	return 0;
 }
 
@@ -243,7 +243,7 @@ EXPORT_DLL(int) RayTracer_Surface_dump(int index) {
 	Dynamic_Container<Surface> *container_surface = surface_list.get(index);
 	if (container_surface == nullptr) return -1;
 
-	if (!container_surface->object->dump()) return -1;
+	if (!container_surface->getObject()->dump()) return -1;
 	return 0;
 }
 
@@ -259,7 +259,7 @@ EXPORT_DLL(int) RayTracer_Surface_convertToTexture(int index_surface, int index_
 	// which need to be Texture_Image
 	if (container_texture->type != TypeTexture::TEXTURE_IMAGE) return -1;
 
-	if (!container_surface->object->convertToTexture((Texture_Image*)(container_texture->object))) return -1;
+	if (!container_surface->getObject()->convertToTexture((Texture_Image*)(container_texture->object))) return -1;
 	return 0;
 }
 
@@ -289,7 +289,7 @@ EXPORT_DLL(int) RayTracer_Texture_addMapper(int index_texture, int index_mapper)
 	Dynamic_Container<Mapper>	*container_mapper	= mapper_list.get(index_mapper);
 	if (container_mapper == nullptr) return -1;
 
-	if (!container_texture->object->addMapper(container_mapper->object)) return -1;
+	if (!container_texture->getObject()->addMapper(container_mapper->getObject())) return -1;
 	return 0;
 }
 
@@ -301,7 +301,7 @@ EXPORT_DLL(int) RayTracer_Texture_rmMapper(int index_texture, int index_mapper) 
 	Dynamic_Container<Mapper>	*container_mapper	= mapper_list.get(index_mapper);
 	if (container_mapper == nullptr) return -1;
 
-	if (!container_texture->object->rmMapper(container_mapper->object)) return -1;
+	if (!container_texture->getObject()->rmMapper(container_mapper->getObject())) return -1;
 	return 0;
 }
 
@@ -310,7 +310,7 @@ EXPORT_DLL(int) RayTracer_Texture_setPixel(int index, const double *pixel, const
 	Dynamic_Container<Texture> *texture = texture_list.get(index);
 	if (texture == nullptr) return -1;
 
-	texture->object->setPixel(
+	texture->getObject()->setPixel(
 		Vec3f(point[0], point[1], point[2]),
 		Vec3f(pixel[0], pixel[1], pixel[2]));
 
@@ -322,7 +322,7 @@ EXPORT_DLL(int) RayTracer_Texture_getPixel(int index, double *pixel, const doubl
 	Dynamic_Container<Texture> *texture = texture_list.get(index);
 	if (texture == nullptr) return -1;
 
-	Vec3f vec_pixel = texture->object->getPixel(Vec3f(point[0], point[1], point[2]));
+	Vec3f vec_pixel = texture->getObject()->getPixel(Vec3f(point[0], point[1], point[2]));
 	pixel[0] = vec_pixel[0];
 	pixel[1] = vec_pixel[1];
 	pixel[2] = vec_pixel[2];
@@ -358,8 +358,8 @@ EXPORT_DLL(int) RayTracer_Scatter_setTexture(int index_scatter, int index_textur
 	if (container_texture == nullptr) return -1;
 
 	// set texture
-	Scatter	*scatter = container_scatter->object;
-	Texture	*texture = container_texture->object;
+	Scatter	*scatter = container_scatter->getObject();
+	Texture	*texture = container_texture->getObject();
 
 	if (!scatter->setTexture(texture, offset)) return -1;
 	return 0;
@@ -393,8 +393,8 @@ EXPORT_DLL(int) RayTracer_SceneObject_Hitable_addScatter(int index_hitable, int 
 	if (container_scatter == nullptr) return -1;
 
 	// add scatter
-	SceneObject_Hitable	*hitable	= container_hitable->object;
-	Scatter				*scatter	= container_scatter->object;
+	SceneObject_Hitable	*hitable	= container_hitable->getObject();
+	Scatter				*scatter	= container_scatter->getObject();
 
 	if (!hitable->shader.addScatter(scatter)) return -1;
 	return 0;
@@ -410,8 +410,8 @@ EXPORT_DLL(int) RayTracer_SceneObject_Hitable_rmScatter(int index_hitable, int i
 	if (container_scatter == nullptr) return -1;
 
 	// remove scatter
-	SceneObject_Hitable	*hitable	= container_hitable->object;
-	Scatter				*scatter	= container_scatter->object;
+	SceneObject_Hitable	*hitable	= container_hitable->getObject();
+	Scatter				*scatter	= container_scatter->getObject();
 
 	if (!hitable->shader.rmScatter(scatter)) return -1;
 	return 0;
@@ -440,7 +440,7 @@ EXPORT_DLL(int) RayTracer_SceneObject_Light_setOrigin(int index, double *origin)
 	Dynamic_Container<SceneObject_Light> *container_light = light_list.get(index);
 	if (container_light == nullptr) return -1;
 
-	container_light->object->setOrigin(Vec3f(origin[0], origin[1], origin[2]));
+	container_light->getObject()->setOrigin(Vec3f(origin[0], origin[1], origin[2]));
 	return 0;
 }
 
@@ -449,7 +449,7 @@ EXPORT_DLL(int) RayTracer_SceneObject_Light_setColor(int index, double *color) {
 	Dynamic_Container<SceneObject_Light> *container_light = light_list.get(index);
 	if (container_light == nullptr) return -1;
 
-	container_light->object->setColor(Vec3f(color[0], color[1], color[2]));
+	container_light->getObject()->setColor(Vec3f(color[0], color[1], color[2]));
 	return 0;
 }
 
@@ -464,7 +464,7 @@ EXPORT_DLL(int) RayTracer_Scene_addLight(int index_light) {
 	Dynamic_Container<SceneObject_Light> *container_light = light_list.get(index_light);
 	if (container_light == nullptr) return -1;
 
-	SceneObject_Light *light = container_light->object;
+	SceneObject_Light *light = container_light->getObject();
 	if (!scene.addLight(light)) return -1;
 	return 0;
 }
@@ -474,7 +474,7 @@ EXPORT_DLL(int) RayTracer_Scene_addHitable(int index_hitable) {
 	Dynamic_Container<SceneObject_Hitable> *container_hitable = hitable_list.get(index_hitable);
 	if (container_hitable == nullptr) return -1;
 
-	SceneObject_Hitable *hitable = container_hitable->object;
+	SceneObject_Hitable *hitable = container_hitable->getObject();
 	if (!scene.addHitable(hitable)) return -1;
 	return 0;
 }
@@ -484,7 +484,7 @@ EXPORT_DLL(int) RayTracer_Scene_rmLight(int index_light) {
 	Dynamic_Container<SceneObject_Light> *container_light = light_list.get(index_light);
 	if (container_light == nullptr) return -1;
 
-	SceneObject_Light *light = container_light->object;
+	SceneObject_Light *light = container_light->getObject();
 	if (!scene.rmLight(light)) return -1;
 	return 0;
 }
@@ -494,7 +494,7 @@ EXPORT_DLL(int) RayTracer_Scene_rmHitable(int index_hitable) {
 	Dynamic_Container<SceneObject_Hitable> *container_hitable = hitable_list.get(index_hitable);
 	if (container_hitable == nullptr) return -1;
 
-	SceneObject_Hitable *hitable = container_hitable->object;
+	SceneObject_Hitable *hitable = container_hitable->getObject();
 	if (!scene.rmHitable(hitable)) return -1;
 	return 0;
 }
