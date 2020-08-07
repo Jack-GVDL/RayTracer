@@ -35,13 +35,16 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 	public:
 		// init
 		SceneObject_Sphere()
-		{}
-
-		SceneObject_Sphere(Vec3f center, double radius)
 		{
-			setCenter(center);
-			setRadius(radius);
+			// updateBoundingBox();
 		}
+
+		// backup
+		// SceneObject_Sphere(Vec3f center, double radius)
+		// {
+		// 	setCenter(center);
+		// 	setRadius(radius);
+		// }
 
 		// operation
 		void			setCenter	(const Vec3f &center);
@@ -49,7 +52,15 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 
 		// interface
 		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
+	
+	protected:
+		// operation
+		void			updateBoundingBox	();
 };
+
+
+// TODO: change name of class later
+typedef SceneObject_Sphere Hitable_Sphere;
 
 
 // Macro Function

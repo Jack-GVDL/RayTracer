@@ -8,6 +8,7 @@
                    "RayTracer_SceneObject_Hitable.o ",
                    "RayTracer_SceneObject_Hitable_Sphere.o ",
                    "RayTracer_SceneObject_Hitable_Trimesh.o ",
+                   "RayTracer_SceneObject_Hitable_AABB.o ",
                    "RayTracer_SceneObject_Light.o ",
                    ""],
 

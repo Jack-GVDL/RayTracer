@@ -21,11 +21,13 @@
 void SceneObject_Sphere::setCenter(const Vec3f &center) {
 	this->origin	= center;
 	this->center	= center;
+	// updateBoundingBox();
 }
 
 
 void SceneObject_Sphere::setRadius(double radius) {
 	this->radius	= radius;
+	// updateBoundingBox();
 }
 
 
@@ -66,6 +68,12 @@ bool SceneObject_Sphere::hit(RecordHit *record, double t_min, double t_max) cons
 	VecMath::reverseNormal_incidentRay(record->normal, ray->getDirection());
 
 	return true;
+}
+
+
+void SceneObject_Sphere::updateBoundingBox() {
+	bounding_min	= center - Vec3f(radius);
+	bounding_max	= center + Vec3f(radius);
 }
 
 

@@ -18,6 +18,8 @@ void SceneObject_Trimesh::setPoint(const Vec3f &p0, const Vec3f &p1, const Vec3f
 	this->point[0]	= p0;
 	this->point[1]	= p1;
 	this->point[2]	= p2;
+
+	// updateBoundingBox();
 }
 
 
@@ -64,6 +66,25 @@ bool SceneObject_Trimesh::hit(RecordHit *record, double t_min, double t_max) con
 	VecMath::reverseNormal_incidentRay(record->normal, ray->getDirection());
 	
 	return true;
+}
+
+
+void SceneObject_Trimesh::updateBoundingBox() {
+	// point 0
+	bounding_min = point[0];
+	bounding_max = point[0];
+
+	// point 1
+	for (int i = 0; i < 3; i++) {
+		bounding_min[i]	= std::min<double>(bounding_min[i], point[1][i]);
+		bounding_max[i]	= std::max<double>(bounding_max[i], point[1][i]);
+	}
+
+	// point 2
+	for (int i = 0; i < 3; i++) {
+		bounding_min[i]	= std::min<double>(bounding_min[i], point[2][i]);
+		bounding_max[i]	= std::max<double>(bounding_max[i], point[2][i]);
+	}
 }
 
 

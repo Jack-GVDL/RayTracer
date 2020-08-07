@@ -34,23 +34,34 @@ class SceneObject_Trimesh: public SceneObject_Hitable {
 	public:
 		// init
 		SceneObject_Trimesh() {
-			point[0]	= Vec3f();
-			point[1]	= Vec3f();
-			point[2]	= Vec3f();
+			point[0]	= Vec3f(0);
+			point[1]	= Vec3f(0);
+			point[2]	= Vec3f(0);
+
+			// updateBoundingBox();
 		}
 
-		SceneObject_Trimesh(Vec3f p0, Vec3f p1, Vec3f p2) {
-			point[0]	= p0;
-			point[1]	= p1;
-			point[2]	= p2;
-		}
+		// backup
+		// SceneObject_Trimesh(Vec3f p0, Vec3f p1, Vec3f p2) {
+		// 	point[0]	= p0;
+		// 	point[1]	= p1;
+		// 	point[2]	= p2;
+		// }
 
 		// operation
 		void			setPoint	(const Vec3f &p0, const Vec3f &p1, const Vec3f &p2);
 
 		// interface
 		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
+
+	protected:
+		// operation
+		void			updateBoundingBox	();
 };
+
+
+// TODO: change name of class later
+typedef SceneObject_Trimesh Hitable_Trimesh;
 
 
 // Macro Function

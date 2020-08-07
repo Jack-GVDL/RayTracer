@@ -5,6 +5,7 @@
                    "obj_x64/RayTracer_SceneObject_Hitable.o ",
                    "obj_x64/RayTracer_SceneObject_Hitable_Sphere.o ",
                    "obj_x64/RayTracer_SceneObject_Hitable_Trimesh.o ",
+                   "obj_x64/RayTracer_SceneObject_Hitable_AABB.o ",
                    "obj_x64/RayTracer_SceneObject_Light.o ",
                    ""]
 }
