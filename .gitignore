@@ -1,0 +1,9 @@
+obj_*/
+backup/
+.idea/
+.vscode/
+*.ppm
+*.exe
+*.dll
+*.bmp
+__pycache__
