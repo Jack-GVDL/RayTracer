@@ -36,7 +36,7 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 		// init
 		SceneObject_Sphere()
 		{
-			// updateBoundingBox();
+			updateBoundingBox();
 		}
 
 		// backup

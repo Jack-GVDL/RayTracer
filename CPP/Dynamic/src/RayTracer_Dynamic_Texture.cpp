@@ -6,47 +6,76 @@
 
 
 // Typedef
-typedef int(*config_func_table_t)(void *object, uint8_t *data, uint32_t size);
+// ...
 
 
 // Static Function Prototype
-// init
+// ops
 static void*		init_constant						();
 static void*		init_checkerboard					();
 static void*		init_image							();
 
-// config
 static int			config_constant						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_checkerboard					(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_image						(void *object, int type, uint8_t *data, uint32_t size);
 
-// inline
-static inline int	config_table						(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size);
+static int			interact_constant					(void *object, int type, void* *list, uint32_t size);
+static int			interact_checkerboard				(void *object, int type, void* *list, uint32_t size);
+static int			interact_image						(void *object, int type, void* *list, uint32_t size);
 
 // table
 static int			config_checkerboard_setBoardSize	(void *object, uint8_t *data, uint32_t size);
 
 
 // Static Data
-static config_func_table_t	config_table_constant		[]	= {
+// config
+static config_type_func_t	config_table_constant		[]	= {
+	0
+};
+
+static config_type_func_t	config_table_checkerboard	[]	= {
+	config_checkerboard_setBoardSize
+};
+
+static config_type_func_t	config_table_image			[]	= {
 	0};
 
-static config_func_table_t	config_table_checkerboard	[]	= {
-	config_checkerboard_setBoardSize};
+// interact
+static interact_type_func_t	interact_table_constant		[]	= {
+	0
+};
 
-static config_func_table_t	config_table_image			[]	= {
-	0};
+static interact_type_func_t	interact_table_checkerboard	[]	= {
+	0
+};
+
+static interact_type_func_t	interact_table_image		[]	= {
+	0
+};
 
 
 // Operation Handling
-void RayTracer_Dynamic_Texture_init(std::vector<init_func_t>* init_list, std::vector<config_func_t>* config_list) {
-	init_list->push_back(init_constant);
-	init_list->push_back(init_checkerboard);
-	init_list->push_back(init_image);
+void RayTracer_Dynamic_Texture_init(std::vector<Dynamic_ContainerType*> *type_list) {
+	// constant
+	Dynamic_ContainerType	*type_constant		= new Dynamic_ContainerType();
+	type_constant->ops_init			= init_constant;
+	type_constant->ops_config		= config_constant;
+	type_constant->ops_interact		= interact_constant;
+	type_list->push_back(type_constant);
 
-	config_list->push_back(config_constant);
-	config_list->push_back(config_checkerboard);
-	config_list->push_back(config_image);
+	// checkerboard
+	Dynamic_ContainerType	*type_checkerboard	= new Dynamic_ContainerType();
+	type_checkerboard->ops_init		= init_checkerboard;
+	type_checkerboard->ops_config	= config_checkerboard;
+	type_checkerboard->ops_interact	= interact_checkerboard;
+	type_list->push_back(type_checkerboard);
+
+	// image
+	Dynamic_ContainerType	*type_image			= new Dynamic_ContainerType();
+	type_image->ops_init			= init_image;
+	type_image->ops_config			= config_image;
+	type_image->ops_interact		= interact_image;
+	type_list->push_back(type_image);
 }
 
 
@@ -85,28 +114,33 @@ static void* init_image() {
 
 // config
 static int config_constant(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_constant, object, type, data, size);
+	return DynamicUtil::configType(config_table_constant, object, type, data, size);
 }
 
 
 static int config_checkerboard(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_checkerboard, object, type, data, size);
+	return DynamicUtil::configType(config_table_checkerboard, object, type, data, size);
 }
 
 
 static int config_image(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_image, object, type, data, size);
+	return DynamicUtil::configType(config_table_image, object, type, data, size);
 }
 
 
-// inline
-static inline int config_table(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size) {
-	// if (table == nullptr) return -1;  // trust operation
-	// if (object == nullptr) return -1;  // trust operation
+// interact
+static int interact_constant(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_constant, object, type, list, size);
+}
 
-	// TODO: currently no size checking
-	// it has to be done outside this function
-	return table[type](object, data, size);
+
+static int interact_checkerboard(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_checkerboard, object, type, list, size);
+}
+
+
+static int interact_image(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_image, object, type, list, size);
 }
 
 

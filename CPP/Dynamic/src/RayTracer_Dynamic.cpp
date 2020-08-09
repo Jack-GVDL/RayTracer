@@ -13,7 +13,7 @@
 
 
 // Define
-// ...
+#define BUFFER_MAX_LENGTH	8
 
 
 // Typedef
@@ -21,7 +21,18 @@
 
 
 // Static Function Prototype
-// ...
+// TODO: may move to Dynamic_Container
+template <class T>
+int	Dynamic_Container_create	(Dynamic_ContainerList<T> *list, int type);
+
+template <class T>
+int	Dynamic_Container_destroy	(Dynamic_ContainerList<T> *list, int index);
+
+template <class T>
+int	Dynamic_Container_interact	(Dynamic_ContainerList<T> *list, int index, int type, int *index_list, int *type_list, uint32_t size);
+
+template <class T>
+int	Dynamic_Container_config	(Dynamic_ContainerList<T> *list, int index, int type, uint8_t *data, uint32_t size);
 
 
 // Static Data
@@ -36,6 +47,16 @@ Dynamic_ContainerList<Scatter>				scatter_list;
 Dynamic_ContainerList<SceneObject_Hitable>	hitable_list;
 Dynamic_ContainerList<SceneObject_Light>	light_list;
 
+Dynamic_ContainerListBase*					container_list[] = {
+	&camera_list,
+	&mapper_list,
+	&surface_list,
+	&texture_list,
+	&scatter_list,
+	&hitable_list,
+	&light_list
+};
+
 
 // Operation Handling
 EXPORT_DLL(void) RayTracer_init() {
@@ -43,13 +64,13 @@ EXPORT_DLL(void) RayTracer_init() {
 	tracer	= RayTracer(&scene);
 
 	// init
-	RayTracer_Dynamic_Camera_init(	&(camera_list.init_list),	&(camera_list.config_list)	);
-	RayTracer_Dynamic_Mapper_init(	&(mapper_list.init_list),	&(mapper_list.config_list)	);
-	RayTracer_Dynamic_Surface_init(	&(surface_list.init_list),	&(surface_list.config_list)	);
-	RayTracer_Dynamic_Texture_init(	&(texture_list.init_list),	&(texture_list.config_list)	);
-	RayTracer_Dynamic_Scatter_init(	&(scatter_list.init_list),	&(scatter_list.config_list)	);
-	RayTracer_Dynamic_Hitable_init(	&(hitable_list.init_list),	&(hitable_list.config_list)	);
-	RayTracer_Dynamic_Light_init(	&(light_list.init_list),	&(light_list.config_list)	);
+	RayTracer_Dynamic_Camera_init(	&(camera_list.type_list)	);
+	RayTracer_Dynamic_Mapper_init(	&(mapper_list.type_list)	);
+	RayTracer_Dynamic_Surface_init(	&(surface_list.type_list)	);
+	RayTracer_Dynamic_Texture_init(	&(texture_list.type_list)	);
+	RayTracer_Dynamic_Scatter_init(	&(scatter_list.type_list)	);
+	RayTracer_Dynamic_Hitable_init(	&(hitable_list.type_list)	);
+	RayTracer_Dynamic_Light_init(	&(light_list.type_list)		);
 
 	// create a deafult camera
 	// can / should be used for testing
@@ -136,16 +157,23 @@ EXPORT_DLL(int) RayTracer_Tracer_tracerRect(int index_camera, double *pixel, dou
 
 
 // camera
-// TODO: currently type is useless
 EXPORT_DLL(int) RayTracer_Camera_create(int type) {
-	Dynamic_Container<Camera> *container_camera = camera_list.create(type);
-	if (container_camera == nullptr) return -1;
-	return container_camera->getIndex();
+	return Dynamic_Container_create<Camera>(&camera_list, type);
 }
 
 
 EXPORT_DLL(int) RayTracer_Camera_destroy(int index) {
-	return camera_list.destroy(index);
+	return Dynamic_Container_destroy<Camera>(&camera_list, index);
+}
+
+
+EXPORT_DLL(int) RayTracer_Camera_config(int index, int type, uint8_t *data, uint32_t size) {
+	return Dynamic_Container_config<Camera>(&camera_list, index, type, data, size);
+}
+
+
+EXPORT_DLL(int) RayTracer_Camera_interact(int index, int type, int *index_list, int *type_list, uint32_t size) {
+	return Dynamic_Container_interact<Camera>(&camera_list, index, type, index_list, type_list, size);
 }
 
 
@@ -194,39 +222,45 @@ EXPORT_DLL(int) RayTracer_Camera_setAspectRatio(int index, double value) {
 }
 
 
-EXPORT_DLL(int) RayTracer_Camera_config(int index, int type, uint8_t *data, uint32_t size) {
-	return camera_list.config(index, type, data, size);
-}
-
-
 // mapper
 EXPORT_DLL(int) RayTracer_Mapper_create(int type) {
-	Dynamic_Container<Mapper> *container_mapper = mapper_list.create(type);
-	if (container_mapper == nullptr) return -1;
-	return container_mapper->getIndex();
+	return Dynamic_Container_create<Mapper>(&mapper_list, type);
 }
 
 
 EXPORT_DLL(int) RayTracer_Mapper_destroy(int index) {
-	return mapper_list.destroy(index);
+	return Dynamic_Container_destroy<Mapper>(&mapper_list, index);
 }
 
 
 EXPORT_DLL(int) RayTracer_Mapper_config(int index, int type, uint8_t *data, uint32_t size) {
-	return mapper_list.config(index, type, data, size);
+	return Dynamic_Container_config<Mapper>(&mapper_list, index, type, data, size);
+}
+
+
+EXPORT_DLL(int) RayTracer_Mapper_interact(int index, int type, int *index_list, int *type_list, uint32_t size) {
+	return Dynamic_Container_interact<Mapper>(&mapper_list, index, type, index_list, type_list, size);
 }
 
 
 // surface
 EXPORT_DLL(int) RayTracer_Surface_create(int type) {
-	Dynamic_Container<Surface> *surface = surface_list.create(type);
-	if (surface == nullptr) return -1;
-	return surface->getIndex();
+	return Dynamic_Container_create<Surface>(&surface_list, type);
 }
 
 
 EXPORT_DLL(int) RayTracer_Surface_destroy(int index) {
-	return surface_list.destroy(index);
+	return Dynamic_Container_destroy<Surface>(&surface_list, index);
+}
+
+
+EXPORT_DLL(int) RayTracer_Surface_config(int index, int type, uint8_t *data, uint32_t size) {
+	return Dynamic_Container_config<Surface>(&surface_list, index, type, data, size);
+}
+
+
+EXPORT_DLL(int) RayTracer_Surface_interact(int index, int type, int *index_list, int *type_list, uint32_t size) {
+	return Dynamic_Container_interact<Surface>(&surface_list, index, type, index_list, type_list, size);
 }
 
 
@@ -264,21 +298,24 @@ EXPORT_DLL(int) RayTracer_Surface_convertToTexture(int index_surface, int index_
 }
 
 
-EXPORT_DLL(int) RayTracer_Surface_config(int index, int type, uint8_t *data, uint32_t size) {
-	return surface_list.config(index, type, data, size);
-}
-
-
 // texture
 EXPORT_DLL(int) RayTracer_Texture_create(int type) {
-	Dynamic_Container<Texture> *texture = texture_list.create(type);
-	if (texture == nullptr) return -1;
-	return texture->getIndex();
+	return Dynamic_Container_create<Texture>(&texture_list, type);
 }
 
 
 EXPORT_DLL(int) RayTracer_Texture_destroy(int index) {
-	return texture_list.destroy(index);	
+	return Dynamic_Container_destroy<Texture>(&texture_list, index);
+}
+
+
+EXPORT_DLL(int) RayTracer_Texture_interact(int index, int type, int *index_list, int *type_list, uint32_t size) {
+	return Dynamic_Container_interact<Texture>(&texture_list, index, type, index_list, type_list, size);
+}
+
+
+EXPORT_DLL(int) RayTracer_Texture_config(int index, int type, uint8_t *data, uint32_t size) {
+	return Dynamic_Container_config<Texture>(&texture_list, index, type, data, size);
 }
 
 
@@ -291,7 +328,7 @@ EXPORT_DLL(int) RayTracer_Texture_addMapper(int index_texture, int index_mapper)
 
 	if (!container_texture->getObject()->addMapper(container_mapper->getObject())) return -1;
 	return 0;
-}
+}	
 
 
 EXPORT_DLL(int) RayTracer_Texture_rmMapper(int index_texture, int index_mapper) {
@@ -331,21 +368,24 @@ EXPORT_DLL(int) RayTracer_Texture_getPixel(int index, double *pixel, const doubl
 }
 
 
-EXPORT_DLL(int) RayTracer_Texture_config(int index, int type, uint8_t *data, uint32_t size) {
-	return texture_list.config(index, type, data, size);
-}
-
-
 // scatter
 EXPORT_DLL(int) RayTracer_Scatter_create(int type) {
-	Dynamic_Container<Scatter> *scatter = scatter_list.create(type);
-	if (scatter == nullptr) return -1;
-	return scatter->getIndex();
+	return Dynamic_Container_create<Scatter>(&scatter_list, type);
 }
 
 
 EXPORT_DLL(int) RayTracer_Scatter_destroy(int index) {
-	return scatter_list.destroy(index);
+	return Dynamic_Container_destroy<Scatter>(&scatter_list, index);
+}
+
+
+EXPORT_DLL(int) RayTracer_Scatter_interact(int index, int type, int *index_list, int *type_list, uint32_t size) {
+	return Dynamic_Container_interact<Scatter>(&scatter_list, index, type, index_list, type_list, size);
+}
+
+
+EXPORT_DLL(int) RayTracer_Scatter_config(int index, int type, uint8_t *data, uint32_t size) {
+	return Dynamic_Container_config<Scatter>(&scatter_list, index, type, data, size);
 }
 
 
@@ -366,21 +406,24 @@ EXPORT_DLL(int) RayTracer_Scatter_setTexture(int index_scatter, int index_textur
 }
 
 
-EXPORT_DLL(int) RayTracer_Scatter_config(int index, int type, uint8_t *data, uint32_t size) {
-	return scatter_list.config(index, type, data, size);
-}
-
-
 // hitable
 EXPORT_DLL(int) RayTracer_SceneObject_Hitable_create(int type) {
-	Dynamic_Container<SceneObject_Hitable> *hitable = hitable_list.create(type);
-	if (hitable == nullptr) return -1;
-	return hitable->getIndex();
+	return Dynamic_Container_create<SceneObject_Hitable>(&hitable_list, type);
 }
 
 
 EXPORT_DLL(int) RayTracer_SceneObject_Hitable_destroy(int index) {
-	return hitable_list.destroy(index);
+	return Dynamic_Container_destroy<SceneObject_Hitable>(&hitable_list, index);
+}
+
+
+EXPORT_DLL(int) RayTracer_SceneObject_Hitable_interact(int index, int type, int *index_list, int *type_list, uint32_t size) {
+	return Dynamic_Container_interact<SceneObject_Hitable>(&hitable_list, index, type, index_list, type_list, size);
+}
+
+
+EXPORT_DLL(int) RayTracer_SceneObject_Hitable_config(int index, int type, uint8_t *data, uint32_t size) {
+	return Dynamic_Container_config<SceneObject_Hitable>(&hitable_list, index, type, data, size);
 }
 
 
@@ -418,21 +461,24 @@ EXPORT_DLL(int) RayTracer_SceneObject_Hitable_rmScatter(int index_hitable, int i
 }
 
 
-EXPORT_DLL(int) RayTracer_SceneObject_Hitable_config(int index, int type, uint8_t *data, uint32_t size) {
-	return hitable_list.config(index, type, data, size);
-}
-
-
 // light
 EXPORT_DLL(int) RayTracer_SceneObject_Light_create(int type) {
-	Dynamic_Container<SceneObject_Light> *light = light_list.create(type);
-	if (light == nullptr) return -1;
-	return light->getIndex();
+	return Dynamic_Container_create<SceneObject_Light>(&light_list, type);
 }
 
 
 EXPORT_DLL(int) RayTracer_SceneObject_Light_destroy(int index) {
-	return light_list.destroy(index);
+	return Dynamic_Container_destroy<SceneObject_Light>(&light_list, index);
+}
+
+
+EXPORT_DLL(int) RayTracer_SceneObject_Light_interact(int index, int type, int *index_list, int *type_list, uint32_t size) {
+	return Dynamic_Container_interact<SceneObject_Light>(&light_list, index, type, index_list, type_list, size);
+}
+
+
+EXPORT_DLL(int) RayTracer_SceneObject_Light_config(int index, int type, uint8_t *data, uint32_t size) {
+	return Dynamic_Container_config<SceneObject_Light>(&light_list, index, type, data, size);
 }
 
 
@@ -451,11 +497,6 @@ EXPORT_DLL(int) RayTracer_SceneObject_Light_setColor(int index, double *color) {
 
 	container_light->getObject()->setColor(Vec3f(color[0], color[1], color[2]));
 	return 0;
-}
-
-
-EXPORT_DLL(int) RayTracer_SceneObject_Light_config(int index, int type, uint8_t *data, uint32_t size) {
-	return light_list.config(index, type, data, size);
 }
 
 
@@ -501,4 +542,38 @@ EXPORT_DLL(int) RayTracer_Scene_rmHitable(int index_hitable) {
 
 
 // Static Function Implementation
-// ...
+template <class T>
+static int Dynamic_Container_create(Dynamic_ContainerList<T> *list, int type) {
+	Dynamic_Container<T> *container = list->create(type);
+	if (container == nullptr) return -1;
+	return container->getIndex();
+}
+
+
+template <class T>
+static int Dynamic_Container_destroy(Dynamic_ContainerList<T> *list, int index) {
+	return list->destroy(index);
+}
+
+
+template <class T>
+static int Dynamic_Container_interact(Dynamic_ContainerList<T> *list, int index, int type, int *index_list, int *type_list, uint32_t size) {
+	// get interaction object list
+	Dynamic_ContainerBase* interact_list[BUFFER_MAX_LENGTH] = {0};
+	for (int i = 0; i < size; i++) {
+		const int target_index	= index_list[i];
+		const int target_type	= index_list[i];
+		interact_list[i] = container_list[target_type]->_get_(target_index);
+
+		if (interact_list[i] == nullptr) return -1;
+	}
+
+	// interact
+	return list->interact(index, type, interact_list, size);
+}
+
+
+template <class T>
+static int Dynamic_Container_config(Dynamic_ContainerList<T> *list, int index, int type, uint8_t *data, uint32_t size) {
+	return list->config(index, type, data, size);
+}

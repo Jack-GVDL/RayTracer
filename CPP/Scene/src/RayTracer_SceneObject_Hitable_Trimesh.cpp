@@ -19,7 +19,7 @@ void SceneObject_Trimesh::setPoint(const Vec3f &p0, const Vec3f &p1, const Vec3f
 	this->point[1]	= p1;
 	this->point[2]	= p2;
 
-	// updateBoundingBox();
+	updateBoundingBox();
 }
 
 

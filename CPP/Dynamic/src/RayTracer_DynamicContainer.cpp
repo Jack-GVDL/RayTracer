@@ -26,8 +26,9 @@ int Dynamic_ContainerBase::getIndex() {
 
 // container list
 Dynamic_ContainerBase* Dynamic_ContainerListBase::_create_(int type) {
-	if (type < 0 || type >= init_list.size()) return nullptr;
-	void *o = init_list[type]();
+	if (type < 0 || type >= type_list.size()) return nullptr;
+
+	void *o = type_list[type]->ops_init();
 	if (o == nullptr) return nullptr;
 
 	Dynamic_ContainerBase *container = new Dynamic_ContainerBase(object_index);
@@ -80,9 +81,21 @@ int Dynamic_ContainerListBase::_config_(int index, int type, uint8_t *data, uint
 	if (container == nullptr) return -1;
 
 	int container_type = container->type;
-	if (container_type < 0 || container_type >= config_list.size()) return -1;
+	if (container_type < 0 || container_type >= type_list.size()) return -1;
 
-	config_list[container_type](container->object, type, data, size);
+	type_list[container_type]->ops_config(container->object, type, data, size);
+	return 0;
+}
+
+
+int Dynamic_ContainerListBase::_interact_(int index, int type, Dynamic_ContainerBase* *list, uint32_t size) {
+	Dynamic_ContainerBase *container = _get_(index);
+	if (container == nullptr) return -1;
+
+	int container_type = container_type;
+	if (container_type < 0 || container_type >= type_list.size()) return -1;
+
+	type_list[container_type]->ops_interact(container->object, type, (void**)list, size);
 	return 0;
 }
 

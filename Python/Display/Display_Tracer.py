@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import *
 from Base import *
+import time
 
 
 class Display_Tracer(QWidget):
@@ -24,9 +25,14 @@ class Display_Tracer(QWidget):
 		self._y = y
 
 	def paintEvent(self, event: QPaintEvent) -> None:
+		# begin painter
 		painter:	QPainter = QPainter()
 		painter.begin(self)
 
+		# execution time starting point
+		start_time = time.time()
+
+		# get pixel and draw on screen
 		x_half: float = self._x / 2
 		y_half: float = self._y / 2
 
@@ -47,4 +53,12 @@ class Display_Tracer(QWidget):
 				painter.setPen(color)
 				painter.drawPoint(x, self._y - y)  # be careful of coordinate system
 
+		# execution time end point and display time
+		end_time = time.time()
+		painter.setPen(QColor(255, 255, 255))
+
+		painter.drawText(0, self._y + 20, f"Execution Time: {end_time - start_time}")
+		print(f"Execution Time: {end_time - start_time}")
+
+		# end painter
 		painter.end()

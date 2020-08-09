@@ -19,8 +19,12 @@
 
 
 // Typedef
-typedef void*(*init_func_t)();
-typedef int(*config_func_t)(void*, int, uint8_t*, uint32_t);
+typedef void*	(*init_func_t)			();
+typedef int		(*config_func_t)		(void*, int, uint8_t*, uint32_t);
+typedef int		(*interact_func_t)		(void*, int, void**, uint32_t);
+
+typedef int		(*config_type_func_t)	(void*, uint8_t*, uint32_t);
+typedef int		(*interact_type_func_t)	(void*, void**, int);
 
 
 // Enum
@@ -28,6 +32,13 @@ typedef int(*config_func_t)(void*, int, uint8_t*, uint32_t);
 
 
 // Data Structure
+struct Dynamic_ContainerType {
+	init_func_t			ops_init		= nullptr;
+	config_func_t		ops_config		= nullptr;
+	interact_func_t		ops_interact	= nullptr;
+};
+
+
 class Dynamic_ContainerBase {
 	// Data
 	protected:
@@ -73,8 +84,7 @@ class Dynamic_ContainerListBase {
 	// Data
 	public:
 		std::vector<Dynamic_ContainerBase*>		container_list;
-		std::vector<init_func_t>				init_list;
-		std::vector<config_func_t>				config_list;
+		std::vector<Dynamic_ContainerType*>		type_list;
 
 		// first valid index is 1 instead of 0
 		// 0 is considered as nullptr or ERROR_NO
@@ -87,12 +97,13 @@ class Dynamic_ContainerListBase {
 		Dynamic_ContainerListBase()
 		{}
 
-	protected:
+	public:
 		// operation
 		Dynamic_ContainerBase*	_create_	(int type);
 		int						_destroy_	(int index);
 		Dynamic_ContainerBase*	_get_		(int index);
 		int						_config_	(int index, int type, uint8_t *data, uint32_t size);
+		int						_interact_	(int index, int type, Dynamic_ContainerBase* *list, uint32_t size);
 		int						_size_		();
 		int						_indexOf_	(int index);
 
@@ -112,15 +123,20 @@ class Dynamic_ContainerList: public Dynamic_ContainerListBase {
 		{}
 
 		// operation
-		Dynamic_Container<T>*	create	(int type);
-		int						destroy	(int index);
-        Dynamic_Container<T>*	get		(int index);
-		int						config	(int index, int type, uint8_t *data, uint32_t size);
-		int						size	();
+		Dynamic_Container<T>*	create		(int type);
+		int						destroy		(int index);
+        Dynamic_Container<T>*	get			(int index);
+		int						config		(int index, int type, uint8_t *data, uint32_t size);
+		int						interact	(int index, int type, Dynamic_ContainerBase* *list, uint32_t size);
+		int						size		();
 };
 
 
 // Macro Function
+// ...
+
+
+// Static Function Prototype
 // ...
 
 
@@ -150,13 +166,28 @@ int Dynamic_ContainerList<T>::config(int index, int type, uint8_t *data, uint32_
 
 
 template <class T>
+int Dynamic_ContainerList<T>::interact(int index, int type, Dynamic_ContainerBase* *list, uint32_t size) {
+	return _interact_(index, type, list, size);
+}
+
+
+template <class T>
 int Dynamic_ContainerList<T>::size() {
 	return _size_();
 }
 
 
-// Inline Function Implementation
-// ...
+// Static Function Implementation
+namespace DynamicUtil {
+	static inline int	configType		(config_type_func_t *table, void *object, int type, uint8_t *data, uint32_t size) {
+		return table[type](object, data, size);
+	}
+
+
+	static inline int	interactType	(interact_type_func_t *table, void *object, int type, void* *list, uint32_t size) {
+		return table[type](object, list, size);
+	}
+};
 
 
 #endif  // RAYTRACER_DYNAMICCONTAINER_HPP

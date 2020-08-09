@@ -2,6 +2,7 @@
 //
 // Log
 // 2020/08/03   initial update
+// 2020/08/09   change structure: Dynamic_ContainerType
 
 
 #ifndef RAYTRACER_DYNAMIC_LIGHT_HPP
@@ -34,7 +35,7 @@
 
 
 // Operation Handling
-void	RayTracer_Dynamic_Light_init	(std::vector<init_func_t>* init_list, std::vector<config_func_t>* config_list);
+void	RayTracer_Dynamic_Light_init	(std::vector<Dynamic_ContainerType*> *type_list);
 void    RayTracer_Dynamic_Light_info    ();
 void	RayTracer_Dynamic_Light_del		();
 

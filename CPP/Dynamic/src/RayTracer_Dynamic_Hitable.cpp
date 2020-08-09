@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "../inc/RayTracer_Dynamic_Hitable.hpp"
 
 
@@ -7,20 +6,19 @@
 
 
 // Typedef
-typedef int(*config_func_table_t)(void *object, uint8_t *data, uint32_t size);
+// ...
 
 
 // Static Function Prototype
-// init
+// ops
 static void*		init_sphere							();
 static void*		init_trimesh						();
 
-// config
 static int			config_sphere						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_trimesh						(void *object, int type, uint8_t *data, uint32_t size);
 
-// inline
-static inline int	config_table						(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size);
+static int			interact_sphere						(void *object, int type, void* *list, uint32_t size);
+static int			interact_trimesh					(void *object, int type, void* *list, uint32_t size);
 
 // table
 static int			config_sphere_setCenter				(void *object, uint8_t *data, uint32_t size);
@@ -31,24 +29,43 @@ static int			config_trimesh_setPoint_2			(void *object, uint8_t *data, uint32_t 
 
 
 // Static Data
-static config_func_table_t	config_table_sphere			[] = {
+// config
+static config_type_func_t	config_table_sphere			[]	= {
 	config_sphere_setCenter,
-	config_sphere_setRadius};
+	config_sphere_setRadius
+};
 
-static config_func_table_t	config_table_trimesh		[] = {
+static config_type_func_t	config_table_trimesh		[]	= {
 	config_trimesh_setPoint_0,
 	config_trimesh_setPoint_1,
 	config_trimesh_setPoint_2
 };
 
+// interact
+static interact_type_func_t	interact_table_sphere		[]	= {
+	0
+};
+
+static interact_type_func_t	interact_table_trimesh		[]	= {
+	0
+};
+
 
 // Operation Handling
-void RayTracer_Dynamic_Hitable_init(std::vector<init_func_t>* init_list, std::vector<config_func_t>* config_list) {
-	init_list->push_back(init_sphere);
-	init_list->push_back(init_trimesh);
+void RayTracer_Dynamic_Hitable_init(std::vector<Dynamic_ContainerType*> *type_list) {
+	// sphere
+	Dynamic_ContainerType	*type_sphere	= new Dynamic_ContainerType();
+	type_sphere->ops_init		= init_sphere;
+	type_sphere->ops_config		= config_sphere;
+	type_sphere->ops_interact	= interact_sphere;
+	type_list->push_back(type_sphere);
 
-	config_list->push_back(config_sphere);
-	config_list->push_back(config_trimesh);
+	// trimesh
+	Dynamic_ContainerType	*type_trimesh	= new Dynamic_ContainerType();
+	type_trimesh->ops_init		= init_trimesh;
+	type_trimesh->ops_config	= config_trimesh;
+	type_trimesh->ops_interact	= interact_trimesh;
+	type_list->push_back(type_trimesh);
 }
 
 
@@ -80,23 +97,23 @@ static void* init_trimesh() {
 
 // config
 static int config_sphere(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_sphere, object, type, data, size);
+	return DynamicUtil::configType(config_table_sphere, object, type, data, size);
 }
 
 
 static int config_trimesh(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_trimesh, object, type, data, size);
+	return DynamicUtil::configType(config_table_trimesh, object, type, data, size);
 }
 
 
-// inline
-static inline int config_table(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size) {
-	// if (table == nullptr) return -1;  // trust operation
-	// if (object == nullptr) return -1;  // trust operation
+// interact
+static int interact_sphere(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_sphere, object, type, list, size);
+}
 
-	// TODO: currently no size checking
-	// it has to be done outside this function
-	return table[type](object, data, size);
+
+static int interact_trimesh(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_trimesh, object, type, list, size);
 }
 
 

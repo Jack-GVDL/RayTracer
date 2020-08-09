@@ -21,13 +21,13 @@
 void SceneObject_Sphere::setCenter(const Vec3f &center) {
 	this->origin	= center;
 	this->center	= center;
-	// updateBoundingBox();
+	updateBoundingBox();
 }
 
 
 void SceneObject_Sphere::setRadius(double radius) {
 	this->radius	= radius;
-	// updateBoundingBox();
+	updateBoundingBox();
 }
 
 

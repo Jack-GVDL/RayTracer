@@ -38,7 +38,7 @@ class SceneObject_Trimesh: public SceneObject_Hitable {
 			point[1]	= Vec3f(0);
 			point[2]	= Vec3f(0);
 
-			// updateBoundingBox();
+			updateBoundingBox();
 		}
 
 		// backup

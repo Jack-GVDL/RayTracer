@@ -6,20 +6,19 @@
 
 
 // Typedef
-typedef int(*config_func_table_t)(void *object, uint8_t *data, uint32_t size);
+// ...
 
 
 // Static Function Prototype
-// init
+// ops
 static void*		init_directional					();
 static void*		init_point							();
 
-// config
 static int			config_directional					(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_point						(void *object, int type, uint8_t *data, uint32_t size);
 
-// inline
-static inline int	config_table						(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size);
+static int			interact_directional				(void *object, int type, void* *list, uint32_t size);
+static int			interact_point						(void *object, int type, void* *list, uint32_t size);
 
 // table
 static int			config_directional_setOrientation	(void *object, uint8_t *data, uint32_t size);
@@ -27,20 +26,38 @@ static int			config_point_setAttenuationCoeff	(void *object, uint8_t *data, uint
 
 
 // Static Data
-static config_func_table_t	config_table_light_directional		[] = {
-	config_directional_setOrientation};
+static config_type_func_t	config_table_light_directional		[]	= {
+	config_directional_setOrientation
+};
 
-static config_func_table_t	config_table_light_point			[] = {
-	config_point_setAttenuationCoeff};
+static config_type_func_t	config_table_light_point			[]	= {
+	config_point_setAttenuationCoeff
+};
+
+static interact_type_func_t	interact_table_directional			[]	= {
+	0
+};
+
+static interact_type_func_t	interact_table_point				[]	= {
+	0
+};
 
 
 // Operation Handling
-void RayTracer_Dynamic_Light_init(std::vector<init_func_t>* init_list, std::vector<config_func_t>* config_list) {
-	init_list->push_back(init_directional);
-	init_list->push_back(init_point);
-
-	config_list->push_back(config_directional);
-	config_list->push_back(config_point);
+void RayTracer_Dynamic_Light_init(std::vector<Dynamic_ContainerType*> *type_list) {
+	// directional
+	Dynamic_ContainerType	*type_directional	= new Dynamic_ContainerType();
+	type_directional->ops_init		=	init_directional;
+	type_directional->ops_config	=	config_directional;
+	type_directional->ops_interact	=	interact_directional;
+	type_list->push_back(type_directional);
+	
+	// point
+	Dynamic_ContainerType	*type_point			= new Dynamic_ContainerType();
+	type_point->ops_init			=	init_point;
+	type_point->ops_config			=	config_point;
+	type_point->ops_interact		=	interact_point;
+	type_list->push_back(type_point);
 }
 
 
@@ -70,23 +87,23 @@ static void* init_point() {
 
 // config
 static int config_directional(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_light_directional, object, type, data, size);
+	return DynamicUtil::configType(config_table_light_directional, object, type, data, size);
 }
 
 
 static int config_point(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_light_point, object, type, data, size);
+	return DynamicUtil::configType(config_table_light_point, object, type, data, size);
 }
 
 
-// inline
-static inline int config_table(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size) {
-	// if (table == nullptr) return -1;  // trust operation
-	// if (object == nullptr) return -1;  // trust operation
+// interact
+static int interact_directional(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_directional, object, type, list, size);
+}
 
-	// TODO: currently no size checking
-	// it has to be done outside this function
-	return table[type](object, data, size);
+
+static int interact_point(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_point, object, type, list, size);
 }
 
 

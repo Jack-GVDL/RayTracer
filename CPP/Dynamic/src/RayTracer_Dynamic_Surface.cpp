@@ -6,42 +6,59 @@
 
 
 // Typedef
-typedef int(*config_func_table_t)(void *object, uint8_t *data, uint32_t size);
+// ...
 
 
 // Static Function Prototype
-// init
+// ops
 static void*		init_constant						();
 static void*		init_bmp							();
 
-// config
 static int			config_constant						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_bmp							(void *object, int type, uint8_t *data, uint32_t size);
 
-// inline
-static inline int	config_table						(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size);
+static int			interact_constant					(void *object, int type, void* *list, uint32_t size);
+static int			interact_bmp						(void *object, int type, void* *list, uint32_t size);
 
 // table
 static int			config_bmp_setPath					(void *object, uint8_t *data, uint32_t size);
 
 
 // Static Data
-static config_func_table_t config_table_constant	[] = {
+// config
+static config_type_func_t config_table_constant			[] = {
 	0
 };
 
-static config_func_table_t config_table_bmp			[] = {
+static config_type_func_t config_table_bmp				[] = {
 	config_bmp_setPath
+};
+
+// interact
+static interact_type_func_t	interact_table_constant		[]	= {
+	0
+};
+
+static interact_type_func_t	interact_table_bmp			[]	= {
+	0
 };
 
 
 // Operation Handling
-void RayTracer_Dynamic_Surface_init(std::vector<init_func_t>* init_list, std::vector<config_func_t>* config_list) {
-	init_list->push_back(init_constant);
-	init_list->push_back(init_bmp);
+void RayTracer_Dynamic_Surface_init(std::vector<Dynamic_ContainerType*> *type_list) {
+	// constant
+	Dynamic_ContainerType	*type_constant		= new Dynamic_ContainerType();
+	type_constant->ops_init			= init_constant;
+	type_constant->ops_config		= config_constant;
+	type_constant->ops_interact		= interact_constant;
+	type_list->push_back(type_constant);
 
-	config_list->push_back(config_constant);
-	config_list->push_back(config_bmp);
+	// bmp
+	Dynamic_ContainerType	*type_bmp		= new Dynamic_ContainerType();
+	type_bmp->ops_init				= init_bmp;
+	type_bmp->ops_config			= config_bmp;
+	type_bmp->ops_interact			= interact_bmp;
+	type_list->push_back(type_bmp);
 }
 
 
@@ -72,23 +89,23 @@ static void* init_bmp() {
 
 // config
 static int config_constant(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_constant, object, type, data, size);
+	return DynamicUtil::configType(config_table_constant, object, type, data, size);
 }
 
 
 static int config_bmp(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_bmp, object, type, data, size);
+	return DynamicUtil::configType(config_table_bmp, object, type, data, size);
 }
 
 
-// inline
-static inline int config_table(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size) {
-	// if (table == nullptr) return -1;  // trust operation
-	// if (object == nullptr) return -1;  // trust operation
+// interact
+static int interact_constant(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_constant, object, type, list, size);
+}
 
-	// TODO: currently no size checking
-	// it has to be done outside this function
-	return table[type](object, data, size);
+
+static int interact_bmp(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_bmp, object, type, list, size);
 }
 
 

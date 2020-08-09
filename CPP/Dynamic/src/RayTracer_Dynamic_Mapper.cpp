@@ -6,7 +6,7 @@
 
 
 // Typedef
-typedef int(*config_func_table_t)(void *object, uint8_t *data, uint32_t size);
+// ...
 
 
 // Static Function Prototype
@@ -14,12 +14,11 @@ typedef int(*config_func_table_t)(void *object, uint8_t *data, uint32_t size);
 static void*		init_additor						();
 static void*		init_multiplier						();
 
-// config
 static int			config_additor						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_multiplier					(void *object, int type, uint8_t *data, uint32_t size);
 
-// inline
-static inline int	config_table						(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size);
+static int			interact_additor					(void *object, int type, void* *list, uint32_t size);
+static int			interact_multiplier					(void *object, int type, void* *list, uint32_t size);
 
 // table
 static int			config_additor_setAdditor			(void *object, uint8_t *data, uint32_t size);
@@ -27,22 +26,38 @@ static int			config_multiplier_setMultiplier		(void *object, uint8_t *data, uint
 
 
 // Static Data
-static config_func_table_t	config_table_additor	[] = {
+static config_type_func_t	config_table_additor		[]	= {
 	config_additor_setAdditor
 };
 
-static config_func_table_t	config_table_multiplier	[] = {
+static config_type_func_t	config_table_multiplier		[]	= {
 	config_multiplier_setMultiplier
+};
+
+static interact_type_func_t	interact_table_additor		[]	= {
+	0
+};
+
+static interact_type_func_t	interact_table_multiplier	[]	= {
+	0
 };
 
 
 // Operation Handling
-void RayTracer_Dynamic_Mapper_init(std::vector<init_func_t>* init_list, std::vector<config_func_t> *config_list) {
-	init_list->push_back(init_additor);
-	init_list->push_back(init_multiplier);
+void RayTracer_Dynamic_Mapper_init(std::vector<Dynamic_ContainerType*> *type_list) {
+	// additor
+	Dynamic_ContainerType	*type_additor		= new Dynamic_ContainerType();
+	type_additor->ops_init		= init_additor;
+	type_additor->ops_config	= config_additor;
+	type_additor->ops_interact	= interact_additor;
+	type_list->push_back(type_additor);
 
-	config_list->push_back(config_additor);
-	config_list->push_back(config_multiplier);
+	// multiplier
+	Dynamic_ContainerType	*type_multiplier	= new Dynamic_ContainerType();
+	type_multiplier->ops_init		= init_multiplier;
+	type_multiplier->ops_config	= config_multiplier;
+	type_multiplier->ops_interact	= interact_multiplier;
+	type_list->push_back(type_multiplier);
 }
 
 
@@ -74,23 +89,23 @@ static void* init_multiplier() {
 
 // config
 static int config_additor(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_additor, object, type, data, size);
+	return DynamicUtil::configType(config_table_additor, object, type, data, size);
 }
 
 
 static int config_multiplier(void *object, int type, uint8_t *data, uint32_t size) {
-	return config_table(config_table_multiplier, object, type, data, size);
+	return DynamicUtil::configType(config_table_multiplier, object, type, data, size);
 }
 
 
-// inline
-static inline int config_table(config_func_table_t *table, void *object, int type, uint8_t *data, uint32_t size) {
-	// if (table == nullptr) return -1;  // trust operation
-	// if (object == nullptr) return -1;  // trust operation
+// interact
+static int interact_additor(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_additor, object, type, list, size);
+}
 
-	// TODO: currently no size checking
-	// it has to be done outside this function
-	return table[type](object, data, size);
+
+static int interact_multiplier(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(interact_table_multiplier, object, type, list, size);
 }
 
 
