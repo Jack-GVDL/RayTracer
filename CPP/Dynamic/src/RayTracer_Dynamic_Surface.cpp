@@ -23,6 +23,7 @@ static int			interact_bmp						(void *object, int type, void* *list, uint32_t si
 // table
 static int			config_bmp_setPath					(void *object, uint8_t *data, uint32_t size);
 
+static int			interact_bmp_convertToTexture		(void *object, void* *list, uint32_t size);
 
 // Static Data
 // config
@@ -40,7 +41,7 @@ static interact_type_func_t	interact_table_constant		[]	= {
 };
 
 static interact_type_func_t	interact_table_bmp			[]	= {
-	0
+	interact_bmp_convertToTexture
 };
 
 
@@ -125,3 +126,11 @@ static int config_bmp_setPath(void *object, uint8_t *data, uint32_t size) {
 	return 0;
 }
 
+
+static int interact_bmp_convertToTexture(void *object, void* *list, uint32_t size) {
+	Surface_BMP		*surface	= (Surface_BMP*)object;
+	Texture_Image	*texture	= (Texture_Image*)(list[0]);
+
+	if (!surface->convertToTexture(texture)) return -1;
+	return 0;
+}

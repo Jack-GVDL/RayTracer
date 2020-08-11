@@ -282,20 +282,20 @@ EXPORT_DLL(int) RayTracer_Surface_dump(int index) {
 }
 
 
-EXPORT_DLL(int) RayTracer_Surface_convertToTexture(int index_surface, int index_texture) {
-	Dynamic_Container<Surface> *container_surface = surface_list.get(index_surface);
-	if (container_surface == nullptr) return -1;
+// EXPORT_DLL(int) RayTracer_Surface_convertToTexture(int index_surface, int index_texture) {
+// 	Dynamic_Container<Surface> *container_surface = surface_list.get(index_surface);
+// 	if (container_surface == nullptr) return -1;
 
-	Dynamic_Container<Texture> *container_texture = texture_list.get(index_texture);
-	if (container_texture == nullptr) return -1;
+// 	Dynamic_Container<Texture> *container_texture = texture_list.get(index_texture);
+// 	if (container_texture == nullptr) return -1;
 
-	// need to check type of texture
-	// which need to be Texture_Image
-	if (container_texture->type != TypeTexture::TEXTURE_IMAGE) return -1;
+// 	// need to check type of texture
+// 	// which need to be Texture_Image
+// 	if (container_texture->type != TypeTexture::TEXTURE_IMAGE) return -1;
 
-	if (!container_surface->getObject()->convertToTexture((Texture_Image*)(container_texture->object))) return -1;
-	return 0;
-}
+// 	if (!container_surface->getObject()->convertToTexture((Texture_Image*)(container_texture->object))) return -1;
+// 	return 0;
+// }
 
 
 // texture
@@ -562,7 +562,7 @@ static int Dynamic_Container_interact(Dynamic_ContainerList<T> *list, int index,
 	Dynamic_ContainerBase* interact_list[BUFFER_MAX_LENGTH] = {0};
 	for (int i = 0; i < size; i++) {
 		const int target_index	= index_list[i];
-		const int target_type	= index_list[i];
+		const int target_type	= type_list[i];
 		interact_list[i] = container_list[target_type]->_get_(target_index);
 
 		if (interact_list[i] == nullptr) return -1;

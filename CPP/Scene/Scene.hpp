@@ -17,6 +17,7 @@
 
 #include "./inc/RayTracer_SceneObject_Hitable_Sphere.hpp"
 #include "./inc/RayTracer_SceneObject_Hitable_Trimesh.hpp"
+#include "./inc/RayTracer_SceneObject_Hitable_AABB.hpp"
 
 
 // Define

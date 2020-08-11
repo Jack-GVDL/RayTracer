@@ -14,7 +14,8 @@
 
 
 // Operation Handling
-void SceneObject_Trimesh::setPoint(const Vec3f &p0, const Vec3f &p1, const Vec3f &p2) {
+// hitable
+void Hitable_Trimesh::setPoint(const Vec3f &p0, const Vec3f &p1, const Vec3f &p2) {
 	this->point[0]	= p0;
 	this->point[1]	= p1;
 	this->point[2]	= p2;
@@ -25,7 +26,7 @@ void SceneObject_Trimesh::setPoint(const Vec3f &p0, const Vec3f &p1, const Vec3f
 
 // reference
 // 1. https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
-bool SceneObject_Trimesh::hit(RecordHit *record, double t_min, double t_max) const {
+bool Hitable_Trimesh::hit(RecordHit *record, double t_min, double t_max) const {
 	const Vec3f	&a	= point[0];
 	const Vec3f	&b	= point[1];
 	const Vec3f	&c	= point[2];
@@ -69,7 +70,7 @@ bool SceneObject_Trimesh::hit(RecordHit *record, double t_min, double t_max) con
 }
 
 
-void SceneObject_Trimesh::updateBoundingBox() {
+void Hitable_Trimesh::updateBoundingBox() {
 	// point 0
 	bounding_min = point[0];
 	bounding_max = point[0];
@@ -85,6 +86,39 @@ void SceneObject_Trimesh::updateBoundingBox() {
 		bounding_min[i]	= std::min<double>(bounding_min[i], point[2][i]);
 		bounding_max[i]	= std::max<double>(bounding_max[i], point[2][i]);
 	}
+}
+
+
+// mapper
+void Mapper_Trimesh::setTrimesh(Hitable_Trimesh *trimesh) {
+	this->trimesh = trimesh;
+}
+
+
+void Mapper_Trimesh::map(Vec3f &vector) const {
+	if (trimesh == nullptr) return;
+
+	// get 2d axis
+	// one should be ac
+	// one should be cross product of normal and ab
+	Vec3f axis_1	= trimesh->point[1] - trimesh->point[0];
+	Vec3f ac		= trimesh->point[2] - trimesh->point[0];
+	Vec3f normal	= axis_1.cross(ac);
+	Vec3f axis_2	= normal.cross(axis_1);
+
+	axis_1	= axis_1.normalize();
+	axis_2	= axis_2.normalize();
+
+	// get projection length on the two axis
+	// then map vector on a 2d plane
+	// axis_1 as x
+	// axis_2 as y
+	double length_x = vector.projectLength(axis_1);
+	double length_y = vector.projectLength(axis_2);
+	
+	vector[0] = length_x;
+	vector[1] = length_y;
+	vector[2] = 0;
 }
 
 

@@ -15,7 +15,7 @@ class Surface(Tracer_Base):
 
 	# Operation
 	def convertToTexture(self, texture: Texture) -> bool:
-		result: int = self._ops_tracer.Surface_convertToTexture(self._object_index, texture.object_index)
+		result: int = self._ops_tracer.Surface_interact(self._object_index, 0, [texture.object_index], [3], 1)
 		return True if result == 0 else False
 
 	def load(self) -> bool:

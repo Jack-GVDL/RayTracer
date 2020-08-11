@@ -57,7 +57,7 @@ static int build_scene_1(Camera *camera, Scene *scene) {
 	// scatter_reflection_1->setTexture(texture_reflective, Scatter_Reflection::REFLECTIVE);
 	
 	// scene
-	SceneObject_Sphere *scene_sphere_1 = new SceneObject_Sphere();
+	Hitable_Sphere *scene_sphere_1 = new Hitable_Sphere();
 	scene_sphere_1->setCenter(Vec3f(0));
 	scene_sphere_1->setRadius(0.5);
 	scene_sphere_1->shader.addScatter(scatter_light_1);

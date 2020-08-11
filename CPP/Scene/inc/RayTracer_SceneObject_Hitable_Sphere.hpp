@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/06/11   initial update
+// 2020/08/11   add Mapper_Sphere
 
 
 #ifndef RAYTRACER_SCENEOBJECT_HITABLE_SPHERE_HPP
@@ -25,7 +26,7 @@
 
 
 // Data Structure
-class SceneObject_Sphere: public SceneObject_Hitable {
+class Hitable_Sphere: public SceneObject_Hitable {
 	// Data
 	public:
 		Vec3f		center	= Vec3f();
@@ -34,7 +35,7 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 	// Operation
 	public:
 		// init
-		SceneObject_Sphere()
+		Hitable_Sphere()
 		{
 			updateBoundingBox();
 		}
@@ -59,8 +60,23 @@ class SceneObject_Sphere: public SceneObject_Hitable {
 };
 
 
-// TODO: change name of class later
-typedef SceneObject_Sphere Hitable_Sphere;
+class Mapper_Sphere: public Mapper {
+	// Data
+	public:
+		Hitable_Sphere		*sphere;
+
+	// Operation
+	public:
+		// init
+		Mapper_Sphere()
+		{}
+
+		// operation
+		void			setSphere		(Hitable_Sphere *sphere);
+
+		// interface
+		virtual void	map				(Vec3f &vector) const override;
+};
 
 
 // Macro Function

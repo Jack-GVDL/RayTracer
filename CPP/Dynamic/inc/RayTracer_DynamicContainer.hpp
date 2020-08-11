@@ -24,7 +24,7 @@ typedef int		(*config_func_t)		(void*, int, uint8_t*, uint32_t);
 typedef int		(*interact_func_t)		(void*, int, void**, uint32_t);
 
 typedef int		(*config_type_func_t)	(void*, uint8_t*, uint32_t);
-typedef int		(*interact_type_func_t)	(void*, void**, int);
+typedef int		(*interact_type_func_t)	(void*, void**, uint32_t);
 
 
 // Enum
@@ -179,14 +179,28 @@ int Dynamic_ContainerList<T>::size() {
 
 // Static Function Implementation
 namespace DynamicUtil {
+
 	static inline int	configType		(config_type_func_t *table, void *object, int type, uint8_t *data, uint32_t size) {
 		return table[type](object, data, size);
+	}
+
+
+	static inline int	configType		(std::vector<config_type_func_t> *table, void *object, int type, uint8_t *data, uint32_t size) {
+		if (type < 0 || type >= table->size()) return -1;
+		return (*table)[type](object, data, size);
 	}
 
 
 	static inline int	interactType	(interact_type_func_t *table, void *object, int type, void* *list, uint32_t size) {
 		return table[type](object, list, size);
 	}
+
+
+	static inline int	interactType	(std::vector<interact_type_func_t> *table, void *object, int type, void* *list, uint32_t size) {
+		if (type < 0 || type >= table->size()) return -1;
+		return (*table)[type](object, list, size);
+	}
+
 };
 
 

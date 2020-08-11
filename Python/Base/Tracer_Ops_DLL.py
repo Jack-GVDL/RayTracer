@@ -110,6 +110,11 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		array_data = (c_uint8 * size)(*data)
 		return self._dll_tracer.RayTracer_Camera_config(c_int(index), c_int(type_), array_data, c_uint32(size))
 
+	def Camera_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+		array_index = (c_int * size)(*index_list)
+		array_type	= (c_int * size)(*type_list)
+		return self._dll_tracer.RayTracer_Camera_interact(c_int(index), c_int(type_), array_index, array_type, size)
+
 	def Camera_setLookFrom(self, index: int, look_from: Vec3f) -> int:
 		array_data = (c_double * 3)(*look_from)
 		return self._dll_tracer.RayTracer_Camera_setLookFrom(c_int(index), array_data)
@@ -140,6 +145,11 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		array_data = (c_uint8 * size)(*data)
 		return self._dll_tracer.RayTracer_Mapper_config(c_int(index), c_int(type_), array_data, c_uint32(size))
 
+	def Mapper_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+		array_index = (c_int * size)(*index_list)
+		array_type	= (c_int * size)(*type_list)
+		return self._dll_tracer.RayTracer_Mapper_interact(c_int(index), c_int(type_), array_index, array_type, size)
+
 	# surface
 	def Surface_create(self, type_: int) -> int:
 		return self._dll_tracer.RayTracer_Surface_create(c_int(type_))
@@ -152,14 +162,16 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		array_data = (c_uint8 * len(data))(*data)
 		return self._dll_tracer.RayTracer_Surface_config(c_int(index), c_int(type_), array_data, c_uint32(size))
 
+	def Surface_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+		array_index = (c_int * size)(*index_list)
+		array_type	= (c_int * size)(*type_list)
+		return self._dll_tracer.RayTracer_Surface_interact(c_int(index), c_int(type_), array_index, array_type, size)
+
 	def Surface_load(self, index: int) -> int:
 		return self._dll_tracer.RayTracer_Surface_load(c_int(index))
 
 	def Surface_dump(self, index: int) -> int:
 		return self._dll_tracer.RayTracer_Surface_dump(c_int(index))
-
-	def Surface_convertToTexture(self, index_surface: int, index_texture: int) -> int:
-		return self._dll_tracer.RayTracer_Surface_convertToTexture(c_int(index_surface), c_int(index_texture))
 
 	# texture
 	def Texture_create(self, type_: int) -> int:
@@ -167,6 +179,16 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	def Texture_destroy(self, index: int) -> int:
 		return self._dll_tracer.RayTracer_Texture_destroy(c_int(index))
+
+	def Texture_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+		# TODO: currently data is const uint8_t*, cannot pass out value from dll
+		array_data = (c_uint8 * size)(*data)
+		return self._dll_tracer.RayTracer_Texture_config(c_int(index), c_int(type_), array_data, c_int(size))
+
+	def Texture_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+		array_index = (c_int * size)(*index_list)
+		array_type	= (c_int * size)(*type_list)
+		return self._dll_tracer.RayTracer_Texture_interact(c_int(index), c_int(type_), array_index, array_type, size)
 
 	def Texture_addMapper(self, index_texture: int, index_mapper: int) -> int:
 		return self._dll_tracer.RayTracer_Texture_addMapper(c_int(index_texture), c_int(index_mapper))
@@ -193,11 +215,6 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 		return result
 
-	def Texture_config(self, index: int, type_: int, data: bytes, size: int) -> int:
-		# TODO: currently data is const uint8_t*, cannot pass out value from dll
-		array_data = (c_uint8 * size)(*data)
-		return self._dll_tracer.RayTracer_Texture_config(c_int(index), c_int(type_), array_data, c_int(size))
-
 	# scatter
 	def Scatter_create(self, type_: int) -> int:
 		return self._dll_tracer.RayTracer_Scatter_create(c_int(type_))
@@ -205,16 +222,21 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def Scatter_destroy(self, index: int) -> int:
 		return self._dll_tracer.RayTracer_Scatter_destroy(c_int(index))
 
+	def Scatter_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+		# TODO: currently data is const uint8_t*, cannot pass out value from dll
+		array_data = (c_uint8 * size)(*data)
+		return self._dll_tracer.RayTracer_Scatter_config(c_int(index), c_int(type_), array_data, c_int(size))
+
+	def Scatter_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+		array_index = (c_int * size)(*index_list)
+		array_type	= (c_int * size)(*type_list)
+		return self._dll_tracer.RayTracer_Scatter_interact(c_int(index), c_int(type_), array_index, array_type, size)
+
 	def Scatter_setTexture(self, index_scatter: int, index_texture: int, offset: int) -> int:
 		return self._dll_tracer.RayTracer_Scatter_setTexture(c_int(index_scatter), c_int(index_texture), c_int(offset))
 
 	def Scatter_rmTexture(self, index_scatter: int, offset: int) -> int:
 		return self._dll_tracer.RayTracer_Scatter_rmTexture(c_int(index_scatter), c_int(offset))
-
-	def Scatter_config(self, index: int, type_: int, data: bytes, size: int) -> int:
-		# TODO: currently data is const uint8_t*, cannot pass out value from dll
-		array_data = (c_uint8 * size)(*data)
-		return self._dll_tracer.RayTracer_Scatter_config(c_int(index), c_int(type_), array_data, c_int(size))
 
 	# scene object - hitable
 	def SceneObject_Hitable_create(self, type_: int) -> int:
@@ -223,16 +245,21 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def SceneObject_Hitable_destroy(self, index: int) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Hitable_destroy(c_int(index))
 
+	def SceneObject_Hitable_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+		# TODO: currently data is const uint8_t*, cannot pass out value from dll
+		array_data = (c_uint8 * size)(*data)
+		return self._dll_tracer.RayTracer_SceneObject_Hitable_config(c_int(index), c_int(type_), array_data, c_int(size))
+
+	def SceneObject_Hitable_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+		array_index = (c_int * size)(*index_list)
+		array_type	= (c_int * size)(*type_list)
+		return self._dll_tracer.RayTracer_SceneObject_Hitable_interact(c_int(index), c_int(type_), array_index, array_type, size)
+
 	def SceneObject_Hitable_addScatter(self, index_hitable: int, index_scatter: int) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Hitable_addScatter(c_int(index_hitable), c_int(index_scatter))
 
 	def SceneObject_Hitable_rmScatter(self, index_hitable: int, index_scatter: int) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Hitable_rmScatter(c_int(index_hitable), c_int(index_scatter))
-
-	def SceneObject_Hitable_config(self, index: int, type_: int, data: bytes, size: int) -> int:
-		# TODO: currently data is const uint8_t*, cannot pass out value from dll
-		array_data = (c_uint8 * size)(*data)
-		return self._dll_tracer.RayTracer_SceneObject_Hitable_config(c_int(index), c_int(type_), array_data, c_int(size))
 
 	# light
 	def SceneObject_Light_create(self, type_: int) -> int:
@@ -240,6 +267,16 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	def SceneObject_Light_destroy(self, index: int) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Light_destroy(c_int(index))
+
+	def SceneObject_Light_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+		# TODO: currently data is const uint8_t*, cannot pass out value from dll
+		array_data = (c_uint8 * size)(*data)
+		return self._dll_tracer.RayTracer_SceneObject_Light_config(c_int(index), c_int(type_), array_data, c_int(size))
+
+	def SceneObject_Light_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+		array_index = (c_int * size)(*index_list)
+		array_type	= (c_int * size)(*type_list)
+		return self._dll_tracer.RayTracer_SceneObject_Light_interact(c_int(index), c_int(type_), array_index, array_type, size)
 
 	def SceneObject_Light_setOrigin(self, index: int, origin: Vec3f) -> int:
 		array_origin = (c_double * 3)(*origin.array)
@@ -252,11 +289,6 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 		result: int = self._dll_tracer.RayTracer_SceneObject_Light_setColor(c_int(index), array_color)
 		return result
-
-	def SceneObject_Light_config(self, index: int, type_: int, data: bytes, size: int) -> int:
-		# TODO: currently data is const uint8_t*, cannot pass out value from dll
-		array_data = (c_uint8 * size)(*data)
-		return self._dll_tracer.RayTracer_SceneObject_Light_config(c_int(index), c_int(type_), array_data, c_int(size))
 
 	# scene
 	def Scene_addLight(self, index_light: int) -> int:

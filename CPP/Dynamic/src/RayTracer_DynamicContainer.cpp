@@ -92,10 +92,14 @@ int Dynamic_ContainerListBase::_interact_(int index, int type, Dynamic_Container
 	Dynamic_ContainerBase *container = _get_(index);
 	if (container == nullptr) return -1;
 
-	int container_type = container_type;
+	int container_type = container->type;
 	if (container_type < 0 || container_type >= type_list.size()) return -1;
 
-	type_list[container_type]->ops_interact(container->object, type, (void**)list, size);
+	// TODO: currently number is fixed
+	void* temp_list[8] = {0};
+	for (int i = 0; i < size; i++) temp_list[i] = list[i]->object;
+
+	type_list[container_type]->ops_interact(container->object, type, temp_list, size);
 	return 0;
 }
 

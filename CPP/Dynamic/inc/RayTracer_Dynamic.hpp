@@ -50,8 +50,8 @@ EXPORT_DLL(int)		RayTracer_Tracer_traceRect					(int index_camera, double *pixel
 
 EXPORT_DLL(int)		RayTracer_Camera_create						(int type);
 EXPORT_DLL(int)		RayTracer_Camera_destroy					(int index);
-EXPORT_DLL(int)		RayTracer_Camera_interact					(int index, int type, int *index_list, int *type_list, uint32_t size);
 EXPORT_DLL(int)		RayTracer_Camera_config						(int index, int type, uint8_t *data, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Camera_interact					(int index, int type, int *index_list, int *type_list, uint32_t size);
 EXPORT_DLL(int)		RayTracer_Camera_setLookFrom				(int index, double *look_from);
 EXPORT_DLL(int)		RayTracer_Camera_setLookAt					(int index, double *look_at);
 EXPORT_DLL(int)		RayTracer_Camera_setUpDirection				(int index, double *up_dir);
@@ -69,7 +69,6 @@ EXPORT_DLL(int) 	RayTracer_Surface_config					(int index, int type, uint8_t *dat
 EXPORT_DLL(int)		RayTracer_Surface_interact					(int index, int type, int *index_list, int *type_list, uint32_t size);
 EXPORT_DLL(int)		RayTracer_Surface_load						(int index);
 EXPORT_DLL(int)		RayTracer_Surface_dump						(int index);
-EXPORT_DLL(int)		RayTracer_Surface_convertToTexture			(int index_surface, int index_texture);
 
 EXPORT_DLL(int) 	RayTracer_Texture_create					(int type);
 EXPORT_DLL(int) 	RayTracer_Texture_destroy					(int index);
