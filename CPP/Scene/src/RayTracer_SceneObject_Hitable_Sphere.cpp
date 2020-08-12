@@ -93,9 +93,17 @@ void Mapper_Sphere::map(Vec3f &vector) const {
 
 	// map on to 2d plane
 	// no z-axis
-	vector[0]	= atan(dis[2] / dis[0]) / (2 * M_PI);
-	vector[1]	= atan(dis[2] / dis[1]) / (2 * M_PI);
+	double dis_radius = sqrt(dis[0] * dis[0] + dis[2] * dis[2]);
+
+	vector[0]	= atan(dis[0] / std::abs(dis[2])) / M_PI;
+	vector[1]	= atan(dis[1] / dis_radius) / M_PI * 2;
 	vector[2]	= 0;
+
+	// x-axis adjustment
+	if (dis[2] < 0) {
+		if (dis[0] > 0)	vector[0]	= 1 - vector[0];
+		else			vector[0]	= -1 + vector[0];
+	}
 }
 
 

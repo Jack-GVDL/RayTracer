@@ -38,13 +38,14 @@ ops_tracer.RayTracer_info()
 scene:	Scene	= Scene()
 # Tracer_Sample.buildScene_0(scene)
 # Tracer_Sample.buildScene_1(scene)
-Tracer_Sample.buildScene_2(scene)
+# Tracer_Sample.buildScene_2(scene)
+Tracer_Sample.buildScene_3(scene)
 
 ops_tracer.Test_checkStatus(0, bytes(), 0)
 ops_tracer.Test_checkStatus(1, bytes(), 0)
 
-ops_tracer.Camera_setLookFrom(	1,	Vec3f(0, 1, 2))
-ops_tracer.Camera_setLookAt(	1,	Vec3f(0, 1, 0))
+ops_tracer.Camera_setLookFrom(	1,	Vec3f(0, 1, 1))
+ops_tracer.Camera_setLookAt(	1,	Vec3f(0, 0, 0))
 ops_tracer.Camera_setAspectRatio(1, 1)
 
 
@@ -57,7 +58,7 @@ widget = QWidget()
 display_tracer:		Display_Tracer = Display_Tracer()
 
 # config widget geo and title
-widget.resize(200, 300)
+widget.resize(500, 500)
 widget.move(150, 150)
 widget.setWindowTitle("Tracer")
 

@@ -32,3 +32,6 @@ from .Tracer_Light import Light_Point
 from .Tracer_Scene import Scene
 from .Tracer import Tracer
 from .Tracer_Sample import Tracer_Sample
+
+from .Tracer_Lib_Mapper import Mapper_Sphere
+from .Tracer_Lib_Mapper import Mapper_Trimesh
