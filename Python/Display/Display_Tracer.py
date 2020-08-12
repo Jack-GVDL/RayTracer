@@ -15,6 +15,7 @@ class Display_Tracer(QWidget):
 		self._x:			int = 200
 		self._y:			int = 100
 		self._ops_tracer:	Ops_Tracer = None
+		self._is_rendered:	bool	= False
 
 	# Operation
 	def setOps_tracer(self, ops: Ops_Tracer) -> None:

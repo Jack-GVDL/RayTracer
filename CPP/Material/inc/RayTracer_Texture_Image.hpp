@@ -28,8 +28,9 @@
 class Texture_Image: public Texture {
 	// Data
 	public:
-		Vec3f	*color;
-		int		width, height;
+		Vec3f	*color	= nullptr;
+		int		width	= 0;
+		int		height	= 0;
 
 	// Operation
 	public:
@@ -43,6 +44,10 @@ class Texture_Image: public Texture {
 		// interface
 		virtual Vec3f	_getPixel_	(const Ray *ray) const override;
 };
+
+
+// TODO: change to this name later
+typedef Texture_Image Texture_PixelMap;
 
 
 // Macro Function

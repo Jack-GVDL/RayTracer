@@ -26,13 +26,44 @@ class Texture(Tracer_Base):
 		result:	int	= self._ops_tracer.Texture_getPixel(self._object_index, pixel, point)
 
 
-class Texture_Constant(Texture):
+class Texture_Chain(Texture):
 
 	def __init__(self):
 		super().__init__()
 
 		# init
 		self._object_index = self._ops_tracer.Texture_create(0)
+
+	# Operation
+	def addTexture(self, texture: Texture) -> bool:
+		result:	int	= self._ops_tracer.Texture_interact(self._object_index, 0, [texture.object_index], [3], 1)
+		return True if result == 0 else False
+
+	def rmTexture(self, texture: Texture) -> bool:
+		result:	int	= self._ops_tracer.Texture_interact(self._object_index, 1, [texture.object_index], [3], 1)
+		return True if result == 0 else False
+
+
+class Texture_MeanSampler(Texture):
+
+	def __init__(self):
+		super().__init__()
+
+		# init
+		self._object_index = self._ops_tracer.Texture_create(2)
+
+	# Operation
+	def setTexture(self, texture: Texture) -> None:
+		result: int = self._ops_tracer.Texture_interact(self._object_index, 0, [texture.object_index], [3], 1)
+
+
+class Texture_Constant(Texture):
+
+	def __init__(self):
+		super().__init__()
+
+		# init
+		self._object_index = self._ops_tracer.Texture_create(2)
 
 	# Operation
 	# ...
@@ -44,7 +75,7 @@ class Texture_Checkerboard(Texture):
 		super().__init__()
 
 		# init
-		self._object_index = self._ops_tracer.Texture_create(1)
+		self._object_index = self._ops_tracer.Texture_create(3)
 
 	# Operation
 	def setBoardSize(self, size: Vec3f) -> None:
@@ -58,7 +89,7 @@ class Texture_Image(Texture):
 		super().__init__()
 
 		# init
-		self._object_index = self._ops_tracer.Texture_create(2)
+		self._object_index = self._ops_tracer.Texture_create(4)
 
 	# Operation
 	# ...
