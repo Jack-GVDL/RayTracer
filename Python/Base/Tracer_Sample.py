@@ -116,7 +116,9 @@ class Tracer_Sample:
 		texture_specular:	Texture_Constant	= Texture_Constant()
 		texture_shininess:	Texture_Constant	= Texture_Constant()
 
-		texture_image_1:		Texture_Image		= Texture_Image()
+		texture_image_1:	Texture_Image		= Texture_Image()
+		texture_image_2:	Texture_Image		= Texture_Image()
+		texture_kernel_1:	Texture_Convolutor	= Texture_Convolutor()
 
 		texture_emissive.setPixel(	Vec3f(), Vec3f(0))
 		texture_ambient.setPixel(	Vec3f(), Vec3f(0))
@@ -129,11 +131,18 @@ class Tracer_Sample:
 		texture_image_1.addMapper(mapper_multi_1)
 		texture_image_1.addMapper(mapper_trimesh_1)
 
+		surface_bmp.convertToTexture(texture_image_2)
+		texture_kernel_1.addMapper(mapper_add_1)
+		texture_kernel_1.addMapper(mapper_multi_1)
+		texture_kernel_1.addMapper(mapper_trimesh_1)
+		texture_kernel_1.setTexture(texture_image_2)
+		texture_kernel_1.setKernel([1.0 for _ in range(25)])
+
 		# scatter
 		scatter_light_1:	Scatter_Light = Scatter_Light()
 		scatter_light_1.setTexture(texture_emissive,	Scatter_Light.TextureOffset.EMISSIVE)
 		scatter_light_1.setTexture(texture_ambient,		Scatter_Light.TextureOffset.AMBIENT)
-		scatter_light_1.setTexture(texture_image_1,		Scatter_Light.TextureOffset.DIFFUSE)
+		scatter_light_1.setTexture(texture_kernel_1,	Scatter_Light.TextureOffset.DIFFUSE)
 		scatter_light_1.setTexture(texture_specular,	Scatter_Light.TextureOffset.SPECULAR)
 		scatter_light_1.setTexture(texture_shininess,	Scatter_Light.TextureOffset.SHININESS)
 
@@ -178,6 +187,10 @@ class Tracer_Sample:
 		surface_bmp_1.setPath("../Image/worldmap.bmp")
 		surface_bmp_1.load()
 
+		surface_bmp_2:		Surface_BMP		= Surface_BMP()
+		surface_bmp_2.setPath("../Image/worldmap_ocean.bmp")
+		surface_bmp_2.load()
+
 		# mapper
 		mapper_add_1:		Mapper_Additor		= Mapper_Additor()
 		mapper_multi_1:		Mapper_Multiplier	= Mapper_Multiplier()
@@ -193,6 +206,7 @@ class Tracer_Sample:
 		texture_specular_1:		Texture_Constant	= Texture_Constant()
 		texture_shininess_1:	Texture_Constant	= Texture_Constant()
 		texture_image_1:		Texture_Image		= Texture_Image()
+		texture_image_2:		Texture_Image		= Texture_Image()
 
 		texture_emissive_1.setPixel(	Vec3f(), Vec3f(0))
 		texture_ambient_1.setPixel(		Vec3f(), Vec3f(0))
@@ -205,12 +219,17 @@ class Tracer_Sample:
 		texture_image_1.addMapper(mapper_add_1)
 		texture_image_1.addMapper(mapper_multi_1)
 
+		surface_bmp_2.convertToTexture(texture_image_2)
+		texture_image_2.addMapper(mapper_sphere_1)
+		texture_image_2.addMapper(mapper_add_1)
+		texture_image_2.addMapper(mapper_multi_1)
+
 		# scatter
 		scatter_light_1:	Scatter_Light = Scatter_Light()
 		scatter_light_1.setTexture(texture_emissive_1,	Scatter_Light.TextureOffset.EMISSIVE)
 		scatter_light_1.setTexture(texture_ambient_1,	Scatter_Light.TextureOffset.AMBIENT)
 		scatter_light_1.setTexture(texture_image_1,		Scatter_Light.TextureOffset.DIFFUSE)
-		scatter_light_1.setTexture(texture_specular_1,	Scatter_Light.TextureOffset.SPECULAR)
+		scatter_light_1.setTexture(texture_image_2,		Scatter_Light.TextureOffset.SPECULAR)
 		scatter_light_1.setTexture(texture_shininess_1,	Scatter_Light.TextureOffset.SHININESS)
 
 		# scene
@@ -223,7 +242,7 @@ class Tracer_Sample:
 
 		# light
 		light_point_1:		Light_Point = Light_Point()
-		light_point_1.setOrigin(Vec3f(2))
+		light_point_1.setOrigin(Vec3f(1, 2, 1))
 		light_point_1.setColor(Vec3f(1))
 
 		# scene

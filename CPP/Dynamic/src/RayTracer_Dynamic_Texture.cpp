@@ -11,42 +11,39 @@
 
 // Static Function Prototype
 // ops
-static void*		init_chain							();
-static void*		init_meanSampler					();
+static void*		init_convolutor						();
 static void*		init_constant						();
 static void*		init_checkerboard					();
 static void*		init_image							();
 
-static int			config_chain						(void *object, int type, uint8_t *data, uint32_t size);
-static int			config_meanSampler					(void *object, int type, uint8_t *data, uint32_t size);
+static int			config_convolutor					(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_constant						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_checkerboard					(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_image						(void *object, int type, uint8_t *data, uint32_t size);
 
-static int			interact_chain						(void *object, int type, void* *list, uint32_t size);
-static int			interact_meanSampler				(void *object, int type, void* *list, uint32_t size);
+static int			interact_convolutor					(void *object, int type, void* *list, uint32_t size);
 static int			interact_constant					(void *object, int type, void* *list, uint32_t size);
 static int			interact_checkerboard				(void *object, int type, void* *list, uint32_t size);
 static int			interact_image						(void *object, int type, void* *list, uint32_t size);
 
 // table
+static int			config_convolutor_setKernelSize		(void *object, uint8_t *data, uint32_t size);
+static int			config_convolutor_setKernelArray	(void *object, uint8_t *data, uint32_t size);
 static int			config_checkerboard_setBoardSize	(void *object, uint8_t *data, uint32_t size);
 
-static int			interact_chain_addTexture			(void *object, void* *list, uint32_t size);
-static int			interact_chain_rmTexture			(void *object, void* *list, uint32_t size);
-static int			interact_meanSampler_setTexture		(void *object, void* *list, uint32_t size);
+static int			interact_convolutor_setTexture		(void *object, void* *list, uint32_t size);
 
 
 // Static Data
 // Static Data
 static std::vector<config_type_func_t>		table_config_chain;
-static std::vector<config_type_func_t>		table_config_meanSampler;
+static std::vector<config_type_func_t>		table_config_convolutor;
 static std::vector<config_type_func_t>		table_config_constant;
 static std::vector<config_type_func_t>		table_config_checkerboard;
 static std::vector<config_type_func_t>		table_config_image;
 
 static std::vector<interact_type_func_t>	table_interact_chain;
-static std::vector<interact_type_func_t>	table_interact_meanSampler;
+static std::vector<interact_type_func_t>	table_interact_convolutor;
 static std::vector<interact_type_func_t>	table_interact_constant;
 static std::vector<interact_type_func_t>	table_interact_checkerboard;
 static std::vector<interact_type_func_t>	table_interact_image;
@@ -55,24 +52,17 @@ static std::vector<interact_type_func_t>	table_interact_image;
 // Operation Handling
 void RayTracer_Dynamic_Texture_init(std::vector<Dynamic_ContainerType*> *type_list) {
 	// table
+	table_config_convolutor.push_back(config_convolutor_setKernelSize);
+	table_config_convolutor.push_back(config_convolutor_setKernelArray);
 	table_config_checkerboard.push_back(config_checkerboard_setBoardSize);
-	table_interact_chain.push_back(interact_chain_addTexture);
-	table_interact_chain.push_back(interact_chain_rmTexture);
-	table_interact_meanSampler.push_back(interact_meanSampler_setTexture);
-
-	// chain
-	Dynamic_ContainerType	*type_chain			= new Dynamic_ContainerType();
-	type_chain->ops_init			= init_chain;
-	type_chain->ops_config			= config_chain;
-	type_chain->ops_interact		= interact_chain;
-	type_list->push_back(type_chain);
-
-	// mean sampler
-	Dynamic_ContainerType	*type_meanSampler	= new Dynamic_ContainerType();
-	type_meanSampler->ops_init		= init_meanSampler;
-	type_meanSampler->ops_config	= config_meanSampler;
-	type_meanSampler->ops_interact	= interact_meanSampler;
-	type_list->push_back(type_meanSampler);
+	table_interact_convolutor.push_back(interact_convolutor_setTexture);
+	
+	// convolutor
+	Dynamic_ContainerType	*type_convolutor	= new Dynamic_ContainerType();
+	type_convolutor->ops_init		= init_convolutor;
+	type_convolutor->ops_config	= config_convolutor;
+	type_convolutor->ops_interact	= interact_convolutor;
+	type_list->push_back(type_convolutor);
 
 	// constant
 	Dynamic_ContainerType	*type_constant		= new Dynamic_ContainerType();
@@ -108,14 +98,8 @@ void RayTracer_Dynamic_Texture_del() {
 
 // Static Function Implementation
 // init
-static void* init_chain() {
-	Texture_Chain *texture = new Texture_Chain();
-	return texture;
-}
-
-
-static void* init_meanSampler() {
-	Texture_MeanSampler *texture = new Texture_MeanSampler();
+static void* init_convolutor() {
+	Texture_Convolutor *texture = new Texture_Convolutor();
 	return texture;
 }
 
@@ -139,13 +123,8 @@ static void* init_image() {
 
 
 // config
-static int config_chain(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(&table_config_chain, object, type, data, size);
-}
-
-
-static int config_meanSampler(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(&table_config_meanSampler, object, type, data, size);
+static int config_convolutor(void *object, int type, uint8_t *data, uint32_t size) {
+	return DynamicUtil::configType(&table_config_convolutor, object, type, data, size);
 }
 
 
@@ -165,13 +144,8 @@ static int config_image(void *object, int type, uint8_t *data, uint32_t size) {
 
 
 // interact
-static int interact_chain(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(&table_interact_chain, object, type, list, size);
-}
-
-
-static int interact_meanSampler(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(&table_interact_meanSampler, object, type, list, size);
+static int interact_convolutor(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(&table_interact_convolutor, object, type, list, size);
 }
 
 
@@ -191,6 +165,30 @@ static int interact_image(void *object, int type, void* *list, uint32_t size) {
 
 
 // table
+static int config_convolutor_setKernelSize(void *object, uint8_t *data, uint32_t size) {
+	Texture_Convolutor		*texture		= (Texture_Convolutor*)object;
+	int						kernel_width	= *((int*)data);
+	texture->setKernel(texture->kernel, kernel_width);
+	return 0;
+}
+
+
+static int config_convolutor_setKernelArray(void *object, uint8_t *data, uint32_t size) {
+	Texture_Convolutor		*texture	= (Texture_Convolutor*)object;
+	
+	// delete original kernel
+	delete[] texture->kernel;
+
+	// create new kernel
+	int		kernel_size	= texture->kernel_width * texture->kernel_width;
+	double	*kernel		= new double[kernel_size];
+	memcpy(kernel, data, sizeof(double) * kernel_size);
+
+	texture->setKernel(kernel, texture->kernel_width);
+	return 0;
+}
+
+
 static int config_checkerboard_setBoardSize(void *object, uint8_t *data, uint32_t size) {
 	Texture_CheckerBoard	*texture	= (Texture_CheckerBoard*)object;
 	double					*vec		= (double*)data;
@@ -199,24 +197,9 @@ static int config_checkerboard_setBoardSize(void *object, uint8_t *data, uint32_
 }
 
 
-static int interact_chain_addTexture(void *object, void* *list, uint32_t size) {
-	Texture_Chain			*texture	= (Texture_Chain*)object;
-	Texture					*target		= (Texture*)(list[0]);
-	return texture->addTexture(target);
-}
-
-
-static int interact_chain_rmTexture(void *object, void* *list, uint32_t size) {
-	Texture_Chain			*texture	= (Texture_Chain*)object;
-	Texture					*target		= (Texture*)(list[0]);
-	return texture->rmTexture(target);
-}
-
-
-static int interact_meanSampler_setTexture(void *object, void* *list, uint32_t size) {
-	Texture_MeanSampler		*texture	= (Texture_MeanSampler*)object;
+static int interact_convolutor_setTexture(void *object, void* *list, uint32_t size) {
+	Texture_Convolutor		*texture	= (Texture_Convolutor*)object;
 	Texture					*target		= (Texture*)(list[0]);
 	texture->setTexture(target);
 	return 0;
 }
-

@@ -10,6 +10,7 @@ from .Tracer_Surface import Surface
 # from .Tracer_Surface import Surface_Image
 
 from .Tracer_Texture import Texture
+from .Tracer_Texture import Texture_Convolutor
 from .Tracer_Texture import Texture_Constant
 from .Tracer_Texture import Texture_Checkerboard
 from .Tracer_Texture import Texture_Image

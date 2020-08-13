@@ -12,8 +12,12 @@ class Display_Tracer(QWidget):
 		super().__init__()
 
 		# data
-		self._x:			int = 200
-		self._y:			int = 100
+		self._x:			int			= 200
+		self._y:			int			= 100
+
+		self._image:		List[Vec3f]	= []
+		self._time:			time		= None
+
 		self._ops_tracer:	Ops_Tracer = None
 		self._is_rendered:	bool	= False
 
@@ -25,15 +29,24 @@ class Display_Tracer(QWidget):
 		self._x = x
 		self._y = y
 
+	def reset(self) -> None:
+		self._is_rendered = False
+
 	def paintEvent(self, event: QPaintEvent) -> None:
-		# begin painter
-		painter:	QPainter = QPainter()
-		painter.begin(self)
+		self._render_()
+		self._paint_()
+
+	# Helper
+	def _render_(self) -> None:
+		if self._is_rendered:
+			return
 
 		# execution time starting point
 		start_time = time.time()
 
 		# get pixel and draw on screen
+		self._image.clear()
+
 		x_half: float = self._x / 2
 		y_half: float = self._y / 2
 
@@ -43,23 +56,47 @@ class Display_Tracer(QWidget):
 				u: float = (x - x_half) / x_half
 				v: float = (y - y_half) / y_half
 
+				# get color
 				vec_color: Vec3f = Vec3f()
 				self._ops_tracer.Tracer_tracePoint(0, vec_color, u, v, 5)
 
-				color = QColor(
-					int(vec_color[0] * 255),
-					int(vec_color[1] * 255),
-					int(vec_color[2] * 255))
+				# adjust color value
+				# (0, 1) -> (0, 255)
+				vec_color[0] *= 255
+				vec_color[1] *= 255
+				vec_color[2] *= 255
 
-				painter.setPen(color)
-				painter.drawPoint(x, self._y - y)  # be careful of coordinate system
+				self._image.append(vec_color)
 
 		# execution time end point and display time
 		end_time = time.time()
-		painter.setPen(QColor(255, 255, 255))
+		self._time = end_time - start_time
+		print(f"Execution Time: {self._time}")
 
-		painter.drawText(0, self._y + 20, f"Execution Time: {end_time - start_time}")
-		print(f"Execution Time: {end_time - start_time}")
+		# mark is rendered
+		self._is_rendered = True
+
+	def _paint_(self) -> None:
+		# begin painter
+		painter:	QPainter = QPainter()
+		painter.begin(self)
+
+		# paint
+		for y in range(self._y):
+			for x in range(self._x):
+
+				color = QColor(
+					int(self._image[x + y * self._x][0]),
+					int(self._image[x + y * self._x][1]),
+					int(self._image[x + y * self._x][2]))
+
+				painter.setPen(color)
+				painter.drawPoint(x, self._y - y)
+
+		# display time
+		painter.setPen(QColor(255, 255, 255))
+		painter.drawText(0, self._y + 20, f"Execution Time: {self._time}")
+		# print(f"Execution Time: {self._time}")
 
 		# end painter
 		painter.end()

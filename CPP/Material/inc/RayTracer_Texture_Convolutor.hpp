@@ -4,11 +4,10 @@
 // 2020/08/12   initial update
 
 
-#ifndef RAYTRACER_TEXTURE_CHAIN_HPP
-#define RAYTRACER_TEXTURE_CHAIN_HPP
+#ifndef RAYTRACER_TEXTURE_CONVOLUTOR_HPP
+#define RAYTRACER_TEXTURE_CONVOLUTOR_HPP
 
 
-#include <vector>
 #include "RayTracer_Texture.hpp"
 
 
@@ -25,10 +24,13 @@
 
 
 // Data Structure
-class Texture_Chain: public Texture {
+class Texture_Convolutor: public Texture {
 	// Data
 	public:
-		std::vector<Texture*>	texture_list;
+		Texture		*texture		= nullptr;
+
+		double		*kernel			= nullptr;
+		int			kernel_width	= 0;
 
 	// Operation
 	public:
@@ -36,10 +38,10 @@ class Texture_Chain: public Texture {
 		// ...
 
 		// operation
-		bool			addTexture	(Texture *texture);
-		bool			rmTexture	(Texture *texture);
+		void			setTexture	(Texture *texture);
+		void			setKernel	(double *kernel, int width);  // width and height should be the same
 
-		// interface
+		// interace
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
 
 	protected:
@@ -59,4 +61,4 @@ class Texture_Chain: public Texture {
 // ...
 
 
-#endif  // RAYTRACER_TEXTURE_CHAIN_HPP
+#endif  // RAYTRACER_TEXTURE_CONVOLUTOR_HPP

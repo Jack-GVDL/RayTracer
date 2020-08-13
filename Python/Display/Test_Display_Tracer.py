@@ -58,7 +58,7 @@ widget = QWidget()
 display_tracer:		Display_Tracer = Display_Tracer()
 
 # config widget geo and title
-widget.resize(500, 500)
+widget.resize(600, 600)
 widget.move(150, 150)
 widget.setWindowTitle("Tracer")
 
@@ -74,7 +74,7 @@ widget.setLayout(layout)
 layout.addWidget(display_tracer)
 
 # update
-display_tracer.setDisplaySize(512, 512)
+display_tracer.setDisplaySize(300, 300)
 display_tracer.setOps_tracer(ops_tracer)
 display_tracer.update()
 
