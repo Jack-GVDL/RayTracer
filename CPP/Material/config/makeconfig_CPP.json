@@ -7,6 +7,7 @@
                    "RayTracer_Surface.o ",
                    "RayTracer_Surface_BMP.o ",
                    "RayTracer_Texture.o ",
+                   "RayTracer_Texture_Constant.o ",
                    "RayTracer_Texture_Convolutor.o ",
                    "RayTracer_Texture_Gradient.o ",
                    "RayTracer_Texture_CheckerBoard.o ",

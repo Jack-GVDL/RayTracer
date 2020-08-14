@@ -1,12 +1,11 @@
-// Created by Jack Tse on 2020/07/24
-// Follow TrackingStandard 0.1
+// Created by Jack Tse on 2020/08/14
 //
 // Log
-// 2020/07/24   initial update
+// 2020/08/14   initial update
 
 
-#ifndef RAYTRACER_TEXTURE_IMAGE_HPP
-#define RAYTRACER_TEXTURE_IMAGE_HPP
+#ifndef RAYTRACER_TEXTURE_CONSTANT_HPP
+#define RAYTRACER_TEXTURE_CONSTANT_HPP
 
 
 #include "RayTracer_Texture.hpp"
@@ -25,17 +24,20 @@
 
 
 // Data Structure
-class Texture_Image: public Texture {
+class Texture_Constant: public Texture {
 	// Data
 	public:
-		Vec3f	*color	= nullptr;
-		int		width	= 0;
-		int		height	= 0;
+		Vec3f   color   = Vec3f();
 
 	// Operation
 	public:
 		// init
-		// ...
+		Texture_Constant()
+		{}
+
+		Texture_Constant(const Vec3f &color):
+		color(color)
+		{}
 
 		// interface
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
@@ -46,11 +48,11 @@ class Texture_Image: public Texture {
 };
 
 
-// TODO: change to this name later
-typedef Texture_Image Texture_PixelMap;
-
-
 // Macro Function
+// ...
+
+
+// Operation Handling
 // ...
 
 
@@ -58,4 +60,4 @@ typedef Texture_Image Texture_PixelMap;
 // ...
 
 
-#endif  // RAYTRACER_TEXTURE_IMAGE_HPP
+#endif  // RAYTRACER_TEXTURE_CONSTANT_HPP

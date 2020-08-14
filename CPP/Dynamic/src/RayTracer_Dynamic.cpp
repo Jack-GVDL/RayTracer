@@ -359,7 +359,9 @@ EXPORT_DLL(int) RayTracer_Texture_getPixel(int index, double *pixel, const doubl
 	Dynamic_Container<Texture> *texture = texture_list.get(index);
 	if (texture == nullptr) return -1;
 
-	Vec3f vec_pixel = texture->getObject()->getPixel(Vec3f(point[0], point[1], point[2]));
+	Vec3f vec_pixel;
+	texture->getObject()->getPixel(vec_pixel, Vec3f(point[0], point[1], point[2]));
+	
 	pixel[0] = vec_pixel[0];
 	pixel[1] = vec_pixel[1];
 	pixel[2] = vec_pixel[2];

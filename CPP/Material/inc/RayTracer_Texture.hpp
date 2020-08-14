@@ -41,8 +41,7 @@ class Texture {
 		// operation
 		bool			addMapper	(Mapper *mapper);
 		bool			rmMapper	(Mapper *mapper);
-		Vec3f			getPixel	(const Vec3f &point) const;
-		Vec3f			getPixel	(const Ray *ray) const;
+		void			getPixel	(Vec3f &dst, const Vec3f &src) const;
 
 		// interface
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) = 0;
@@ -50,31 +49,7 @@ class Texture {
 	protected:
 		// interface
 		// TODO: change to getPixel for consistency
-		virtual Vec3f	_getPixel_	(const Ray *ray) const = 0;
-};
-
-
-class Texture_Constant: public Texture {
-	// Data
-	public:
-		Vec3f   color   = Vec3f();
-
-	// Operation
-	public:
-		// init
-		Texture_Constant()
-		{}
-
-		Texture_Constant(const Vec3f &color):
-		color(color)
-		{}
-
-		// interface
-		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
-
-	protected:
-		// interface
-		virtual Vec3f	_getPixel_	(const Ray *ray) const override;
+		virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const = 0;
 };
 
 

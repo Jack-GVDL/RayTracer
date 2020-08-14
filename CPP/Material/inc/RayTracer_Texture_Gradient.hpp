@@ -52,7 +52,7 @@ class Texture_Gradient: public Texture {
 
 	protected:
 		// interface
-		virtual Vec3f	_getPixel_	(const Ray *ray) const override;
+		virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
 };
 
 

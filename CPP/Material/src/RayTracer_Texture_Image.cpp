@@ -14,19 +14,19 @@
 
 
 // Operation Handling
-Vec3f Texture_Image::_getPixel_(const Ray *ray) const {
+void Texture_Image::_getPixel_(Vec3f &dst, const Vec3f &src) const {
 	// get point
-	// TODO: mapping is not yet completed
-	const int x = (int)(ray->getPosition()[0]);
-	const int y = (int)(ray->getPosition()[1]);
+	const int x = (int)(src[0]);
+	const int y = (int)(src[1]);
 
 	// check if out of bound
-	if (x < 0 || x >= width ||
-		y < 0 || y >= height) return Vec3f(0);
+	if (x < 0 || x >= width ||y < 0 || y >= height) {
+		dst = Vec3f();
+		return;
+	}
 
 	// get image pixel
-	// TODO: supersampling is not yet completed
-	return color[x + y * width];
+	dst = color[x + y * width];
 }
 
 

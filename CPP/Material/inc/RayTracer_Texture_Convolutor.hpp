@@ -45,7 +45,8 @@ class Texture_Convolutor: public Texture {
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
 
 	protected:
-		virtual Vec3f	_getPixel_	(const Ray *ray) const override;
+		// interface
+		virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
 };
 
 

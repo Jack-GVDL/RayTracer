@@ -29,13 +29,22 @@ void Texture_Convolutor::setKernel(double *kernel, int width) {
 }
 
 
-Vec3f Texture_Convolutor::_getPixel_(const Ray *ray) const {
-	if (texture == nullptr) return Vec3f();
-	if (kernel == nullptr)	return Vec3f();
+void Texture_Convolutor::_getPixel_(Vec3f &dst, const Vec3f &src) const {
+	// if texture or kernel not exist
+	// then do nothing
+	if (texture == nullptr) {
+		dst	= Vec3f();
+		return;
+	}
+
+	if (kernel == nullptr) {
+		dst = Vec3f();
+		return;
+	}
 
 	// get center point
-	const double 	double_x 		= ray->getPosition()[0];
-	const double 	double_y 		= ray->getPosition()[1];
+	const double 	double_x 		= src[0];
+	const double 	double_y 		= src[1];
 	
 	const int		int_x			= (int)(double_x);
 	const int		int_y			= (int)(double_y);
@@ -50,14 +59,15 @@ Vec3f Texture_Convolutor::_getPixel_(const Ray *ray) const {
 	for (int y = -width_half; y < width_half + 1; y++) {
 		for (int x = -width_half; x < width_half + 1; x++) {
 
-			pixel_temp = texture->getPixel(Vec3f(int_x + x, int_y + y, 0));
+			texture->getPixel(pixel_temp, Vec3f(int_x + x, int_y + y, 0));
 			pixel_sum += pixel_temp * kernel[index];
 			index++;
 
 		}
 	}
-	
-	return pixel_sum / (kernel_width * kernel_width);
+
+	// set dst pixel
+	dst = pixel_sum / (kernel_width * kernel_width);
 }
 
 
