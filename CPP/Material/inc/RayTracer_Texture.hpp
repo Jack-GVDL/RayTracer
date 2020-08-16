@@ -34,13 +34,18 @@ class Texture {
 	public:
 		// better to call it mapper_chain
 		// as order matter
-		std::vector<Mapper*> mapper_list;
+		std::vector<Mapper*>	mapper_list;
+		std::vector<Texture*>	input_list;
 
 	// Operation
 	public:
 		// operation
 		bool			addMapper	(Mapper *mapper);
 		bool			rmMapper	(Mapper *mapper);
+
+		bool			addInput	(Texture *texture);
+		bool			rmInput		(Texture *texture);
+
 		void			getPixel	(Vec3f &dst, const Vec3f &src) const;
 
 		// interface

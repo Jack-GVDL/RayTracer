@@ -16,6 +16,7 @@ class Display_Tracer(QWidget):
 		self._y:			int			= 100
 
 		self._image:		List[Vec3f]	= []
+		self._image_array:	List[float]	= []
 		self._time:			time		= None
 
 		self._ops_tracer:	Ops_Tracer = None
@@ -46,27 +47,41 @@ class Display_Tracer(QWidget):
 
 		# get pixel and draw on screen
 		self._image.clear()
+		self._image_array.clear()
 
-		x_half: float = self._x / 2
-		y_half: float = self._y / 2
+		# backup
+		# pixel by pixel
+		# x_half: float = self._x / 2
+		# y_half: float = self._y / 2
+		#
+		# for y in range(self._y):
+		# 	for x in range(self._x):
+		#
+		# 		u: float = (x - x_half) / x_half
+		# 		v: float = (y - y_half) / y_half
+		#
+		# 		# get color
+		# 		vec_color: Vec3f = Vec3f()
+		# 		self._ops_tracer.Tracer_tracePoint(0, vec_color, u, v, 5)
+		#
+		# 		# adjust color value
+		# 		# (0, 1) -> (0, 255)
+		# 		vec_color[0] *= 255
+		# 		vec_color[1] *= 255
+		# 		vec_color[2] *= 255
+		#
+		# 		self._image.append(vec_color)
 
-		for y in range(self._y):
-			for x in range(self._x):
+		# pixel array
+		self._ops_tracer.Tracer_traceRect(0, self._image_array, self._x, self._y, 5, False, True)
 
-				u: float = (x - x_half) / x_half
-				v: float = (y - y_half) / y_half
+		for index in range(0, len(self._image_array), 3):
 
-				# get color
-				vec_color: Vec3f = Vec3f()
-				self._ops_tracer.Tracer_tracePoint(0, vec_color, u, v, 5)
-
-				# adjust color value
-				# (0, 1) -> (0, 255)
-				vec_color[0] *= 255
-				vec_color[1] *= 255
-				vec_color[2] *= 255
-
-				self._image.append(vec_color)
+			self._image.append(
+				Vec3f(
+					self._image_array[index + 0] * 255,
+					self._image_array[index + 1] * 255,
+					self._image_array[index + 2] * 255))
 
 		# execution time end point and display time
 		end_time = time.time()
@@ -91,7 +106,7 @@ class Display_Tracer(QWidget):
 					int(self._image[x + y * self._x][2]))
 
 				painter.setPen(color)
-				painter.drawPoint(x, self._y - y)
+				painter.drawPoint(x, y)
 
 		# display time
 		painter.setPen(QColor(255, 255, 255))

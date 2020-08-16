@@ -60,6 +60,7 @@ class Hitable_Sphere: public SceneObject_Hitable {
 };
 
 
+// TODO: remove this later
 class Mapper_Sphere: public Mapper {
 	// Data
 	public:
@@ -76,6 +77,29 @@ class Mapper_Sphere: public Mapper {
 
 		// interface
 		virtual void	map				(Vec3f &vector) const override;
+};
+
+
+class Texture_Mapper_Sphere: public Texture {
+	// Data
+	public:
+		Hitable_Sphere		*sphere	= nullptr;
+
+	// Operation
+	public:
+		// init
+		Texture_Mapper_Sphere()
+		{}
+
+		// operation
+		void			setSphere		(Hitable_Sphere *sphere);
+
+		// interfce
+		virtual void	setPixel		(const Vec3f &point, const Vec3f &pixel) override;
+
+	protected:
+		// interface
+		virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
 };
 
 

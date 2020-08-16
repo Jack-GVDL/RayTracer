@@ -90,13 +90,14 @@ EXPORT_DLL(void) RayTracer_info() {
 	printf("Ray Tracer, build on %s %s \n", __DATE__, __TIME__);
 
 	// module info
-	RayTracer_Dynamic_Camera_info();
-	RayTracer_Dynamic_Surface_info();
-	RayTracer_Dynamic_Mapper_info();
-	RayTracer_Dynamic_Texture_info();
-	RayTracer_Dynamic_Scatter_info();
-	RayTracer_Dynamic_Hitable_info();
-	RayTracer_Dynamic_Light_info();
+	// TODO: testing
+	// RayTracer_Dynamic_Camera_info();
+	// RayTracer_Dynamic_Surface_info();
+	// RayTracer_Dynamic_Mapper_info();
+	// RayTracer_Dynamic_Texture_info();
+	// RayTracer_Dynamic_Scatter_info();
+	// RayTracer_Dynamic_Hitable_info();
+	// RayTracer_Dynamic_Light_info();
 
 	// spacing
 	printf("\n");
@@ -139,7 +140,8 @@ EXPORT_DLL(int) RayTracer_Tracer_tracePoint(int index_camera, double *pixel, dou
 }
 
 
-EXPORT_DLL(int) RayTracer_Tracer_tracerRect(int index_camera, double *pixel, double w, double h, double pixel_w, double pixel_h, int depth) {
+EXPORT_DLL(int) RayTracer_Tracer_traceRect(int index_camera, double *pixel, int w, int h, int depth, int is_reverse_x, int is_reverse_y) {
+	
 	// get camera
 	Dynamic_Container<Camera> *container_camera = camera_list.get(1);
 	if (container_camera == nullptr) {
@@ -149,8 +151,57 @@ EXPORT_DLL(int) RayTracer_Tracer_tracerRect(int index_camera, double *pixel, dou
 		return -1;
 	}
 
-	// TODO: not yet completed
-	// ...
+	// based on property of export image
+	// order of putting pixel on the linear memory space may be different
+	int index_x_start, 		index_y_start;
+	int index_x_next, 		index_y_next;
+
+	// reverse x or not
+	if (!is_reverse_x) {
+		index_x_start	= 0;
+		index_x_next	= 1;
+	} else {
+		index_x_start	= w - 1;
+		index_x_next	= -1;
+	}
+
+	// reverse y or not
+	if (!is_reverse_y) {
+		index_y_start	= 0;
+		index_y_next	= 1;
+	} else {
+		index_y_start	= h - 1;
+		index_y_next	= -1;
+	}
+
+	// first calculate x_half and y_half to save time for later work
+	double x_half = double(w) / 2.0;
+	double y_half = double(h) / 2.0;
+
+	// loop through all pixel
+	int index	= 0;
+	int index_x	= index_x_start;
+	int index_y	= index_y_start;
+
+	for (int y = 0; y < h; y++) {
+
+		index_x = index_x_start;
+		for (int x = 0; x < w; x++) {
+
+			const double u = (double(index_x) - x_half) / x_half;
+			const double v = (double(index_y) - y_half) / y_half;
+
+			Vec3f result = tracer.trace(container_camera->getObject(), u, v, depth);
+			pixel[index + 0] = result[0];
+			pixel[index + 1] = result[1];
+			pixel[index + 2] = result[2];
+
+			index_x += index_x_next;
+			index	+= 3;
+		}
+
+		index_y	+= index_y_next;
+	}
 
 	return 0;
 }

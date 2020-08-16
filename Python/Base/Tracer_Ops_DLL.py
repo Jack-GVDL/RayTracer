@@ -1,10 +1,11 @@
 from typing import List
 import ctypes
-from ctypes import c_int, c_double, c_uint8, c_uint32
+from ctypes import c_int, c_double, c_uint8, c_uint32, c_bool
 from ctypes import CDLL
 from .Tracer_Vec3f import Vec3f
 from .Tracer_Ops import Ops_Tracer
 import os
+import time
 
 
 class Ops_Tracer_DLL(Ops_Tracer):
@@ -87,7 +88,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	# tracer
 	def Tracer_tracePoint(self, index_camera: int, pixel: Vec3f, x: float, y: float, depth: int) -> int:
 		array_pixel = (c_double * 3)(*pixel.array)
-		result: int = self._dll_tracer.RayTracer_Tracer_tracePoint(index_camera, array_pixel, c_double(x), c_double(y), c_int(depth))
+		result: int = self._dll_tracer.RayTracer_Tracer_tracePoint(c_int(index_camera), array_pixel, c_double(x), c_double(y), c_int(depth))
 		
 		pixel[0] = array_pixel[0]
 		pixel[1] = array_pixel[1]
@@ -95,9 +96,19 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 		return result
 
-	# TODO: not yet completed
-	def Tracer_tracerRect(self, index_camera: int, pixel_list: List[Vec3f], w: float, h: float, pixel_w: float, pixel_h: float, depth: int) -> int:
-		raise NotImplementedError
+	def Tracer_traceRect(self, index_camera: int, pixel_list: List[float], w: int, h: int, depth: int, is_reverse_x: bool, is_reverse_y: bool) -> int:
+		array_pixel = (c_double * (w * h * 3))()
+
+		result: int = self._dll_tracer.RayTracer_Tracer_traceRect(
+			c_int(index_camera), array_pixel, c_int(w), c_int(h), c_int(depth),
+			c_int(1 if is_reverse_x else 0),
+			c_int(1 if is_reverse_y else 0))
+
+		# TODO: I know this is fucking slow, find a faster way
+		# for now, about 0.2 - 0.3 ms for 270000 c_double value
+		pixel_list.extend([array_pixel[i] for i in range(w * h * 3)])
+
+		return result
 
 	# camera
 	def Camera_create(self, type_: int) -> int:

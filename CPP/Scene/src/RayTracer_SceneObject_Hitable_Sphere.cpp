@@ -107,5 +107,38 @@ void Mapper_Sphere::map(Vec3f &vector) const {
 }
 
 
+// texture
+void Texture_Mapper_Sphere::setSphere(Hitable_Sphere *sphere) {
+	this->sphere = sphere;
+}
+
+
+void Texture_Mapper_Sphere::setPixel(const Vec3f &point, const Vec3f &pixel) {
+
+}
+
+
+void Texture_Mapper_Sphere::_getPixel_(Vec3f &dst, const Vec3f &src) const {
+	if (sphere == nullptr) return;
+
+	// get displacement from center of sphere
+	Vec3f dis = src - sphere->center;
+
+	// map on to 2d plane
+	// no z-axis
+	double dis_radius = sqrt(dis[0] * dis[0] + dis[2] * dis[2]);
+
+	dst[0]	= atan(dis[0] / std::abs(dis[2])) / M_PI;
+	dst[1]	= atan(dis[1] / dis_radius) / M_PI * 2;
+	dst[2]	= 0;
+
+	// x-axis adjustment
+	if (dis[2] < 0) {
+		if (dis[0] > 0)	dst[0]	= 1 - dst[0];
+		else			dst[0]	= -1 + dst[0];
+	}
+}
+
+
 // Static Function Implementation
 // ...
