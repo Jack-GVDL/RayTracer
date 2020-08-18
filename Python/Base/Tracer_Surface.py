@@ -29,11 +29,24 @@ class Surface(Tracer_Base):
 
 class Surface_Constant(Surface):
 
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		self._object_index = self._ops_tracer.Surface_create(0)
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Surface_Type_getIndex("constant")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Surface_create(self._type_index)
 
 	# Operation
 	# ...
@@ -41,11 +54,24 @@ class Surface_Constant(Surface):
 
 class Surface_BMP(Surface):
 
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		self._object_index = self._ops_tracer.Surface_create(1)
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Surface_Type_getIndex("constant")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Surface_create(self._type_index)
 
 	# Operation
 	def setPath(self, path: str) -> None:

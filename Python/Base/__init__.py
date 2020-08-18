@@ -2,9 +2,10 @@ from .Tracer_Vec3f import Vec3f
 from .Tracer_Ops import Ops_Tracer
 from .Tracer_Ops_DLL import Ops_Tracer_DLL
 
-from .Tracer_Mapper import Mapper
-from .Tracer_Mapper import Mapper_Additor
-from .Tracer_Mapper import Mapper_Multiplier
+# TODO: backup
+# from .Tracer_Mapper import Mapper
+# from .Tracer_Mapper import Mapper_Additor
+# from .Tracer_Mapper import Mapper_Multiplier
 
 from .Tracer_Surface import Surface
 # from .Tracer_Surface import Surface_Image
@@ -34,5 +35,5 @@ from .Tracer_Scene import Scene
 from .Tracer import Tracer
 from .Tracer_Sample import Tracer_Sample
 
-from .Tracer_Lib_Mapper import Mapper_Sphere
-from .Tracer_Lib_Mapper import Mapper_Trimesh
+from Base.backup.Tracer_Lib_Mapper import Mapper_Sphere
+from Base.backup.Tracer_Lib_Mapper import Mapper_Trimesh

@@ -40,6 +40,9 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	# camera
+	def Camera_Type_getIndex(self, name: str) -> int:
+		raise NotImplementedError
+
 	def Camera_create(self, type_: int) -> int:
 		raise NotImplementedError
 
@@ -67,20 +70,24 @@ class Ops_Tracer:
 	def Camera_setAspectRatio(self, index: int, value: float) -> int:
 		raise NotImplementedError
 
+	# TODO: backup
 	# mapper
-	def Mapper_create(self, type_: int) -> int:
-		raise NotImplementedError
-
-	def Mapper_destroy(self, index: int) -> int:
-		raise NotImplementedError
-
-	def Mapper_config(self, index: int, type_: int, data: bytes, size: int) -> int:
-		raise NotImplementedError
-
-	def Mapper_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
-		raise NotImplementedError
+	# def Mapper_create(self, type_: int) -> int:
+	# 	raise NotImplementedError
+	#
+	# def Mapper_destroy(self, index: int) -> int:
+	# 	raise NotImplementedError
+	#
+	# def Mapper_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+	# 	raise NotImplementedError
+	#
+	# def Mapper_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	# 	raise NotImplementedError
 
 	# surface
+	def Surface_Type_getIndex(self, name: str) -> int:
+		raise NotImplementedError
+
 	def Surface_create(self, type_: int) -> int:
 		raise NotImplementedError
 
@@ -100,6 +107,9 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	# texture
+	def Texture_Type_getIndex(self, name: str) -> int:
+		raise NotImplementedError
+
 	def Texture_create(self, type_: int) -> int:
 		raise NotImplementedError
 
@@ -112,11 +122,18 @@ class Ops_Tracer:
 	def Texture_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
 		raise NotImplementedError
 
-	def Texture_addMapper(self, index_texture: int, index_mapper: int) -> int:
+	def Texture_addInput(self, index_texture: int, index_input: int, offset: int) -> int:
 		raise NotImplementedError
 
-	def Texture_rmMapper(self, index_texture: int, index_mapper: int) -> int:
+	def Texture_rmInput(self, index: int, offset: int) -> int:
 		raise NotImplementedError
+
+	# TODO: backup
+	# def Texture_addMapper(self, index_texture: int, index_mapper: int) -> int:
+	# 	raise NotImplementedError
+	#
+	# def Texture_rmMapper(self, index_texture: int, index_mapper: int) -> int:
+	# 	raise NotImplementedError
 
 	def Texture_setPixel(self, index: int, pixel: Vec3f, point: Vec3f) -> int:
 		raise NotImplementedError
@@ -125,6 +142,9 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	# scatter
+	def Scatter_Type_getIndex(self, name: str) -> int:
+		raise NotImplementedError
+
 	def Scatter_create(self, type_: int) -> int:
 		raise NotImplementedError
 
@@ -144,6 +164,9 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	# hitable
+	def SceneObject_Hitable_Type_getIndex(self, name: str) -> int:
+		raise NotImplementedError
+
 	def SceneObject_Hitable_create(self, type_: int) -> int:
 		raise NotImplementedError
 
@@ -163,6 +186,9 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	# light
+	def SceneObject_Light_Type_getIndex(self, name: str) -> int:
+		raise NotImplementedError
+
 	def SceneObject_Light_create(self, type_: int) -> int:
 		raise NotImplementedError
 

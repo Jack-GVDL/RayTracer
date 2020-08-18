@@ -25,12 +25,24 @@ class Hitable(Tracer_Base):
 
 class Hitable_Sphere(Hitable):
 
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		object_index: int = self._ops_tracer.SceneObject_Hitable_create(0)
-		self._object_index = object_index
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.SceneObject_Hitable_Type_getIndex("sphere")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.SceneObject_Hitable_create(self._object_index)
 
 	# Operation
 	def setCenter(self, center: Vec3f) -> None:
@@ -44,12 +56,24 @@ class Hitable_Sphere(Hitable):
 
 class Hitable_Trimesh(Hitable):
 
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		object_index: int = self._ops_tracer.SceneObject_Hitable_create(1)
-		self._object_index = object_index
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.SceneObject_Hitable_Type_getIndex("trimesh")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.SceneObject_Hitable_create(self._object_index)
 
 	# Operation
 	def setPoint_0(self, point: Vec3f) -> None:

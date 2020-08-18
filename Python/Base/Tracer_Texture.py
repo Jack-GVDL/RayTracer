@@ -1,9 +1,8 @@
 import struct
 import math
-from typing import List
+from typing import List, Any
 from .Tracer_Base import Tracer_Base
 from .Tracer_Vec3f import Vec3f
-from .Tracer_Mapper import Mapper
 
 
 class Texture(Tracer_Base):
@@ -12,13 +11,22 @@ class Texture(Tracer_Base):
 		super().__init__()
 
 	# Operation
-	def addMapper(self, mapper: Mapper) -> bool:
-		result:	int	= self._ops_tracer.Texture_addMapper(self._object_index, mapper.object_index)
+	def addInput(self, texture: Any, offset: int) -> bool:
+		result: int = self._ops_tracer.Texture_addInput(self._object_index, texture.object_index, offset)
 		return True if result == 0 else False
 
-	def rmMapper(self, mapper: Mapper) -> bool:
-		result: int = self._ops_tracer.Texture_rmMapper(self._object_index, mapper.object_index)
+	def rmInput(self, offset: int) -> bool:
+		result: int = self._ops_tracer.Texture_rmInput(self._object_index, offset)
 		return True if result == 0 else False
+
+	# TODO: backup
+	# def addMapper(self, mapper: Mapper) -> bool:
+	# 	result:	int	= self._ops_tracer.Texture_addMapper(self._object_index, mapper.object_index)
+	# 	return True if result == 0 else False
+	#
+	# def rmMapper(self, mapper: Mapper) -> bool:
+	# 	result: int = self._ops_tracer.Texture_rmMapper(self._object_index, mapper.object_index)
+	# 	return True if result == 0 else False
 
 	def setPixel(self, point: Vec3f, pixel: Vec3f) -> None:
 		# be careful order of point and pixel in Texture_setPixel(pixel, point)
@@ -29,13 +37,51 @@ class Texture(Tracer_Base):
 		result:	int	= self._ops_tracer.Texture_getPixel(self._object_index, pixel, point)
 
 
-class Texture_Convolutor(Texture):
+class Texture_Input(Texture):
+
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
 
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		self._object_index = self._ops_tracer.Texture_create(0)
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("input")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
+
+	# Operation
+	# ...
+
+
+class Texture_Convolutor(Texture):
+
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
+	def __init__(self):
+		super().__init__()
+
+		# data
+		# ...
+
+		# init
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("convolutor")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
 
 	# Operation
 	def setTexture(self, texture: Texture) -> None:
@@ -55,11 +101,24 @@ class Texture_Convolutor(Texture):
 
 class Texture_Constant(Texture):
 
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		self._object_index = self._ops_tracer.Texture_create(1)
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("constant")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
 
 	# Operation
 	# ...
@@ -67,11 +126,24 @@ class Texture_Constant(Texture):
 
 class Texture_Checkerboard(Texture):
 
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		self._object_index = self._ops_tracer.Texture_create(2)
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("checkerboard")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
 
 	# Operation
 	def setBoardSize(self, size: Vec3f) -> None:
@@ -81,11 +153,174 @@ class Texture_Checkerboard(Texture):
 
 class Texture_Image(Texture):
 
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		self._object_index = self._ops_tracer.Texture_create(3)
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("image")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
+
+	# Operation
+	# ...
+
+
+class Texture_Additor(Texture):
+
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
+	def __init__(self):
+		super().__init__()
+
+		# data
+		# ...
+
+		# init
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("additor")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
+
+	# Operation
+	# ...
+
+
+class Texture_Multiplier(Texture):
+
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
+	def __init__(self):
+		super().__init__()
+
+		# data
+		# ...
+
+		# init
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("multiplier")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
+
+	# Operation
+	# ...
+
+
+class Texture_Mapper_Sphere(Texture):
+
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
+	def __init__(self):
+		super().__init__()
+
+		# data
+		# ...
+
+		# init
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("sphere")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
+
+	# Operation
+	# ...
+
+
+class Texture_Mapper_Trimesh(Texture):
+
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
+	def __init__(self):
+		super().__init__()
+
+		# data
+		# ...
+
+		# init
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("trimesh")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
+
+	# Operation
+	# ...
+
+
+class Texture_Direction_Sphere(Texture):
+
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
+	def __init__(self):
+		super().__init__()
+
+		# data
+		# ...
+
+		# init
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("sphere_dir")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
+
+	# Operation
+	# ...
+
+
+class Texture_Direction_Trimesh(Texture):
+
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
+	def __init__(self):
+		super().__init__()
+
+		# data
+		# ...
+
+		# init
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.Texture_Type_getIndex("trimesh_dir")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.Texture_create(self._type_index)
 
 	# Operation
 	# ...

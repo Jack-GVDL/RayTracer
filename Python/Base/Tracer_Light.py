@@ -11,6 +11,9 @@ class Light(Tracer_Base):
 		# data
 		# ...
 
+		# init
+		# ...
+
 	# Operation
 	# TODO: in C++, it should be in SceneElement
 	def setOrigin(self, origin: Vec3f) -> None:
@@ -22,12 +25,24 @@ class Light(Tracer_Base):
 
 class Light_Directional(Light):
 
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		object_index: int = self._ops_tracer.SceneObject_Light_create(0)
-		self._object_index = object_index
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.SceneObject_Light_Type_getIndex("directional")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.SceneObject_Light_create(self._type_index)
 
 	# Operation
 	def setOrientation(self, orientation: Vec3f) -> None:
@@ -37,12 +52,24 @@ class Light_Directional(Light):
 
 class Light_Point(Light):
 
+	# Class
+	_type_index:	int		= -1
+	_is_initiated:	bool	= False
+
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
 		# init
-		object_index: int = self._ops_tracer.SceneObject_Light_create(1)
-		self._object_index = object_index
+		if not self._is_initiated:
+			self._type_index	= self._ops_tracer.SceneObject_Light_Type_getIndex("point")
+			assert self._type_index != -1, "Type not exist"
+
+			self._is_initiated	= True
+
+		self._object_index = self._ops_tracer.SceneObject_Light_create(self._type_index)
 
 	# Operation
 	def setAttenuationCoeff(self, coeff: Vec3f) -> None:

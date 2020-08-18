@@ -2,11 +2,10 @@ from .Tracer_Texture import *
 from .Tracer_Scatter import *
 from .Tracer_Hitable import *
 from .Tracer_Light import *
-from .Tracer_Camera import *
 from .Tracer_Surface import *
-from .Tracer_Mapper import *
+from Base.backup.Tracer_Mapper import *
 from .Tracer_Scene import Scene
-from .Tracer_Lib_Mapper import Mapper_Sphere, Mapper_Trimesh
+from Base.backup.Tracer_Lib_Mapper import Mapper_Sphere, Mapper_Trimesh
 
 
 class Tracer_Sample:

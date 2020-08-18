@@ -8,6 +8,12 @@ class Scene(Tracer_Base):
 	def __init__(self):
 		super().__init__()
 
+		# data
+		# ...
+
+		# init
+		# ...
+
 	# Operation
 	def addLight(self, light: Light) -> bool:
 		result:	int	= self._ops_tracer.Scene_addLight(light.object_index)
