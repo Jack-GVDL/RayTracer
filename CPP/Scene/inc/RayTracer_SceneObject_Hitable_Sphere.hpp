@@ -60,24 +60,24 @@ class Hitable_Sphere: public SceneObject_Hitable {
 };
 
 
-// TODO: remove this later
-class Mapper_Sphere: public Mapper {
-	// Data
-	public:
-		Hitable_Sphere		*sphere;
+// TODO: backup
+// class Mapper_Sphere: public Mapper {
+// 	// Data
+// 	public:
+// 		Hitable_Sphere		*sphere;
 
-	// Operation
-	public:
-		// init
-		Mapper_Sphere()
-		{}
+// 	// Operation
+// 	public:
+// 		// init
+// 		Mapper_Sphere()
+// 		{}
 
-		// operation
-		void			setSphere		(Hitable_Sphere *sphere);
+// 		// operation
+// 		void			setSphere		(Hitable_Sphere *sphere);
 
-		// interface
-		virtual void	map				(Vec3f &vector) const override;
-};
+// 		// interface
+// 		virtual void	map				(Vec3f &vector) const override;
+// };
 
 
 class Texture_Mapper_Sphere: public Texture {
@@ -89,17 +89,50 @@ class Texture_Mapper_Sphere: public Texture {
 	public:
 		// init
 		Texture_Mapper_Sphere()
-		{}
+		{
+			input_list	= new Texture*[1];
+			input_size	= 1;
+		}
 
 		// operation
 		void			setSphere		(Hitable_Sphere *sphere);
 
 		// interfce
 		virtual void	setPixel		(const Vec3f &point, const Vec3f &pixel) override;
+		virtual void	_getPixel_		(Vec3f &dst, std::vector<Vec3f> *src) const override;
 
 	protected:
 		// interface
-		virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+		// TODO: backup
+		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+};
+
+
+class Texture_Direction_Sphere: public Texture {
+	// Data
+	public:
+		Hitable_Sphere		*sphere = nullptr;
+
+	// Operation
+	public:
+		// init
+		Texture_Direction_Sphere()
+		{
+			input_list	= new Texture*[2];
+			input_size	= 2;
+		}
+
+		// operation
+		void			setSphere		(Hitable_Sphere *sphere);
+
+		// interfce
+		virtual void	setPixel		(const Vec3f &point, const Vec3f &pixel) override;
+		virtual void	_getPixel_		(Vec3f &dst, std::vector<Vec3f> *src) const override;
+
+	protected:
+		// interface
+		// TODO: backup
+		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
 };
 
 

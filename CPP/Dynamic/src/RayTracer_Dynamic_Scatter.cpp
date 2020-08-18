@@ -35,100 +35,59 @@ static int			interact_emitter					(void *object, int type, void* *list, uint32_t
 
 
 // Static Data
-// config
-static config_type_func_t	config_table_light			[]	= {
-	0
-};
+static std::vector<config_type_func_t>		table_config_light;
+static std::vector<config_type_func_t>		table_config_reflection;
+static std::vector<config_type_func_t>		table_config_refraction;
+static std::vector<config_type_func_t>		table_config_gradient;
+static std::vector<config_type_func_t>		table_config_emitter;
 
-static config_type_func_t	config_table_reflection		[]	= {
-	0
-};
-
-static config_type_func_t	config_table_refraction		[]	= {
-	0
-};
-
-static config_type_func_t	config_table_gradient		[]	= {
-	0
-};
-
-static config_type_func_t	config_table_emitter		[]	= {
-	0
-};
-
-// interact
-static interact_type_func_t interact_table_light		[]	= {
-	0
-};
-
-static interact_type_func_t interact_table_reflection	[]	= {
-	0
-};
-
-static interact_type_func_t interact_table_refraction	[]	= {
-	0
-};
-
-static interact_type_func_t interact_table_gradient		[]	= {
-	0
-};
-
-static interact_type_func_t interact_table_emitter		[]	= {
-	0
-};
+static std::vector<interact_type_func_t>	interact_table_light;
+static std::vector<interact_type_func_t>	interact_table_reflection;
+static std::vector<interact_type_func_t>	interact_table_refraction;
+static std::vector<interact_type_func_t>	interact_table_gradient;
+static std::vector<interact_type_func_t>	interact_table_emitter;
 
 
 // Operation Handling
 void RayTracer_Dynamic_Scatter_init(std::vector<Dynamic_ContainerType*> *type_list) {
-	// light
-	Dynamic_ContainerType	*type_light			= new Dynamic_ContainerType();
-	type_light->ops_init			= init_light;
-	type_light->ops_config			= config_light;
-	type_light->ops_interact		= interact_light;
-	type_list->push_back(type_light);
+	// table
+	// ...
 
-	// reflection
-	Dynamic_ContainerType	*type_reflection	= new Dynamic_ContainerType();
-	type_reflection->ops_init		= init_reflection;
-	type_reflection->ops_config		= config_reflection;
-	type_reflection->ops_interact	= interact_reflection;
-	type_list->push_back(type_reflection);
-
-	// refraction
-	Dynamic_ContainerType	*type_refraction	= new Dynamic_ContainerType();
-	type_refraction->ops_init		= init_refraction;
-	type_refraction->ops_config		= config_refraction;
-	type_refraction->ops_interact	= interact_refraction;
-	type_list->push_back(type_refraction);
-
-	// gradient
-	Dynamic_ContainerType	*type_gradient		= new Dynamic_ContainerType();
-	type_gradient->ops_init			= init_gradient;
-	type_gradient->ops_config		= config_gradient;
-	type_gradient->ops_interact		= interact_gradient;
-	type_list->push_back(type_gradient);
-
-	// emitter
-	Dynamic_ContainerType	*type_emitter		= new Dynamic_ContainerType();
-	type_emitter->ops_init			= init_emitter;
-	type_emitter->ops_config		= config_emitter;
-	type_emitter->ops_interact		= interact_emitter;
-	type_list->push_back(type_emitter);
+	// create type
+	Dynamic_ContainerType *type;
+	
+	type = new Dynamic_ContainerType();
+	type->setName("light");
+	type->setOps(init_light, config_light, interact_light);
+	type_list->push_back(type);
+	
+	type = new Dynamic_ContainerType();
+	type->setName("reflection");
+	type->setOps(init_reflection, config_reflection, interact_reflection);
+	type_list->push_back(type);
+	
+	type = new Dynamic_ContainerType();
+	type->setName("reflection");
+	type->setOps(init_reflection, config_reflection, interact_reflection);
+	type_list->push_back(type);
+	
+	type = new Dynamic_ContainerType();
+	type->setName("gradient");
+	type->setOps(init_gradient, config_gradient, interact_gradient);
+	type_list->push_back(type);
+	
+	type = new Dynamic_ContainerType();
+	type->setName("emitter");
+	type->setOps(init_emitter, config_emitter, interact_emitter);
+	type_list->push_back(type);
 }
 
 
 void RayTracer_Dynamic_Scatter_info() {
-	printf("Scatter Type \n");
-	printf("0.  %s \n", "Light");
-	printf("1.  %s \n", "Reflection");
-	printf("2.  %s \n", "Refraction");
-	printf("3.  %s \n", "Gradient");
-	printf("4.  %s \n", "Emitter");
 }
 
 
 void RayTracer_Dynamic_Scatter_del() {
-
 }
 
 
@@ -166,53 +125,53 @@ static void* init_emitter() {
 
 // config
 static int config_light(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_light, object, type, data, size);
+	return DynamicUtil::configType(&table_config_light, object, type, data, size);
 }
 
 
 static int config_reflection(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_reflection, object, type, data, size);
+	return DynamicUtil::configType(&table_config_reflection, object, type, data, size);
 }
 
 
 static int config_refraction(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_refraction, object, type, data, size);
+	return DynamicUtil::configType(&table_config_refraction, object, type, data, size);
 }
 
 
 static int config_gradient(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_gradient, object, type, data, size);
+	return DynamicUtil::configType(&table_config_gradient, object, type, data, size);
 }
 
 
 static int config_emitter(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_emitter, object, type, data, size);
+	return DynamicUtil::configType(&table_config_emitter, object, type, data, size);
 }
 
 
 // interact
 static int interact_light(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_light, object, type, list, size);
+	return DynamicUtil::interactType(&interact_table_light, object, type, list, size);
 }
 
 
 static int interact_reflection(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_reflection, object, type, list, size);
+	return DynamicUtil::interactType(&interact_table_reflection, object, type, list, size);
 }
 
 
 static int interact_refraction(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_refraction, object, type, list, size);
+	return DynamicUtil::interactType(&interact_table_refraction, object, type, list, size);
 }
 
 
 static int interact_gradient(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_gradient, object, type, list, size);
+	return DynamicUtil::interactType(&interact_table_gradient, object, type, list, size);
 }
 
 
 static int interact_emitter(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_emitter, object, type, list, size);
+	return DynamicUtil::interactType(&interact_table_emitter, object, type, list, size);
 }
 
 

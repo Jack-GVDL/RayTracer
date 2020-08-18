@@ -33,18 +33,23 @@ class Texture_Constant: public Texture {
 	public:
 		// init
 		Texture_Constant()
-		{}
+		{
+			input_list	= nullptr;
+			input_size	= 0;
+		}
 
-		Texture_Constant(const Vec3f &color):
-		color(color)
-		{}
+		// Texture_Constant(const Vec3f &color):
+		// color(color)
+		// {}
 
 		// interface
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
+		virtual void	_getPixel_	(Vec3f &dst, std::vector<Vec3f> *src) const;
 
 	protected:
 		// interface
-		virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
+		// backup
+		// virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
 };
 
 

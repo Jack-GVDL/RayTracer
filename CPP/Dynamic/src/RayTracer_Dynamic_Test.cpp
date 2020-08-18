@@ -22,7 +22,6 @@ extern RayTracer									tracer;
 extern Scene										scene;
 
 extern Dynamic_ContainerList<Camera>				camera_list;
-extern Dynamic_ContainerList<Mapper>				mapper_list;
 extern Dynamic_ContainerList<Surface>				surface_list;
 extern Dynamic_ContainerList<Texture>				texture_list;
 extern Dynamic_ContainerList<Scatter>				scatter_list;
@@ -86,7 +85,6 @@ EXPORT_DLL(int) RayTracer_Test_setPrintInfo(int is_enabled) {
 // Static Function Implementation
 static void print_status_container_list() {
 	printf("Camera:              size: %i \n",	camera_list.size()	);
-	printf("Mapper:              size: %i \n",	mapper_list.size()	);
 	printf("Surface:             size: %i \n",	surface_list.size()	);
 	printf("Texture:             size: %i \n",	texture_list.size()	);
 	printf("Scatter:             size: %i \n",	scatter_list.size()	);

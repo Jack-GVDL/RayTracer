@@ -90,39 +90,40 @@ void Hitable_Trimesh::updateBoundingBox() {
 
 
 // mapper
-void Mapper_Trimesh::setTrimesh(Hitable_Trimesh *trimesh) {
-	this->trimesh = trimesh;
-}
+// TODO: backup
+// void Mapper_Trimesh::setTrimesh(Hitable_Trimesh *trimesh) {
+// 	this->trimesh = trimesh;
+// }
 
 
-void Mapper_Trimesh::map(Vec3f &vector) const {
-	if (trimesh == nullptr) return;
+// void Mapper_Trimesh::map(Vec3f &vector) const {
+// 	if (trimesh == nullptr) return;
 
-	// get 2d axis
-	// one should be ac
-	// one should be cross product of normal and ab
-	Vec3f axis_1	= trimesh->point[1] - trimesh->point[0];
-	Vec3f ac		= trimesh->point[2] - trimesh->point[0];
-	Vec3f normal	= axis_1.cross(ac);
-	Vec3f axis_2	= normal.cross(axis_1);
+// 	// get 2d axis
+// 	// one should be ac
+// 	// one should be cross product of normal and ab
+// 	Vec3f axis_1	= trimesh->point[1] - trimesh->point[0];
+// 	Vec3f ac		= trimesh->point[2] - trimesh->point[0];
+// 	Vec3f normal	= axis_1.cross(ac);
+// 	Vec3f axis_2	= normal.cross(axis_1);
 
-	axis_1	= axis_1.normalize();
-	axis_2	= axis_2.normalize();
+// 	axis_1	= axis_1.normalize();
+// 	axis_2	= axis_2.normalize();
 
-	// get projection length on the two axis
-	// then map vector on a 2d plane
-	// axis_1 as x
-	// axis_2 as y
-	double length_x = vector.projectLength(axis_1);
-	double length_y = vector.projectLength(axis_2);
+// 	// get projection length on the two axis
+// 	// then map vector on a 2d plane
+// 	// axis_1 as x
+// 	// axis_2 as y
+// 	double length_x = vector.projectLength(axis_1);
+// 	double length_y = vector.projectLength(axis_2);
 	
-	vector[0] = length_x;
-	vector[1] = length_y;
-	vector[2] = 0;
-}
+// 	vector[0] = length_x;
+// 	vector[1] = length_y;
+// 	vector[2] = 0;
+// }
 
 
-// texture
+// texture - mapper
 void Texture_Mapper_Trimesh::setTrimesh(Hitable_Trimesh *trimesh) {
 	this->trimesh = trimesh;
 }
@@ -133,7 +134,7 @@ void Texture_Mapper_Trimesh::setPixel(const Vec3f &point, const Vec3f &pixel) {
 }
 
 
-void Texture_Mapper_Trimesh::_getPixel_(Vec3f &dst, const Vec3f &src) const {
+void Texture_Mapper_Trimesh::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
 	if (trimesh == nullptr) return;
 
 	// get 2d axis
@@ -151,12 +152,57 @@ void Texture_Mapper_Trimesh::_getPixel_(Vec3f &dst, const Vec3f &src) const {
 	// then map vector on a 2d plane
 	// axis_1 as x
 	// axis_2 as y
-	double length_x = src.projectLength(axis_1);
-	double length_y = src.projectLength(axis_2);
+	double length_x = (*src)[0].projectLength(axis_1);
+	double length_y = (*src)[0].projectLength(axis_2);
 	
 	dst[0] = length_x;
 	dst[1] = length_y;
 	dst[2] = 0;
+}
+
+
+// TODO: backup
+// void Texture_Mapper_Trimesh::_getPixel_(Vec3f &dst, const Vec3f &src) const {
+// 	if (trimesh == nullptr) return;
+
+// 	// get 2d axis
+// 	// one should be ac
+// 	// one should be cross product of normal and ab
+// 	Vec3f axis_1	= trimesh->point[1] - trimesh->point[0];
+// 	Vec3f ac		= trimesh->point[2] - trimesh->point[0];
+// 	Vec3f normal	= axis_1.cross(ac);
+// 	Vec3f axis_2	= normal.cross(axis_1);
+
+// 	axis_1	= axis_1.normalize();
+// 	axis_2	= axis_2.normalize();
+
+// 	// get projection length on the two axis
+// 	// then map vector on a 2d plane
+// 	// axis_1 as x
+// 	// axis_2 as y
+// 	double length_x = src.projectLength(axis_1);
+// 	double length_y = src.projectLength(axis_2);
+	
+// 	dst[0] = length_x;
+// 	dst[1] = length_y;
+// 	dst[2] = 0;
+// }
+
+
+// texture - direction
+void Texture_Direction_Trimesh::setTrimesh(Hitable_Trimesh *trimesh) {
+	this->trimesh = trimesh;
+}
+
+
+void Texture_Direction_Trimesh::setPixel(const Vec3f &point, const Vec3f &pixel) {
+
+}
+
+
+// TODO: not yet completed
+void Texture_Direction_Trimesh::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
+	if (trimesh == nullptr) return;
 }
 
 

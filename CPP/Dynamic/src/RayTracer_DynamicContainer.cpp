@@ -25,6 +25,33 @@ int Dynamic_ContainerBase::getIndex() {
 
 
 // container list
+// TODO: need uniqueness check
+int Dynamic_ContainerListBase::_Type_load_() {
+	// insert current type into hash map
+	for (int i = 0; i < type_list.size(); i++) {
+		const Dynamic_ContainerType *type = type_list[i];
+		name_map.insert(std::make_pair(type->name, i));
+	}
+
+	return 0;
+}
+
+
+int Dynamic_ContainerListBase::_Type_dump_() {
+	name_map.clear();
+	return 0;
+}
+
+
+int Dynamic_ContainerListBase::_Type_indexOf_(std::string name) {
+	std::unordered_map<std::string, int>::iterator iterator;
+	iterator = name_map.find(name);
+	if (iterator == name_map.end()) return -1;
+
+	return iterator->second;
+}
+
+
 Dynamic_ContainerBase* Dynamic_ContainerListBase::_create_(int type) {
 	if (type < 0 || type >= type_list.size()) return nullptr;
 

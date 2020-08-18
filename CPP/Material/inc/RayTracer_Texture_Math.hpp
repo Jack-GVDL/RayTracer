@@ -31,15 +31,24 @@ class Texture_Math_Additor: public Texture {
 
 	// Operation
 	public:
+		// init
+		Texture_Math_Additor()
+		{
+			input_list	= new Texture*[1];
+			input_size	= 1;
+		}
+
 		// operation
 		void			setAdditor      (const Vec3f &value);
 
 		// interface
 		virtual void	setPixel		(const Vec3f &point, const Vec3f &pixel) override;
+		virtual void	_getPixel_		(Vec3f &dst, std::vector<Vec3f> *src) const;
 
 	protected:
 		// interface
-		virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+		// backup
+		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
 };
 
 
@@ -50,15 +59,24 @@ class Texture_Math_Multiplier: public Texture {
 
 	// Operation
 	public:
+		// init
+		Texture_Math_Multiplier()
+		{
+			input_list	= new Texture*[1];
+			input_size	= 1;
+		}
+
 		// operation
 		void			setMultiplier	(const Vec3f &value);
 
 		// interface
 		virtual void	setPixel		(const Vec3f &point, const Vec3f &pixel) override;
+		virtual void	_getPixel_		(Vec3f &dst, std::vector<Vec3f> *src) const;
 
 	protected:
 		// interface
-		virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+		// backup
+		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
 };
 
 

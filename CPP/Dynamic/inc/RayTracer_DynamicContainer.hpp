@@ -4,13 +4,16 @@
 // Log
 // 2020/07/29   initial update
 // 2020/08/07   add binary search, complete destroy()
+// 2020/08/18   add name_map
 
 
 #ifndef RAYTRACER_DYNAMICCONTAINER_HPP
 #define RAYTRACER_DYNAMICCONTAINER_HPP
 
 
+#include <string>
 #include <vector>
+#include <unordered_map>
 #include <stdint.h>
 
 
@@ -33,9 +36,23 @@ typedef int		(*interact_type_func_t)	(void*, void**, uint32_t);
 
 // Data Structure
 struct Dynamic_ContainerType {
+	// Data
+	std::string			name;
+
 	init_func_t			ops_init		= nullptr;
 	config_func_t		ops_config		= nullptr;
 	interact_func_t		ops_interact	= nullptr;
+
+	// Operation
+	void setOps(init_func_t init, config_func_t config, interact_func_t interact) {
+		this->ops_init		= init;
+		this->ops_config	= config;
+		this->ops_interact	= interact;
+	}
+
+	void setName(const std::string &name) {
+		this->name = name;
+	}
 };
 
 
@@ -86,6 +103,8 @@ class Dynamic_ContainerListBase {
 		std::vector<Dynamic_ContainerBase*>		container_list;
 		std::vector<Dynamic_ContainerType*>		type_list;
 
+		std::unordered_map<std::string, int>	name_map;
+
 		// first valid index is 1 instead of 0
 		// 0 is considered as nullptr or ERROR_NO
 		// therefore, it should better not be a valid index
@@ -99,6 +118,11 @@ class Dynamic_ContainerListBase {
 
 	public:
 		// operation
+		int						_Type_load_		();
+		int						_Type_dump_		();
+		int						_Type_indexOf_	(std::string name);
+
+		// TODO: need renaming later
 		Dynamic_ContainerBase*	_create_	(int type);
 		int						_destroy_	(int index);
 		Dynamic_ContainerBase*	_get_		(int index);
@@ -123,12 +147,16 @@ class Dynamic_ContainerList: public Dynamic_ContainerListBase {
 		{}
 
 		// operation
-		Dynamic_Container<T>*	create		(int type);
-		int						destroy		(int index);
-        Dynamic_Container<T>*	get			(int index);
-		int						config		(int index, int type, uint8_t *data, uint32_t size);
-		int						interact	(int index, int type, Dynamic_ContainerBase* *list, uint32_t size);
-		int						size		();
+		int						Type_load		();
+		int						Type_dump		();
+		int						Type_indexOf	(std::string name);
+
+		Dynamic_Container<T>*	create			(int type);
+		int						destroy			(int index);
+        Dynamic_Container<T>*	get				(int index);
+		int						config			(int index, int type, uint8_t *data, uint32_t size);
+		int						interact		(int index, int type, Dynamic_ContainerBase* *list, uint32_t size);
+		int						size			();
 };
 
 
@@ -141,6 +169,24 @@ class Dynamic_ContainerList: public Dynamic_ContainerListBase {
 
 
 // Operation Handling
+template <class T>
+int	Dynamic_ContainerList<T>::Type_load() {
+	return _Type_dump_();
+}
+
+
+template <class T>
+int	Dynamic_ContainerList<T>::Type_dump() {
+	return _Type_dump_();
+}
+
+
+template <class T>
+int	Dynamic_ContainerList<T>::Type_indexOf(std::string name) {
+	return _Type_indexOf_(name);
+}
+
+
 template <class T>
 Dynamic_Container<T>* Dynamic_ContainerList<T>::create(int type) {
 	return (Dynamic_Container<T>*)_create_(type);
@@ -179,6 +225,14 @@ int Dynamic_ContainerList<T>::size() {
 
 // Static Function Implementation
 namespace DynamicUtil {
+
+	// TODO: backup
+	// static inline void	createType		(std::vector<Dynamic_ContainerType*> *type_list, init_func_t init, config_func_t config, interact_func_t interact) {
+	// 	Dynamic_ContainerType *type = new Dynamic_ContainerType();
+	// 	type->setOps(init, config, interact);
+	// 	type_list->push_back(type);
+	// }
+
 
 	static inline int	configType		(config_type_func_t *table, void *object, int type, uint8_t *data, uint32_t size) {
 		return table[type](object, data, size);

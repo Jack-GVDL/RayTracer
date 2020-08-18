@@ -13,7 +13,6 @@
 #include <stdint.h>
 #include <vector>
 #include "../../Utility/Utility.hpp"
-#include "RayTracer_Mapper.hpp"
 
 
 // Define
@@ -34,27 +33,35 @@ class Texture {
 	public:
 		// better to call it mapper_chain
 		// as order matter
-		std::vector<Mapper*>	mapper_list;
-		std::vector<Texture*>	input_list;
+		// std::vector<Mapper*>	mapper_list;
+		Texture*				*input_list		= nullptr;
+		int						input_size		= 0;
 
 	// Operation
 	public:
-		// operation
-		bool			addMapper	(Mapper *mapper);
-		bool			rmMapper	(Mapper *mapper);
+		// init
+		~Texture()
+		{
+			delete[] input_list;
+		}
 
-		bool			addInput	(Texture *texture);
-		bool			rmInput		(Texture *texture);
+		// operation
+		// bool			addMapper	(Mapper *mapper);
+		// bool			rmMapper	(Mapper *mapper);
+
+		bool			addInput	(Texture *texture, int index);
+		bool			rmInput		(int index);
 
 		void			getPixel	(Vec3f &dst, const Vec3f &src) const;
 
 		// interface
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) = 0;
+		virtual void	_getPixel_	(Vec3f &dst, std::vector<Vec3f> *src) const = 0;
 
 	protected:
 		// interface
-		// TODO: change to getPixel for consistency
-		virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const = 0;
+		// backup
+		// virtual void	_getPixel_	(Vec3f &dst, std::vector<Vec3f> *src) const = 0;
 };
 
 

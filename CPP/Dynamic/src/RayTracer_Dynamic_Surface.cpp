@@ -26,52 +26,40 @@ static int			config_bmp_setPath					(void *object, uint8_t *data, uint32_t size)
 static int			interact_bmp_convertToTexture		(void *object, void* *list, uint32_t size);
 
 // Static Data
-// config
-static config_type_func_t config_table_constant			[] = {
-	0
-};
+static std::vector<config_type_func_t>		table_config_constant;
+static std::vector<config_type_func_t>		table_config_bmp;
 
-static config_type_func_t config_table_bmp				[] = {
-	config_bmp_setPath
-};
-
-// interact
-static interact_type_func_t	interact_table_constant		[]	= {
-	0
-};
-
-static interact_type_func_t	interact_table_bmp			[]	= {
-	interact_bmp_convertToTexture
-};
+static std::vector<interact_type_func_t>	table_interact_constant;
+static std::vector<interact_type_func_t>	table_interact_bmp;
 
 
 // Operation Handling
 void RayTracer_Dynamic_Surface_init(std::vector<Dynamic_ContainerType*> *type_list) {
-	// constant
-	Dynamic_ContainerType	*type_constant		= new Dynamic_ContainerType();
-	type_constant->ops_init			= init_constant;
-	type_constant->ops_config		= config_constant;
-	type_constant->ops_interact		= interact_constant;
-	type_list->push_back(type_constant);
+	// table
+	table_config_bmp.push_back(		config_bmp_setPath				);
 
-	// bmp
-	Dynamic_ContainerType	*type_bmp		= new Dynamic_ContainerType();
-	type_bmp->ops_init				= init_bmp;
-	type_bmp->ops_config			= config_bmp;
-	type_bmp->ops_interact			= interact_bmp;
-	type_list->push_back(type_bmp);
+	table_interact_bmp.push_back(	interact_bmp_convertToTexture	);
+
+	// create type
+	Dynamic_ContainerType *type;
+
+	type = new Dynamic_ContainerType();
+	type->setName("constant");
+	type->setOps(init_constant, config_constant, interact_constant);
+	type_list->push_back(type);
+	
+	type = new Dynamic_ContainerType();
+	type->setName("bmp");
+	type->setOps(init_bmp, config_bmp, interact_bmp);
+	type_list->push_back(type);
 }
 
 
 void RayTracer_Dynamic_Surface_info() {
-	printf("Surface Type: \n");
-	printf("0.  %s \n", "Constant");
-	printf("1.  %s \n", "BMP");
 }
 
 
 void RayTracer_Dynamic_Surface_del() {
-
 }
 
 
@@ -90,23 +78,23 @@ static void* init_bmp() {
 
 // config
 static int config_constant(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_constant, object, type, data, size);
+	return DynamicUtil::configType(&table_config_constant, object, type, data, size);
 }
 
 
 static int config_bmp(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_bmp, object, type, data, size);
+	return DynamicUtil::configType(&table_config_bmp, object, type, data, size);
 }
 
 
 // interact
 static int interact_constant(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_constant, object, type, list, size);
+	return DynamicUtil::interactType(&table_interact_constant, object, type, list, size);
 }
 
 
 static int interact_bmp(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_bmp, object, type, list, size);
+	return DynamicUtil::interactType(&table_interact_bmp, object, type, list, size);
 }
 
 

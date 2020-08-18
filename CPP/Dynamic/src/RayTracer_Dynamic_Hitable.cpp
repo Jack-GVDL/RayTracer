@@ -35,72 +35,52 @@ static int			interact_aabb_rmHitable				(void *object, void* *list, uint32_t siz
 
 
 // Static Data
-// config
-static config_type_func_t	config_table_sphere			[]	= {
-	config_sphere_setCenter,
-	config_sphere_setRadius
-};
+static std::vector<config_type_func_t>		table_config_sphere;
+static std::vector<config_type_func_t>		table_config_trimesh;
+static std::vector<config_type_func_t>		table_config_aabb;
 
-static config_type_func_t	config_table_trimesh		[]	= {
-	config_trimesh_setPoint_0,
-	config_trimesh_setPoint_1,
-	config_trimesh_setPoint_2
-};
-
-static config_type_func_t	config_table_aabb			[]	= {
-	0
-};
-
-// interact
-static interact_type_func_t	interact_table_sphere		[]	= {
-	0
-};
-
-static interact_type_func_t	interact_table_trimesh		[]	= {
-	0
-};
-
-static interact_type_func_t	interact_table_aabb			[]	= {
-	interact_aabb_addHitable,
-	interact_aabb_rmHitable
-};
+static std::vector<interact_type_func_t>	table_interact_sphere;
+static std::vector<interact_type_func_t>	table_interact_trimesh;
+static std::vector<interact_type_func_t>	table_interact_aabb;
 
 
 // Operation Handling
 void RayTracer_Dynamic_Hitable_init(std::vector<Dynamic_ContainerType*> *type_list) {
-	// sphere
-	Dynamic_ContainerType	*type_sphere	= new Dynamic_ContainerType();
-	type_sphere->ops_init		= init_sphere;
-	type_sphere->ops_config		= config_sphere;
-	type_sphere->ops_interact	= interact_sphere;
-	type_list->push_back(type_sphere);
+	// table
+	table_config_sphere.push_back(	config_sphere_setCenter		);
+	table_config_sphere.push_back(	config_sphere_setRadius		);
+	table_config_trimesh.push_back(	config_trimesh_setPoint_0	);
+	table_config_trimesh.push_back(	config_trimesh_setPoint_1	);
+	table_config_trimesh.push_back(	config_trimesh_setPoint_2	);
 
-	// trimesh
-	Dynamic_ContainerType	*type_trimesh	= new Dynamic_ContainerType();
-	type_trimesh->ops_init		= init_trimesh;
-	type_trimesh->ops_config	= config_trimesh;
-	type_trimesh->ops_interact	= interact_trimesh;
-	type_list->push_back(type_trimesh);
+	table_interact_aabb.push_back(	interact_aabb_addHitable	);
+	table_interact_aabb.push_back(	interact_aabb_rmHitable		);
 
-	// aabb
-	Dynamic_ContainerType	*type_aabb		= new Dynamic_ContainerType();
-	type_aabb->ops_init			= init_aabb;
-	type_aabb->ops_config		= config_aabb;
-	type_aabb->ops_interact		= interact_aabb;
-	type_list->push_back(type_aabb);
+	// create type
+	Dynamic_ContainerType *type;
+	
+	type = new Dynamic_ContainerType();
+	type->setName("sphere");
+	type->setOps(init_sphere, config_sphere, interact_sphere);
+	type_list->push_back(type);
+	
+	type = new Dynamic_ContainerType();
+	type->setName("trimesh");
+	type->setOps(init_trimesh, config_trimesh, interact_trimesh);
+	type_list->push_back(type);
+	
+	type = new Dynamic_ContainerType();
+	type->setName("aabb");
+	type->setOps(init_aabb, config_aabb, interact_aabb);
+	type_list->push_back(type);
 }
 
 
 void RayTracer_Dynamic_Hitable_info() {
-	printf("Hitable Type: \n");
-	printf("0.  %s \n", "Sphere");
-	printf("1.  %s \n", "Trimesh");
-	printf("2.	%s \n", "AABB");
 }
 
 
 void RayTracer_Dynamic_Hitable_del() {
-
 }
 
 
@@ -126,33 +106,33 @@ static void* init_aabb() {
 
 // config
 static int config_sphere(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_sphere, object, type, data, size);
+	return DynamicUtil::configType(&table_config_sphere, object, type, data, size);
 }
 
 
 static int config_trimesh(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_trimesh, object, type, data, size);
+	return DynamicUtil::configType(&table_config_trimesh, object, type, data, size);
 }
 
 
 static int config_aabb(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(config_table_aabb, object, type, data, size);
+	return DynamicUtil::configType(&table_config_aabb, object, type, data, size);
 }
 
 
 // interact
 static int interact_sphere(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_sphere, object, type, list, size);
+	return DynamicUtil::interactType(&table_interact_sphere, object, type, list, size);
 }
 
 
 static int interact_trimesh(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_trimesh, object, type, list, size);
+	return DynamicUtil::interactType(&table_interact_trimesh, object, type, list, size);
 }
 
 
 static int interact_aabb(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(interact_table_aabb, object, type, list, size);
+	return DynamicUtil::interactType(&table_interact_aabb, object, type, list, size);
 }
 
 

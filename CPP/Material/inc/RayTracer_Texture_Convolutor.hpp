@@ -35,7 +35,11 @@ class Texture_Convolutor: public Texture {
 	// Operation
 	public:
 		// init
-		// ...
+		Texture_Convolutor()
+		{
+			input_list	= new Texture*[1];
+			input_size	= 1;
+		}
 
 		// operation
 		void			setTexture	(Texture *texture);
@@ -43,10 +47,12 @@ class Texture_Convolutor: public Texture {
 
 		// interace
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
+		virtual void	_getPixel_	(Vec3f &dst, std::vector<Vec3f> *src) const;
 
 	protected:
 		// interface
-		virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
+		// backup
+		// virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
 };
 
 

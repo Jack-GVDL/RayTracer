@@ -18,15 +18,21 @@
 
 
 // Operation Handling
-void Texture_Constant::_getPixel_(Vec3f &dst, const Vec3f &src) const {
-	dst = color;
-}
-
-
 void Texture_Constant::setPixel(const Vec3f &point, const Vec3f &pixel) {
 	// UNUSED(pixel)
 	color = pixel;
 }
+
+
+void Texture_Constant::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
+	dst = color;
+}
+
+
+// TODO: backup
+// void Texture_Constant::_getPixel_(Vec3f &dst, const Vec3f &src) const {
+// 	dst = color;
+// }
 
 
 // Static Function Implementation
