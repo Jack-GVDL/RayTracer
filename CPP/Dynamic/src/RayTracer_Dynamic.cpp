@@ -114,6 +114,7 @@ EXPORT_DLL(void) RayTracer_init() {
 	RayTracer_Dynamic_Hitable_init(	&(hitable_list.type_list)	);
 	RayTracer_Dynamic_Light_init(	&(light_list.type_list)		);
 
+	// load
 	camera_list.Type_load();
 	surface_list.Type_load();
 	texture_list.Type_load();

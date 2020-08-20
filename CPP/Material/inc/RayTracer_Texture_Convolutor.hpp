@@ -37,8 +37,9 @@ class Texture_Convolutor: public Texture {
 		// init
 		Texture_Convolutor()
 		{
-			input_list	= new Texture*[1];
 			input_size	= 1;
+			input_list	= new Texture*[input_size];
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation

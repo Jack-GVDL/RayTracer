@@ -34,8 +34,9 @@ class Texture_Constant: public Texture {
 		// init
 		Texture_Constant()
 		{
-			input_list	= nullptr;
 			input_size	= 0;
+			input_list	= nullptr;
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// Texture_Constant(const Vec3f &color):

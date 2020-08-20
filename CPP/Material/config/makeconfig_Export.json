@@ -1,6 +1,5 @@
 {
     "OBJ_FILE"  : ["obj_x64/RayTracer_Material.o ",
-                   "obj_x64/RayTracer_Mapper_Math.o ",
                    "obj_x64/RayTracer_Surface.o ",
                    "obj_x64/RayTracer_Surface_BMP.o ",
                    "obj_x64/RayTracer_Texture.o ",

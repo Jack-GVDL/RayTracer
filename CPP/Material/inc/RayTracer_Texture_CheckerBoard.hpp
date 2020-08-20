@@ -37,8 +37,9 @@ class Texture_CheckerBoard: public Texture {
 		// init
 		Texture_CheckerBoard()
 		{
-			input_list	= nullptr;
 			input_size	= 0;
+			input_list	= nullptr;
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation

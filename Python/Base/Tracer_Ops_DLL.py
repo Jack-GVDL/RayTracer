@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Tuple
 import ctypes
-from ctypes import c_int, c_double, c_uint8, c_uint32, c_char
+from ctypes import c_int, c_double, c_uint8, c_uint32, c_char, c_char_p
 from ctypes import CDLL
 from .Tracer_Vec3f import Vec3f
 from .Tracer_Ops import Ops_Tracer
@@ -168,8 +168,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	# surface
 	def Surface_Type_getIndex(self, name: str) -> int:
-		array_name = (c_char * len(name))(*name)
-		return self._dll_tracer.RayTracer_Surface_Type_getIndex(array_name)
+		byte_str: bytes = name.encode('utf-8')
+		return self._dll_tracer.RayTracer_Surface_Type_getIndex(c_char_p(byte_str))
 
 	def Surface_create(self, type_: int) -> int:
 		return self._dll_tracer.RayTracer_Surface_create(c_int(type_))
@@ -182,7 +182,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		array_data = (c_uint8 * len(data))(*data)
 		return self._dll_tracer.RayTracer_Surface_config(c_int(index), c_int(type_), array_data, c_uint32(size))
 
-	def Surface_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def Surface_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
 		return self._dll_tracer.RayTracer_Surface_interact(c_int(index), c_int(type_), array_index, array_type, size)
@@ -195,8 +196,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	# texture
 	def Texture_Type_getIndex(self, name: str) -> int:
-		array_name = (c_char * len(name))(*name)
-		return self._dll_tracer.RayTracer_Texture_Type_getIndex(array_name)
+		byte_str: bytes = name.encode('utf-8')
+		return self._dll_tracer.RayTracer_Texture_Type_getIndex(c_char_p(byte_str))
 
 	def Texture_create(self, type_: int) -> int:
 		return self._dll_tracer.RayTracer_Texture_create(c_int(type_))
@@ -209,7 +210,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		array_data = (c_uint8 * size)(*data)
 		return self._dll_tracer.RayTracer_Texture_config(c_int(index), c_int(type_), array_data, c_int(size))
 
-	def Texture_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def Texture_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
 		return self._dll_tracer.RayTracer_Texture_interact(c_int(index), c_int(type_), array_index, array_type, size)
@@ -248,8 +250,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	# scatter
 	def Scatter_Type_getIndex(self, name: str) -> int:
-		array_name = (c_char * len(name))(*name)
-		return self._dll_tracer.RayTracer_Scatter_Type_getIndex(array_name)
+		byte_str: bytes = name.encode('utf-8')
+		return self._dll_tracer.RayTracer_Scatter_Type_getIndex(c_char_p(byte_str))
 
 	def Scatter_create(self, type_: int) -> int:
 		return self._dll_tracer.RayTracer_Scatter_create(c_int(type_))
@@ -262,7 +264,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		array_data = (c_uint8 * size)(*data)
 		return self._dll_tracer.RayTracer_Scatter_config(c_int(index), c_int(type_), array_data, c_int(size))
 
-	def Scatter_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def Scatter_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
 		return self._dll_tracer.RayTracer_Scatter_interact(c_int(index), c_int(type_), array_index, array_type, size)
@@ -275,8 +278,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	# scene object - hitable
 	def SceneObject_Hitable_Type_getIndex(self, name: str) -> int:
-		array_name = (c_char * len(name))(*name)
-		return self._dll_tracer.RayTracer_SceneObject_Hitable_getIndex(array_name)
+		byte_str: bytes = name.encode('utf-8')
+		return self._dll_tracer.RayTracer_SceneObject_Hitable_Type_getIndex(c_char_p(byte_str))
 
 	def SceneObject_Hitable_create(self, type_: int) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Hitable_create(c_int(type_))
@@ -289,7 +292,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		array_data = (c_uint8 * size)(*data)
 		return self._dll_tracer.RayTracer_SceneObject_Hitable_config(c_int(index), c_int(type_), array_data, c_int(size))
 
-	def SceneObject_Hitable_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def SceneObject_Hitable_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
 		return self._dll_tracer.RayTracer_SceneObject_Hitable_interact(c_int(index), c_int(type_), array_index, array_type, size)
@@ -302,8 +306,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	# light
 	def SceneObject_Light_Type_getIndex(self, name: str) -> int:
-		array_name = (c_char * len(name))(*name)
-		return self._dll_tracer.RayTracer_SceneObject_Light_Type_getIndex(array_name)
+		byte_str: bytes = name.encode('utf-8')
+		return self._dll_tracer.RayTracer_SceneObject_Light_Type_getIndex(c_char_p(byte_str))
 
 	def SceneObject_Light_create(self, type_: int) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Light_create(c_int(type_))
@@ -316,7 +320,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		array_data = (c_uint8 * size)(*data)
 		return self._dll_tracer.RayTracer_SceneObject_Light_config(c_int(index), c_int(type_), array_data, c_int(size))
 
-	def SceneObject_Light_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def SceneObject_Light_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
 		return self._dll_tracer.RayTracer_SceneObject_Light_interact(c_int(index), c_int(type_), array_index, array_type, size)

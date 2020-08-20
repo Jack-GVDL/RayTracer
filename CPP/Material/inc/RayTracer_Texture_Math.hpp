@@ -34,8 +34,9 @@ class Texture_Math_Additor: public Texture {
 		// init
 		Texture_Math_Additor()
 		{
-			input_list	= new Texture*[1];
 			input_size	= 1;
+			input_list	= new Texture*[input_size];
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation
@@ -62,8 +63,9 @@ class Texture_Math_Multiplier: public Texture {
 		// init
 		Texture_Math_Multiplier()
 		{
-			input_list	= new Texture*[1];
 			input_size	= 1;
+			input_list	= new Texture*[input_size];
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation

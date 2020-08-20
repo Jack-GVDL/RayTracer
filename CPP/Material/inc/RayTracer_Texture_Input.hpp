@@ -34,8 +34,9 @@ class Texture_Input: public Texture {
 		// init
 		Texture_Input()
 		{
-			input_list	= nullptr;
 			input_size	= 0;
+			input_list	= nullptr;
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation

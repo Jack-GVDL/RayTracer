@@ -1,8 +1,15 @@
+from .Tracer_Ops import Ops_Tracer
 from .Tracer_Base import Tracer_Base
 from .Tracer_Vec3f import Vec3f
 
 
-class Tracer_Camera(Tracer_Base):
+class Camera(Tracer_Base):
+
+	@ classmethod
+	def _getType_(cls, ops: Ops_Tracer, name: str) -> int:
+		index: int = ops.Camera_Type_getIndex(name)
+		assert index != -1, "Type not exist"
+		return index
 
 	def __init__(self):
 		super().__init__()
@@ -28,25 +35,3 @@ class Tracer_Camera(Tracer_Base):
 
 	def setAspectRatio(self, value: float) -> None:
 		self._ops_tracer.Camera_setAspectRatio(self._object_index, value)
-
-
-class Tracer_Camera_Default(Tracer_Camera):
-
-	# Class
-	_type_index:	int		= -1
-	_is_initiated:	bool	= False
-
-	def __init__(self):
-		super().__init__()
-
-		# data
-		# ...
-
-		# init
-		if not self._is_initiated:
-			self._type_index	= self._ops_tracer.Camera_Type_getIndex("camera_0")
-			assert self._type_index != -1, "Type not exist"
-
-			self._is_initiated	= True
-
-		self._object_index = self._ops_tracer.Camera_create(self._type_index)

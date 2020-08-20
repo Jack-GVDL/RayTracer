@@ -11,8 +11,9 @@
 
 // Static Function Prototype
 // ops
-static void*		init_convolutor						();
+static void*		init_input							();
 static void*		init_constant						();
+static void*		init_convolutor						();
 static void*		init_checkerboard					();
 static void*		init_image							();
 static void*		init_additor						();
@@ -22,8 +23,9 @@ static void*		init_sphereDir						();
 static void*		init_trimesh						();
 static void*		init_trimeshDir						();
 
-static int			config_convolutor					(void *object, int type, uint8_t *data, uint32_t size);
+static int			config_input						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_constant						(void *object, int type, uint8_t *data, uint32_t size);
+static int			config_convolutor					(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_checkerboard					(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_image						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_additor						(void *object, int type, uint8_t *data, uint32_t size);
@@ -33,8 +35,9 @@ static int			config_sphereDir					(void *object, int type, uint8_t *data, uint32
 static int			config_trimesh						(void *object, int type, uint8_t *data, uint32_t size);
 static int			config_trimeshDir					(void *object, int type, uint8_t *data, uint32_t size);
 
-static int			interact_convolutor					(void *object, int type, void* *list, uint32_t size);
+static int			interact_input						(void *object, int type, void* *list, uint32_t size);
 static int			interact_constant					(void *object, int type, void* *list, uint32_t size);
+static int			interact_convolutor					(void *object, int type, void* *list, uint32_t size);
 static int			interact_checkerboard				(void *object, int type, void* *list, uint32_t size);
 static int			interact_image						(void *object, int type, void* *list, uint32_t size);
 static int			interact_additor					(void *object, int type, void* *list, uint32_t size);
@@ -59,9 +62,9 @@ static int			interact_trimeshDir_setTrimesh		(void *object, void* *list, uint32_
 
 
 // Static Data
-static std::vector<config_type_func_t>		table_config_chain;
-static std::vector<config_type_func_t>		table_config_convolutor;
+static std::vector<config_type_func_t>		table_config_input;
 static std::vector<config_type_func_t>		table_config_constant;
+static std::vector<config_type_func_t>		table_config_convolutor;
 static std::vector<config_type_func_t>		table_config_checkerboard;
 static std::vector<config_type_func_t>		table_config_image;
 static std::vector<config_type_func_t>		table_config_additor;
@@ -71,9 +74,9 @@ static std::vector<config_type_func_t>		table_config_sphereDir;
 static std::vector<config_type_func_t>		table_config_trimesh;
 static std::vector<config_type_func_t>		table_config_trimeshDir;
 
-static std::vector<interact_type_func_t>	table_interact_chain;
-static std::vector<interact_type_func_t>	table_interact_convolutor;
+static std::vector<interact_type_func_t>	table_interact_input;
 static std::vector<interact_type_func_t>	table_interact_constant;
+static std::vector<interact_type_func_t>	table_interact_convolutor;
 static std::vector<interact_type_func_t>	table_interact_checkerboard;
 static std::vector<interact_type_func_t>	table_interact_image;
 static std::vector<interact_type_func_t>	table_interact_additor;
@@ -101,6 +104,11 @@ void RayTracer_Dynamic_Texture_init(std::vector<Dynamic_ContainerType*> *type_li
 
 	// create type
 	Dynamic_ContainerType *type;
+
+	type = new Dynamic_ContainerType();
+	type->setName("input");
+	type->setOps(init_input, config_input, interact_input);
+	type_list->push_back(type);
 	
 	type = new Dynamic_ContainerType();
 	type->setName("constant");
@@ -123,32 +131,32 @@ void RayTracer_Dynamic_Texture_init(std::vector<Dynamic_ContainerType*> *type_li
 	type_list->push_back(type);
 	
 	type = new Dynamic_ContainerType();
-	type->setName("additor");
+	type->setName("math_additor");
 	type->setOps(init_additor, config_additor, interact_additor);
 	type_list->push_back(type);
 	
 	type = new Dynamic_ContainerType();
-	type->setName("multiplier");
+	type->setName("math_multiplier");
 	type->setOps(init_multiplier, config_multiplier, interact_multiplier);
 	type_list->push_back(type);
 	
 	type = new Dynamic_ContainerType();
-	type->setName("sphere");
+	type->setName("mapper_sphere");
 	type->setOps(init_sphere, config_sphere, interact_sphere);
 	type_list->push_back(type);
 	
 	type = new Dynamic_ContainerType();
-	type->setName("sphere_dir");
+	type->setName("dir_sphere");
 	type->setOps(init_sphereDir, config_sphereDir, interact_sphereDir);
 	type_list->push_back(type);
 	
 	type = new Dynamic_ContainerType();
-	type->setName("trimesh");
+	type->setName("mapper_trimesh");
 	type->setOps(init_trimesh, config_trimesh, interact_trimesh);
 	type_list->push_back(type);
 	
 	type = new Dynamic_ContainerType();
-	type->setName("trimesh_dir");
+	type->setName("dir_trimesh");
 	type->setOps(init_trimeshDir, config_trimeshDir, interact_trimeshDir);
 	type_list->push_back(type);
 }
@@ -164,14 +172,20 @@ void RayTracer_Dynamic_Texture_del() {
 
 // Static Function Implementation
 // init
-static void* init_convolutor() {
-	Texture_Convolutor *texture = new Texture_Convolutor();
+static void* init_input() {
+	Texture_Input *texture = new Texture_Input();
 	return texture;
 }
 
 
 static void* init_constant() {
 	Texture_Constant *texture = new Texture_Constant();
+	return texture;
+}
+
+
+static void* init_convolutor() {
+	Texture_Convolutor *texture = new Texture_Convolutor();
 	return texture;
 }
 
@@ -225,13 +239,18 @@ static void* init_trimeshDir() {
 
 
 // config
-static int config_convolutor(void *object, int type, uint8_t *data, uint32_t size) {
-	return DynamicUtil::configType(&table_config_convolutor, object, type, data, size);
+static int config_input(void *object, int type, uint8_t *data, uint32_t size) {
+	return DynamicUtil::configType(&table_config_input, object, type, data, size);
 }
 
 
 static int config_constant(void *object, int type, uint8_t *data, uint32_t size) {
 	return DynamicUtil::configType(&table_config_constant, object, type, data, size);
+}
+
+
+static int config_convolutor(void *object, int type, uint8_t *data, uint32_t size) {
+	return DynamicUtil::configType(&table_config_convolutor, object, type, data, size);
 }
 
 
@@ -276,13 +295,18 @@ static int config_trimeshDir(void *object, int type, uint8_t *data, uint32_t siz
 
 
 // interact
-static int interact_convolutor(void *object, int type, void* *list, uint32_t size) {
-	return DynamicUtil::interactType(&table_interact_convolutor, object, type, list, size);
+static int interact_input(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(&table_interact_input, object, type, list, size);
 }
 
 
 static int interact_constant(void *object, int type, void* *list, uint32_t size) {
 	return DynamicUtil::interactType(&table_interact_constant, object, type, list, size);
+}
+
+
+static int interact_convolutor(void *object, int type, void* *list, uint32_t size) {
+	return DynamicUtil::interactType(&table_interact_convolutor, object, type, list, size);
 }
 
 

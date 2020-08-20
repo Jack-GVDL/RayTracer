@@ -53,6 +53,10 @@ struct Dynamic_ContainerType {
 	void setName(const std::string &name) {
 		this->name = name;
 	}
+
+	void setName(const char *name) {
+		this->name = name;
+	}
 };
 
 
@@ -171,7 +175,7 @@ class Dynamic_ContainerList: public Dynamic_ContainerListBase {
 // Operation Handling
 template <class T>
 int	Dynamic_ContainerList<T>::Type_load() {
-	return _Type_dump_();
+	return _Type_load_();
 }
 
 

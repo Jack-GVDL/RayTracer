@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from .Tracer_Vec3f import Vec3f
 
 
@@ -52,7 +52,7 @@ class Ops_Tracer:
 	def Camera_config(self, index: int, type_: int, data: bytes, size: int) -> int:
 		raise NotImplementedError
 
-	def Camera_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def Camera_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
 	def Camera_setLookFrom(self, index: int, look_from: Vec3f) -> int:
@@ -97,7 +97,7 @@ class Ops_Tracer:
 	def Surface_config(self, index: int, type_: int, data: bytes, size: int) -> int:
 		raise NotImplementedError
 
-	def Surface_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def Surface_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
 	def Surface_load(self, index: int) -> int:
@@ -119,7 +119,7 @@ class Ops_Tracer:
 	def Texture_config(self, index: int, type_: int, data: bytes, size: int) -> int:
 		raise NotImplementedError
 
-	def Texture_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def Texture_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
 	def Texture_addInput(self, index_texture: int, index_input: int, offset: int) -> int:
@@ -154,7 +154,7 @@ class Ops_Tracer:
 	def Scatter_config(self, index: int, type_: int, data: bytes, size: int) -> int:
 		raise NotImplementedError
 
-	def Scatter_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def Scatter_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
 	def Scatter_setTexture(self, index_scatter: int, index_texture: int, offset: int) -> int:
@@ -176,7 +176,7 @@ class Ops_Tracer:
 	def SceneObject_Hitable_config(self, index: int, type_: int, data: bytes, size: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Hitable_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def SceneObject_Hitable_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
 	def SceneObject_Hitable_addScatter(self, index_hitable: int, index_scatter: int) -> int:
@@ -198,7 +198,7 @@ class Ops_Tracer:
 	def SceneObject_Light_config(self, index: int, type_: int, data: bytes, size: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Light_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def SceneObject_Light_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
 	def SceneObject_Light_setOrigin(self, index: int, origin: Vec3f) -> int:

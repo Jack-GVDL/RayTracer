@@ -25,7 +25,7 @@ void Texture_Image::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
 	const int y = (int)((*src)[0][1]);
 
 	// check if out of bound
-	if (x < 0 || x >= width ||y < 0 || y >= height) {
+	if (x < 0 || x >= width || y < 0 || y >= height) {
 		dst = Vec3f();
 		return;
 	}

@@ -90,8 +90,9 @@ class Texture_Mapper_Sphere: public Texture {
 		// init
 		Texture_Mapper_Sphere()
 		{
-			input_list	= new Texture*[1];
 			input_size	= 1;
+			input_list	= new Texture*[input_size];
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation
@@ -118,8 +119,9 @@ class Texture_Direction_Sphere: public Texture {
 		// init
 		Texture_Direction_Sphere()
 		{
-			input_list	= new Texture*[2];
 			input_size	= 2;
+			input_list	= new Texture*[input_size];
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation

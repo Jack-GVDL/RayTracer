@@ -63,7 +63,11 @@ static void get_pixel(Vec3f &dst, const Texture *texture, const Vec3f &src) {
 	// backtracking
 	std::vector<Vec3f> point_list;
 	for (int i = 0; i < texture->input_size; i++) {
-		if (texture->input_list[i] == nullptr) continue;
+
+		if (texture->input_list[i] == nullptr) {
+			point_list.push_back(Vec3f(0));
+			continue;
+		}
 
 		Vec3f temp;
 		get_pixel(temp, texture->input_list[i], src);
