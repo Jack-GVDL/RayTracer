@@ -14,25 +14,42 @@
 
 
 // Operation Handling
-Vec3f Texture_Image::_getPixel_(const Ray *ray) const {
-	// get point
-	// TODO: mapping is not yet completed
-	const int x = (int)(ray->getPosition()[0]);
-	const int y = (int)(ray->getPosition()[1]);
-
-	// check if out of bound
-	if (x < 0 || x >= width ||
-		y < 0 || y >= height) return Vec3f(0);
-
-	// get image pixel
-	// TODO: supersampling is not yet completed
-	return color[x + y * width];
-}
-
-
 // do nothing
 void Texture_Image::setPixel(const Vec3f &point, const Vec3f &pixel) {
 }
+
+
+void Texture_Image::_getPixel_(Vec3f &dst, Vec3f *src) const {
+	// get point
+	const int x = (int)(src[0][0]);
+	const int y = (int)(src[0][1]);
+
+	// check if out of bound
+	if (x < 0 || x >= width || y < 0 || y >= height) {
+		dst = Vec3f();
+		return;
+	}
+
+	// get image pixel
+	dst = color[x + y * width];
+}
+
+
+// TODO: backup
+// void Texture_Image::_getPixel_(Vec3f &dst, const Vec3f &src) const {
+// 	// get point
+// 	const int x = (int)(src[0]);
+// 	const int y = (int)(src[1]);
+
+// 	// check if out of bound
+// 	if (x < 0 || x >= width ||y < 0 || y >= height) {
+// 		dst = Vec3f();
+// 		return;
+// 	}
+
+// 	// get image pixel
+// 	dst = color[x + y * width];
+// }
 
 
 // Static Function Implementation

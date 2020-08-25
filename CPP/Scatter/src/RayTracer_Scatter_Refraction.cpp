@@ -27,7 +27,9 @@ ScatterState Scatter_Refraction::scatter_shootRay(RecordScatter *dst, RecordScat
 	const Vec3f		&hit_normal	= src->record_hit.normal;
 
 	// check if this material is refractive
-	const Vec3f &vec_transmissive = material->transmissive->getPixel(hit_point);
+	Vec3f vec_transmissive;
+	material->transmissive->getPixel(vec_transmissive, hit_point);
+	
 	if (vec_transmissive.isZero())	return SCATTER_NONE;
 	
 	// to check if the ray is entering or leaving the object

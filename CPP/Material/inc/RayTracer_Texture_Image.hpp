@@ -28,21 +28,33 @@
 class Texture_Image: public Texture {
 	// Data
 	public:
-		Vec3f	*color;
-		int		width, height;
+		Vec3f	*color	= nullptr;
+		int		width	= 0;
+		int		height	= 0;
 
 	// Operation
 	public:
 		// init
-		// ...
+		Texture_Image()
+		{
+			input_size	= 1;
+			input_list	= new Texture*[input_size];
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+		}
 
 		// interface
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
+		virtual void	_getPixel_	(Vec3f &dst, Vec3f *src) const override;
 
 	protected:
 		// interface
-		virtual Vec3f	_getPixel_	(const Ray *ray) const override;
+		// backu
+		// virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
 };
+
+
+// TODO: change to this name later
+typedef Texture_Image Texture_PixelMap;
 
 
 // Macro Function

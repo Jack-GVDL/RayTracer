@@ -1,8 +1,8 @@
 // Created by Jack Tse on 2020/07/30
-// Follow TrackingStandard 0.1
 //
 // Log
 // 2020/07/30   initial update
+// 2020/08/09   change structure: Dynamic_ContainerType
 
 
 #ifndef RAYTRACER_DYNAMIC_SURFACE_HPP
@@ -23,7 +23,11 @@
 
 
 // Enum
-// ...
+enum TypeSurface {
+    SURFACE_CONSTANT    = 0,
+    SURFACE_IMAGE,
+    SURFACE_MAX
+};
 
 
 // Data Structure
@@ -35,7 +39,8 @@
 
 
 // Operation Handling
-void	RayTracer_Dynamic_Surface_init	(std::vector<init_func_t>* init_list, std::vector<config_func_t>* config_list);
+void	RayTracer_Dynamic_Surface_init	(std::vector<Dynamic_ContainerType*> *type_list);
+void    RayTracer_Dynamic_Surface_info  ();
 void	RayTracer_Dynamic_Surface_del	();
 
 

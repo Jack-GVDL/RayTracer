@@ -27,39 +27,48 @@
 
 
 // Data Structure
-struct Vertex {
-	Vec3f point;
-};
+
+// backup
+// struct Vertex {
+// 	Vec3f point;
+// };
 
 
-struct Edge {
-	Vertex	vertex_1;
-	Vertex	vertex_2;
-};
+// struct Edge {
+// 	Vertex	vertex_1;
+// 	Vertex	vertex_2;
+// };
 
 
-struct Plane {
-	Vertex	*vertices;
-	int		size_vertices;
-};
+// struct Plane {
+// 	Vertex	*vertices;
+// 	int		size_vertices;
+// };
 
 
 class SceneElement {
 	// Data
 	public:
-		Vec3f						origin;
+		Vec3f						origin			= Vec3f(0);
+		Vec3f						bounding_min	= Vec3f(0);
+		Vec3f						bounding_max	= Vec3f(0);
+
 		std::vector<SceneElement*>	child;
 
 	// Operation
 	public:
 		// init
-		SceneElement():
-		origin		(Vec3f())
+		SceneElement()
 		{}
 
 		// operation
-		virtual bool addChild	(SceneElement *scene);
-		virtual bool rmChild	(SceneElement *scene);
+		void		setOrigin		(const Vec3f &origin);
+		void		setBounding_min	(const Vec3f &bounding);
+		void		setBounding_max	(const Vec3f &bounding);
+
+		// interface
+		virtual bool addChild		(SceneElement *scene);
+		virtual bool rmChild		(SceneElement *scene);
 };
 
 

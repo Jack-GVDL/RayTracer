@@ -11,6 +11,7 @@
 
 #include <vector>
 #include "RayTracer_Texture.hpp"
+#include "RayTracer_Texture_Constant.hpp"
 
 
 // Define

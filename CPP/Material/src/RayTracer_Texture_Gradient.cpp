@@ -23,26 +23,38 @@ static source_func_t source_func_list[Texture_Gradient::SOURCE_MAX] = {
 
 
 // Operation Handling
-Vec3f Texture_Gradient::_getPixel_(const Ray *ray) const {
-	// get source
-	Vec3f vec_source = source_func_list[source](ray);
+// do nothing
+void Texture_Gradient::setPixel(const Vec3f &point, const Vec3f &pixel) {
+}
 
+
+void Texture_Gradient::_getPixel_(Vec3f &dst, Vec3f *src) const {
 	// value addition and multiplication
-	const double intensity_0 = (vec_source[0] + additor[0]) * multiplier[0];
-	const double intensity_1 = (vec_source[1] + additor[1]) * multiplier[1];
-	const double intensity_2 = (vec_source[2] + additor[2]) * multiplier[2];
+	const double intensity_0 = (src[0][0] + additor[0]) * multiplier[0];
+	const double intensity_1 = (src[0][1] + additor[1]) * multiplier[1];
+	const double intensity_2 = (src[0][2] + additor[2]) * multiplier[2];
 
 	// need clamping
-	return Vec3f(
+	dst = Vec3f(
 		UtilMath::clamp<double>(intensity_0, 0.0, 1.0),
 		UtilMath::clamp<double>(intensity_1, 0.0, 1.0),
 		UtilMath::clamp<double>(intensity_2, 0.0, 1.0));
 }
 
 
-// do nothing
-void Texture_Gradient::setPixel(const Vec3f &point, const Vec3f &pixel) {
-}
+// TODO: backup
+// void Texture_Gradient::_getPixel_(Vec3f &dst, const Vec3f &src) const {
+// 	// value addition and multiplication
+// 	const double intensity_0 = (src[0] + additor[0]) * multiplier[0];
+// 	const double intensity_1 = (src[1] + additor[1]) * multiplier[1];
+// 	const double intensity_2 = (src[2] + additor[2]) * multiplier[2];
+
+// 	// need clamping
+// 	dst = Vec3f(
+// 		UtilMath::clamp<double>(intensity_0, 0.0, 1.0),
+// 		UtilMath::clamp<double>(intensity_1, 0.0, 1.0),
+// 		UtilMath::clamp<double>(intensity_2, 0.0, 1.0));
+// }
 
 
 // Static Function Implementation

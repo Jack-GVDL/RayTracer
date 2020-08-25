@@ -35,17 +35,13 @@ class Scatter_Light: public Scatter {
 			EMISSIVE,
 			AMBIENT,
 			SHININESS,
+			NORMAL,
 			MAX
 		};
 
 	// Data
 	public:
-		// backup
-		// Texture	*diffuse	= nullptr;
-		// Texture	*specular	= nullptr;
-		// Texture	*emissive	= nullptr;
-		// Texture	*ambient	= nullptr;
-		// Texture *shininess	= nullptr;
+		// ...
 
 	// Operation
 	public:
@@ -60,9 +56,11 @@ class Scatter_Light: public Scatter {
 			texture_list[EMISSIVE]	= nullptr;
 			texture_list[AMBIENT]	= nullptr;
 			texture_list[SHININESS]	= nullptr;
+			texture_list[NORMAL]	= nullptr;
 		}
 
-		Scatter_Light(Texture *diffuse, Texture *specular, Texture *emissive, Texture *ambient, Texture *shininess)
+		Scatter_Light(
+			Texture *diffuse, Texture *specular, Texture *emissive, Texture *ambient, Texture *shininess, Texture *normal)
 		{
 			texture_list = new Texture*[MAX];
 			texture_size = MAX;
@@ -72,6 +70,7 @@ class Scatter_Light: public Scatter {
 			texture_list[EMISSIVE]	= emissive;
 			texture_list[AMBIENT]	= ambient;
 			texture_list[SHININESS]	= shininess;
+			texture_list[NORMAL]	= normal;
 		}
 
 		// interface

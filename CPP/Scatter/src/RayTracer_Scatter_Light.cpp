@@ -32,16 +32,31 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 	Vec3f intensity_result = Vec3f();
 
 	// get coeff
-	const Vec3f &vec_emissive		= texture_list[EMISSIVE]->getPixel(hit_point);
-	const Vec3f &vec_ambient		= texture_list[AMBIENT]->getPixel(hit_point);
-	const Vec3f &vec_diffuse		= texture_list[DIFFUSE]->getPixel(hit_point);
-	const Vec3f &vec_specular		= texture_list[SPECULAR]->getPixel(hit_point);
-	const Vec3f &vec_shininess		= texture_list[SHININESS]->getPixel(hit_point);
-	const Vec3f &vec_transmissive	= material->transmissive->getPixel(hit_point);
+	Vec3f	vec_emissive;
+	Vec3f	vec_ambient;
+	Vec3f	vec_diffuse;
+	Vec3f	vec_specular;
+	Vec3f	vec_shininess;
+	Vec3f	vec_normal;
+	Vec3f	vec_transmissive;
+
+	texture_list[EMISSIVE]->getPixel(		vec_emissive,		hit_point);
+	texture_list[AMBIENT]->getPixel(		vec_ambient,		hit_point);
+	texture_list[DIFFUSE]->getPixel(		vec_diffuse,		hit_point);
+	texture_list[SPECULAR]->getPixel(		vec_specular,		hit_point);
+	texture_list[SHININESS]->getPixel(		vec_shininess,		hit_point);
+	texture_list[NORMAL]->getPixel(			vec_normal,			hit_point);
+	material->transmissive->getPixel(		vec_transmissive,	hit_point);
 
 	// emissive intensity and ambient intensity
 	intensity_result += getEmissive(src, vec_emissive);
 	intensity_result += getAmbient(src, vec_ambient, vec_transmissive);
+
+	// TODO: may need better way to do the same thing
+	// adjust normal
+	const Vec3f normal_original = src->record_hit.normal;
+	src->record_hit.normal += vec_normal;
+	src->record_hit.normal = src->record_hit.normal.normalize();
 
 	// intensity - light
 	for (auto *light : scene->light_list) {
@@ -66,6 +81,10 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 		const Vec3f &intensity_light = light->getColor(hit_point);
 		intensity_result += term_result.prod(attenuation.prod(intensity_light));
 	}
+
+	// TODO: may need better way to do the same thing
+	// change back normal
+	src->record_hit.normal = normal_original;
 
 	dst->intensity = intensity_result;
 	return SCATTER_YIELD;

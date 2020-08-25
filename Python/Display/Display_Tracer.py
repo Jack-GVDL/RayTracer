@@ -3,6 +3,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import *
 from Base import *
+import time
+import numpy as np
 
 
 class Display_Tracer(QWidget):
@@ -11,40 +13,63 @@ class Display_Tracer(QWidget):
 		super().__init__()
 
 		# data
-		self._x:			int = 200
-		self._y:			int = 100
-		self._ops_tracer:	Tracer_Ops = None
+		self._w:			int			= 200
+		self._h:			int			= 100
+
+		self._image:		QPixmap		= None
+		self._time:			time		= None
+
+		self._ops_tracer:	Ops_Tracer	= None
+		self._is_rendered:	bool		= False
 
 	# Operation
-	def setOps_tracer(self, ops: Tracer_Ops) -> None:
+	def setOps_tracer(self, ops: Ops_Tracer) -> None:
 		self._ops_tracer = ops
 
-	def setDisplaySize(self, x: int, y: int) -> None:
-		self._x = x
-		self._y = y
+	def setDisplaySize(self, w: int, h: int) -> None:
+		self._w = w
+		self._h = h
+
+	def reset(self) -> None:
+		self._is_rendered = False
 
 	def paintEvent(self, event: QPaintEvent) -> None:
+		self._render_()
+		self._paint_()
+
+	# Helper
+	def _render_(self) -> None:
+		if self._is_rendered:
+			return
+
+		# execution time starting point
+		start_time = time.time()
+
+		# get picture
+		array = np.zeros(self._w * self._h * 3, dtype=np.uint8)
+		self._ops_tracer.Tracer_traceRect(1, array, self._w, self._h, 5, False, True)
+		self._image = QPixmap.fromImage(QImage(array, self._w, self._h, QImage.Format_RGB888))
+
+		# execution time end point and display time
+		end_time = time.time()
+		self._time = end_time - start_time
+		print(f"Execution Time: {self._time}")
+
+		# mark is rendered
+		self._is_rendered = True
+
+	def _paint_(self) -> None:
+		# begin painter
 		painter:	QPainter = QPainter()
 		painter.begin(self)
 
-		x_half: float = self._x / 2
-		y_half: float = self._y / 2
+		# paint pixel map
+		painter.drawPixmap(0, 0, self._image)
 
-		for y in range(self._y):
-			for x in range(self._x):
+		# display time
+		painter.setPen(QColor(255, 255, 255))
+		painter.drawText(0, self._h + 20, f"Execution Time: {self._time}")
+		# print(f"Execution Time: {self._time}")
 
-				u: float = (x - x_half) / x_half
-				v: float = (y - y_half) / y_half
-
-				vec_color: Vec3f = Vec3f()
-				self._ops_tracer.Tracer_tracePoint(0, vec_color, u, v, 5)
-
-				color = QColor(
-					int(vec_color[0] * 255),
-					int(vec_color[1] * 255),
-					int(vec_color[2] * 255))
-
-				painter.setPen(color)
-				painter.drawPoint(x, self._y - y)  # be careful of coordinate system
-
+		# end painter
 		painter.end()

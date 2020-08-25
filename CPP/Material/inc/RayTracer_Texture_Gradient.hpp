@@ -45,14 +45,21 @@ class Texture_Gradient: public Texture {
 	// Operation
 	public:
 		// init
-		// ...
+		Texture_Gradient()
+		{
+			input_size	= 1;
+			input_list	= new Texture*[input_size];
+			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+		}
 
 		// interface
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
+		virtual void	_getPixel_	(Vec3f &dst, Vec3f *src) const override;
 
 	protected:
 		// interface
-		virtual Vec3f	_getPixel_	(const Ray *ray) const override;
+		// backup
+		// virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
 };
 
 

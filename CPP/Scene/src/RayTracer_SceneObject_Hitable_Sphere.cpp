@@ -5,7 +5,7 @@
 // ...
 
 
-// Static Data
+// Typedef
 // ...
 
 
@@ -13,8 +13,26 @@
 // ...
 
 
+// Static Data
+// ...
+
+
 // Operation Handling
-bool SceneObject_Sphere::hit(RecordHit *record, double t_min, double t_max) const {
+// hitable
+void Hitable_Sphere::setCenter(const Vec3f &center) {
+	this->origin	= center;
+	this->center	= center;
+	updateBoundingBox();
+}
+
+
+void Hitable_Sphere::setRadius(double radius) {
+	this->radius	= radius;
+	updateBoundingBox();
+}
+
+
+bool Hitable_Sphere::hit(RecordHit *record, double t_min, double t_max) const {
 	const Ray	*ray	= &(record->ray);
 	Vec3f		oc		= ray->getPosition() - center;
 
@@ -51,6 +69,137 @@ bool SceneObject_Sphere::hit(RecordHit *record, double t_min, double t_max) cons
 	VecMath::reverseNormal_incidentRay(record->normal, ray->getDirection());
 
 	return true;
+}
+
+
+void Hitable_Sphere::updateBoundingBox() {
+	bounding_min	= center - Vec3f(radius);
+	bounding_max	= center + Vec3f(radius);
+}
+
+
+// mapper
+// TODO: backup
+// void Mapper_Sphere::setSphere(Hitable_Sphere *sphere) {
+// 	this->sphere = sphere;
+// }
+
+
+// // TODO: not yet completed
+// void Mapper_Sphere::map(Vec3f &vector) const {
+// 	if (sphere == nullptr) return;
+
+// 	// get displacement from center of sphere
+// 	Vec3f dis = vector - sphere->center;
+
+// 	// map on to 2d plane
+// 	// no z-axis
+// 	double dis_radius = sqrt(dis[0] * dis[0] + dis[2] * dis[2]);
+
+// 	vector[0]	= atan(dis[0] / std::abs(dis[2])) / M_PI;
+// 	vector[1]	= atan(dis[1] / dis_radius) / M_PI * 2;
+// 	vector[2]	= 0;
+
+// 	// x-axis adjustment
+// 	if (dis[2] < 0) {
+// 		if (dis[0] > 0)	vector[0]	= 1 - vector[0];
+// 		else			vector[0]	= -1 + vector[0];
+// 	}
+// }
+
+
+// texture - mapper
+void Texture_Mapper_Sphere::setSphere(Hitable_Sphere *sphere) {
+	this->sphere = sphere;
+}
+
+
+void Texture_Mapper_Sphere::setPixel(const Vec3f &point, const Vec3f &pixel) {
+
+}
+
+
+void Texture_Mapper_Sphere::_getPixel_(Vec3f &dst, Vec3f *src) const {
+	if (sphere == nullptr) {
+		dst = Vec3f();
+		return;
+	}
+
+	// get displacement from center of sphere
+	Vec3f dis = src[0] - sphere->center;
+
+	// map on to 2d plane
+	// no z-axis
+	double dis_radius = sqrt(dis[0] * dis[0] + dis[2] * dis[2]);
+
+	dst[0]	= atan(dis[0] / std::abs(dis[2])) / M_PI;
+	dst[1]	= atan(dis[1] / dis_radius) / M_PI * 2;
+	dst[2]	= 0;
+
+	// x-axis adjustment
+	if (dis[2] < 0) {
+		if (dis[0] > 0)	dst[0]	= 1 - dst[0];
+		else			dst[0]	= -1 + dst[0];
+	}
+}
+
+
+// TODO: backup
+// void Texture_Mapper_Sphere::_getPixel_(Vec3f &dst, const Vec3f &src) const {
+// 	if (sphere == nullptr) return;
+
+// 	// get displacement from center of sphere
+// 	Vec3f dis = src - sphere->center;
+
+// 	// map on to 2d plane
+// 	// no z-axis
+// 	double dis_radius = sqrt(dis[0] * dis[0] + dis[2] * dis[2]);
+
+// 	dst[0]	= atan(dis[0] / std::abs(dis[2])) / M_PI;
+// 	dst[1]	= atan(dis[1] / dis_radius) / M_PI * 2;
+// 	dst[2]	= 0;
+
+// 	// x-axis adjustment
+// 	if (dis[2] < 0) {
+// 		if (dis[0] > 0)	dst[0]	= 1 - dst[0];
+// 		else			dst[0]	= -1 + dst[0];
+// 	}
+// }
+
+
+// texture - direction
+void Texture_Direction_Sphere::setSphere(Hitable_Sphere *sphere) {
+	this->sphere = sphere;
+}
+
+
+void Texture_Direction_Sphere::setPixel(const Vec3f &point, const Vec3f &pixel) {
+
+}
+
+
+// TODO: not yet completed
+void Texture_Direction_Sphere::_getPixel_(Vec3f &dst, Vec3f *src) const {
+	if (sphere == nullptr) {
+		dst = Vec3f();
+		return;
+	}
+
+	// first get the normal, it is used as z-axis
+	// cross product of up vector and normal used as x-axis
+	Vec3f axis_z = src[0] - sphere->center;
+	Vec3f axis_x = Vec3f(0, 1, 0).cross(axis_z);
+	Vec3f axis_y = axis_z.cross(axis_x);
+
+	axis_x = axis_x.normalize();
+	axis_y = axis_y.normalize();
+	axis_z = axis_z.normalize();
+
+	// assume that input is already normalized
+	dst = 
+	axis_x * src[1][0] + 
+	axis_y * src[1][1] + 
+	axis_z * src[1][2];
 }
 
 
