@@ -209,13 +209,6 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def Texture_rmInput(self, index: int, offset: int) -> int:
 		return self._dll_tracer.RayTracer_Texture_rmInput(c_int(index), c_int(offset))
 
-	# TODO: backup
-	# def Texture_addMapper(self, index_texture: int, index_mapper: int) -> int:
-	# 	return self._dll_tracer.RayTracer_Texture_addMapper(c_int(index_texture), c_int(index_mapper))
-	#
-	# def Texture_rmMapper(self, index_texture: int, index_mapper: int) -> int:
-	# 	return self._dll_tracer.RayTracer_Texture_rmMapper(c_int(index_texture), c_int(index_mapper))
-
 	def Texture_setPixel(self, index: int, pixel: Vec3f, point: Vec3f) -> int:
 		array_point = (c_double * 3)(*point.array)
 		array_pixel	= (c_double * 3)(*pixel.array)
@@ -290,6 +283,13 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	def SceneObject_Hitable_rmScatter(self, index_hitable: int, index_scatter: int) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Hitable_rmScatter(c_int(index_hitable), c_int(index_scatter))
+
+	def SceneObject_Hitable_setTransmissive(self, index: int, transmissive: Vec3f) -> int:
+		array = (c_double * 3)(*transmissive.array)
+		return self._dll_tracer.RayTracer_SceneObject_Hitable_setTransmissive(c_int(index), array)
+
+	def SceneObject_Hitable_setIndex(self, index: int, value: float) -> int:
+		return self._dll_tracer.RayTracer_SceneObject_Hitable_setIndex(c_int(index), c_double(value))
 
 	# light
 	def SceneObject_Light_Type_getIndex(self, name: str) -> int:

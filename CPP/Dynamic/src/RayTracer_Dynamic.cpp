@@ -385,6 +385,29 @@ EXPORT_DLL(int) RayTracer_SceneObject_Hitable_rmScatter(int index_hitable, int i
 }
 
 
+EXPORT_DLL(int) RayTracer_SceneObject_Hitable_setTransmissive(int index, double *transmissive) {
+	Dynamic_Container<SceneObject_Hitable> *container_hitable = hitable_list.get(index);
+	if (container_hitable == nullptr) return -1;
+
+	SceneObject_Hitable *hitable = container_hitable->getObject();
+	hitable->material.transmissive->setPixel(
+		Vec3f(), 
+		Vec3f(transmissive[0], transmissive[1], transmissive[2]));
+	
+	return 0;
+}
+
+
+EXPORT_DLL(int) RayTracer_SceneObject_Hitable_setIndex(int index, double value) {
+	Dynamic_Container<SceneObject_Hitable> *container_hitable = hitable_list.get(index);
+	if (container_hitable == nullptr) return -1;
+
+	SceneObject_Hitable *hitable = container_hitable->getObject();
+	hitable->material.index = value;
+	return 0;
+}
+
+
 // light
 Dynamic_constructTypeInterface(SceneObject_Light, SceneObject_Light, &light_list);
 

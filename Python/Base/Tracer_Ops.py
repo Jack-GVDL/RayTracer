@@ -115,13 +115,6 @@ class Ops_Tracer:
 	def Texture_rmInput(self, index: int, offset: int) -> int:
 		raise NotImplementedError
 
-	# TODO: backup
-	# def Texture_addMapper(self, index_texture: int, index_mapper: int) -> int:
-	# 	raise NotImplementedError
-	#
-	# def Texture_rmMapper(self, index_texture: int, index_mapper: int) -> int:
-	# 	raise NotImplementedError
-
 	def Texture_setPixel(self, index: int, pixel: Vec3f, point: Vec3f) -> int:
 		raise NotImplementedError
 
@@ -170,6 +163,12 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	def SceneObject_Hitable_rmScatter(self, index_hitable: int, index_scatter: int) -> int:
+		raise NotImplementedError
+
+	def SceneObject_Hitable_setTransmissive(self, index: int, transmissive: Vec3f) -> int:
+		raise NotImplementedError
+
+	def SceneObject_Hitable_setIndex(self, index: int, value: float) -> int:
 		raise NotImplementedError
 
 	# light

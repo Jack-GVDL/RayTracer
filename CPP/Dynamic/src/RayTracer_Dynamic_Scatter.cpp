@@ -67,8 +67,8 @@ void RayTracer_Dynamic_Scatter_init(std::vector<Dynamic_ContainerType*> *type_li
 	type_list->push_back(type);
 	
 	type = new Dynamic_ContainerType();
-	type->setName("reflection");
-	type->setOps(init_reflection, config_reflection, interact_reflection);
+	type->setName("refraction");
+	type->setOps(init_refraction, config_refraction, interact_refraction);
 	type_list->push_back(type);
 	
 	type = new Dynamic_ContainerType();

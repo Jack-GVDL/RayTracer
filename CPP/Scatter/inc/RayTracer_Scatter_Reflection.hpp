@@ -37,30 +37,14 @@ class Scatter_Reflection: public Scatter {
 
 	// Data
 	public:
-		// backup
-		// Texture		*reflective	= nullptr;
+		// ...
 
 	// Operation
 	public:
 		// init
-		Scatter_Reflection()
-		{
-			texture_list = new Texture*[MAX];
-			texture_size = MAX;
+		Scatter_Reflection();
 
-			texture_list[REFLECTIVE]	= nullptr;
-
-		}
-
-
-		Scatter_Reflection(Texture *reflective)
-		{
-			texture_list = new Texture*[MAX];
-			texture_size = MAX;
-
-			texture_list[REFLECTIVE]	= reflective;
-		}
-
+	protected:
 		// interface
 		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
 };

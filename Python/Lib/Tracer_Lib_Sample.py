@@ -16,12 +16,15 @@ class Tracer_Sample:
 		texture_diffuse:	Texture_Constant	= Texture_Constant()
 		texture_specular:	Texture_Constant	= Texture_Constant()
 		texture_shininess:	Texture_Constant	= Texture_Constant()
+		texture_normal:		Texture_Constant	= Texture_Constant()
+		texture_reflective:	Texture_Constant	= Texture_Constant()
 
-		texture_emissive.setPixel(	Vec3f(), Vec3f(0))
-		texture_ambient.setPixel(	Vec3f(), Vec3f(0))
-		texture_diffuse.setPixel(	Vec3f(), Vec3f(1))
-		texture_specular.setPixel(	Vec3f(), Vec3f(1))
-		texture_shininess.setPixel(	Vec3f(), Vec3f(1))
+		texture_emissive.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_ambient.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_diffuse.setPixel(		Vec3f(), Vec3f(1)	)
+		texture_specular.setPixel(		Vec3f(), Vec3f(1)	)
+		texture_shininess.setPixel(		Vec3f(), Vec3f(1)	)
+		texture_reflective.setPixel(	Vec3f(), Vec3f(0.9)	)
 
 		# scatter
 		scatter_light_1:	Scatter_Light = Scatter_Light()
@@ -30,21 +33,83 @@ class Tracer_Sample:
 		scatter_light_1.setTexture(texture_diffuse,		Scatter_Light.TextureOffset.DIFFUSE)
 		scatter_light_1.setTexture(texture_specular,	Scatter_Light.TextureOffset.SPECULAR)
 		scatter_light_1.setTexture(texture_shininess,	Scatter_Light.TextureOffset.SHININESS)
+		scatter_light_1.setTexture(texture_normal,		Scatter_Light.TextureOffset.NORMAL)
+
+		scatter_reflection_1:	Scatter_Reflection = Scatter_Reflection()
+		scatter_reflection_1.setTexture(texture_reflective,	Scatter_Reflection.TextureOffset.REFLECTIVE)
+
+		scatter_refraction_1:	Scatter_Refraction = Scatter_Refraction()
 
 		# scene
 		hitable_sphere_1:	Hitable_Sphere = Hitable_Sphere()
 		hitable_sphere_1.setCenter(Vec3f(0, 0, 0))
-		hitable_sphere_1.setRadius(0.5)
+		hitable_sphere_1.setRadius(0.45)
 		hitable_sphere_1.addScatter(scatter_light_1)
 
+		hitable_sphere_2:	Hitable_Sphere = Hitable_Sphere()
+		hitable_sphere_2.setCenter(Vec3f(1, 0, 0))
+		hitable_sphere_2.setRadius(0.45)
+		hitable_sphere_2.addScatter(scatter_reflection_1)
+		hitable_sphere_2.addScatter(scatter_light_1)
+
+		hitable_sphere_3:	Hitable_Sphere = Hitable_Sphere()
+		hitable_sphere_3.setCenter(Vec3f(-1, 0, 0))
+		hitable_sphere_3.setRadius(0.45)
+		hitable_sphere_3.setTransmissive(Vec3f(0.8))
+		hitable_sphere_3.setIndex(2)
+		hitable_sphere_3.addScatter(scatter_refraction_1)
+		hitable_sphere_3.addScatter(scatter_light_1)
+
+		hitable_trimesh_1:	Hitable_Trimesh = Hitable_Trimesh()
+		hitable_trimesh_1.setPoint_0(Vec3f(-5, -0.45, 2))
+		hitable_trimesh_1.setPoint_1(Vec3f(5, -0.45, 2))
+		hitable_trimesh_1.setPoint_2(Vec3f(-5, -0.45, -5))
+		hitable_trimesh_1.addScatter(scatter_light_1)
+
+		hitable_trimesh_2:	Hitable_Trimesh = Hitable_Trimesh()
+		hitable_trimesh_2.setPoint_0(Vec3f(-5, -0.45, -5))
+		hitable_trimesh_2.setPoint_1(Vec3f(5, -0.45, 2))
+		hitable_trimesh_2.setPoint_2(Vec3f(5, -0.45, -5))
+		hitable_trimesh_2.addScatter(scatter_light_1)
+
+		hitable_trimesh_3:	Hitable_Trimesh = Hitable_Trimesh()
+		hitable_trimesh_3.setPoint_0(Vec3f(-5, -0.45, -5))
+		hitable_trimesh_3.setPoint_1(Vec3f(5, -0.45, -5))
+		hitable_trimesh_3.setPoint_2(Vec3f(-5, 5, -5))
+		hitable_trimesh_3.addScatter(scatter_light_1)
+
+		hitable_trimesh_4:	Hitable_Trimesh = Hitable_Trimesh()
+		hitable_trimesh_4.setPoint_0(Vec3f(-5, 5, -5))
+		hitable_trimesh_4.setPoint_1(Vec3f(5, -0.45, -5))
+		hitable_trimesh_4.setPoint_2(Vec3f(5, 5, -5))
+		hitable_trimesh_4.addScatter(scatter_light_1)
+
 		# light
-		light_point_1:			Light_Point = Light_Point()
+		light_point_1:		Light_Point = Light_Point()
 		light_point_1.setOrigin(Vec3f(1, 1, 1))
-		light_point_1.setColor(Vec3f(1))
+		light_point_1.setAttenuationCoeff(Vec3f(0, 0, 0.4))
+		light_point_1.setColor(Vec3f(0.8))
+
+		light_point_2:		Light_Point = Light_Point()
+		light_point_2.setOrigin(Vec3f(-3, 1, -4))
+		light_point_2.setAttenuationCoeff(Vec3f(0, 0, 0.4))
+		light_point_2.setColor(Vec3f(0.8))
+
+		light_dir_1:		Light_Directional = Light_Directional()
+		light_dir_1.setOrientation(Vec3f(-1, 1, 1))
+		light_dir_1.setColor(Vec3f(0.03))
 
 		# scene
 		scene.addHitable(hitable_sphere_1)
+		scene.addHitable(hitable_sphere_2)
+		scene.addHitable(hitable_sphere_3)
+		scene.addHitable(hitable_trimesh_1)
+		scene.addHitable(hitable_trimesh_2)
+		scene.addHitable(hitable_trimesh_3)
+		scene.addHitable(hitable_trimesh_4)
 		scene.addLight(light_point_1)
+		scene.addLight(light_point_2)
+		scene.addLight(light_dir_1)
 
 		# camera
 		# TODO: not yet completed
@@ -273,12 +338,12 @@ class Tracer_Sample:
 		light_point_1.setOrigin(Vec3f(1, 2, 1))
 		light_point_1.setColor(Vec3f(1))
 
-		light_point_2:	Light_Point = Light_Point()
+		light_point_2:		Light_Point = Light_Point()
 		light_point_2.setAttenuationCoeff(Vec3f(0, 0, 0.4))
 		light_point_2.setOrigin(Vec3f(1, 0, 1))
 		light_point_2.setColor(Vec3f(1))
 
-		light_dir_1:	Light_Directional = Light_Directional()
+		light_dir_1:		Light_Directional = Light_Directional()
 		light_dir_1.setOrientation(Vec3f(0, 0, 1))
 		light_dir_1.setColor(Vec3f(0.3))
 
@@ -287,3 +352,6 @@ class Tracer_Sample:
 		scene.addLight(light_point_1)
 		scene.addLight(light_point_2)
 		scene.addLight(light_dir_1)
+
+		# camera
+		# TODO: not yet completed

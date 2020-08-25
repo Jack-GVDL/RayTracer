@@ -1,4 +1,5 @@
 from .Tracer_Ops import Ops_Tracer
+from .Tracer_Vec3f import Vec3f
 from .Tracer_Base import Tracer_Base
 from .Tracer_Scatter import Scatter
 
@@ -26,3 +27,9 @@ class Hitable(Tracer_Base):
 		if result != 0:
 			return False
 		return True
+
+	def setTransmissive(self, value: Vec3f) -> None:
+		result: int = self._ops_tracer.SceneObject_Hitable_setTransmissive(self._object_index, value)
+
+	def setIndex(self, value: float) -> None:
+		result: int = self._ops_tracer.SceneObject_Hitable_setIndex(self._object_index, value)

@@ -14,11 +14,17 @@ static inline bool	refract		(Vec3f &refracted, const Vec3f &incident, const Vec3
 
 
 // Operation Handling
+Scatter_Refraction::Scatter_Refraction() {
+	texture_list	= nullptr;
+	texture_size	= MAX;
+}
+
+
 ScatterState Scatter_Refraction::scatter_shootRay(RecordScatter *dst, RecordScatter *src, ScatterState state) const {
 	// first check if hit a target
 	// if hit a target
 	// then do refraction
-	if (!src->is_hit)				return SCATTER_NONE;
+	if (!src->is_hit) return SCATTER_NONE;
 
 	// variable preparation
 	const Material	*material	= &(src->record_hit.object->material);
@@ -30,7 +36,7 @@ ScatterState Scatter_Refraction::scatter_shootRay(RecordScatter *dst, RecordScat
 	Vec3f vec_transmissive;
 	material->transmissive->getPixel(vec_transmissive, hit_point);
 	
-	if (vec_transmissive.isZero())	return SCATTER_NONE;
+	if (vec_transmissive.isZero()) return SCATTER_NONE;
 	
 	// to check if the ray is entering or leaving the object
 	// need to check the angle between ray and the normal

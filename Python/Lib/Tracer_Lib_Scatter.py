@@ -26,6 +26,10 @@ class Scatter_Light(Scatter):
 
 class Scatter_Reflection(Scatter):
 
+	class TextureOffset(IntEnum):
+		REFLECTIVE:		int = 0
+		MAX:			int = 1
+
 	def __init__(self):
 		super().__init__()
 
@@ -38,6 +42,9 @@ class Scatter_Reflection(Scatter):
 
 
 class Scatter_Refraction(Scatter):
+
+	class TextureOffset(IntEnum):
+		MAX:			int = 0
 
 	def __init__(self):
 		super().__init__()

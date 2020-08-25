@@ -14,9 +14,17 @@ static inline Vec3f reflect(const Vec3f &incident, const Vec3f &normal);
 
 
 // Operation Handling
+Scatter_Reflection::Scatter_Reflection() {
+	texture_list				= new Texture*[MAX];
+	texture_size				= MAX;
+
+	texture_list[REFLECTIVE]	= nullptr;
+}
+
+
 ScatterState Scatter_Reflection::scatter_shootRay(RecordScatter *dst, RecordScatter *src, ScatterState state) const {
 	// first check if hit a target
-	if (!src->is_hit)				return SCATTER_NONE;
+	if (!src->is_hit) return SCATTER_NONE;
 
 	// variable preparation
 	const Ray	*ray		= &(src->record_hit.ray);
@@ -27,7 +35,7 @@ ScatterState Scatter_Reflection::scatter_shootRay(RecordScatter *dst, RecordScat
 	Vec3f vec_reflective;
 	texture_list[REFLECTIVE]->getPixel(vec_reflective, hit_point);
 	
-	if (vec_reflective.isZero())	return SCATTER_NONE;
+	if (vec_reflective.isZero()) return SCATTER_NONE;
 
 	// reflection
 	const Vec3f &reflected = reflect(ray->getDirection(), hit_normal).normalize();

@@ -59,26 +59,24 @@ class Scatter_Light: public Scatter {
 			texture_list[NORMAL]	= nullptr;
 		}
 
-		Scatter_Light(
-			Texture *diffuse, Texture *specular, Texture *emissive, Texture *ambient, Texture *shininess, Texture *normal)
-		{
-			texture_list = new Texture*[MAX];
-			texture_size = MAX;
+		// TODO: backup
+		// Scatter_Light(
+		// 	Texture *diffuse, Texture *specular, Texture *emissive, Texture *ambient, Texture *shininess, Texture *normal)
+		// {
+		// 	texture_list = new Texture*[MAX];
+		// 	texture_size = MAX;
 
-			texture_list[DIFFUSE]	= diffuse;
-			texture_list[SPECULAR]	= specular;
-			texture_list[EMISSIVE]	= emissive;
-			texture_list[AMBIENT]	= ambient;
-			texture_list[SHININESS]	= shininess;
-			texture_list[NORMAL]	= normal;
-		}
-
-		// interface
-		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
+		// 	texture_list[DIFFUSE]	= diffuse;
+		// 	texture_list[SPECULAR]	= specular;
+		// 	texture_list[EMISSIVE]	= emissive;
+		// 	texture_list[AMBIENT]	= ambient;
+		// 	texture_list[SHININESS]	= shininess;
+		// 	texture_list[NORMAL]	= normal;
+		// }
 
 	protected:
-		// operation
-		// ...
+		// interface
+		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
 };
 
 

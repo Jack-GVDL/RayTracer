@@ -45,10 +45,11 @@ class Material {
 		index			(RAY_INDEX_AIR)
 		{}
 		
-		Material(Texture *transmissive, double index):
-		transmissive	(transmissive),
-		index			(index)
-		{}
+		// TODO: backup
+		// Material(Texture *transmissive, double index):
+		// transmissive	(transmissive),
+		// index			(index)
+		// {}
 };
 
 

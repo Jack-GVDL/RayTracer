@@ -86,13 +86,15 @@ EXPORT_DLL(int)		RayTracer_Scatter_interact					(int index, int type, int *index
 EXPORT_DLL(int)		RayTracer_Scatter_setTexture				(int index_scatter, int index_texture, int offset);
 EXPORT_DLL(int)		RayTracer_Scatter_rmTexture					(int index_scatter, int offset);
 
-EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_Type_getIndex	(const char *name);
-EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_create		(int type);
-EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_destroy		(int index);
-EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_config		(int index, int type, uint8_t *data, uint32_t size);
-EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_interact		(int index, int type, int *index_list, int *type_list, uint32_t size);
-EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_addScatter	(int index_hitable, int index_scatter);
-EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_rmScatter		(int index_hitable, int index_scatter);
+EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_Type_getIndex	    (const char *name);
+EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_create		    (int type);
+EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_destroy		    (int index);
+EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_config		    (int index, int type, uint8_t *data, uint32_t size);
+EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_interact		    (int index, int type, int *index_list, int *type_list, uint32_t size);
+EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_addScatter	    (int index_hitable, int index_scatter);
+EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_rmScatter		    (int index_hitable, int index_scatter);
+EXPORT_DLL(int)     RayTracer_SceneObject_Hitable_setTransmissive   (int index, double *transmissive);
+EXPORT_DLL(int)     RayTracer_SceneObject_Hitable_setIndex          (int index, double value);
 
 EXPORT_DLL(int)		RayTracer_SceneObject_Light_Type_getIndex	(const char *name);
 EXPORT_DLL(int)		RayTracer_SceneObject_Light_create			(int type);

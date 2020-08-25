@@ -61,9 +61,10 @@ class SceneObject_Hitable: public SceneElement {
 		SceneObject_Hitable()
 		{}
 
-		SceneObject_Hitable(Material *material):
-		material(*material)
-		{}
+		// TODO: backup
+		// SceneObject_Hitable(Material *material):
+		// material(*material)
+		// {}
 		
 		// operation
 		bool			hit		(RecordHit *record) const;
@@ -81,12 +82,12 @@ class SceneObject_HitableList: public SceneObject_Hitable {
 
 	// Operation
 	public:
-		// interface
-		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
-
 		// operation
 		virtual bool	addHitable	(SceneObject_Hitable *hitable);
 		virtual bool	rmHitable	(SceneObject_Hitable *hitable);
+		
+		// interface
+		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
 };
 
 

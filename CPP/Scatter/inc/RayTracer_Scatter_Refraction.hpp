@@ -30,7 +30,7 @@ class Scatter_Refraction: public Scatter {
 	// Enum
 	public:
 		enum ScatterTexture {
-			MAX
+			MAX = 0
 		};
 
 	// Data
@@ -40,14 +40,14 @@ class Scatter_Refraction: public Scatter {
 	// Operation
 	public:
 		// init
-		Scatter_Refraction()
-		{}
+		Scatter_Refraction();
 		
+	protected:
 		// interface
 		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
 
-	protected:
-		bool createRecord_outer	(RecordScatter *dst, RecordScatter *src, double *index_from, double *index_to) const;
+		// helper
+		bool 					createRecord_outer	(RecordScatter *dst, RecordScatter *src, double *index_from, double *index_to) const;
 };
 
 

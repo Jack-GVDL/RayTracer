@@ -26,7 +26,7 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 	// variable prepartion
 	const Scene		*scene		= src->scene;
 	const Vec3f		&hit_point	= src->record_hit.point;
-	const Material *material	= &(src->record_hit.object->material);
+	const Material	*material	= &(src->record_hit.object->material);
 
 	// get intensity
 	Vec3f intensity_result = Vec3f();
