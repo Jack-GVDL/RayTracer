@@ -10,7 +10,8 @@ class Scatter_Light(Scatter):
 		EMISSIVE:	int = 2
 		AMBIENT:	int = 3
 		SHININESS:	int = 4
-		MAX:		int = 5
+		NORMAL:		int = 5
+		MAX:		int = 6
 
 	def __init__(self):
 		super().__init__()

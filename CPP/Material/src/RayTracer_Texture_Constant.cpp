@@ -24,7 +24,7 @@ void Texture_Constant::setPixel(const Vec3f &point, const Vec3f &pixel) {
 }
 
 
-void Texture_Constant::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
+void Texture_Constant::_getPixel_(Vec3f &dst, Vec3f *src) const {
 	dst = color;
 }
 

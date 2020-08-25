@@ -29,8 +29,8 @@ void Texture_Math_Additor::setPixel(const Vec3f &point, const Vec3f &pixel) {
 }
 
 
-void Texture_Math_Additor::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
-	dst = (*src)[0] + additor;
+void Texture_Math_Additor::_getPixel_(Vec3f &dst, Vec3f *src) const {
+	dst = src[0] + additor;
 }
 
 
@@ -51,8 +51,8 @@ void Texture_Math_Multiplier::setPixel(const Vec3f &point, const Vec3f &pixel) {
 }
 
 
-void Texture_Math_Multiplier::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
-	dst = (*src)[0] * multiplier;
+void Texture_Math_Multiplier::_getPixel_(Vec3f &dst, Vec3f *src) const {
+	dst = src[0] * multiplier;
 }
 
 

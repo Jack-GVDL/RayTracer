@@ -1,11 +1,12 @@
 from typing import List, Tuple
 import ctypes
-from ctypes import c_int, c_double, c_uint8, c_uint32, c_char, c_char_p
+from ctypes import c_int, c_double, c_uint8, c_uint32, c_char, c_char_p, c_void_p
 from ctypes import CDLL
 from .Tracer_Vec3f import Vec3f
 from .Tracer_Ops import Ops_Tracer
 import os
 import time
+import numpy as np
 
 
 class Ops_Tracer_DLL(Ops_Tracer):
@@ -47,7 +48,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	# 	self._is_started = True
 	# 	return True
-	
+
 	# # TODO: not yet completed
 	# def end(self) -> bool:
 	# 	if not self._is_started:
@@ -89,24 +90,27 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def Tracer_tracePoint(self, index_camera: int, pixel: Vec3f, x: float, y: float, depth: int) -> int:
 		array_pixel = (c_double * 3)(*pixel.array)
 		result: int = self._dll_tracer.RayTracer_Tracer_tracePoint(c_int(index_camera), array_pixel, c_double(x), c_double(y), c_int(depth))
-		
+
 		pixel[0] = array_pixel[0]
 		pixel[1] = array_pixel[1]
 		pixel[2] = array_pixel[2]
 
 		return result
 
-	def Tracer_traceRect(self, index_camera: int, pixel_list: List[float], w: int, h: int, depth: int, is_reverse_x: bool, is_reverse_y: bool) -> int:
-		array_pixel = (c_double * (w * h * 3))()
+	def Tracer_traceRect(
+			self, index_camera: int, pixel_list: np.ndarray, w: int, h: int, depth: int,
+			is_reverse_x: bool, is_reverse_y: bool) -> int:
+
+		# TODO: test
+		time_start = time.time()
 
 		result: int = self._dll_tracer.RayTracer_Tracer_traceRect(
-			c_int(index_camera), array_pixel, c_int(w), c_int(h), c_int(depth),
-			c_int(1 if is_reverse_x else 0),
-			c_int(1 if is_reverse_y else 0))
+			c_int(index_camera), pixel_list.ctypes.data_as(ctypes.c_void_p), c_int(w), c_int(h), c_int(depth),
+			c_int(1 if is_reverse_x else 0), c_int(1 if is_reverse_y else 0),
+			c_int(0))
 
-		# TODO: I know this is fucking slow, find a faster way
-		# for now, about 0.2 - 0.3 ms for 270000 c_double value
-		pixel_list.extend([array_pixel[i] for i in range(w * h * 3)])
+		# TODO: test
+		print("Trace time: ", time.time() - time_start)
 
 		return result
 
@@ -125,7 +129,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		array_data = (c_uint8 * size)(*data)
 		return self._dll_tracer.RayTracer_Camera_config(c_int(index), c_int(type_), array_data, c_uint32(size))
 
-	def Camera_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
+	def Camera_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
 		return self._dll_tracer.RayTracer_Camera_interact(c_int(index), c_int(type_), array_index, array_type, size)
@@ -147,24 +152,6 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	def Camera_setAspectRatio(self, index: int, value: float) -> int:
 		return self._dll_tracer.RayTracer_Camera_setAspectRatio(c_int(index), c_double(value))
-
-	# TODO: backup
-	# mapper
-	# def Mapper_create(self, type_: int) -> int:
-	# 	return self._dll_tracer.RayTracer_Mapper_create(c_int(type_))
-	#
-	# def Mapper_destroy(self, index: int) -> int:
-	# 	return self._dll_tracer.RayTracer_Mapper_destroy(c_int(index))
-	#
-	# def Mapper_config(self, index: int, type_: int, data: bytes, size: int) -> int:
-	# 	# TODO: currently data is const uint8_t*, cannot pass out value from dll
-	# 	array_data = (c_uint8 * size)(*data)
-	# 	return self._dll_tracer.RayTracer_Mapper_config(c_int(index), c_int(type_), array_data, c_uint32(size))
-	#
-	# def Mapper_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
-	# 	array_index = (c_int * size)(*index_list)
-	# 	array_type	= (c_int * size)(*type_list)
-	# 	return self._dll_tracer.RayTracer_Mapper_interact(c_int(index), c_int(type_), array_index, array_type, size)
 
 	# surface
 	def Surface_Type_getIndex(self, name: str) -> int:

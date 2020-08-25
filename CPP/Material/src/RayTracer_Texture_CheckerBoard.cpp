@@ -32,12 +32,12 @@ void Texture_CheckerBoard::setPixel(const Vec3f &point, const Vec3f &pixel) {
 }
 
 
-void Texture_CheckerBoard::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
+void Texture_CheckerBoard::_getPixel_(Vec3f &dst, Vec3f *src) const {
 	// check if point should be black or white
 	// one characteristic of sin / cos is periodic changes of y ranging [1, -1]
-	double sines = sin(size_board[0] * (*src)[0][0]) * 
-				   sin(size_board[1] * (*src)[0][1]) * 
-				   sin(size_board[2] * (*src)[0][2]);
+	double sines = sin(size_board[0] * src[0][0]) * 
+				   sin(size_board[1] * src[0][1]) * 
+				   sin(size_board[2] * src[0][2]);
 
 	if (sines < 0)	dst = color_1;
 	else			dst = color_2;

@@ -45,7 +45,7 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 	texture_list[DIFFUSE]->getPixel(		vec_diffuse,		hit_point);
 	texture_list[SPECULAR]->getPixel(		vec_specular,		hit_point);
 	texture_list[SHININESS]->getPixel(		vec_shininess,		hit_point);
-	// texture_list[NORMAL]->getPixel(			vec_normal,			hit_point);
+	texture_list[NORMAL]->getPixel(			vec_normal,			hit_point);
 	material->transmissive->getPixel(		vec_transmissive,	hit_point);
 
 	// emissive intensity and ambient intensity
@@ -54,9 +54,9 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 
 	// TODO: may need better way to do the same thing
 	// adjust normal
-	// const Vec3f &normal_original = src->record_hit.normal;
-	// src->record_hit.normal += vec_normal;
-	// src->record_hit.normal = src->record_hit.normal.normalize();
+	const Vec3f normal_original = src->record_hit.normal;
+	src->record_hit.normal += vec_normal;
+	src->record_hit.normal = src->record_hit.normal.normalize();
 
 	// intensity - light
 	for (auto *light : scene->light_list) {
@@ -84,7 +84,7 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 
 	// TODO: may need better way to do the same thing
 	// change back normal
-	// src->record_hit.normal = vec_normal;
+	src->record_hit.normal = normal_original;
 
 	dst->intensity = intensity_result;
 	return SCATTER_YIELD;

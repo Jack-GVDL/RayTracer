@@ -49,7 +49,7 @@ class Hitable_AABB: public SceneObject_Hitable {
 };
 
 
-// backup
+// TODO: backup
 // binary search tree strucutre
 // class Hitable_AABBNode: public Hitable_AABB {
 // 	// Static Function

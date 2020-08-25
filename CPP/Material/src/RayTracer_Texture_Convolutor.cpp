@@ -34,7 +34,7 @@ void Texture_Convolutor::setPixel(const Vec3f &point, const Vec3f &pixel) {
 }
 
 
-void Texture_Convolutor::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
+void Texture_Convolutor::_getPixel_(Vec3f &dst, Vec3f *src) const {
 	// if texture or kernel not exist
 	// then do nothing
 	if (texture == nullptr) {
@@ -48,8 +48,8 @@ void Texture_Convolutor::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
 	}
 
 	// get center point
-	const double 	double_x 		= (*src)[0][0];
-	const double 	double_y 		= (*src)[0][1];
+	const double 	double_x 		= src[0][0];
+	const double 	double_y 		= src[0][1];
 	
 	const int		int_x			= (int)(double_x);
 	const int		int_y			= (int)(double_y);

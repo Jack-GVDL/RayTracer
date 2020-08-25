@@ -3,6 +3,7 @@
     "OBJ_PATH"  : "obj",
     
     "OBJ_FILE"  : ["RayTracer_DynamicContainer.o ",
+                   "RayTracer_Dynamic_Tracer.o ",
                    "RayTracer_Dynamic_Camera.o ",
                    "RayTracer_Dynamic_Surface.o ",
                    "RayTracer_Dynamic_Texture.o ",

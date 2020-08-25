@@ -119,11 +119,14 @@ void Texture_Mapper_Sphere::setPixel(const Vec3f &point, const Vec3f &pixel) {
 }
 
 
-void Texture_Mapper_Sphere::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
-	if (sphere == nullptr) return;
+void Texture_Mapper_Sphere::_getPixel_(Vec3f &dst, Vec3f *src) const {
+	if (sphere == nullptr) {
+		dst = Vec3f();
+		return;
+	}
 
 	// get displacement from center of sphere
-	Vec3f dis = (*src)[0] - sphere->center;
+	Vec3f dis = src[0] - sphere->center;
 
 	// map on to 2d plane
 	// no z-axis
@@ -176,8 +179,27 @@ void Texture_Direction_Sphere::setPixel(const Vec3f &point, const Vec3f &pixel) 
 
 
 // TODO: not yet completed
-void Texture_Direction_Sphere::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
-	if (sphere == nullptr) return;
+void Texture_Direction_Sphere::_getPixel_(Vec3f &dst, Vec3f *src) const {
+	if (sphere == nullptr) {
+		dst = Vec3f();
+		return;
+	}
+
+	// first get the normal, it is used as z-axis
+	// cross product of up vector and normal used as x-axis
+	Vec3f axis_z = src[0] - sphere->center;
+	Vec3f axis_x = Vec3f(0, 1, 0).cross(axis_z);
+	Vec3f axis_y = axis_z.cross(axis_x);
+
+	axis_x = axis_x.normalize();
+	axis_y = axis_y.normalize();
+	axis_z = axis_z.normalize();
+
+	// assume that input is already normalized
+	dst = 
+	axis_x * src[1][0] + 
+	axis_y * src[1][1] + 
+	axis_z * src[1][2];
 }
 
 

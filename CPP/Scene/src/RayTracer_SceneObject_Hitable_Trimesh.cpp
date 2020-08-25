@@ -134,7 +134,7 @@ void Texture_Mapper_Trimesh::setPixel(const Vec3f &point, const Vec3f &pixel) {
 }
 
 
-void Texture_Mapper_Trimesh::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
+void Texture_Mapper_Trimesh::_getPixel_(Vec3f &dst, Vec3f *src) const {
 	if (trimesh == nullptr) {
 		dst = Vec3f();
 		return;
@@ -155,8 +155,8 @@ void Texture_Mapper_Trimesh::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) con
 	// then map vector on a 2d plane
 	// axis_1 as x
 	// axis_2 as y
-	double length_x = ((*src)[0]).projectLength(axis_1);
-	double length_y = ((*src)[0]).projectLength(axis_2);
+	double length_x = (src[0]).projectLength(axis_1);
+	double length_y = (src[0]).projectLength(axis_2);
 	
 	dst[0] = length_x;
 	dst[1] = length_y;
@@ -204,8 +204,11 @@ void Texture_Direction_Trimesh::setPixel(const Vec3f &point, const Vec3f &pixel)
 
 
 // TODO: not yet completed
-void Texture_Direction_Trimesh::_getPixel_(Vec3f &dst, std::vector<Vec3f> *src) const {
-	if (trimesh == nullptr) return;
+void Texture_Direction_Trimesh::_getPixel_(Vec3f &dst, Vec3f *src) const {
+	if (trimesh == nullptr) {
+		dst = Vec3f();
+		return;
+	}
 }
 
 

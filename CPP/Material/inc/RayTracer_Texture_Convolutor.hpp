@@ -48,7 +48,7 @@ class Texture_Convolutor: public Texture {
 
 		// interace
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
-		virtual void	_getPixel_	(Vec3f &dst, std::vector<Vec3f> *src) const;
+		virtual void	_getPixel_	(Vec3f &dst, Vec3f *src) const override;
 
 	protected:
 		// interface

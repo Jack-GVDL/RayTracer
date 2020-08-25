@@ -1,5 +1,6 @@
 from typing import List, Tuple
 from .Tracer_Vec3f import Vec3f
+import numpy as np
 
 
 class Ops_Tracer:
@@ -36,7 +37,7 @@ class Ops_Tracer:
 	def Tracer_tracePoint(self, index_camera: int, pixel: Vec3f, x: float, y: float, depth: int) -> int:
 		raise NotImplementedError
 
-	def Tracer_traceRect(self, index_camera: int, pixel_list: List[float], w: int, h: int, depth: int, is_reverse_x: bool, is_reverse_y: bool) -> int:
+	def Tracer_traceRect(self, index_camera: int, pixel_list: np.ndarray, w: int, h: int, depth: int, is_reverse_x: bool, is_reverse_y: bool) -> int:
 		raise NotImplementedError
 
 	# camera
@@ -69,20 +70,6 @@ class Ops_Tracer:
 
 	def Camera_setAspectRatio(self, index: int, value: float) -> int:
 		raise NotImplementedError
-
-	# TODO: backup
-	# mapper
-	# def Mapper_create(self, type_: int) -> int:
-	# 	raise NotImplementedError
-	#
-	# def Mapper_destroy(self, index: int) -> int:
-	# 	raise NotImplementedError
-	#
-	# def Mapper_config(self, index: int, type_: int, data: bytes, size: int) -> int:
-	# 	raise NotImplementedError
-	#
-	# def Mapper_interact(self, index: int, type_: int, index_list: List[int], type_list: List[int], size: int) -> int:
-	# 	raise NotImplementedError
 
 	# surface
 	def Surface_Type_getIndex(self, name: str) -> int:

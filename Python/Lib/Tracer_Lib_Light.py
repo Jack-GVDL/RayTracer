@@ -11,7 +11,7 @@ class Light_Directional(Light):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "direction")
+		type_index: int		= self._getType_(self._ops_tracer, "directional")
 		self._object_index	= self._ops_tracer.SceneObject_Light_create(type_index)
 
 	# Operation

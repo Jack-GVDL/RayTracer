@@ -149,7 +149,7 @@ class Texture_Mapper_Sphere(Texture):
 
 	# Operation
 	def setSphere(self, sphere: Hitable_Sphere) -> None:
-		result: int = self._ops_tracer.Texture_interact(self._object_index, 0, [sphere.object_index], [2])
+		result: int = self._ops_tracer.Texture_interact(self._object_index, 0, [sphere.object_index], [4])
 
 
 class Texture_Mapper_Trimesh(Texture):
