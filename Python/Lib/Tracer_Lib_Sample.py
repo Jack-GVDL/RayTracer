@@ -199,14 +199,14 @@ class Tracer_Sample:
 		texture_kernel_1.setTexture(texture_image_2)
 		texture_kernel_1.setKernel([1.0 for _ in range(25)])
 
-		texture_add_1.setAdditor(Vec3f(1, 0, 0))
-		texture_multi_1.setMultiplier(Vec3f(750))
+		texture_add_1.setAdditor(Vec3f(2, 1.5, 0))
+		texture_multi_1.setMultiplier(Vec3f(500))
 
 		# scatter
 		scatter_light_1:	Scatter_Light = Scatter_Light()
 		scatter_light_1.setTexture(texture_emissive,	Scatter_Light.TextureOffset.EMISSIVE)
 		scatter_light_1.setTexture(texture_ambient,		Scatter_Light.TextureOffset.AMBIENT)
-		scatter_light_1.setTexture(texture_kernel_1,	Scatter_Light.TextureOffset.DIFFUSE)
+		scatter_light_1.setTexture(texture_image_1,		Scatter_Light.TextureOffset.DIFFUSE)
 		scatter_light_1.setTexture(texture_specular,	Scatter_Light.TextureOffset.SPECULAR)
 		scatter_light_1.setTexture(texture_shininess,	Scatter_Light.TextureOffset.SHININESS)
 		scatter_light_1.setTexture(texture_normal,		Scatter_Light.TextureOffset.NORMAL)
@@ -221,27 +221,27 @@ class Tracer_Sample:
 
 		# scene
 		hitable_trimesh_1:	Hitable_Trimesh = Hitable_Trimesh()
-		hitable_trimesh_1.setPoint_0(Vec3f(-2, 0, 0))
-		hitable_trimesh_1.setPoint_1(Vec3f(2, 0, 0))
+		hitable_trimesh_1.setPoint_0(Vec3f(-2, -4, 0))
+		hitable_trimesh_1.setPoint_1(Vec3f(2, -4, 0))
 		hitable_trimesh_1.setPoint_2(Vec3f(-2, 4, 0))
 		hitable_trimesh_1.addScatter(scatter_light_1)
 		texture_trimesh_1.setTrimesh(hitable_trimesh_1)
 
 		hitable_trimesh_2:	Hitable_Trimesh = Hitable_Trimesh()
-		hitable_trimesh_2.setPoint_0(Vec3f(-2, 4, 0))
-		hitable_trimesh_2.setPoint_1(Vec3f(2, 0, 0))
-		hitable_trimesh_2.setPoint_2(Vec3f(2, 4, 0))
+		hitable_trimesh_2.setPoint_0(Vec3f(-2, 4.05, 0))
+		hitable_trimesh_2.setPoint_1(Vec3f(2, -3.95, 0))
+		hitable_trimesh_2.setPoint_2(Vec3f(2, 4.05, 0))
 		hitable_trimesh_2.addScatter(scatter_light_2)
 
 		# light
-		light_point_1:		Light_Point = Light_Point()
-		light_point_1.setOrigin(Vec3f(1, 1, 1))
-		light_point_1.setColor(Vec3f(1))
+		light_dir_1:		Light_Directional = Light_Directional()
+		light_dir_1.setColor(Vec3f(1))
+		light_dir_1.setOrientation(Vec3f(0, 0, 1))
 
 		# scene
 		scene.addHitable(hitable_trimesh_1)
 		scene.addHitable(hitable_trimesh_2)
-		scene.addLight(light_point_1)
+		scene.addLight(light_dir_1)
 
 		# camera
 		# TODO: not yet completed

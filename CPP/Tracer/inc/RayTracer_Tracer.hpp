@@ -33,26 +33,28 @@
 class RayTracer {
 	// Data
 	public:
-		Scene	*scene			= nullptr;
+		Scene				*scene		= nullptr;
 
-		Shader	shader_not_hit;
-		Shader	shader_hit;
+		// TODO: need to consider there will be multiple scheduler in future
+		// may need to be list of scheduler
+		Scheduler_Scatter	scheduler;
+
+		// TODO: backup
+		// Shader	shader_not_hit;
+		// Shader	shader_hit;
 
 	// Operation
 	public:
 		// init
-		RayTracer():
-		scene			(nullptr)
-		{}
-
-		RayTracer(Scene *scene):
-		scene			(scene)
-		{}
+		RayTracer	();
+		~RayTracer	();
 		
 		// operation
-		Vec3f	trace	(const Camera *camera, double x, double y, int depth) const;
-		Vec3f	trace	(const Ray *ray, int depth) const;
-		Vec3f	trace	(RecordScatter *record) const;
+		void	setScene	(Scene *scene);
+
+		Vec3f	trace		(const Camera *camera, double x, double y, int depth) const;
+		Vec3f	trace		(const Ray *ray, int depth) const;
+		Vec3f	trace		(RecordScatter *record) const;
 };
 
 

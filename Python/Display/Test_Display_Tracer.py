@@ -37,9 +37,9 @@ ops_tracer.RayTracer_info()
 
 """ object creation """
 scene:	Scene	= Scene()
-Tracer_Sample.buildScene_0(scene)
+# Tracer_Sample.buildScene_0(scene)
 # Tracer_Sample.buildScene_1(scene)
-# Tracer_Sample.buildScene_2(scene)
+Tracer_Sample.buildScene_2(scene)
 # Tracer_Sample.buildScene_3(scene)
 
 ops_tracer.Test_checkStatus(0, bytes(), 0)
@@ -75,7 +75,7 @@ widget.setLayout(layout)
 layout.addWidget(display_tracer)
 
 # update
-display_tracer.setDisplaySize(1080, 720)
+display_tracer.setDisplaySize(800, 800)
 display_tracer.setOps_tracer(ops_tracer)
 display_tracer.update()
 

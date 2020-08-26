@@ -45,6 +45,35 @@ namespace UtilMath {
 	static inline double randDouble() {
 		return rand() / (RAND_MAX + 1.0);
 	}
+
+
+	// reference
+	// 1. https://stackoverflow.com/questions/9718453/extract-n-most-significant-non-zero-bits-from-int-in-c-without-loops
+	static inline int32_t getLeadingZero(int32_t value) {
+		uint8_t count = 0;
+
+		if ((value & 0xffff0000u) == 0) {
+			count += 16;
+			value <<= 16;
+    	}
+		if ((value & 0xff000000u) == 0) {
+			count += 8;
+			value <<= 8;
+   		 }
+		if ((value & 0xf0000000u) == 0) {
+			count += 4;
+			value <<= 4;
+		}
+		if ((value & 0xc0000000u) == 0) {
+			count += 2;
+			value <<= 2;
+		}
+		if ((value & 0x80000000u) == 0) {
+			count += 1;
+		}
+
+		return 1 << count;
+	}
 }
 
 
