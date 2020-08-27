@@ -42,7 +42,7 @@ namespace UtilMath {
 		return (v < lo) ? lo : (hi < v) ? hi : v;
 	}
 
-	static inline double randDouble() {
+	static inline fp_t randFloat() {
 		return rand() / (RAND_MAX + 1.0);
 	}
 
@@ -79,8 +79,7 @@ namespace UtilMath {
 
 namespace VecMath {
 
-
-	static inline double dot(const Vec3f &v1, const Vec3f &v2) {
+	static inline fp_t dot(const Vec3f &v1, const Vec3f &v2) {
 		return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
 	}
 
@@ -96,7 +95,7 @@ namespace VecMath {
 	// reverse the vector based on the threhold
 	// i.e. if dot product is smaller than the threshold
 	// then reverse the vector
-	static inline void reverseVector_thresholdSmaller(Vec3f &v1, const Vec3f &v2, double threshold) {
+	static inline void reverseVector_thresholdSmaller(Vec3f &v1, const Vec3f &v2, fp_t threshold) {
 		if (v1.dot(v2) >= threshold) return;
 		v1 = -v1;
 	}
@@ -105,7 +104,7 @@ namespace VecMath {
 	// reverse the vector based on the threshold
 	// i.e. if dot product is larger than the threshold
 	// then reverse the vector
-	static inline void reverseVector_thresholdLarger(Vec3f &v1, const Vec3f &v2, double threshold) {
+	static inline void reverseVector_thresholdLarger(Vec3f &v1, const Vec3f &v2, fp_t threshold) {
 		if (v1.dot(v2) <= threshold) return;
 		v1 = -v1;
 	}
@@ -121,7 +120,7 @@ namespace VecMath {
 	// it should be noticed that a plane can be defined by a point and a normal vector
 	// reference
 	// 1. https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
-	static inline bool intersectPoint_rayPlane(Vec3f &point, double &length, const Ray *ray, const Ray *plane) {
+	static inline bool intersectPoint_rayPlane(Vec3f &point, fp_t &length, const Ray *ray, const Ray *plane) {
 		Vec3f normal = plane->getDirection();
 		
 		// check if ray and plane are parallel

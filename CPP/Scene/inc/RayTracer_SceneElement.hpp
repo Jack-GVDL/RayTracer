@@ -27,25 +27,6 @@
 
 
 // Data Structure
-
-// backup
-// struct Vertex {
-// 	Vec3f point;
-// };
-
-
-// struct Edge {
-// 	Vertex	vertex_1;
-// 	Vertex	vertex_2;
-// };
-
-
-// struct Plane {
-// 	Vertex	*vertices;
-// 	int		size_vertices;
-// };
-
-
 class SceneElement {
 	// Data
 	public:

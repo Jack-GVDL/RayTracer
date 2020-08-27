@@ -106,7 +106,8 @@ Dynamic_ContainerListBase*					container_list[] = {
 // Operation Handling
 EXPORT_DLL(void) RayTracer_init() {
 	// tracer
-	tracer	= RayTracer(&scene);
+	tracer = RayTracer();
+	tracer.setScene(&scene);
 
 	// init
 	RayTracer_Dynamic_Camera_init(	&(camera_list.type_list)	);

@@ -13,9 +13,6 @@
 
 
 #include "./inc/RayTracer_Material.hpp"
-// TODO: backup
-// #include "./inc/RayTracer_Mapper.hpp"
-// #include "./inc/RayTracer_Mapper_Math.hpp"
 #include "./inc/RayTracer_Surface.hpp"
 #include "./inc/RayTracer_Surface_BMP.hpp"
 #include "./inc/RayTracer_Texture.hpp"

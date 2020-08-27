@@ -31,7 +31,7 @@ class Camera {
 		Vec3f	look_from;
 		Vec3f	look_at, up;
 		Vec3f	w, u, v;
-		double	fov, aspect;
+		fp_t	fov, aspect;
 
 		// backup
 		// double	width, height;
@@ -49,7 +49,7 @@ class Camera {
 			update();
 		}
 
-		Camera(const Vec3f look_from, const Vec3f look_at, const Vec3f up, double fov, double aspect) {
+		Camera(const Vec3f look_from, const Vec3f look_at, const Vec3f up, fp_t fov, fp_t aspect) {
 			this->look_from	= look_from;
 			this->look_at	= look_at;
 			this->up		= up;
@@ -63,12 +63,12 @@ class Camera {
 		void 	setLookFrom		(const Vec3f look_from);
 		void	setLookAt		(const Vec3f look_at);
 		void	setUpDirection	(const Vec3f up_dir);
-		void 	setFOV			(double value);
-		void	setAspectRatio	(double value);
-		void	setAll			(const Vec3f look_from, const Vec3f look_at, const Vec3f up, double fov, double aspect);
+		void 	setFOV			(fp_t value);
+		void	setAspectRatio	(fp_t value);
+		void	setAll			(const Vec3f look_from, const Vec3f look_at, const Vec3f up, fp_t fov, fp_t aspect);
 
 		// operation
-		Ray		getRay			(double x, double y) const;
+		Ray		getRay			(fp_t x, fp_t y) const;
 
 	private:
 		// helper

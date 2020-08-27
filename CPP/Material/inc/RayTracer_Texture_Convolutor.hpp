@@ -29,8 +29,8 @@ class Texture_Convolutor: public Texture {
 	public:
 		Texture		*texture		= nullptr;
 
-		double		*kernel			= nullptr;
-		int			kernel_width	= 0;
+		fp_t		*kernel			= nullptr;
+		int32_t		kernel_width	= 0;
 
 	// Operation
 	public:
@@ -39,12 +39,12 @@ class Texture_Convolutor: public Texture {
 		{
 			input_size	= 1;
 			input_list	= new Texture*[input_size];
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation
 		void			setTexture	(Texture *texture);
-		void			setKernel	(double *kernel, int width);  // width and height should be the same
+		void			setKernel	(fp_t *kernel, int32_t width);  // width and height should be the same
 
 		// interace
 		virtual void	setPixel	(const Vec3f &point, const Vec3f &pixel) override;
@@ -52,8 +52,7 @@ class Texture_Convolutor: public Texture {
 
 	protected:
 		// interface
-		// backup
-		// virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
+		// ...
 };
 
 

@@ -60,9 +60,9 @@ int	RayTracer_Dynamic_Tracer_tracePoint_RGB888(int index_camera, void *data, int
 			const double v = (double(index_y) - y_half) / y_half;
 
 			Vec3f result = tracer.trace(container_camera->getObject(), u, v, depth);
-			pixel[index + 0] = (result[0] * 255);
-			pixel[index + 1] = (result[1] * 255);
-			pixel[index + 2] = (result[2] * 255);
+			pixel[index + 0] = (int)(result[0] * 255);
+			pixel[index + 1] = (int)(result[1] * 255);
+			pixel[index + 2] = (int)(result[2] * 255);
 
 			index_x += index_x_next;
 			index	+= 3;
@@ -112,9 +112,9 @@ int	RayTracer_Dynamic_Tracer_tracePoint_RGB64F(int index_camera, void *data, int
 			const double v = (double(index_y) - y_half) / y_half;
 
 			Vec3f result = tracer.trace(container_camera->getObject(), u, v, depth);
-			pixel[index + 0] = result[0];
-			pixel[index + 1] = result[1];
-			pixel[index + 2] = result[2];
+			pixel[index + 0] = (double)(result[0]);
+			pixel[index + 1] = (double)(result[1]);
+			pixel[index + 2] = (double)(result[2]);
 
 			index_x += index_x_next;
 			index	+= 3;

@@ -10,18 +10,20 @@
 
 
 // Static Function Prototype
-static inline Vec3f	getEmissive	(const RecordScatter *record, const Vec3f &vec_emissive);
-static inline Vec3f	getAmbient	(const RecordScatter *record, const Vec3f &vec_ambient, const Vec3f &vec_transmissive);
-static inline Vec3f	getDiffuse	(const RecordScatter *record, const SceneObject_Light *light, double dot_ln, const Vec3f &vec_diffuse, const Vec3f &vec_transmissive);
-static inline Vec3f	getSpecular	(const RecordScatter *record, const SceneObject_Light *light, double dot_ln, const Vec3f &vec_specular, const Vec3f &vec_shininess);
-
+static inline Vec3f	getEmissive	(const RecordRay *record, const Vec3f &vec_emissive);
+static inline Vec3f	getAmbient	(const RecordRay *record, const Vec3f &vec_ambient, const Vec3f &vec_transmissive);
+static inline Vec3f	getDiffuse	(const RecordRay *record, const SceneObject_Light *light, fp_t dot_ln, const Vec3f &vec_diffuse, const Vec3f &vec_transmissive);
+static inline Vec3f	getSpecular	(const RecordRay *record, const SceneObject_Light *light, fp_t dot_ln, const Vec3f &vec_specular, const Vec3f &vec_shininess);
 
 
 // Operation Handling
-ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *src, ScatterState state) const {
+void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
 	// first check if hit a target
 	// if not hit a target, which mean the ray come from infinity (background)
-	if (!src->is_hit) return SCATTER_NONE;
+	if (!src->is_hit) {
+		src->threshold = Vec3f(0);
+		return;
+	}
 
 	// variable prepartion
 	const Scene		*scene		= src->scene;
@@ -29,7 +31,7 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 	const Material	*material	= &(src->record_hit.object->material);
 
 	// get intensity
-	Vec3f intensity_result = Vec3f();
+	Vec3f	intensity_result	= Vec3f();
 
 	// get coeff
 	Vec3f	vec_emissive;
@@ -54,22 +56,22 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 
 	// TODO: may need better way to do the same thing
 	// adjust normal
-	const Vec3f normal_original = src->record_hit.normal;
-	src->record_hit.normal += vec_normal;
-	src->record_hit.normal = src->record_hit.normal.normalize();
+	const Vec3f normal_original	= src->record_hit.normal;
+	src->record_hit.normal		+= vec_normal;
+	src->record_hit.normal		= src->record_hit.normal.normalize();
 
 	// intensity - light
 	for (auto *light : scene->light_list) {
 		// if the light source is behind the plane
 		// then ignore it
-		const double	dot_ln 			= src->record_hit.normal.dot(light->getDirection(hit_point));
+		const fp_t		dot_ln 			= src->record_hit.normal.dot(light->getDirection(hit_point));
 		if (dot_ln <= 0) continue;
 
 		// attenuation
 		const Vec3f		&atten_shadow 	= light->getShadowAttenuation(src->scene, hit_point);
 		if (atten_shadow.isZero()) continue;
 
-		const double	atten_distance 	= light->getDistanceAttenuation(hit_point);
+		const fp_t		atten_distance 	= light->getDistanceAttenuation(hit_point);
 		const Vec3f		&attenuation 	= atten_shadow * atten_distance;
 
 		// diffuse term and specular term
@@ -86,12 +88,12 @@ ScatterState Scatter_Light::scatter_shootRay(RecordScatter *dst, RecordScatter *
 	// change back normal
 	src->record_hit.normal = normal_original;
 
-	dst->intensity = intensity_result;
-	return SCATTER_YIELD;
+	src->intensity	+= (src->threshold * intensity_result);
+	src->threshold	= Vec3f(0);
 }
 
 
-static inline Vec3f getEmissive(const RecordScatter *record, const Vec3f &vec_emissive) {
+static inline Vec3f getEmissive(const RecordRay *record, const Vec3f &vec_emissive) {
 	return vec_emissive;
 }
 
@@ -103,7 +105,7 @@ static inline Vec3f getEmissive(const RecordScatter *record, const Vec3f &vec_em
 //
 // (ambient_coeff * ambient_light) * (raw_one - tranmissive_coeff)
 // where * is "product" but not "dot"
-static inline Vec3f getAmbient(const RecordScatter *record, const Vec3f &vec_ambient, const Vec3f &vec_transmissive) {
+static inline Vec3f getAmbient(const RecordRay *record, const Vec3f &vec_ambient, const Vec3f &vec_transmissive) {
 	// variable preparation
 	const Material *material	= &(record->record_hit.object->material);
 	const Vec3f		&hit_point	= record->record_hit.point;
@@ -118,7 +120,7 @@ static inline Vec3f getAmbient(const RecordScatter *record, const Vec3f &vec_amb
 }
 
 
-static inline Vec3f getDiffuse(const RecordScatter *record, const SceneObject_Light *light, double dot_ln, const Vec3f &vec_diffuse, const Vec3f &vec_transmissive) {
+static inline Vec3f getDiffuse(const RecordRay *record, const SceneObject_Light *light, fp_t dot_ln, const Vec3f &vec_diffuse, const Vec3f &vec_transmissive) {
 	// variable preparation
 	const Material	*material	= &(record->record_hit.object->material);
 	const Vec3f		&hit_point	= record->record_hit.point;
@@ -127,19 +129,19 @@ static inline Vec3f getDiffuse(const RecordScatter *record, const SceneObject_Li
 }
 
 
-static inline Vec3f getSpecular(const RecordScatter *record, const SceneObject_Light *light, double dot_ln, const Vec3f &vec_specular, const Vec3f &vec_shininess) {
+static inline Vec3f getSpecular(const RecordRay *record, const SceneObject_Light *light, fp_t dot_ln, const Vec3f &vec_specular, const Vec3f &vec_shininess) {
 	// variable preparation
-	const Ray	*ray		= &(record->record_hit.ray);
-	const Vec3f	&hit_point	= record->record_hit.point;
-	const Vec3f	&hit_normal	= record->record_hit.normal;
+	const Ray		*ray		= &(record->record_hit.ray);
+	const Vec3f		&hit_point	= record->record_hit.point;
+	const Vec3f		&hit_normal	= record->record_hit.normal;
 
 	// get reflected light
 	// then get dot_rv
 	const Vec3f		ray_reflect	= (2.0 * dot_ln * hit_normal - light->getDirection(hit_point)).normalize(); 
-	const double	dot_rv		= std::max<double>(ray_reflect.dot(-(ray->getDirection())), 0.0);
+	const fp_t		dot_rv		= std::max<double>(ray_reflect.dot(-(ray->getDirection())), 0.0);
 
 	// get specular term
-	const double coeff_specular = pow(dot_rv, vec_shininess[0] * 128);
+	const fp_t coeff_specular = pow(dot_rv, vec_shininess[0] * 128);
 	return vec_specular * coeff_specular;
 }
 

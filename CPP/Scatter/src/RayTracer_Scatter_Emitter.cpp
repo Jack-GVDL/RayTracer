@@ -14,9 +14,9 @@
 
 
 // Operation Handling
-ScatterState Scatter_Emitter::scatter_shootRay(RecordScatter *dst, RecordScatter *src, ScatterState state) const {
-	dst->intensity = color;
-	return SCATTER_YIELD;
+void Scatter_Emitter::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
+	src->intensity = (src->threshold * color);
+	src->threshold = Vec3f(0);
 }
 
 

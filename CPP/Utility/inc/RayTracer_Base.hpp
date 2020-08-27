@@ -9,13 +9,17 @@
 #define RAYTRACER_BASE_HPP
 
 
+#include <stdint.h>
+
+
 // Define
-// ...
+#define RAY_EPSILON     0.0001
+#define RAY_INDEX_AIR   1.0
 
 
 // Typedef
-#define RAY_EPSILON     0.0001
-#define RAY_INDEX_AIR   1.0
+// floating point: double or float
+typedef float fp_t;
 
 
 // Enum

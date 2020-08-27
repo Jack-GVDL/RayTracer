@@ -29,11 +29,5 @@ void Texture_Constant::_getPixel_(Vec3f &dst, Vec3f *src) const {
 }
 
 
-// TODO: backup
-// void Texture_Constant::_getPixel_(Vec3f &dst, const Vec3f &src) const {
-// 	dst = color;
-// }
-
-
 // Static Function Implementation
 // ...

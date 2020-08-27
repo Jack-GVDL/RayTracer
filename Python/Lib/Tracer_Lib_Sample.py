@@ -88,12 +88,12 @@ class Tracer_Sample:
 		light_point_1:		Light_Point = Light_Point()
 		light_point_1.setOrigin(Vec3f(1, 1, 1))
 		light_point_1.setAttenuationCoeff(Vec3f(0, 0, 0.4))
-		light_point_1.setColor(Vec3f(0.8))
+		light_point_1.setColor(Vec3f(0.3))
 
 		light_point_2:		Light_Point = Light_Point()
 		light_point_2.setOrigin(Vec3f(-3, 1, -4))
 		light_point_2.setAttenuationCoeff(Vec3f(0, 0, 0.4))
-		light_point_2.setColor(Vec3f(0.8))
+		light_point_2.setColor(Vec3f(0.3))
 
 		light_dir_1:		Light_Directional = Light_Directional()
 		light_dir_1.setOrientation(Vec3f(-1, 1, 1))
@@ -235,7 +235,7 @@ class Tracer_Sample:
 
 		# light
 		light_dir_1:		Light_Directional = Light_Directional()
-		light_dir_1.setColor(Vec3f(1))
+		light_dir_1.setColor(Vec3f(0.5))
 		light_dir_1.setOrientation(Vec3f(0, 0, 1))
 
 		# scene
@@ -336,16 +336,16 @@ class Tracer_Sample:
 		light_point_1:		Light_Point = Light_Point()
 		light_point_1.setAttenuationCoeff(Vec3f(0, 0, 0.4))
 		light_point_1.setOrigin(Vec3f(1, 2, 1))
-		light_point_1.setColor(Vec3f(1))
+		light_point_1.setColor(Vec3f(0.5))
 
 		light_point_2:		Light_Point = Light_Point()
 		light_point_2.setAttenuationCoeff(Vec3f(0, 0, 0.4))
 		light_point_2.setOrigin(Vec3f(1, 0, 1))
-		light_point_2.setColor(Vec3f(1))
+		light_point_2.setColor(Vec3f(0.5))
 
 		light_dir_1:		Light_Directional = Light_Directional()
 		light_dir_1.setOrientation(Vec3f(0, 0, 1))
-		light_dir_1.setColor(Vec3f(0.3))
+		light_dir_1.setColor(Vec3f(0.1))
 
 		# scene
 		scene.addHitable(hitable_sphere_1)

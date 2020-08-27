@@ -33,19 +33,19 @@ void Camera::setUpDirection(const Vec3f up) {
 }
 
 
-void Camera::setFOV(double value) {
+void Camera::setFOV(fp_t value) {
 	this->fov = value;
 	update();
 }
 
 
-void Camera::setAspectRatio(double value) {
+void Camera::setAspectRatio(fp_t value) {
 	this->aspect = value;
 	update();
 }
 
 
-void Camera::setAll(const Vec3f look_from, const Vec3f look_at, const Vec3f up, double fov, double aspect) {
+void Camera::setAll(const Vec3f look_from, const Vec3f look_at, const Vec3f up, fp_t fov, fp_t aspect) {
 	this->look_from	= look_from;
 	this->look_at	= look_at;
 	this->up		= up;
@@ -64,9 +64,9 @@ void Camera::update() {
 	// aspect = width / height
 	// height = width / aspect
 	// width  = aspect / height
-	double	theta		= fov * M_PI / 180;
-	double	height_half	= tan(theta / 2);
-	double	width_half	= aspect / height_half;
+	fp_t	theta		= fov * M_PI / 180;
+	fp_t	height_half	= tan(theta / 2);
+	fp_t	width_half	= aspect / height_half;
 
 	// backup
 	// width	= width_half;
@@ -85,7 +85,7 @@ void Camera::update() {
 }
 
 
-Ray Camera::getRay(double x, double y) const {
+Ray Camera::getRay(fp_t x, fp_t y) const {
 	return Ray(look_from, (w + x * u + y * v).normalize());
 }
 

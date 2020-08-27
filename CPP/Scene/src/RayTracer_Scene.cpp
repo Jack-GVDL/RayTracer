@@ -64,7 +64,7 @@ Vec3f Scene::getAmbientIntensity() const {
 bool Scene::hit(RecordHit *record) const {
 	RecordHit	temp_record;
 	bool		is_hit			= false;
-	double		closest			= std::numeric_limits<double>::max();
+	fp_t		closest			= std::numeric_limits<fp_t>::max();
 
 	// set ray
 	temp_record.ray = record->ray;

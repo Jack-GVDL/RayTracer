@@ -39,10 +39,6 @@ class RayTracer {
 		// may need to be list of scheduler
 		Scheduler_Scatter	scheduler;
 
-		// TODO: backup
-		// Shader	shader_not_hit;
-		// Shader	shader_hit;
-
 	// Operation
 	public:
 		// init
@@ -52,9 +48,9 @@ class RayTracer {
 		// operation
 		void	setScene	(Scene *scene);
 
-		Vec3f	trace		(const Camera *camera, double x, double y, int depth) const;
-		Vec3f	trace		(const Ray *ray, int depth) const;
-		Vec3f	trace		(RecordScatter *record) const;
+		Vec3f	trace		(const Camera *camera, fp_t x, fp_t y, int32_t depth);
+		Vec3f	trace		(const Ray *ray, int32_t depth);
+		Vec3f	trace		(RecordRay *record);
 };
 
 

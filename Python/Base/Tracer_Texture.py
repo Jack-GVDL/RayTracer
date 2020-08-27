@@ -24,15 +24,6 @@ class Texture(Tracer_Base):
 		result: int = self._ops_tracer.Texture_rmInput(self._object_index, offset)
 		return True if result == 0 else False
 
-	# TODO: backup
-	# def addMapper(self, mapper: Mapper) -> bool:
-	# 	result:	int	= self._ops_tracer.Texture_addMapper(self._object_index, mapper.object_index)
-	# 	return True if result == 0 else False
-	#
-	# def rmMapper(self, mapper: Mapper) -> bool:
-	# 	result: int = self._ops_tracer.Texture_rmMapper(self._object_index, mapper.object_index)
-	# 	return True if result == 0 else False
-
 	def setPixel(self, point: Vec3f, pixel: Vec3f) -> None:
 		# be careful order of point and pixel in Texture_setPixel(pixel, point)
 		result: int = self._ops_tracer.Texture_setPixel(self._object_index, pixel, point)

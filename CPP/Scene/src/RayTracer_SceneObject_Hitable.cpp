@@ -21,16 +21,16 @@ bool SceneObject_Hitable::hit(RecordHit *record) const {
 }
 
 
-bool SceneObject_Hitable::hit(RecordHit *record, double t_max) const {
+bool SceneObject_Hitable::hit(RecordHit *record, fp_t t_max) const {
 	return hit(record, 0.0, t_max);
 }
 
 
 // hitable list
-bool SceneObject_HitableList::hit(RecordHit *record, double t_min, double t_max) const {
+bool SceneObject_HitableList::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 	RecordHit	temp_record;
 	bool		is_hit			= false;
-	double		closest			= t_max;
+	fp_t		closest			= t_max;
 
 	// set ray
 	temp_record.ray = record->ray;

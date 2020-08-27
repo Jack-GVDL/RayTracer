@@ -43,43 +43,16 @@ class Hitable_Trimesh: public SceneObject_Hitable {
 			updateBoundingBox();
 		}
 
-		// backup
-		// Hitable_Trimesh(Vec3f p0, Vec3f p1, Vec3f p2) {
-		// 	point[0]	= p0;
-		// 	point[1]	= p1;
-		// 	point[2]	= p2;
-		// }
-
 		// operation
 		void			setPoint	(const Vec3f &p0, const Vec3f &p1, const Vec3f &p2);
 
 		// interface
-		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
+		virtual bool	hit			(RecordHit *record, fp_t t_min, fp_t t_max) const override;
 
 	protected:
 		// operation
 		void			updateBoundingBox	();
 };
-
-
-// TODO: backup
-// class Mapper_Trimesh: public Mapper {
-// 	// Data
-// 	public:
-// 		Hitable_Trimesh		*trimesh	= nullptr;
-
-// 	// Operation
-// 	public:
-// 		// init
-// 		Mapper_Trimesh()
-// 		{}
-
-// 		// operation
-// 		void			setTrimesh		(Hitable_Trimesh *trimesh);
-
-// 		// interface
-// 		virtual void	map				(Vec3f &vector) const override;
-// };
 
 
 class Texture_Mapper_Trimesh: public Texture {
@@ -94,7 +67,7 @@ class Texture_Mapper_Trimesh: public Texture {
 		{
 			input_size	= 1;
 			input_list	= new Texture*[input_size];
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation
@@ -106,8 +79,7 @@ class Texture_Mapper_Trimesh: public Texture {
 
 	protected:
 		// interface
-		// TODO: backup
-		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+		// ...
 };
 
 
@@ -123,7 +95,7 @@ class Texture_Direction_Trimesh: public Texture {
 		{
 			input_size	= 2;
 			input_list	= new Texture*[input_size];
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation
@@ -135,8 +107,7 @@ class Texture_Direction_Trimesh: public Texture {
 
 	protected:
 		// interface
-		// TODO: backup
-		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+		// ...
 };
 
 

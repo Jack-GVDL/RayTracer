@@ -26,27 +26,27 @@ void Hitable_Sphere::setCenter(const Vec3f &center) {
 }
 
 
-void Hitable_Sphere::setRadius(double radius) {
+void Hitable_Sphere::setRadius(fp_t radius) {
 	this->radius	= radius;
 	updateBoundingBox();
 }
 
 
-bool Hitable_Sphere::hit(RecordHit *record, double t_min, double t_max) const {
+bool Hitable_Sphere::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 	const Ray	*ray	= &(record->ray);
 	Vec3f		oc		= ray->getPosition() - center;
 
-	float a = VecMath::dot(ray->getDirection() , ray->getDirection());
-	float b = VecMath::dot(oc, ray->getDirection());
-	float c = VecMath::dot(oc, oc) - radius * radius;
-	float discriminant = b * b - a * c;
+	fp_t	a = VecMath::dot(ray->getDirection() , ray->getDirection());
+	fp_t	b = VecMath::dot(oc, ray->getDirection());
+	fp_t	c = VecMath::dot(oc, oc) - radius * radius;
+	fp_t	discriminant = b * b - a * c;
 
 	// no intersection
 	if (discriminant <= 0) return false;
 
 	// find the length of the ray
 	// check if the ray is hit within the range
-	double ray_length;
+	fp_t ray_length;
 
 	ray_length = (-b - sqrt(b * b - a * c)) / a;
 	if (ray_length < t_max && ray_length > t_min) goto RAY_HIT;
@@ -60,7 +60,7 @@ bool Hitable_Sphere::hit(RecordHit *record, double t_min, double t_max) const {
 	// need to set the content of hit record
 	RAY_HIT:
 	record->distance	= ray_length;
-	record->point		= ray->pointAt(record->distance);
+	record->point		= ray->pointAt(ray_length);
 	record->normal		= (record->point - center).normalize();
 	record->object		= (SceneObject_Hitable*)this;
 
@@ -76,36 +76,6 @@ void Hitable_Sphere::updateBoundingBox() {
 	bounding_min	= center - Vec3f(radius);
 	bounding_max	= center + Vec3f(radius);
 }
-
-
-// mapper
-// TODO: backup
-// void Mapper_Sphere::setSphere(Hitable_Sphere *sphere) {
-// 	this->sphere = sphere;
-// }
-
-
-// // TODO: not yet completed
-// void Mapper_Sphere::map(Vec3f &vector) const {
-// 	if (sphere == nullptr) return;
-
-// 	// get displacement from center of sphere
-// 	Vec3f dis = vector - sphere->center;
-
-// 	// map on to 2d plane
-// 	// no z-axis
-// 	double dis_radius = sqrt(dis[0] * dis[0] + dis[2] * dis[2]);
-
-// 	vector[0]	= atan(dis[0] / std::abs(dis[2])) / M_PI;
-// 	vector[1]	= atan(dis[1] / dis_radius) / M_PI * 2;
-// 	vector[2]	= 0;
-
-// 	// x-axis adjustment
-// 	if (dis[2] < 0) {
-// 		if (dis[0] > 0)	vector[0]	= 1 - vector[0];
-// 		else			vector[0]	= -1 + vector[0];
-// 	}
-// }
 
 
 // texture - mapper
@@ -130,7 +100,7 @@ void Texture_Mapper_Sphere::_getPixel_(Vec3f &dst, Vec3f *src) const {
 
 	// map on to 2d plane
 	// no z-axis
-	double dis_radius = sqrt(dis[0] * dis[0] + dis[2] * dis[2]);
+	fp_t dis_radius = sqrt(dis[0] * dis[0] + dis[2] * dis[2]);
 
 	dst[0]	= atan(dis[0] / std::abs(dis[2])) / M_PI;
 	dst[1]	= atan(dis[1] / dis_radius) / M_PI * 2;
@@ -144,29 +114,6 @@ void Texture_Mapper_Sphere::_getPixel_(Vec3f &dst, Vec3f *src) const {
 }
 
 
-// TODO: backup
-// void Texture_Mapper_Sphere::_getPixel_(Vec3f &dst, const Vec3f &src) const {
-// 	if (sphere == nullptr) return;
-
-// 	// get displacement from center of sphere
-// 	Vec3f dis = src - sphere->center;
-
-// 	// map on to 2d plane
-// 	// no z-axis
-// 	double dis_radius = sqrt(dis[0] * dis[0] + dis[2] * dis[2]);
-
-// 	dst[0]	= atan(dis[0] / std::abs(dis[2])) / M_PI;
-// 	dst[1]	= atan(dis[1] / dis_radius) / M_PI * 2;
-// 	dst[2]	= 0;
-
-// 	// x-axis adjustment
-// 	if (dis[2] < 0) {
-// 		if (dis[0] > 0)	dst[0]	= 1 - dst[0];
-// 		else			dst[0]	= -1 + dst[0];
-// 	}
-// }
-
-
 // texture - direction
 void Texture_Direction_Sphere::setSphere(Hitable_Sphere *sphere) {
 	this->sphere = sphere;
@@ -178,7 +125,6 @@ void Texture_Direction_Sphere::setPixel(const Vec3f &point, const Vec3f &pixel) 
 }
 
 
-// TODO: not yet completed
 void Texture_Direction_Sphere::_getPixel_(Vec3f &dst, Vec3f *src) const {
 	if (sphere == nullptr) {
 		dst = Vec3f();

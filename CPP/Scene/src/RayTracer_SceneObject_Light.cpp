@@ -31,7 +31,7 @@ void SceneObject_Light_Directional::setOrientation(const Vec3f &orientation) {
 }
 
 
-double SceneObject_Light_Directional::getDistanceAttenuation(const Vec3f &point) const {
+fp_t SceneObject_Light_Directional::getDistanceAttenuation(const Vec3f &point) const {
 	// distance to light is inf., so f(di) goes to 0
 	return 1.0;
 }
@@ -50,7 +50,7 @@ Vec3f SceneObject_Light_Directional::getShadowAttenuation(const Scene *scene, co
 		
 		// check if no intersection or intersection is behind the light source
 		RecordHit		record_hit;
-		const double	length_light	= (origin - point_cur).length();
+		const fp_t		length_light	= (origin - point_cur).length();
 		record_hit.ray					= Ray(point_cur, direction);
 
 		if (!scene->hit(&record_hit))				return intensity;
@@ -89,17 +89,17 @@ void SceneObject_Light_Point::setAttenuationCoeff(const Vec3f &coeff) {
 }
 
 
-double SceneObject_Light_Point::getDistanceAttenuation(const Vec3f &point) const {
-	const double	coeff_1	= attenuation_coeff[0];
-	const double	coeff_2	= attenuation_coeff[1];
-	const double	coeff_3	= attenuation_coeff[2];
+fp_t  SceneObject_Light_Point::getDistanceAttenuation(const Vec3f &point) const {
+	const fp_t		coeff_1	= attenuation_coeff[0];
+	const fp_t		coeff_2	= attenuation_coeff[1];
+	const fp_t		coeff_3	= attenuation_coeff[2];
 
-	const double 	d2	= (point - origin).lengthSquared();
-	const double	d1	= sqrt(d2);
-	const double	result	= coeff_1 + coeff_2 * d1 + coeff_3 * d2;
+	const fp_t		d2		= (point - origin).lengthSquared();
+	const fp_t		d1		= sqrt(d2);
+	const fp_t		result	= coeff_1 + coeff_2 * d1 + coeff_3 * d2;
 
 	// do no divide by zero
-	return result == 0 ? 1 : std::min<double>(1 / result, 1);
+	return result == 0 ? 1 : std::min<fp_t>(1 / result, 1);
 }
 
 
@@ -116,7 +116,7 @@ Vec3f SceneObject_Light_Point::getShadowAttenuation(const Scene *scene, const Ve
 
 		// check if no intersection or intersection is behind the light source
 		RecordHit		record_hit;
-		const double	length_light	= (origin - point_cur).length();
+		const fp_t		length_light	= (origin - point_cur).length();
 		record_hit.ray					= Ray(point_cur, direction);
 
 		if (!scene->hit(&record_hit))				return intensity;
@@ -155,7 +155,7 @@ Vec3f SceneObject_Light_Ambient::getShadowAttenuation(const Scene *scene, const 
 }
 
 
-double SceneObject_Light_Ambient::getDistanceAttenuation(const Vec3f &point) const {
+fp_t  SceneObject_Light_Ambient::getDistanceAttenuation(const Vec3f &point) const {
 	return 0;
 }
 

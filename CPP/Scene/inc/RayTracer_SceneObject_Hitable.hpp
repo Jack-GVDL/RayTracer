@@ -44,7 +44,7 @@ struct RecordHit {
 	// info on the point of intersection
 	Vec3f					normal;
 	Vec3f					point;
-	double					distance;
+	fp_t					distance;
 };
 
 
@@ -60,18 +60,13 @@ class SceneObject_Hitable: public SceneElement {
 		// init
 		SceneObject_Hitable()
 		{}
-
-		// TODO: backup
-		// SceneObject_Hitable(Material *material):
-		// material(*material)
-		// {}
 		
 		// operation
 		bool			hit		(RecordHit *record) const;
-		bool			hit		(RecordHit *record, double t_max) const;
+		bool			hit		(RecordHit *record, fp_t t_max) const;
 
 		// interface
-		virtual bool	hit		(RecordHit *record, double t_min, double t_max) const = 0;
+		virtual bool	hit		(RecordHit *record, fp_t t_min, fp_t t_max) const = 0;
 };
 
 
@@ -87,7 +82,7 @@ class SceneObject_HitableList: public SceneObject_Hitable {
 		virtual bool	rmHitable	(SceneObject_Hitable *hitable);
 		
 		// interface
-		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
+		virtual bool	hit			(RecordHit *record, fp_t t_min, fp_t t_max) const override;
 };
 
 

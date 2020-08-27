@@ -47,7 +47,7 @@ class Ray {
 		// operation
 		Vec3f 	getPosition		()			const { return pos; }
 		Vec3f	getDirection	()			const { return dir; }
-		Vec3f	pointAt			(float t)	const { return pos + t * dir; }
+		Vec3f	pointAt			(fp_t t)	const { return pos + t * dir; }
 };
 
 

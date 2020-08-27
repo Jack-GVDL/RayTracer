@@ -23,38 +23,35 @@
 // ...
 
 
-// Enum
-// TODO: backup
-// enum ScatterState {
-// 	SCATTER_NONE,
-// 	SCATTER_NEXT,
-// 	SCATTER_YIELD,
-// 	SCATTER_SPLIT
-// };
-
-
 // Data Structure
-struct RecordScatter {
-	// tree
-	RecordScatter 		*top		= nullptr;
-	RecordScatter		*parent		= nullptr;
+class Scatter;
 
-	// backup
-	// int32_t				sibling_prev		= -1;
-	// int32_t				sibling_next		= -1;
+
+struct RecordScatter {
+	Scatter		*scatter_list	= nullptr;
+	int16_t		size			= 0;
+	int16_t		index			= 0;
+};
+
+
+struct RecordRay {
+	// tree
+	RecordRay 			*top		= nullptr;
+	RecordRay			*parent		= nullptr;
 	
 	const Scene			*scene		= nullptr;
-	const Scatter		*scatter	= nullptr;
+	
+	// scatter
+	RecordScatter		record_scatter;
 
-	// to be more accurate
-	// it should called space ordering
+	// space ordering
 	//
 	// used by refraction,
 	// where need the index of the outer space
 	// therefore the order of entering object is required
-	const RecordScatter	*outer		= nullptr;
+	const RecordRay		*outer		= nullptr;
 
-	int32_t				depth		= 0;
+	int16_t				depth		= 0;
 
 	// collision info
 	bool				is_hit		= false;
@@ -77,11 +74,6 @@ class MemoryControl_Scatter {
 		// it should consider use more than 1 scheduler
 		int32_t			index_empty			= -1;
 
-		// backup
-		// int32_t			index_empty		= -1;
-		// int32_t			ready_list		= -1;
-		// int32_t			wait_list		= -1;
-
 	// Operation
 	public:
 		// init, del
@@ -93,14 +85,14 @@ class MemoryControl_Scatter {
 		void	reset				();
 
 		void*	createRecord		();
-		void*	createRecord		(RecordScatter *record);
+		void*	createRecord		(RecordRay *record);
 
 		// backup
 		// set record state: ready -> wait (read-only mode)
-		// void	waitRecord			(RecordScatter *record);
+		// void	waitRecord			(RecordRay *record);
 		//
 		// release entire memory space at the end
-		// void	destroyRecord		(RecordScatter *record);
+		// void	destroyRecord		(RecordRay *record);
 		
 		// helper
 		void*	getRecord			(int index);
@@ -120,33 +112,30 @@ class Scatter {
 		~Scatter	();
 
 		// operation
-		// TODO: backup
-		// ScatterState			scatter					(RecordScatter *dst, RecordScatter *src) const;
+		// ...
 
 		bool					setTexture				(Texture *texture, int32_t offset);
 		Texture*				getTexture				(int32_t offset);
 
 		// interface
-		virtual void			scatter					(RecordScatter *src, MemoryControl_Scatter *control) const = 0;
+		virtual void			scatter					(RecordRay *src, MemoryControl_Scatter *control) const = 0;
 	
 	protected:
 		// operation
-		// TODO: backup
-		// void					createRecord_tree		(RecordScatter *dst, RecordScatter *src) const;
-		// void					createRecord_ray		(RecordScatter *dst, RecordScatter *src, const Ray &ray) const;
-		// void					createRecord_threshold	(RecordScatter *dst, RecordScatter *src, const Vec3f &ratio) const;
+		void					setRecord_tree			(RecordRay *dst, RecordRay *src) const;
+		void					setRecord_ray			(RecordRay *dst, RecordRay *src, const Ray &ray) const;
+		void					setRecord_threshold		(RecordRay *dst, RecordRay *src, const Vec3f &ratio) const;
 
 		// interface
-		// TODO: backup
-		// virtual ScatterState	scatter_shootRay		(RecordScatter *dst, RecordScatter *src, ScatterState state) const = 0;
-};
+		// ...
+}; 
 
 
 class Scheduler_Scatter {
 	// Data
 	public:
 		MemoryControl_Scatter		memory_control;
-		int							queue			= 0;
+		int32_t						queue			= 0;
 
 		Scene						*scene			= nullptr;
 
@@ -161,8 +150,8 @@ class Scheduler_Scatter {
 		~Scheduler_Scatter			();
 
 		// operation
-		void		setRoot			(RecordScatter *record);
-		void		getRoot			(RecordScatter *record);
+		void		setRoot			(RecordRay *record);
+		void		getRoot			(RecordRay *record);
 
 		void		setScene		(Scene *scene);
 

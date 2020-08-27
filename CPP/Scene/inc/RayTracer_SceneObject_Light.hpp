@@ -41,7 +41,7 @@ class SceneObject_Light: public SceneElement {
 	
 		// interface
 		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const	= 0;
-		virtual double	getDistanceAttenuation	(const Vec3f &point) const	= 0;
+		virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const	= 0;
 		virtual Vec3f	getColor				(const Vec3f &point) const	= 0;
 		virtual Vec3f	getDirection			(const Vec3f &point) const	= 0;
 };
@@ -58,16 +58,12 @@ class SceneObject_Light_Directional: public SceneObject_Light {
 		SceneObject_Light_Directional()
 		{}
 
-		SceneObject_Light_Directional(const Vec3f &orientation):
-		orientation(orientation)
-		{}
-
 		// operation
 		void			setOrientation			(const Vec3f &orientation);
 
 		// interface
 		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const;
-		virtual double	getDistanceAttenuation	(const Vec3f &point) const;
+		virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const;
 		virtual Vec3f	getColor				(const Vec3f &point) const;
 		virtual Vec3f	getDirection			(const Vec3f &point) const;
 };
@@ -84,16 +80,12 @@ class SceneObject_Light_Point: public SceneObject_Light {
 		SceneObject_Light_Point()
 		{}
 
-		SceneObject_Light_Point(const Vec3f &atten_coeff):
-		attenuation_coeff(atten_coeff)
-		{}
-
 		// operation
 		void			setAttenuationCoeff		(const Vec3f &coeff);
 
 		// interface
 		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const;
-		virtual double	getDistanceAttenuation	(const Vec3f &point) const;
+		virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const;
 		virtual Vec3f	getColor				(const Vec3f &point) const;
 		virtual Vec3f	getDirection			(const Vec3f &point) const;
 };
@@ -108,7 +100,7 @@ class SceneObject_Light_Ambient: public SceneObject_Light {
 	public:
 		// interface
 		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const override;
-		virtual double	getDistanceAttenuation	(const Vec3f &point) const override;
+		virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const override;
 		virtual Vec3f	getColor				(const Vec3f &point) const override;
 		virtual Vec3f	getDirection			(const Vec3f &point) const override;
 };

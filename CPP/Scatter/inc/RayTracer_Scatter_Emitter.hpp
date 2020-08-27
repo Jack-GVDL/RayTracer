@@ -45,7 +45,7 @@ class Scatter_Emitter: public Scatter {
 		{}
 		
 		// interface
-		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
+		virtual void			scatter				(RecordRay *src, MemoryControl_Scatter *memory_control) const;
 };
 
 

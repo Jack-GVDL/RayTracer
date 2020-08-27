@@ -36,7 +36,7 @@ class Texture_Math_Additor: public Texture {
 		{
 			input_size	= 1;
 			input_list	= new Texture*[input_size];
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation
@@ -48,8 +48,7 @@ class Texture_Math_Additor: public Texture {
 
 	protected:
 		// interface
-		// backup
-		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+		// ...
 };
 
 
@@ -65,7 +64,7 @@ class Texture_Math_Multiplier: public Texture {
 		{
 			input_size	= 1;
 			input_list	= new Texture*[input_size];
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation
@@ -77,8 +76,7 @@ class Texture_Math_Multiplier: public Texture {
 
 	protected:
 		// interface
-		// backup
-		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+		// ...
 };
 
 

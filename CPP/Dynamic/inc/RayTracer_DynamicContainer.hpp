@@ -230,14 +230,6 @@ int Dynamic_ContainerList<T>::size() {
 // Static Function Implementation
 namespace DynamicUtil {
 
-	// TODO: backup
-	// static inline void	createType		(std::vector<Dynamic_ContainerType*> *type_list, init_func_t init, config_func_t config, interact_func_t interact) {
-	// 	Dynamic_ContainerType *type = new Dynamic_ContainerType();
-	// 	type->setOps(init, config, interact);
-	// 	type_list->push_back(type);
-	// }
-
-
 	static inline int	configType		(config_type_func_t *table, void *object, int type, uint8_t *data, uint32_t size) {
 		return table[type](object, data, size);
 	}
