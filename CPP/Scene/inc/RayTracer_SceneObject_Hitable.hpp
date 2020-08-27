@@ -43,7 +43,7 @@ struct RecordHit {
 
 	// info on the point of intersection
 	Vec3f					normal;
-	Vec3f					point;
+	Vec3f					point;  // remove this when need to reduce size of struct
 	fp_t					distance;
 };
 

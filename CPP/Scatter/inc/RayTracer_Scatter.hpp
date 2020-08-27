@@ -28,7 +28,7 @@ class Scatter;
 
 
 struct RecordScatter {
-	Scatter		*scatter_list	= nullptr;
+	Scatter*	*scatter_list	= nullptr;
 	int16_t		size			= 0;
 	int16_t		index			= 0;
 };
@@ -38,11 +38,20 @@ struct RecordRay {
 	// tree
 	RecordRay 			*top		= nullptr;
 	RecordRay			*parent		= nullptr;
+	int16_t				depth		= 0;
 	
 	const Scene			*scene		= nullptr;
 	
 	// scatter
 	RecordScatter		record_scatter;
+
+	// control
+	int8_t	 			is_enable_hit	= 1;
+
+	// source of scatter
+	// 0: already in record
+	// 1: hit scene object, else NULL
+	uint8_t				scatter_source	= 1;
 
 	// space ordering
 	//
@@ -50,8 +59,6 @@ struct RecordRay {
 	// where need the index of the outer space
 	// therefore the order of entering object is required
 	const RecordRay		*outer		= nullptr;
-
-	int16_t				depth		= 0;
 
 	// collision info
 	bool				is_hit		= false;

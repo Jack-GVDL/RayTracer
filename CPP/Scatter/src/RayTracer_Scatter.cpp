@@ -46,23 +46,6 @@ void MemoryControl_Scatter::setMemory(void *memory, int32_t size) {
 
 	// reset memory space
 	reset();
-
-	// backup
-	// no record is ready and wait
-	// ready_list	= -1;
-	// wait_list	= -1;
-
-	// backup
-	// all record should be empty
-	// RecordRay *record;
-	// for (int32_t i = 0; i < record_size - 1; i++) {
-	// 	record = (RecordRay*)get_record(i, memory, offset);
-	// 	record->sibling = i + 1;
-	// }
-	//
-	// last one should pointer to nothing (sibling = -1)
-	// record = (RecordRay*)get_record(record_size - 1, memory, offset);
-	// record->sibling = -1;
 }
 
 
@@ -194,6 +177,7 @@ void Scheduler_Scatter::setScene(Scene *scene) {
 // so all the stuff will be done here
 //
 // return 0 if no record is queuing, else 1
+// TODO: function too long, split the function, use static inline
 int8_t Scheduler_Scatter::schedule() {
 	// read ray queue
 	// quit if no record is queuing
@@ -207,43 +191,66 @@ int8_t Scheduler_Scatter::schedule() {
 	// collision check
 	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
-
-		// TODO: find better way
-		if (record->depth == 0) continue;
+		if (record->depth == 0)			continue;
+		if (record->is_enable_hit == 0)	continue;
 
 		record			= (RecordRay*)memory_control.getRecord(i);
 		record->is_hit	= scene->hit(&(record->record_hit));
 	}
 
+	// load scatter
+	// currently no parallel processing
+	for (int32_t i = queue; i < index_empty; i++) {
+		if (record->depth == 0) continue;
+		
+		switch (record->scatter_source) {
+			// 0: already in record
+			case 0:
+				break;
+
+			// 1: hit scene object, else NULL
+			case 1:
+				SceneObject_Hitable *object = record->record_hit.object;
+				if (record->is_hit)	{
+					record->record_scatter.scatter_list = object->shader.scatter_list.data();
+					record->record_scatter.size			= object->shader.scatter_list.size();
+					record->record_scatter.index		= 0;
+
+				} else {
+					record->record_scatter.scatter_list = nullptr;
+					record->record_scatter.size			= 0;
+					record->record_scatter.index		= 0;
+
+				}
+				break;
+		}
+
+	}
+
 	// scatter operation
 	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
+		if (record->depth == 0) 							continue;
+		if (record->record_scatter.scatter_list == nullptr)	continue;
 
-		// TODO: find better way
-		if (record->depth == 0) continue;
-
-		record = (RecordRay*)memory_control.getRecord(i);
-
-		// get scatter list
-		if (record->is_hit) {
-			const SceneObject_Hitable *object = record->record_hit.object;
-			shader = &(object->shader);
-		} else {
-			shader = &shader_not_hit;
-		}
+		// TODO: future
+		// record = (RecordRay*)memory_control.getRecord(i);
+		// record->record_scatter.scatter_list[record->record_scatter.index]->scatter(record, &memory_control);
 
 		// scatter operation
-		for (auto *scatter : shader->scatter_list) {
-			scatter->scatter(record, &memory_control);
+		// TODO: backup
+		// for (auto *scatter : shader->scatter_list) {
+		// 	scatter->scatter(record, &memory_control);
+		// }
+
+		for (int16_t i = 0; i < record->record_scatter.size; i++) {
+			record->record_scatter.scatter_list[i]->scatter(record, &memory_control);
 		}
 	}
 
-	// TODO: not yet completed
 	// intensity accumulation
 	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
-
-		// TODO: find better way
 		if (record->depth == 0) continue;
 
 		record			= (RecordRay*)memory_control.getRecord(i);
