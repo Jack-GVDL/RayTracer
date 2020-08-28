@@ -28,9 +28,9 @@ class Scatter;
 
 
 struct RecordScatter {
-	Scatter*	*scatter_list	= nullptr;
-	int16_t		size			= 0;
-	int16_t		index			= 0;
+	Scatter*		*scatter_list	= nullptr;
+	int16_t			size			= 0;
+	int16_t			index			= 0;
 };
 
 
@@ -62,7 +62,7 @@ struct RecordRay {
 
 	// collision info
 	bool				is_hit		= false;
-	RecordHit			record_hit;
+	RecordHit_Extend	record_hit;
 
 	Vec3f				threshold	= Vec3f(1);
 	Vec3f				intensity	= Vec3f(0);

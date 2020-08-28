@@ -48,6 +48,13 @@ struct RecordHit {
 };
 
 
+struct RecordHit_Extend {
+	RecordHit				record;
+	fp_t					length_min		= 0;
+	fp_t					length_max		= std::numeric_limits<fp_t>::max();
+};
+
+
 class SceneObject_Hitable: public SceneElement {
 	// Data
 	public:
@@ -82,7 +89,7 @@ class SceneObject_HitableList: public SceneObject_Hitable {
 		virtual bool	rmHitable	(SceneObject_Hitable *hitable);
 		
 		// interface
-		virtual bool	hit			(RecordHit *record, fp_t t_min, fp_t t_max) const override;
+		virtual bool	hit			(RecordHit *record, fp_t t_mix, fp_t t_max) const override;
 };
 
 

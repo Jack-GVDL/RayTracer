@@ -49,23 +49,24 @@ Vec3f SceneObject_Light_Directional::getShadowAttenuation(const Scene *scene, co
 	while (!intensity.isZero()) {
 		
 		// check if no intersection or intersection is behind the light source
-		RecordHit		record_hit;
-		const fp_t		length_light	= (origin - point_cur).length();
-		record_hit.ray					= Ray(point_cur, direction);
+		RecordHit_Extend	record;
+		RecordHit			*record_hit		= &(record.record);
+		const fp_t			length_light	= (origin - point_cur).length();
+		record_hit->ray						= Ray(point_cur, direction);
 
-		if (!scene->hit(&record_hit))				return intensity;
-		if (record_hit.distance >= length_light)	return intensity;
+		if (!scene->hit(&record))					return intensity;
+		if (record_hit->distance >= length_light)	return intensity;
 		
 		// new intensity *= transmissive
-		const Material *material = &(record_hit.object->material);
+		const Material *material = &(record_hit->object->material);
 		
 		Vec3f vec_transmissive;
-		material->transmissive->getPixel(vec_transmissive, record_hit.point);
+		material->transmissive->getPixel(vec_transmissive, record_hit->point);
 
 		intensity *= vec_transmissive;
 
 		// push the ray froward a little bit
-		point_cur = record_hit.point + direction * RAY_EPSILON;
+		point_cur = record_hit->point + direction * RAY_EPSILON;
 
 	}
 
@@ -113,25 +114,26 @@ Vec3f SceneObject_Light_Point::getShadowAttenuation(const Scene *scene, const Ve
 	// first push the ray a little bit forward to prevent hit the same point
 	point_cur = point_cur + direction * RAY_EPSILON;
 	while (!intensity.isZero()) {
-
+		
 		// check if no intersection or intersection is behind the light source
-		RecordHit		record_hit;
-		const fp_t		length_light	= (origin - point_cur).length();
-		record_hit.ray					= Ray(point_cur, direction);
+		RecordHit_Extend	record;
+		RecordHit			*record_hit		= &(record.record);
+		const fp_t			length_light	= (origin - point_cur).length();
+		record_hit->ray						= Ray(point_cur, direction);
 
-		if (!scene->hit(&record_hit))				return intensity;
-		if (record_hit.distance >= length_light)	return intensity;
-
+		if (!scene->hit(&record))					return intensity;
+		if (record_hit->distance >= length_light)	return intensity;
+		
 		// new intensity *= transmissive
-		const Material *material = &(record_hit.object->material);
+		const Material *material = &(record_hit->object->material);
 		
 		Vec3f vec_transmissive;
-		material->transmissive->getPixel(vec_transmissive, record_hit.point);
+		material->transmissive->getPixel(vec_transmissive, record_hit->point);
 
 		intensity *= vec_transmissive;
 
-		// push the ray forward a little bit
-		point_cur = record_hit.point + direction * RAY_EPSILON;
+		// push the ray froward a little bit
+		point_cur = record_hit->point + direction * RAY_EPSILON;
 
 	}
 

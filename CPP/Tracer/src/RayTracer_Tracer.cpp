@@ -41,11 +41,12 @@ Vec3f RayTracer::trace(const Camera *camera, fp_t x, fp_t y, int32_t depth) {
 Vec3f RayTracer::trace(const Ray *ray, int depth) {
 	// init scatter record
 	RecordRay scatter_record;
-	scatter_record.parent		= nullptr;
-	scatter_record.scene		= scene;
-	scatter_record.depth		= depth;
+	scatter_record.parent	= nullptr;
+	scatter_record.scene	= scene;
+	scatter_record.depth	= depth;
 
-	scatter_record.record_hit.ray = *ray;
+	RecordHit *record_hit	= &(scatter_record.record_hit.record);
+	record_hit->ray 		= *ray;
 
 	return trace(&scatter_record);
 }

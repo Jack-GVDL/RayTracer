@@ -123,11 +123,14 @@ void Scatter::setRecord_tree(RecordRay *dst, RecordRay *src) const {
 
 	dst->threshold	= Vec3f(1);
 	dst->intensity	= Vec3f(0);
+
+	dst->record_hit.length_min	= 0;
+	dst->record_hit.length_max	= std::numeric_limits<fp_t>::max();
 }
 
 
 void Scatter::setRecord_ray(RecordRay *dst, RecordRay *src, const Ray &ray) const {
-	dst->record_hit.ray = ray;
+	dst->record_hit.record.ray = ray;
 }
 
 
@@ -210,7 +213,7 @@ int8_t Scheduler_Scatter::schedule() {
 
 			// 1: hit scene object, else NULL
 			case 1:
-				SceneObject_Hitable *object = record->record_hit.object;
+				SceneObject_Hitable *object = record->record_hit.record.object;
 				if (record->is_hit)	{
 					record->record_scatter.scatter_list = object->shader.scatter_list.data();
 					record->record_scatter.size			= object->shader.scatter_list.size();

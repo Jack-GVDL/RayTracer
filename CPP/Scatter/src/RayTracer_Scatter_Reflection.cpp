@@ -24,13 +24,12 @@ Scatter_Reflection::Scatter_Reflection() {
 
 void Scatter_Reflection::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
 	// variable preparation
-	const Ray	*ray		= &(src->record_hit.ray);
-	const Vec3f	&hit_point	= src->record_hit.point;
-	const Vec3f	&hit_normal	= src->record_hit.normal;
+	RecordHit		*record_hit	= &(src->record_hit.record);
+	Material		*material	= &(record_hit->object->material);
 
 	// get proportion of reflection
 	Vec3f vec_reflective;
-	texture_list[REFLECTIVE]->getPixel(vec_reflective, hit_point);
+	texture_list[REFLECTIVE]->getPixel(vec_reflective, record_hit->point);
 	
 	// first check if hit a target
 	if (!src->is_hit || vec_reflective.isZero()) {
@@ -39,11 +38,11 @@ void Scatter_Reflection::scatter(RecordRay *src, MemoryControl_Scatter *memory_c
 	}
 
 	// reflection
-	const Vec3f &reflected = reflect(ray->getDirection(), hit_normal).normalize();
+	const Vec3f &reflected = reflect(record_hit->ray.getDirection(), record_hit->normal).normalize();
 
 	// fire a new ray
 	// need to push the point a little bit forward to prevent hit the same point
-	const Vec3f &point_out = hit_point + reflected * RAY_EPSILON;
+	const Vec3f &point_out = record_hit->point + reflected * RAY_EPSILON;
 
 	// create new child record
 	RecordRay *record = (RecordRay*)memory_control->createRecord();

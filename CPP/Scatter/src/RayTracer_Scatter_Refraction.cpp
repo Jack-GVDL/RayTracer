@@ -22,14 +22,12 @@ Scatter_Refraction::Scatter_Refraction() {
 
 void Scatter_Refraction::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
 	// variable preparation
-	const Material	*material	= &(src->record_hit.object->material);
-	const Ray		*ray		= &(src->record_hit.ray);
-	const Vec3f		&hit_point	= src->record_hit.point;
-	const Vec3f		&hit_normal	= src->record_hit.normal;
+	RecordHit		*record_hit	= &(src->record_hit.record);
+	Material		*material	= &(record_hit->object->material);
 
 	// check if this material is refractive
 	Vec3f vec_transmissive;
-	material->transmissive->getPixel(vec_transmissive, hit_point);
+	material->transmissive->getPixel(vec_transmissive, record_hit->point);
 
 	// check if hit a target or material is not refractive
 	if (!src->is_hit || vec_transmissive.isZero()) {
@@ -51,14 +49,14 @@ void Scatter_Refraction::scatter(RecordRay *src, MemoryControl_Scatter *memory_c
 
 	// refraction
 	Vec3f refracted;
-	if (!refract(refracted, ray->getDirection(), hit_normal, index_from, index_to)) {
+	if (!refract(refracted, record_hit->ray.getDirection(), record_hit->normal, index_from, index_to)) {
 		src->threshold *= (Vec3f(1) - vec_transmissive);
 		return;
 	}
 
 	// fire a new ray
 	// need to push the point a little bit forward to prevent hit the same point
-	const Vec3f	&point_out = hit_point + refracted * RAY_EPSILON;
+	const Vec3f	&point_out = record_hit->point + refracted * RAY_EPSILON;
 
 	// init record
 	setRecord_ray(&temp, src, Ray(point_out, refracted));
@@ -74,7 +72,8 @@ void Scatter_Refraction::scatter(RecordRay *src, MemoryControl_Scatter *memory_c
 // index_in:	ray to
 bool Scatter_Refraction::setRecord_outer(RecordRay *dst, RecordRay *src, fp_t *index_from, fp_t *index_to) const {
 	// variable preparation
-	const Material		*material		= &(src->record_hit.object->material);
+	const RecordHit	*record_hit		= &(src->record_hit.record);
+	const Material	*material		= &(record_hit->object->material);
 	const RecordRay	*record_outer	= src->outer;
 	
 	// check if outer space is air
@@ -87,7 +86,8 @@ bool Scatter_Refraction::setRecord_outer(RecordRay *dst, RecordRay *src, fp_t *i
 	}
 
 	// if exit from inner space
-	if (record_outer->record_hit.object == src->record_hit.object) {
+	// TODO: hard read code
+	if (record_outer->record_hit.record.object == src->record_hit.record.object) {
 
 		// if exit from inner space to the most outer space
 		if (record_outer->outer == nullptr) {
@@ -98,13 +98,14 @@ bool Scatter_Refraction::setRecord_outer(RecordRay *dst, RecordRay *src, fp_t *i
 		}
 
 		*index_from	= material->index;
-		*index_to	= record_outer->outer->record_hit.object->material.index;
+		*index_to	= record_outer->outer->record_hit.record.object->material.index;
 		dst->outer	= record_outer->outer;
 		return true;
 	}
 
 	// if entering from outer space
-	*index_from	= record_outer->record_hit.object->material.index;
+	// TODO: hard read code
+	*index_from	= record_outer->record_hit.record.object->material.index;
 	*index_to	= material->index;
 	dst->outer	= src;
 	return false;

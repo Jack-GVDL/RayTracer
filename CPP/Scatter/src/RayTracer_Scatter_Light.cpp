@@ -27,8 +27,8 @@ void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_contro
 
 	// variable prepartion
 	const Scene		*scene		= src->scene;
-	const Vec3f		&hit_point	= src->record_hit.point;
-	const Material	*material	= &(src->record_hit.object->material);
+	RecordHit		*record_hit	= &(src->record_hit.record);
+	Material		*material	= &(record_hit->object->material);
 
 	// get intensity
 	Vec3f	intensity_result	= Vec3f();
@@ -42,13 +42,13 @@ void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_contro
 	Vec3f	vec_normal;
 	Vec3f	vec_transmissive;
 
-	texture_list[EMISSIVE]->getPixel(		vec_emissive,		hit_point);
-	texture_list[AMBIENT]->getPixel(		vec_ambient,		hit_point);
-	texture_list[DIFFUSE]->getPixel(		vec_diffuse,		hit_point);
-	texture_list[SPECULAR]->getPixel(		vec_specular,		hit_point);
-	texture_list[SHININESS]->getPixel(		vec_shininess,		hit_point);
-	texture_list[NORMAL]->getPixel(			vec_normal,			hit_point);
-	material->transmissive->getPixel(		vec_transmissive,	hit_point);
+	texture_list[EMISSIVE]->getPixel(		vec_emissive,		record_hit->point);
+	texture_list[AMBIENT]->getPixel(		vec_ambient,		record_hit->point);
+	texture_list[DIFFUSE]->getPixel(		vec_diffuse,		record_hit->point);
+	texture_list[SPECULAR]->getPixel(		vec_specular,		record_hit->point);
+	texture_list[SHININESS]->getPixel(		vec_shininess,		record_hit->point);
+	texture_list[NORMAL]->getPixel(			vec_normal,			record_hit->point);
+	material->transmissive->getPixel(		vec_transmissive,	record_hit->point);
 
 	// emissive intensity and ambient intensity
 	intensity_result += getEmissive(src, vec_emissive);
@@ -56,22 +56,22 @@ void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_contro
 
 	// TODO: may need better way to do the same thing
 	// adjust normal
-	const Vec3f normal_original	= src->record_hit.normal;
-	src->record_hit.normal		+= vec_normal;
-	src->record_hit.normal		= src->record_hit.normal.normalize();
+	const Vec3f normal_original	= record_hit->normal;
+	record_hit->normal			+= vec_normal;
+	record_hit->normal			= record_hit->normal.normalize();
 
 	// intensity - light
 	for (auto *light : scene->light_list) {
 		// if the light source is behind the plane
 		// then ignore it
-		const fp_t		dot_ln 			= src->record_hit.normal.dot(light->getDirection(hit_point));
+		const fp_t		dot_ln 			= record_hit->normal.dot(light->getDirection(record_hit->point));
 		if (dot_ln <= 0) continue;
 
 		// attenuation
-		const Vec3f		&atten_shadow 	= light->getShadowAttenuation(src->scene, hit_point);
+		const Vec3f		&atten_shadow 	= light->getShadowAttenuation(src->scene, record_hit->point);
 		if (atten_shadow.isZero()) continue;
 
-		const fp_t		atten_distance 	= light->getDistanceAttenuation(hit_point);
+		const fp_t		atten_distance 	= light->getDistanceAttenuation(record_hit->point);
 		const Vec3f		&attenuation 	= atten_shadow * atten_distance;
 
 		// diffuse term and specular term
@@ -80,13 +80,13 @@ void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_contro
 		const Vec3f		&term_result 	= term_diffuse + term_specular;
 
 		// result += attenuation * term
-		const Vec3f &intensity_light = light->getColor(hit_point);
+		const Vec3f &intensity_light = light->getColor(record_hit->point);
 		intensity_result += term_result.prod(attenuation.prod(intensity_light));
 	}
 
 	// TODO: may need better way to do the same thing
 	// change back normal
-	src->record_hit.normal = normal_original;
+	record_hit->normal = normal_original;
 
 	src->intensity	+= (src->threshold * intensity_result);
 	src->threshold	= Vec3f(0);
@@ -107,8 +107,8 @@ static inline Vec3f getEmissive(const RecordRay *record, const Vec3f &vec_emissi
 // where * is "product" but not "dot"
 static inline Vec3f getAmbient(const RecordRay *record, const Vec3f &vec_ambient, const Vec3f &vec_transmissive) {
 	// variable preparation
-	const Material *material	= &(record->record_hit.object->material);
-	const Vec3f		&hit_point	= record->record_hit.point;
+	const RecordHit	*record_hit	= &(record->record_hit.record);
+	const Material 	*material	= &(record_hit->object->material);
 
 	// get amibent intensity
 	Vec3f intensity_ambient		= record->scene->getAmbientIntensity();
@@ -122,8 +122,8 @@ static inline Vec3f getAmbient(const RecordRay *record, const Vec3f &vec_ambient
 
 static inline Vec3f getDiffuse(const RecordRay *record, const SceneObject_Light *light, fp_t dot_ln, const Vec3f &vec_diffuse, const Vec3f &vec_transmissive) {
 	// variable preparation
-	const Material	*material	= &(record->record_hit.object->material);
-	const Vec3f		&hit_point	= record->record_hit.point;
+	const RecordHit	*record_hit	= &(record->record_hit.record);
+	const Material 	*material	= &(record_hit->object->material);
 
 	return (vec_diffuse * dot_ln).prod(Vec3f::vec_one - vec_transmissive);
 }
@@ -131,14 +131,13 @@ static inline Vec3f getDiffuse(const RecordRay *record, const SceneObject_Light 
 
 static inline Vec3f getSpecular(const RecordRay *record, const SceneObject_Light *light, fp_t dot_ln, const Vec3f &vec_specular, const Vec3f &vec_shininess) {
 	// variable preparation
-	const Ray		*ray		= &(record->record_hit.ray);
-	const Vec3f		&hit_point	= record->record_hit.point;
-	const Vec3f		&hit_normal	= record->record_hit.normal;
+	const RecordHit	*record_hit	= &(record->record_hit.record);
+	const Material 	*material	= &(record_hit->object->material);
 
 	// get reflected light
 	// then get dot_rv
-	const Vec3f		ray_reflect	= (2.0 * dot_ln * hit_normal - light->getDirection(hit_point)).normalize(); 
-	const fp_t		dot_rv		= std::max<double>(ray_reflect.dot(-(ray->getDirection())), 0.0);
+	const Vec3f		ray_reflect	= (2.0 * dot_ln * record_hit->normal - light->getDirection(record_hit->point)).normalize(); 
+	const fp_t		dot_rv		= std::max<fp_t>(ray_reflect.dot(-(record_hit->ray.getDirection())), 0.0);
 
 	// get specular term
 	const fp_t coeff_specular = pow(dot_rv, vec_shininess[0] * 128);

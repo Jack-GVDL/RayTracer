@@ -32,7 +32,7 @@ void Scatter_Gradient::scatter(RecordRay *src, MemoryControl_Scatter *memory_con
 	}
 
 	// get source
-	Vec3f vec_source = source_func_list[source](&(src->record_hit));
+	Vec3f vec_source = source_func_list[source](&(src->record_hit.record));
 	
 	// value addition and multiplication
 	const fp_t	intensity_0	= (vec_source[0] + additor[0]) * multiplier[0];

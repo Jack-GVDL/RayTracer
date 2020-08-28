@@ -367,9 +367,10 @@ static int config_convolutor_setKernelArray(void *object, uint8_t *data, uint32_
 	delete[] texture->kernel;
 
 	// create new kernel
-	int		kernel_size	= texture->kernel_width * texture->kernel_width;
-	fp_t	*kernel		= new fp_t[kernel_size];
-	for (int i = 0; i < kernel_size; i++) kernel[i] = (fp_t)(data[i]);
+	int32_t		kernel_size		= texture->kernel_width * texture->kernel_width;
+	double		*data_double	= (double*)data;
+	fp_t		*kernel			= new fp_t[kernel_size];
+	for (int i = 0; i < kernel_size; i++) kernel[i] = (fp_t)(data_double[i]);
 
 	texture->setKernel(kernel, texture->kernel_width);
 	return 0;
