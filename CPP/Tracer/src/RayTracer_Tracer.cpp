@@ -17,7 +17,7 @@
 // Operation Handling
 RayTracer::RayTracer() {
 	// TODO: temporary allocate some space for memory control
-	void *memory = malloc(sizeof(uint8_t) * 1024 * 20);
+	void *memory = malloc(sizeof(uint8_t) * 1024 * 50);
 	scheduler.memory_control.setMemory(memory, sizeof(uint8_t) * 1024 * 20);
 }
 

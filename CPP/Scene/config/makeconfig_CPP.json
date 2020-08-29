@@ -10,6 +10,9 @@
                    "RayTracer_SceneObject_Hitable_Trimesh.o ",
                    "RayTracer_SceneObject_Hitable_AABB.o ",
                    "RayTracer_SceneObject_Light.o ",
+                   "RayTracer_SceneObject_Light_Ambient.o ",
+                   "RayTracer_SceneObject_Light_Directional.o ",
+                   "RayTracer_SceneObject_Light_Point.o ",
                    ""],
 
     "MACRO"     : [""],

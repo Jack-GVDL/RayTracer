@@ -24,7 +24,7 @@ class Tracer_Sample:
 		texture_diffuse.setPixel(		Vec3f(), Vec3f(1)	)
 		texture_specular.setPixel(		Vec3f(), Vec3f(1)	)
 		texture_shininess.setPixel(		Vec3f(), Vec3f(1)	)
-		texture_reflective.setPixel(	Vec3f(), Vec3f(0.9)	)
+		texture_reflective.setPixel(	Vec3f(), Vec3f(1)	)
 
 		# scatter
 		scatter_light_1:	Scatter_Light = Scatter_Light()

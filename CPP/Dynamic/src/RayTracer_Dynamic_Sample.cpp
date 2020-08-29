@@ -65,9 +65,9 @@ static int build_scene_1(Camera *camera, Scene *scene) {
 
 	// light
 	SceneObject_Light_Point *light_point_1 = new SceneObject_Light_Point();
-	light_point_1->attenuation_coeff	= Vec3f(0, 0.05, 0.4);
-	light_point_1->origin				= Vec3f(1, 1, 1);
-	light_point_1->color				= Vec3f(1);
+	light_point_1->attenuation	= Vec3f(0, 0.05, 0.4);
+	light_point_1->origin		= Vec3f(1, 1, 1);
+	light_point_1->color		= Vec3f(1);
 	scene->addLight(light_point_1);
 
 	// camera

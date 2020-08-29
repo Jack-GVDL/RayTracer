@@ -54,16 +54,14 @@ void Scatter_Refraction::scatter(RecordRay *src, MemoryControl_Scatter *memory_c
 		return;
 	}
 
-	// fire a new ray
-	// need to push the point a little bit forward to prevent hit the same point
-	const Vec3f	&point_out = record_hit->point + refracted * RAY_EPSILON;
-
 	// init record
-	setRecord_ray(&temp, src, Ray(point_out, refracted));
+	setRecord_ray(&temp, src, Ray(record_hit->point, refracted));
 	setRecord_threshold(&temp, src, vec_transmissive);
 
 	// copy to new record
 	RecordRay *record = (RecordRay*)memory_control->createRecord();
+	if (record == nullptr) return;
+	
 	memcpy(record, &temp, sizeof(RecordRay));
 }
 

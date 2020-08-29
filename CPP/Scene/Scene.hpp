@@ -19,6 +19,10 @@
 #include "./inc/RayTracer_SceneObject_Hitable_Trimesh.hpp"
 #include "./inc/RayTracer_SceneObject_Hitable_AABB.hpp"
 
+#include "./inc/RayTracer_SceneObject_Light_Ambient.hpp"
+#include "./inc/RayTracer_SceneObject_Light_Directional.hpp"
+#include "./inc/RayTracer_SceneObject_Light_Point.hpp"
+
 
 // Define
 // ...

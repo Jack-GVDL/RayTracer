@@ -1,4 +1,5 @@
 #include "../inc/RayTracer_Scatter_Light.hpp"
+#include "../inc/RayTracer_Scatter_AnyHit.hpp"
 
 
 // Define
@@ -17,6 +18,28 @@ static inline Vec3f	getSpecular	(const RecordRay *record, const SceneObject_Ligh
 
 
 // Operation Handling
+Scatter_Light::Scatter_Light() {
+	texture_list = new Texture*[MAX];
+	texture_size = MAX;
+
+	texture_list[DIFFUSE]	= nullptr;
+	texture_list[SPECULAR]	= nullptr;
+	texture_list[EMISSIVE]	= nullptr;
+	texture_list[AMBIENT]	= nullptr;
+	texture_list[SHININESS]	= nullptr;
+	texture_list[NORMAL]	= nullptr;
+
+	// TODO: backup
+	// scatter_list[0] = &scatter_anyHit;
+}
+
+
+Scatter_Light::~Scatter_Light() {
+}
+
+
+// TODO: backup
+/*
 void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
 	// first check if hit a target
 	// if not hit a target, which mean the ray come from infinity (background)
@@ -91,8 +114,95 @@ void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_contro
 	src->intensity	+= (src->threshold * intensity_result);
 	src->threshold	= Vec3f(0);
 }
+*/
 
 
+void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
+	// first check if hit a target
+	// if not hit a target, which mean the ray come from infinity (background)
+	if (!src->is_hit) {
+		src->threshold = Vec3f(0);
+		return;
+	}
+
+	// variable prepartion
+	const Scene		*scene		= src->scene;
+	RecordHit		*record_hit	= &(src->record_hit.record);
+	Material		*material	= &(record_hit->object->material);
+
+	// get texture
+	Vec3f	vec_emissive;
+	Vec3f	vec_ambient;
+	Vec3f	vec_diffuse;
+	Vec3f	vec_specular;
+	Vec3f	vec_shininess;
+	Vec3f	vec_normal;
+	Vec3f	vec_transmissive;
+
+	texture_list[EMISSIVE]->getPixel(	vec_emissive,		record_hit->point);
+	texture_list[AMBIENT]->getPixel(	vec_ambient,		record_hit->point);
+	texture_list[DIFFUSE]->getPixel(	vec_diffuse,		record_hit->point);
+	texture_list[SPECULAR]->getPixel(	vec_specular,		record_hit->point);
+	texture_list[SHININESS]->getPixel(	vec_shininess,		record_hit->point);
+	texture_list[NORMAL]->getPixel(		vec_normal,			record_hit->point);
+	material->transmissive->getPixel(	vec_transmissive,	record_hit->point);
+
+	// adjust normal
+	// const Vec3f normal_original	= record_hit->normal;
+	record_hit->normal	+= vec_normal;
+	record_hit->normal	= record_hit->normal.normalize();
+
+	// intensity - light
+	for (auto *light : scene->light_list) {
+
+		// if the light source is behind the plane
+		// then ignore
+		const fp_t dot_ln = record_hit->normal.dot(light->getDirection(record_hit->point));
+		if (dot_ln <= 0) continue;
+
+		// distance attenuation
+		fp_t atten_distance = light->getAttenuation(record_hit->point);
+		if (atten_distance == 0) continue;
+
+		// diffuse and specular term
+		const Vec3f		&term_diffuse 	= getDiffuse(src, light, dot_ln, vec_diffuse, vec_transmissive);
+		const Vec3f		&term_specular	= getSpecular(src, light, dot_ln, vec_specular, vec_shininess);
+		const Vec3f		&term_result 	= term_diffuse + term_specular;
+
+		// create new ray
+		RecordRay *record = (RecordRay*)memory_control->createRecord();
+		if (record == nullptr) break;
+
+		setRecord_tree(record, src);
+		setRecord_ray(record, src, Ray(record_hit->point, light->getDirection(record_hit->point)));
+
+		// set any hit scatter as the next scatter
+		record->scatter_source				= 0;
+		record->record_scatter.scatter_list	= (Scatter**)scatter_anyHit.scatter_list;
+		record->record_scatter.size			= 1;
+
+		// ray length (from light source to object)
+		record->record_hit.length_max = light->getDistance(record_hit->point);
+
+		// thresold
+		record->threshold	= src->threshold * term_result * light->getColor(record_hit->point) * atten_distance;
+	}
+
+	// no need to change back the value, record should not be used again
+	// change back normal
+	// record_hit->normal = normal_original;
+
+	// emissive intensity and ambient intensity
+	Vec3f	intensity_result	= Vec3f();
+	intensity_result	+= getEmissive(src, vec_emissive);
+	intensity_result	+= getAmbient(src, vec_ambient, vec_transmissive);
+
+	src->intensity		+= (src->threshold * intensity_result);
+	src->threshold		= Vec3f(0);
+}
+
+
+// Static Function Implementation
 static inline Vec3f getEmissive(const RecordRay *record, const Vec3f &vec_emissive) {
 	return vec_emissive;
 }
@@ -143,7 +253,3 @@ static inline Vec3f getSpecular(const RecordRay *record, const SceneObject_Light
 	const fp_t coeff_specular = pow(dot_rv, vec_shininess[0] * 128);
 	return vec_specular * coeff_specular;
 }
-
-
-// Static Function Implementation
-// ...

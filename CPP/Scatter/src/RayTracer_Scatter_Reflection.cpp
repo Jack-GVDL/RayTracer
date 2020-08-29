@@ -38,21 +38,15 @@ void Scatter_Reflection::scatter(RecordRay *src, MemoryControl_Scatter *memory_c
 	}
 
 	// reflection
-	const Vec3f &reflected = reflect(record_hit->ray.getDirection(), record_hit->normal).normalize();
-
-	// fire a new ray
-	// need to push the point a little bit forward to prevent hit the same point
-	const Vec3f &point_out = record_hit->point + reflected * RAY_EPSILON;
+	const Vec3f &reflected = reflect(record_hit->ray.getDirection(), record_hit->normal);
 
 	// create new child record
 	RecordRay *record = (RecordRay*)memory_control->createRecord();
+	if (record == nullptr) return;
 
 	setRecord_tree(record, src);
-	setRecord_ray(record, src, Ray(point_out, reflected));
+	setRecord_ray(record, src, Ray(record_hit->point, reflected));
 	setRecord_threshold(record, src, vec_reflective);
-
-	// backup
-	// src->intensity = Vec3f(0);
 }
 
 

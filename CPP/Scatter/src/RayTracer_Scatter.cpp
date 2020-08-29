@@ -55,7 +55,7 @@ void MemoryControl_Scatter::reset() {
 
 
 void* MemoryControl_Scatter::createRecord() {
-	if (index_empty == -1) return nullptr;
+	if (index_empty == -1 || index_empty == record_size) return nullptr;
 
 	// get an empty record
 	RecordRay *record = (RecordRay*)get_record(index_empty, record_list, offset);
@@ -65,13 +65,6 @@ void* MemoryControl_Scatter::createRecord() {
 	// bzero(record, sizeof(RecordRay));
 
 	return record;
-}
-
-
-void* MemoryControl_Scatter::createRecord(RecordRay *record) {
-	RecordRay *temp = (RecordRay*)createRecord();
-	temp->parent = record;
-	return temp;
 }
 
 
@@ -116,15 +109,18 @@ Texture* Scatter::getTexture(int offset) {
 
 
 void Scatter::setRecord_tree(RecordRay *dst, RecordRay *src) const {
-	dst->parent		= src;
-	dst->scene		= src->scene;
-	dst->outer		= src->outer;
-	dst->depth		= src->depth - 1;
+	dst->parent					= src;
+	dst->scene					= src->scene;
+	dst->outer					= src->outer;
+	dst->depth					= src->depth - 1;
 
-	dst->threshold	= Vec3f(1);
-	dst->intensity	= Vec3f(0);
+	dst->threshold				= Vec3f(1);
+	dst->intensity				= Vec3f(0);
 
-	dst->record_hit.length_min	= 0;
+	dst->is_enable_hit			= 1;
+	dst->scatter_source			= 1;
+
+	dst->record_hit.length_min	= RAY_EPSILON;
 	dst->record_hit.length_max	= std::numeric_limits<fp_t>::max();
 }
 
@@ -166,6 +162,8 @@ void Scheduler_Scatter::getRoot(RecordRay *record) {
 	RecordRay *temp = (RecordRay*)memory_control.getRecord(0);
 	if (temp == nullptr) return;
 
+	// need to normalize resultant intensity
+	// it should be ranging between 0 and 1
 	temp->intensity = temp->intensity.clamp(0, 1);
 	memcpy(record, temp, sizeof(RecordRay));
 }
@@ -187,23 +185,30 @@ int8_t Scheduler_Scatter::schedule() {
 	if (queue == memory_control.index_empty) return 0;
 	int32_t index_empty = memory_control.index_empty;
 	
-	RecordRay	*top		= (RecordRay*)memory_control.getRecord(0);
-	RecordRay	*record;
+	RecordRay		*top		= (RecordRay*)memory_control.getRecord(0);
+	RecordRay		*record;
 	const Shader	*shader;
 
 	// collision check
 	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
-		if (record->depth == 0)			continue;
-		if (record->is_enable_hit == 0)	continue;
+		record = (RecordRay*)memory_control.getRecord(i);
 
-		record			= (RecordRay*)memory_control.getRecord(i);
-		record->is_hit	= scene->hit(&(record->record_hit));
+		if (record->depth == 0)	{
+			continue;
+		}
+		if (!record->is_enable_hit)	{
+			record->is_hit = false;
+			continue;
+		}
+
+		record->is_hit = scene->hit(&(record->record_hit));
 	}
 
 	// load scatter
 	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
+		record = (RecordRay*)memory_control.getRecord(i);
 		if (record->depth == 0) continue;
 		
 		switch (record->scatter_source) {
@@ -233,6 +238,7 @@ int8_t Scheduler_Scatter::schedule() {
 	// scatter operation
 	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
+		record = (RecordRay*)memory_control.getRecord(i);
 		if (record->depth == 0) 							continue;
 		if (record->record_scatter.scatter_list == nullptr)	continue;
 
@@ -254,10 +260,10 @@ int8_t Scheduler_Scatter::schedule() {
 	// intensity accumulation
 	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
+		record = (RecordRay*)memory_control.getRecord(i);
 		if (record->depth == 0) continue;
 
-		record			= (RecordRay*)memory_control.getRecord(i);
-		top->intensity	+= record->intensity;
+		top->intensity += record->intensity;
 	}
 
 	// configure to get ready to next scheduling

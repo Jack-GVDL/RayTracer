@@ -25,10 +25,6 @@
 
 
 // Data Structure
-// TODO: find a better way to do the same thing
-class Scene;
-
-
 class SceneObject_Light: public SceneElement {
 	// Data
 	public:
@@ -36,73 +32,21 @@ class SceneObject_Light: public SceneElement {
 		
 	// Operation
 	public:
+		// init
+		// ...
+
 		// operation
 		void			setColor				(const Vec3f &color);
 	
 		// interface
-		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const	= 0;
-		virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const	= 0;
+		// TODO: backup
+		// virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const	= 0;
+		// virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const	= 0;
+
+		virtual fp_t	getAttenuation			(const Vec3f &point) const	= 0;
+		virtual fp_t	getDistance				(const Vec3f &point) const	= 0;
 		virtual Vec3f	getColor				(const Vec3f &point) const	= 0;
 		virtual Vec3f	getDirection			(const Vec3f &point) const	= 0;
-};
-
-
-class SceneObject_Light_Directional: public SceneObject_Light {
-	// Data
-	public:
-		Vec3f	orientation		= Vec3f(0, 0, -1);
-
-	// Operation
-	public:
-		// init
-		SceneObject_Light_Directional()
-		{}
-
-		// operation
-		void			setOrientation			(const Vec3f &orientation);
-
-		// interface
-		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const;
-		virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const;
-		virtual Vec3f	getColor				(const Vec3f &point) const;
-		virtual Vec3f	getDirection			(const Vec3f &point) const;
-};
-
-
-class SceneObject_Light_Point: public SceneObject_Light {
-	// Data
-	public:
-		Vec3f	attenuation_coeff	= Vec3f(0, 0, 0.25);
-
-	// Operation
-	public:
-		// init
-		SceneObject_Light_Point()
-		{}
-
-		// operation
-		void			setAttenuationCoeff		(const Vec3f &coeff);
-
-		// interface
-		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const;
-		virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const;
-		virtual Vec3f	getColor				(const Vec3f &point) const;
-		virtual Vec3f	getDirection			(const Vec3f &point) const;
-};
-
-
-class SceneObject_Light_Ambient: public SceneObject_Light {
-	// Data
-	public:
-		// ...
-		
-	// Operation
-	public:
-		// interface
-		virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const override;
-		virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const override;
-		virtual Vec3f	getColor				(const Vec3f &point) const override;
-		virtual Vec3f	getDirection			(const Vec3f &point) const override;
 };
 
 

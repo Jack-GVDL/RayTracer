@@ -92,7 +92,6 @@ class MemoryControl_Scatter {
 		void	reset				();
 
 		void*	createRecord		();
-		void*	createRecord		(RecordRay *record);
 
 		// backup
 		// set record state: ready -> wait (read-only mode)
