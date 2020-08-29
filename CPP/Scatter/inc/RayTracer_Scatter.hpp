@@ -35,37 +35,40 @@ struct RecordScatter {
 
 
 struct RecordRay {
+// Data
+public:
 	// tree
-	RecordRay 			*top		= nullptr;
-	RecordRay			*parent		= nullptr;
-	int16_t				depth		= 0;
+	RecordRay			*parent			= nullptr;
+	int16_t				depth			= 0;
 	
-	const Scene			*scene		= nullptr;
+	const Scene			*scene			= nullptr;
 	
 	// scatter
-	RecordScatter		record_scatter;
-
-	// control
-	int8_t	 			is_enable_hit	= 1;
-
 	// source of scatter
 	// 0: already in record
 	// 1: hit scene object, else NULL
 	uint8_t				scatter_source	= 1;
+	RecordScatter		record_scatter;
 
 	// space ordering
 	//
 	// used by refraction,
 	// where need the index of the outer space
 	// therefore the order of entering object is required
-	const RecordRay		*outer		= nullptr;
+	const RecordRay		*outer			= nullptr;
 
 	// collision info
-	bool				is_hit		= false;
+	int8_t	 			is_enable_hit	= 1;
+	int8_t				is_hit			= 0;
 	RecordHit_Extend	record_hit;
 
-	Vec3f				threshold	= Vec3f(1);
-	Vec3f				intensity	= Vec3f(0);
+	Vec3f				threshold		= Vec3f(1);
+	Vec3f				intensity		= Vec3f(0);
+
+// Operation
+public:
+	// operation
+	// ...
 };
 
 
@@ -144,10 +147,6 @@ class Scheduler_Scatter {
 		int32_t						queue			= 0;
 
 		Scene						*scene			= nullptr;
-
-		// TODO: find a better name for Shader
-		Shader						shader_not_hit;
-		Shader						shader_hit;
 
 	// Operation
 	public:

@@ -10,7 +10,11 @@
 
 
 // Static Function Prototype
-static inline void*	get_record	(int32_t index, void *memory, int32_t offset);
+static inline void*	get_record						(int32_t index, void *memory, int32_t offset);
+static inline void	schedule_check_collision		(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back);
+static inline void	schedule_load_scatter			(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back);
+static inline void	schedule_execute_scatter		(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back);
+static inline void	schedule_accumulate_intensity	(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back);
 
 
 // Operation Handling
@@ -191,9 +195,15 @@ int8_t Scheduler_Scatter::schedule() {
 
 	// collision check
 	// currently no parallel processing
+	// backup
+	// schedule_check_collision(		scene, &memory_control, top, queue, index_empty	);
+	// schedule_load_scatter(			scene, &memory_control, top, queue, index_empty	);
+	// schedule_execute_scatter(		scene, &memory_control, top, queue, index_empty	);
+	// schedule_accumulate_intensity(	scene, &memory_control, top, queue, index_empty	);
+
 	for (int32_t i = queue; i < index_empty; i++) {
 		record = (RecordRay*)memory_control.getRecord(i);
-
+	
 		if (record->depth == 0)	{
 			continue;
 		}
@@ -201,12 +211,11 @@ int8_t Scheduler_Scatter::schedule() {
 			record->is_hit = false;
 			continue;
 		}
-
+	
 		record->is_hit = scene->hit(&(record->record_hit));
 	}
 
 	// load scatter
-	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
 		record = (RecordRay*)memory_control.getRecord(i);
 		if (record->depth == 0) continue;
@@ -236,21 +245,15 @@ int8_t Scheduler_Scatter::schedule() {
 	}
 
 	// scatter operation
-	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
 		record = (RecordRay*)memory_control.getRecord(i);
 		if (record->depth == 0) 							continue;
 		if (record->record_scatter.scatter_list == nullptr)	continue;
 
+		// scatter operation
 		// TODO: future
 		// record = (RecordRay*)memory_control.getRecord(i);
 		// record->record_scatter.scatter_list[record->record_scatter.index]->scatter(record, &memory_control);
-
-		// scatter operation
-		// TODO: backup
-		// for (auto *scatter : shader->scatter_list) {
-		// 	scatter->scatter(record, &memory_control);
-		// }
 
 		for (int16_t i = 0; i < record->record_scatter.size; i++) {
 			record->record_scatter.scatter_list[i]->scatter(record, &memory_control);
@@ -258,7 +261,6 @@ int8_t Scheduler_Scatter::schedule() {
 	}
 
 	// intensity accumulation
-	// currently no parallel processing
 	for (int32_t i = queue; i < index_empty; i++) {
 		record = (RecordRay*)memory_control.getRecord(i);
 		if (record->depth == 0) continue;
@@ -277,4 +279,93 @@ int8_t Scheduler_Scatter::schedule() {
 // Static Function Implementation
 static inline void* get_record(int32_t index, void *memory, int32_t offset) {
 	return (uint8_t*)memory + index * offset;
+}
+
+
+static inline void schedule_check_collision(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back) {
+	RecordRay *record;
+
+	for (int32_t i = front; i < back; i++) {
+		record = (RecordRay*)control->getRecord(i);
+
+		// skip record
+		if (record->depth == 0)	{
+			continue;
+		}
+		if (!record->is_enable_hit)	{
+			record->is_hit = false;
+			continue;
+		}
+
+		record->is_hit = scene->hit(&(record->record_hit));
+	}
+}
+
+
+static inline void schedule_load_scatter(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back) {
+	RecordRay *record;
+	
+	for (int32_t i = front; i < back; i++) {
+		record = (RecordRay*)control->getRecord(i);
+
+		// skip record
+		if (record->depth == 0) continue;
+		
+		switch (record->scatter_source) {
+			// 0: already in record
+			case 0:
+				break;
+
+			// 1: hit scene object, else NULL
+			case 1:
+				SceneObject_Hitable *object = record->record_hit.record.object;
+				if (record->is_hit)	{
+					record->record_scatter.scatter_list = object->shader.scatter_list.data();
+					record->record_scatter.size			= object->shader.scatter_list.size();
+					record->record_scatter.index		= 0;
+
+				} else {
+					record->record_scatter.scatter_list = nullptr;
+					record->record_scatter.size			= 0;
+					record->record_scatter.index		= 0;
+
+				}
+				break;
+		}
+
+	}
+}
+
+
+static inline void schedule_execute_scatter(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back) {
+	RecordRay *record;
+	
+	for (int32_t i = front; i < back; i++) {
+		record = (RecordRay*)control->getRecord(i);
+
+		// skip record
+		if (record->depth == 0) 							continue;
+		if (record->record_scatter.scatter_list == nullptr)	continue;
+
+		// scatter operation
+		// TODO: future
+		// record = (RecordRay*)memory_control.getRecord(i);
+		// record->record_scatter.scatter_list[record->record_scatter.index]->scatter(record, &memory_control);
+
+		for (int16_t i = 0; i < record->record_scatter.size; i++) {
+			record->record_scatter.scatter_list[i]->scatter(record, control);
+		}
+	}
+}
+
+
+static inline void schedule_accumulate_intensity(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back) {
+	RecordRay *record;
+	
+	for (int32_t i = front; i < back; i++) {
+		record = (RecordRay*)control->getRecord(i);
+		if (record->depth == 0) continue;
+
+		top->intensity += record->intensity;
+	}
 }

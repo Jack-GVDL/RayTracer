@@ -32,10 +32,6 @@ class SceneObject_Light_Ambient: public SceneObject_Light {
 	// Operation
 	public:
 		// interface
-		// TODO: backup
-		// virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const override;
-		// virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const override;
-
 		virtual fp_t	getAttenuation			(const Vec3f &point) const override;
 		virtual fp_t	getDistance				(const Vec3f &point) const override;
 		virtual Vec3f	getColor				(const Vec3f &point) const override;

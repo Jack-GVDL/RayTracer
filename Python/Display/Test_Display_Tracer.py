@@ -37,10 +37,10 @@ ops_tracer.RayTracer_info()
 
 """ object creation """
 scene:	Scene	= Scene()
-Tracer_Sample.buildScene_0(scene)
+# Tracer_Sample.buildScene_0(scene)
 # Tracer_Sample.buildScene_1(scene)
 # Tracer_Sample.buildScene_2(scene)
-# Tracer_Sample.buildScene_3(scene)
+Tracer_Sample.buildScene_3(scene)
 
 ops_tracer.Test_checkStatus(0, bytes(), 0)
 ops_tracer.Test_checkStatus(1, bytes(), 0)

@@ -46,7 +46,7 @@ class Scene: public SceneElement {
 
 		Vec3f	getAmbientIntensity	() const;
 
-		bool	hit					(RecordHit_Extend *hit) const;
+		int8_t	hit					(RecordHit_Extend *hit) const;
 };
 
 

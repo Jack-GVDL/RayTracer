@@ -18,17 +18,6 @@
 
 
 // Operation Handling
-// TODO: backup
-// Vec3f SceneObject_Light_Ambient::getShadowAttenuation(const Scene *scene, const Vec3f &point) const {
-// 	return Vec3f(0);
-// }
-// 
-// 
-// fp_t  SceneObject_Light_Ambient::getDistanceAttenuation(const Vec3f &point) const {
-// 	return 0;
-// }
-
-
 fp_t SceneObject_Light_Ambient::getAttenuation(const Vec3f &point) const {
 	return 1.0;
 }

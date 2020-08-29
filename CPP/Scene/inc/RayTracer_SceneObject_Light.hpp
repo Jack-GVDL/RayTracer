@@ -39,10 +39,6 @@ class SceneObject_Light: public SceneElement {
 		void			setColor				(const Vec3f &color);
 	
 		// interface
-		// TODO: backup
-		// virtual Vec3f	getShadowAttenuation	(const Scene *scene, const Vec3f &point) const	= 0;
-		// virtual fp_t	getDistanceAttenuation	(const Vec3f &point) const	= 0;
-
 		virtual fp_t	getAttenuation			(const Vec3f &point) const	= 0;
 		virtual fp_t	getDistance				(const Vec3f &point) const	= 0;
 		virtual Vec3f	getColor				(const Vec3f &point) const	= 0;
