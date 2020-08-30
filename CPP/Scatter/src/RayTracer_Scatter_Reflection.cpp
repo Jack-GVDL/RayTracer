@@ -44,9 +44,10 @@ void Scatter_Reflection::scatter(RecordRay *src, MemoryControl_Scatter *memory_c
 	RecordRay *record = (RecordRay*)memory_control->createRecord();
 	if (record == nullptr) return;
 
-	setRecord_tree(record, src);
-	setRecord_ray(record, src, Ray(record_hit->point, reflected));
-	setRecord_threshold(record, src, vec_reflective);
+	setRecord_tree(			record, src										);
+	setRecord_ray(			record, src, Ray(record_hit->point, reflected)	);
+	setRecord_threshold(	record, src, vec_reflective						);
+	setRecord_scatter(		record, src										);
 }
 
 

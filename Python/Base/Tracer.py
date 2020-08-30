@@ -1,7 +1,9 @@
 from .Tracer_Base import Tracer_Base
 from .Tracer_Ops import Ops_Tracer
+import os
 
 
+# Data Structure
 class Tracer:
 
 	def __init__(self):
@@ -22,3 +24,14 @@ class Tracer:
 	def end(self) -> None:
 		Tracer_Base.setGlobal_ops_tracer(None)
 		self._is_started = False
+
+
+# Operation
+# TODO: should move these things to class
+# add dll directory
+os.add_dll_directory("C:/WINDOWS/system32")
+os.add_dll_directory("D:/Anaconda/Library/mingw-w64/bin")  # TODO: it should not use Anaconda
+
+# check
+# ops_tracer.Test_checkStatus(0, bytes(), 0)
+# ops_tracer.Test_checkStatus(1, bytes(), 0)

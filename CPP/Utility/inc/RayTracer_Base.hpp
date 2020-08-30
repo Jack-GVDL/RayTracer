@@ -16,6 +16,10 @@
 #define RAY_EPSILON     0.0001
 #define RAY_INDEX_AIR   1.0
 
+#define ERROR_NO        0
+#define ERROR_ANY       -1
+#define ERROR_AT(i)     (ERROR_ANY - i)
+
 
 // Typedef
 // floating point: double or float

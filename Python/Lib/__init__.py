@@ -20,6 +20,8 @@ from .Tracer_Lib_Scatter import Scatter_Gradient
 from .Tracer_Lib_Scatter import Scatter_Light
 from .Tracer_Lib_Scatter import Scatter_Reflection
 from .Tracer_Lib_Scatter import Scatter_Refraction
+from .Tracer_Lib_Scatter import Scatter_Random
+from .Tracer_Lib_Scatter import Scatter_AnyHit
 
 from .Tracer_Lib_Light import Light_Directional
 from .Tracer_Lib_Light import Light_Point

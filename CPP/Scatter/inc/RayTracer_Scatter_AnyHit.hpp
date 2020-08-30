@@ -33,7 +33,7 @@ class Scatter_AnyHit: public Scatter {
 
 	// Data
 	public:
-		Scatter*	scatter_list[1];  // next scatter
+		// ...
 
 	// Operation
 	public:

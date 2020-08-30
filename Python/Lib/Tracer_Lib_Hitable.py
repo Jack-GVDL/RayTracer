@@ -17,11 +17,11 @@ class Hitable_Sphere(Hitable):
 	# Operation
 	def setCenter(self, center: Vec3f) -> None:
 		data:	bytes		= center.convertToBytes()
-		result: int			= self._ops_tracer.SceneObject_Hitable_config(self._object_index, 0, data, len(data))
+		result: int			= self._ops_tracer.SceneObject_Hitable_config(self.object_index, 0, data)
 
 	def setRadius(self, radius: float) -> None:
 		data:	bytes		= struct.pack("d", radius)
-		result:	int			= self._ops_tracer.SceneObject_Hitable_config(self._object_index, 1, data, len(data))
+		result:	int			= self._ops_tracer.SceneObject_Hitable_config(self.object_index, 1, data)
 
 
 class Hitable_Trimesh(Hitable):
@@ -39,17 +39,18 @@ class Hitable_Trimesh(Hitable):
 	# Operation
 	def setPoint_0(self, point: Vec3f) -> None:
 		data:	bytes		= point.convertToBytes()
-		result:	int			= self._ops_tracer.SceneObject_Hitable_config(self._object_index, 0, data, len(data))
+		result:	int			= self._ops_tracer.SceneObject_Hitable_config(self.object_index, 0, data)
 
 	def setPoint_1(self, point: Vec3f) -> None:
 		data:	bytes		= point.convertToBytes()
-		result:	int			= self._ops_tracer.SceneObject_Hitable_config(self._object_index, 1, data, len(data))
+		result:	int			= self._ops_tracer.SceneObject_Hitable_config(self.object_index, 1, data)
 
 	def setPoint_2(self, point: Vec3f) -> None:
 		data:	bytes		= point.convertToBytes()
-		result:	int			= self._ops_tracer.SceneObject_Hitable_config(self._object_index, 2, data, len(data))
+		result:	int			= self._ops_tracer.SceneObject_Hitable_config(self.object_index, 2, data)
 
 
+# TODO: not yet completed
 class Hitable_AABB(Hitable):
 
 	def __init__(self):

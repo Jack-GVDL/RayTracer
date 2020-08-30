@@ -50,7 +50,7 @@ class Ops_Tracer:
 	def Camera_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Camera_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+	def Camera_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
 	def Camera_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
@@ -81,7 +81,7 @@ class Ops_Tracer:
 	def Surface_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Surface_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+	def Surface_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
 	def Surface_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
@@ -103,7 +103,7 @@ class Ops_Tracer:
 	def Texture_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Texture_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+	def Texture_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
 	def Texture_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
@@ -131,16 +131,19 @@ class Ops_Tracer:
 	def Scatter_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Scatter_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+	def Scatter_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
 	def Scatter_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
-	def Scatter_setTexture(self, index_scatter: int, index_texture: int, offset: int) -> int:
+	def Scatter_addScatter(self, index_scatter: int, index_target: int) -> int:
 		raise NotImplementedError
 
-	def Scatter_rmTexture(self, index_scatter: int, offset: int) -> int:
+	def Scatter_rmScatter(self, index_scatter: int, index_target: int) -> int:
+		raise NotImplementedError
+
+	def Scatter_setTexture(self, index_scatter: int, index_texture: int, offset: int) -> int:
 		raise NotImplementedError
 
 	# hitable
@@ -153,7 +156,7 @@ class Ops_Tracer:
 	def SceneObject_Hitable_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Hitable_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+	def SceneObject_Hitable_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
 	def SceneObject_Hitable_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
@@ -181,7 +184,7 @@ class Ops_Tracer:
 	def SceneObject_Light_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Light_config(self, index: int, type_: int, data: bytes, size: int) -> int:
+	def SceneObject_Light_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
 	def SceneObject_Light_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:

@@ -7,6 +7,7 @@
 // 2020/06/30   add Scatter_Random, Scatter_Emittor
 // 2020/07/26   change name: Scatter_Hit -> Scatter_Gradient
 // 2020/08/28   add Scatter_AnyHit
+// 2020/08/30   add Scatter_Random
 
 
 #ifndef SCATTER_HPP
@@ -20,7 +21,7 @@
 #include "./inc/RayTracer_Scatter_Refraction.hpp"
 #include "./inc/RayTracer_Scatter_Emitter.hpp"
 #include "./inc/RayTracer_Scatter_AnyHit.hpp"
-// #include "./inc/RayTracer_Scatter_Random.hpp"
+#include "./inc/RayTracer_Scatter_Random.hpp"
 
 
 // Define

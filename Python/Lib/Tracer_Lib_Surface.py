@@ -32,4 +32,4 @@ class Surface_BMP(Surface):
 	# Operation
 	def setPath(self, path: str) -> None:
 		data: bytes = path.encode()
-		self._ops_tracer.Surface_config(self._object_index, 0, data, len(data))
+		self._ops_tracer.Surface_config(self._object_index, 0, data)

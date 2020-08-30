@@ -19,6 +19,7 @@ static inline Vec3f	getSpecular	(const RecordRay *record, const SceneObject_Ligh
 
 // Operation Handling
 Scatter_Light::Scatter_Light() {
+	// texture
 	texture_list = new Texture*[MAX];
 	texture_size = MAX;
 
@@ -28,6 +29,9 @@ Scatter_Light::Scatter_Light() {
 	texture_list[AMBIENT]	= nullptr;
 	texture_list[SHININESS]	= nullptr;
 	texture_list[NORMAL]	= nullptr;
+
+	// scatter
+	addScatter(&scatter_anyHit);
 }
 
 
@@ -57,13 +61,13 @@ void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_contro
 	Vec3f	vec_normal;
 	Vec3f	vec_transmissive;
 
-	texture_list[EMISSIVE]->getPixel(	vec_emissive,		record_hit->point);
-	texture_list[AMBIENT]->getPixel(	vec_ambient,		record_hit->point);
-	texture_list[DIFFUSE]->getPixel(	vec_diffuse,		record_hit->point);
-	texture_list[SPECULAR]->getPixel(	vec_specular,		record_hit->point);
-	texture_list[SHININESS]->getPixel(	vec_shininess,		record_hit->point);
-	texture_list[NORMAL]->getPixel(		vec_normal,			record_hit->point);
-	material->transmissive->getPixel(	vec_transmissive,	record_hit->point);
+	texture_list[EMISSIVE]->getPixel(	vec_emissive,		record_hit->point	);
+	texture_list[AMBIENT]->getPixel(	vec_ambient,		record_hit->point	);
+	texture_list[DIFFUSE]->getPixel(	vec_diffuse,		record_hit->point	);
+	texture_list[SPECULAR]->getPixel(	vec_specular,		record_hit->point	);
+	texture_list[SHININESS]->getPixel(	vec_shininess,		record_hit->point	);
+	texture_list[NORMAL]->getPixel(		vec_normal,			record_hit->point	);
+	material->transmissive->getPixel(	vec_transmissive,	record_hit->point	);
 
 	// adjust normal
 	// const Vec3f normal_original	= record_hit->normal;
@@ -91,19 +95,15 @@ void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *memory_contro
 		RecordRay *record = (RecordRay*)memory_control->createRecord();
 		if (record == nullptr) break;
 
-		setRecord_tree(record, src);
-		setRecord_ray(record, src, Ray(record_hit->point, light->getDirection(record_hit->point)));
-
-		// set any hit scatter as the next scatter
-		record->scatter_source				= 0;
-		record->record_scatter.scatter_list	= (Scatter**)scatter_anyHit.scatter_list;
-		record->record_scatter.size			= 1;
+		setRecord_tree(		record, src																	);
+		setRecord_ray(		record, src, Ray(record_hit->point, light->getDirection(record_hit->point))	);
+		setRecord_scatter(	record, src																	);
 
 		// ray length (from light source to object)
 		record->record_hit.length_max = light->getDistance(record_hit->point);
 
 		// thresold
-		record->threshold	= src->threshold * term_result * light->getColor(record_hit->point) * atten_distance;
+		record->threshold = src->threshold * term_result * light->getColor(record_hit->point) * atten_distance;
 	}
 
 	// no need to change back the value, record should not be used again

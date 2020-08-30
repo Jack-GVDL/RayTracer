@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
-#include "../inc/RayTracer_Dynamic.hpp"
+
 #include "../inc/RayTracer_DynamicContainer.hpp"
+#include "../inc/RayTracer_DynamicSkeleton.hpp"
+
 #include "../inc/RayTracer_Dynamic_Camera.hpp"
 #include "../inc/RayTracer_Dynamic_Tracer.hpp"
 #include "../inc/RayTracer_Dynamic_Surface.hpp"
@@ -11,6 +13,8 @@
 #include "../inc/RayTracer_Dynamic_Hitable.hpp"
 #include "../inc/RayTracer_Dynamic_Light.hpp"
 #include "../inc/RayTracer_Dynamic_Sample.hpp"
+
+#include "../inc/RayTracer_Dynamic.hpp"
 
 
 // Define
@@ -329,6 +333,40 @@ EXPORT_DLL(int) RayTracer_Texture_getPixel(int index, double *pixel, const doubl
 
 // scatter
 Dynamic_constructTypeInterface(Scatter, Scatter, &scatter_list);
+
+
+EXPORT_DLL(int)RayTracer_Scatter_addScatter(int index_scatter, int index_target) {
+	// get container
+	Dynamic_Container<Scatter>	*container_scatter	= scatter_list.get(index_scatter);
+	if (container_scatter == nullptr) return -1;
+
+	Dynamic_Container<Scatter>	*container_target	= scatter_list.get(index_target);
+	if (container_target == nullptr) return -1;
+
+	// add scatter
+	Scatter *scatter	= container_scatter->getObject();
+	Scatter *target		= container_target->getObject();
+
+	if (scatter->addScatter(target) != ERROR_NO) return -1;
+	return 0;
+}
+
+
+EXPORT_DLL(int)RayTracer_Scatter_rmScatter(int index_scatter, int index_target) {
+	// get container
+	Dynamic_Container<Scatter>	*container_scatter	= scatter_list.get(index_scatter);
+	if (container_scatter == nullptr) return -1;
+
+	Dynamic_Container<Scatter>	*container_target	= scatter_list.get(index_target);
+	if (container_target == nullptr) return -1;
+
+	// rm scatter
+	Scatter *scatter	= container_scatter->getObject();
+	Scatter *target		= container_target->getObject();
+
+	if (scatter->rmScatter(target) != ERROR_NO) return -1;
+	return 0;
+}
 
 
 EXPORT_DLL(int) RayTracer_Scatter_setTexture(int index_scatter, int index_texture, int offset) {

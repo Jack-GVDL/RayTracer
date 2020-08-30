@@ -19,7 +19,11 @@
 
 // Operation Handling
 Scatter_AnyHit::Scatter_AnyHit() {
-	scatter_list[0] = this;
+	// texture
+	// ...
+
+	// scatter
+	scatter_list.push_back(this);
 }
 
 
@@ -46,22 +50,15 @@ void Scatter_AnyHit::scatter(RecordRay *src, MemoryControl_Scatter *memory_contr
 
 	// check if hit a solid hitable
 	if (vec_transmissive.isZero()) return;
-
-	// fire a new ray
-	// const Vec3f &point_out = record_hit->point + record_hit->ray.getDirection() * RAY_EPSILON;
-
+	
 	// create new child record
 	RecordRay *record = (RecordRay*)memory_control->createRecord();
 	if (record == nullptr) return;
 
-	setRecord_tree(record, src);
-	setRecord_ray(record, src, Ray(record_hit->point, record_hit->ray.getDirection()));
-	setRecord_threshold(record, src, vec_transmissive);
-
-	// set next scatter source
-	record->scatter_source				= 0;
-	record->record_scatter.scatter_list	= (Scatter**)scatter_list;
-	record->record_scatter.size			= 1;
+	setRecord_tree(			record, src															);
+	setRecord_ray(			record, src, Ray(record_hit->point, record_hit->ray.getDirection())	);
+	setRecord_threshold(	record, src, vec_transmissive										);
+	setRecord_scatter(		record, src															);
 
 	// reduce length
 	record->record_hit.length_max = src->record_hit.length_max - record_hit->distance;

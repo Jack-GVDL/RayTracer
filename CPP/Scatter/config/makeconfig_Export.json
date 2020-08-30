@@ -6,5 +6,6 @@
                    "obj_x64/RayTracer_Scatter_Reflection.o ",
                    "obj_x64/RayTracer_Scatter_Refraction.o ",
                    "obj_x64/RayTracer_Scatter_AnyHit.o ",
+                   "obj_x64/RayTracer_Scatter_Random.o ",
                    ""]
 }

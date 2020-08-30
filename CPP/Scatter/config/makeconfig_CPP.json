@@ -9,6 +9,7 @@
                    "RayTracer_Scatter_Reflection.o ",
                    "RayTracer_Scatter_Refraction.o ",
                    "RayTracer_Scatter_AnyHit.o ",
+                   "RayTracer_Scatter_Random.o ",
                    ""],
 
     "MACRO"     : [""],

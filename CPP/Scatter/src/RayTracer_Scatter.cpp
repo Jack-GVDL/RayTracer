@@ -11,10 +11,14 @@
 
 // Static Function Prototype
 static inline void*	get_record						(int32_t index, void *memory, int32_t offset);
+
+// backup
+/*
 static inline void	schedule_check_collision		(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back);
 static inline void	schedule_load_scatter			(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back);
 static inline void	schedule_execute_scatter		(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back);
 static inline void	schedule_accumulate_intensity	(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back);
+*/
 
 
 // Operation Handling
@@ -97,6 +101,19 @@ Scatter::~Scatter() {
 }
 
 
+// TODO: missing uniqueness check
+int8_t Scatter::addScatter(Scatter *scatter) {
+	scatter_list.push_back(scatter);
+	return ERROR_NO;
+}
+
+
+// TODO: not yet completed
+int8_t Scatter::rmScatter(Scatter *scatter) {
+	return ERROR_ANY;
+}
+
+
 bool Scatter::setTexture(Texture *texture, int offset) {
 	if (texture_list == nullptr)				return false;
 	if (offset < 0 || offset >= texture_size)	return false;
@@ -137,6 +154,19 @@ void Scatter::setRecord_ray(RecordRay *dst, RecordRay *src, const Ray &ray) cons
 void Scatter::setRecord_threshold(RecordRay *dst, RecordRay *src, const Vec3f &ratio) const {
 	dst->threshold	= src->threshold.prod(ratio);
 	src->threshold	-= dst->threshold;
+}
+
+
+void Scatter::setRecord_scatter(RecordRay *dst, RecordRay *src) const {
+	// TODO: improve
+	if (scatter_list.size() == 0) {
+		dst->scatter_source = 1;
+		return;
+	}
+
+	dst->scatter_source					= 0;
+	dst->record_scatter.scatter_list	= (Scatter**)scatter_list.data();
+	dst->record_scatter.size			= scatter_list.size();
 }
 
 
@@ -282,6 +312,8 @@ static inline void* get_record(int32_t index, void *memory, int32_t offset) {
 }
 
 
+// backup
+/*
 static inline void schedule_check_collision(Scene *scene, MemoryControl_Scatter *control, RecordRay *top, int32_t front, int32_t back) {
 	RecordRay *record;
 
@@ -369,3 +401,4 @@ static inline void schedule_accumulate_intensity(Scene *scene, MemoryControl_Sca
 		top->intensity += record->intensity;
 	}
 }
+*/

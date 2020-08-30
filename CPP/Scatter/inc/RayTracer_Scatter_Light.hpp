@@ -41,7 +41,6 @@ class Scatter_Light: public Scatter {
 		};
 
 		Scatter_AnyHit	scatter_anyHit;
-		Scatter*		scatter_list[1];
 
 	// Data
 	public:

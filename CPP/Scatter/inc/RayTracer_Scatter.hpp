@@ -111,8 +111,11 @@ class MemoryControl_Scatter {
 class Scatter {
 	// Data
 	public:
+		// TODO: consider to use vector
 		Texture*	*texture_list	= nullptr;
 		int32_t		texture_size	= 0;
+
+		std::vector<Scatter*>	scatter_list;
 
 	// Operation
 	public:
@@ -122,6 +125,9 @@ class Scatter {
 
 		// operation
 		// ...
+
+		int8_t					addScatter				(Scatter *scatter);
+		int8_t					rmScatter				(Scatter *scatter);
 
 		bool					setTexture				(Texture *texture, int32_t offset);
 		Texture*				getTexture				(int32_t offset);
@@ -134,6 +140,7 @@ class Scatter {
 		void					setRecord_tree			(RecordRay *dst, RecordRay *src) const;
 		void					setRecord_ray			(RecordRay *dst, RecordRay *src, const Ray &ray) const;
 		void					setRecord_threshold		(RecordRay *dst, RecordRay *src, const Vec3f &ratio) const;
+		void					setRecord_scatter		(RecordRay *dst, RecordRay *src) const;
 
 		// interface
 		// ...
