@@ -40,8 +40,6 @@ class Scatter_Light: public Scatter {
 			MAX
 		};
 
-		Scatter_AnyHit	scatter_anyHit;
-
 	// Data
 	public:
 		// ...

@@ -2,7 +2,7 @@ from typing import List
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import *
-from Base import *
+from Tracer import *
 import time
 import numpy as np
 
@@ -18,13 +18,13 @@ class Display_Tracer(QWidget):
 
 		self._image:		QPixmap		= None
 		self._time:			time		= None
-
-		self._ops_tracer:	Ops_Tracer	= None
 		self._is_rendered:	bool		= False
 
+		self._camera:		Camera		= None
+
 	# Operation
-	def setOps_tracer(self, ops: Ops_Tracer) -> None:
-		self._ops_tracer = ops
+	def setCamera(self, camera: Camera) -> None:
+		self._camera = camera
 
 	def setDisplaySize(self, w: int, h: int) -> None:
 		self._w = w
@@ -47,7 +47,7 @@ class Display_Tracer(QWidget):
 
 		# get picture
 		array = np.zeros(self._w * self._h * 3, dtype=np.uint8)
-		self._ops_tracer.Tracer_traceRect(1, array, self._w, self._h, 5, False, True)
+		self._camera.traceRect(array, self._w, self._h, 5, False, True, 0)
 		self._image = QPixmap.fromImage(QImage(array, self._w, self._h, QImage.Format_RGB888))
 
 		# execution time end point and display time

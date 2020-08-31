@@ -29,9 +29,6 @@ Scatter_Light::Scatter_Light() {
 	texture_list[AMBIENT]	= nullptr;
 	texture_list[SHININESS]	= nullptr;
 	texture_list[NORMAL]	= nullptr;
-
-	// scatter
-	addScatter(&scatter_anyHit);
 }
 
 

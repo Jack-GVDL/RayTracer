@@ -21,42 +21,13 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		self._dll_tracer:	CDLL	= None
 
 	# Operation
-	# @property
-	# def is_started(self) -> bool:
-	# 	return self._is_started
-
-	# def setFile_tracer(self, file: str) -> None:
-	# 	self._file_tracer = file
-
-	# def start(self) -> bool:
-	# 	if self._is_started:
-	# 		return False
-
-	# 	# TODO: these code should not be here
-	# 	# first to config dll path
-	# 	os.add_dll_directory("C:/WINDOWS/system32")
-	# 	os.add_dll_directory("D:/Anaconda/Library/mingw-w64/bin")  # TODO: it should not use Anaconda
-
-	# 	# get dll
-	# 	self._dll_tracer = ctype_s.CDLL(os.path.join(os.getcwd()), self._file_tracer)
-
-	# 	# check dll
-	# 	# if self._dll_tracer is None:
-	# 		# return False
-	# 	# if self._dll_tracer.RayTracer_Test_checkStatus(c_int(0)) == 0:
-	# 		# return False
-
-	# 	self._is_started = True
-	# 	return True
-
-	# # TODO: not yet completed
-	# def end(self) -> bool:
-	# 	if not self._is_started:
-	# 		return False
-
-	# 	return True
-
+	# TODO: future: previous dll handling
 	def setDLL_tracer(self, dll: CDLL) -> None:
+		self._dll_tracer = dll
+
+	# TODO: future: previous dll handling
+	def setDLLPath_tracer(self, path: str) -> None:
+		dll: CDLL = CDLL(path)
 		self._dll_tracer = dll
 
 	# main
@@ -99,7 +70,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	def Tracer_traceRect(
 			self, index_camera: int, pixel_list: np.ndarray, w: int, h: int, depth: int,
-			is_reverse_x: bool, is_reverse_y: bool) -> int:
+			is_reverse_x: bool, is_reverse_y: bool, format_: int) -> int:
 
 		# TODO: test
 		time_start = time.time()
@@ -116,8 +87,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	# camera
 	def Camera_Type_getIndex(self, name: str) -> int:
-		array_name = (c_char * len(name))(*name)
-		return self._dll_tracer.RayTracer_Camera_Type_getIndex(array_name)
+		byte_str: bytes = name.encode('utf-8')
+		return self._dll_tracer.RayTracer_Camera_Type_getIndex(c_char_p(byte_str))
 
 	def Camera_create(self, type_: int) -> int:
 		return self._dll_tracer.RayTracer_Camera_create(c_int(type_))

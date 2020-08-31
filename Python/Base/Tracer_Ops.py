@@ -37,7 +37,7 @@ class Ops_Tracer:
 	def Tracer_tracePoint(self, index_camera: int, pixel: Vec3f, x: float, y: float, depth: int) -> int:
 		raise NotImplementedError
 
-	def Tracer_traceRect(self, index_camera: int, pixel_list: np.ndarray, w: int, h: int, depth: int, is_reverse_x: bool, is_reverse_y: bool) -> int:
+	def Tracer_traceRect(self, index_camera: int, pixel_list: np.ndarray, w: int, h: int, depth: int, is_reverse_x: bool, is_reverse_y: bool, format_: bool) -> int:
 		raise NotImplementedError
 
 	# camera
