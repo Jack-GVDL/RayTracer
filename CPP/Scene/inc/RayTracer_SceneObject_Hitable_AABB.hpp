@@ -27,7 +27,7 @@
 class Hitable_AABB: public SceneObject_Hitable {
 	// Static Function
 	public:
-		static Hitable_AABB*	create	(SceneObject_Hitable* *list, int32_t size_list, int32_t size_leaf);
+		// static Hitable_AABB*	create	(SceneObject_Hitable* *list, int32_t size_list, int32_t size_leaf);
 
 	// Data
 	public:
@@ -36,13 +36,13 @@ class Hitable_AABB: public SceneObject_Hitable {
 	// Operation
 	public:
 		// init
-		Hitable_AABB()
-		{}
+		Hitable_AABB	();
+		~Hitable_AABB	();
 
 		// operation
-		virtual bool	addHitable		(SceneObject_Hitable *hitable);
-		virtual bool	rmHitable		(SceneObject_Hitable *hitable);
-		virtual int		getHitableSize	() const;
+		int8_t 			addHitable		(SceneObject_Hitable *hitable);
+		int8_t			rmHitable		(SceneObject_Hitable *hitable);
+		uint32_t		getHitableSize	() const;
 
 		// interface
 		virtual bool	hit				(RecordHit *record, fp_t t_min, fp_t t_max) const override;

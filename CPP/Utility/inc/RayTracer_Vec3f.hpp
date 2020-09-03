@@ -147,16 +147,16 @@ class Vec3f {
 
 
 // Inline Function Implementation
-inline std::istream& operator>>(std::istream &is, Vec3f &v) {
-	is >> v[0] >> v[1] >> v[2];
-	return is;
-}
+// inline std::istream& operator>>(std::istream &is, Vec3f &v) {
+// 	is >> v[0] >> v[1] >> v[2];
+// 	return is;
+// }
 
 
-inline std::ostream& operator<<(std::ostream &os, const Vec3f &v) {
-	os << v[0] << " " << v[1] << " " << v[2];
-	return os;
-}
+// inline std::ostream& operator<<(std::ostream &os, const Vec3f &v) {
+// 	os << v[0] << " " << v[1] << " " << v[2];
+// 	return os;
+// }
 
 
 inline Vec3f operator+(const Vec3f &v1, const Vec3f &v2) {
@@ -191,6 +191,11 @@ inline Vec3f operator/(Vec3f v, fp_t t) {
 
 inline Vec3f operator*(const Vec3f &v, fp_t t) {
 	return Vec3f(t * v[0], t * v[1], t * v[2]);
+}
+
+
+inline bool operator==(const Vec3f &v1, const Vec3f &v2) {
+	return v1[0] == v2[0] && v1[1] == v2[1] && v1[2] == v2[2];
 }
 
 

@@ -24,6 +24,7 @@
 // Typedef
 // floating point: double or float
 typedef float fp_t;
+typedef int8_t error_t;
 
 
 // Enum

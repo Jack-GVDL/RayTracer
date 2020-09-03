@@ -25,7 +25,16 @@ static compare_func_t compare_func_list[] = {
 
 
 // Operation Handling
-// aabb
+Hitable_AABB::Hitable_AABB() {
+}
+
+
+Hitable_AABB::~Hitable_AABB() {
+}
+
+
+// backup
+/*
 Hitable_AABB* Hitable_AABB::create(
 	SceneObject_Hitable* *list, int32_t size_list, int32_t size_leaf) {
 
@@ -71,25 +80,30 @@ Hitable_AABB* Hitable_AABB::create(
 	aabb_node->addHitable(aabb_right);
 	return aabb_node;
 }
+*/
 
 
 // TODO: missing uniqueness check
-bool Hitable_AABB::addHitable(SceneObject_Hitable *hitable) {
-	// add to list
+int8_t Hitable_AABB::addHitable(SceneObject_Hitable *hitable) {
 	hitable_list.push_back(hitable);
+	bounding.unionBounding(hitable->bounding);
 	
-	// update bounding box
-	for (int32_t i = 0; i < 3; i++) {
-		bounding_min[i]	= std::min<fp_t>(bounding_min[i], hitable->bounding_min[i]);
-		bounding_max[i]	= std::max<fp_t>(bounding_max[i], hitable->bounding_max[i]);
-	}
-	
-	return true;
+	// TODO: test
+	// printf(
+	// 	"Bounding: %f %f %f - %f %f %f \n",
+	// 	hitable->bounding.min[0], hitable->bounding.min[1], hitable->bounding.min[2],
+	// 	hitable->bounding.max[0], hitable->bounding.max[1], hitable->bounding.max[2]);
+	// printf(
+	// 	"Bounding: %f %f %f - %f %f %f \n",
+	// 	bounding.min[0], bounding.min[1], bounding.min[2],
+	// 	bounding.max[0], bounding.max[1], bounding.max[2]);
+
+	return ERROR_NO;
 }
 
 
 // TODO: not yet completed
-bool Hitable_AABB::rmHitable(SceneObject_Hitable *hitable) {
+error_t Hitable_AABB::rmHitable(SceneObject_Hitable *hitable) {
 	// rm from list
 	// ...
 
@@ -97,32 +111,45 @@ bool Hitable_AABB::rmHitable(SceneObject_Hitable *hitable) {
 	// need to go through for all child bounding box
 	// ...
 
-	return false;
+	return ERROR_ANY;
 }
 
 
-int32_t Hitable_AABB::getHitableSize() const {
+uint32_t Hitable_AABB::getHitableSize() const {
 	return hitable_list.size();
 }
 
 
 // only return hit child and never return self
 bool Hitable_AABB::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
+	// check if box is empty or not
+	// TODO: test
+	if (bounding.isEmpty()) return false;
+
 	// check if hit self bounding box
+	// TODO: modularization
 	const Vec3f	ray_pos	= record->ray.getPosition();
 	const Vec3f	ray_dir	= record->ray.getDirection();
 
-	for (int32_t i = 0; i < 3; i++) {
+	fp_t temp_min	= t_min;
+	fp_t temp_max	= t_max;
+
+	for (uint8_t i = 0; i < 3; i++) {
 
 		fp_t	inv_d	= 1.0 / ray_dir[i];
-		fp_t	t0		= (bounding_min[i] - ray_pos[i]) * inv_d;
-		fp_t	t1		= (bounding_max[i] - ray_pos[i]) * inv_d;
+		fp_t	t0		= (bounding.min[i] - ray_pos[i]) * inv_d;
+		fp_t	t1		= (bounding.max[i] - ray_pos[i]) * inv_d;
 
 		if (inv_d < 0.0) std::swap(t0, t1);
-		fp_t temp_min	= std::min<fp_t>(t0, t_min);
-		fp_t temp_max	= std::max<fp_t>(t1, t_max);
 
-		if (temp_max <= temp_min) return false;
+		temp_min		= std::max<fp_t>(t0, temp_min);
+		temp_max		= std::min<fp_t>(t1, temp_max);
+
+		if (temp_max <= temp_min) {
+			// TODO: test
+			// printf("Enter \n");
+			return false;
+		}
 	}
 
 	// check child
@@ -142,8 +169,9 @@ bool Hitable_AABB::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 		*record		= temp_record;
 	}
 
-	// there must be a hit
-	return true;
+	// cannot return true
+	// hit bounding does not mean it must hit a hitable in the bounding
+	return is_hit;
 }
 
 
@@ -177,8 +205,8 @@ static int32_t compare_x_axis(const void *a, const void *b) {
 	SceneObject_Hitable *hitable_1 = *(SceneObject_Hitable**)a;
 	SceneObject_Hitable *hitable_2 = *(SceneObject_Hitable**)b;
 
-	int32_t	mid_1	= hitable_1->bounding_min[0] + hitable_1->bounding_max[0];
-	int32_t	mid_2	= hitable_2->bounding_min[0] + hitable_2->bounding_max[0];
+	int32_t	mid_1	= hitable_1->bounding.min[0] + hitable_1->bounding.max[0];
+	int32_t	mid_2	= hitable_2->bounding.min[0] + hitable_2->bounding.max[0];
 
 	// compare by mid-point32_t of hitable
 	if (mid_1 < mid_2)	return -1;
@@ -191,8 +219,8 @@ static int32_t compare_y_axis(const void *a, const void *b) {
 	SceneObject_Hitable *hitable_1 = *(SceneObject_Hitable**)a;
 	SceneObject_Hitable *hitable_2 = *(SceneObject_Hitable**)b;
 
-	int32_t	mid_1	= hitable_1->bounding_min[1] + hitable_1->bounding_max[1];
-	int32_t	mid_2	= hitable_2->bounding_min[1] + hitable_2->bounding_max[1];
+	int32_t	mid_1	= hitable_1->bounding.min[1] + hitable_1->bounding.max[1];
+	int32_t	mid_2	= hitable_2->bounding.min[1] + hitable_2->bounding.max[1];
 
 	// compare by mid-point32_t of hitable
 	if (mid_1 < mid_2)	return -1;
@@ -205,8 +233,8 @@ static int32_t compare_z_axis(const void *a, const void *b) {
 	SceneObject_Hitable *hitable_1 = *(SceneObject_Hitable**)a;
 	SceneObject_Hitable *hitable_2 = *(SceneObject_Hitable**)b;
 
-	int32_t	mid_1	= hitable_1->bounding_min[2] + hitable_1->bounding_max[2];
-	int32_t	mid_2	= hitable_2->bounding_min[2] + hitable_2->bounding_max[2];
+	int32_t	mid_1	= hitable_1->bounding.min[2] + hitable_1->bounding.max[2];
+	int32_t	mid_2	= hitable_2->bounding.min[2] + hitable_2->bounding.max[2];
 
 	// compare by mid-point32_t of hitable
 	if (mid_1 < mid_2)	return -1;

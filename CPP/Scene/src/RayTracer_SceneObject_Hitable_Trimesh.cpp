@@ -71,21 +71,9 @@ bool Hitable_Trimesh::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 
 
 void Hitable_Trimesh::updateBoundingBox() {
-	// point32_t 0
-	bounding_min = point[0];
-	bounding_max = point[0];
-
-	// point32_t 1
-	for (int32_t i = 0; i < 3; i++) {
-		bounding_min[i]	= std::min<double>(bounding_min[i], point[1][i]);
-		bounding_max[i]	= std::max<double>(bounding_max[i], point[1][i]);
-	}
-
-	// point32_t 2
-	for (int32_t i = 0; i < 3; i++) {
-		bounding_min[i]	= std::min<double>(bounding_min[i], point[2][i]);
-		bounding_max[i]	= std::max<double>(bounding_max[i], point[2][i]);
-	}
+	bounding.setBounding(point[0], point[0]);
+	bounding.unionBounding(point[1]);
+	bounding.unionBounding(point[2]);
 }
 
 

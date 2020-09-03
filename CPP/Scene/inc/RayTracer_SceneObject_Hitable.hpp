@@ -65,8 +65,8 @@ class SceneObject_Hitable: public SceneElement {
 	// Operation
 	public:
 		// init
-		SceneObject_Hitable()
-		{}
+		SceneObject_Hitable		();
+		~SceneObject_Hitable	();
 		
 		// operation
 		bool			hit		(RecordHit *record) const;

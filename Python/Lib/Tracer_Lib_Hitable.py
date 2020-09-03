@@ -71,7 +71,19 @@ class Hitable_AABB(Hitable):
 		# ...
 
 	# Operation
-	# ...
+	def addHitable(self, hitable: Hitable) -> bool:
+		if hitable is None:
+			return False
+
+		result: int = self._ops_tracer.SceneObject_Hitable_interact(self.object_index, 0, (hitable.object_index,), (4,))
+		return True if result == 0 else False
+
+	def rmHitable(self, hitable: Hitable) -> bool:
+		if hitable is None:
+			return False
+
+		result: int = self._ops_tracer.SceneObject_Hitable_interact(self.object_index, 1, (hitable.object_index,), (4,))
+		return True if result == 0 else False
 
 	# Interface
 	def start(self) -> None:

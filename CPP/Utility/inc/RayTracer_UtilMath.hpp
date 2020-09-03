@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include "RayTracer_Vec3f.hpp"
 #include "RayTracer_Ray.hpp"
+#include "RayTracer_Bounding.hpp"
 
 
 // Define

@@ -16,6 +16,14 @@
 
 // Operation Handling
 // hitable
+SceneObject_Hitable::SceneObject_Hitable() {
+}
+
+
+SceneObject_Hitable::~SceneObject_Hitable() {
+}
+
+
 bool SceneObject_Hitable::hit(RecordHit *record) const {
 	return hit(record, std::numeric_limits<fp_t>::max());
 }

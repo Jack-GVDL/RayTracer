@@ -73,8 +73,7 @@ bool Hitable_Sphere::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 
 
 void Hitable_Sphere::updateBoundingBox() {
-	bounding_min	= center - Vec3f(radius);
-	bounding_max	= center + Vec3f(radius);
+	bounding.setBounding(center - Vec3f(radius), center + Vec3f(radius));
 }
 
 

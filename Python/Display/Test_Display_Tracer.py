@@ -21,7 +21,8 @@ tracer.start()
 
 # Tracer_Sample.buildScene_0(tracer)
 # Tracer_Sample.buildScene_1(tracer)
-Tracer_Sample.buildScene_2(tracer)
+# Tracer_Sample.buildScene_2(tracer)
+Tracer_Sample.buildScene_3(tracer)
 
 camera_1: Camera_Default = tracer.Camera_Default()
 camera_1.setLookFrom(		Vec3f(0, 0, 2)	)
