@@ -27,7 +27,8 @@
 class Hitable_AABB: public SceneObject_Hitable {
 	// Static Function
 	public:
-		static Hitable_AABB*	create	(SceneObject_Hitable* *list, int size_list, int size_leaf);
+		// TODO: static -> member function
+		static Hitable_AABB*	create	(SceneObject_Hitable* *list, int32_t size_list, int32_t size_leaf);
 
 	// Data
 	public:
@@ -36,49 +37,17 @@ class Hitable_AABB: public SceneObject_Hitable {
 	// Operation
 	public:
 		// init
-		Hitable_AABB()
-		{}
+		Hitable_AABB	();
+		~Hitable_AABB	();
 
 		// operation
-		virtual bool	addHitable		(SceneObject_Hitable *hitable);
-		virtual bool	rmHitable		(SceneObject_Hitable *hitable);
-		virtual int		getHitableSize	() const;
+		int8_t 			addHitable		(SceneObject_Hitable *hitable);
+		int8_t			rmHitable		(SceneObject_Hitable *hitable);
+		uint32_t		getHitableSize	() const;
 
 		// interface
-		virtual bool	hit				(RecordHit *record, double t_min, double t_max) const override;
+		virtual bool	hit				(RecordHit *record, fp_t t_min, fp_t t_max) const override;
 };
-
-
-// TODO: backup
-// binary search tree strucutre
-// class Hitable_AABBNode: public Hitable_AABB {
-// 	// Static Function
-// 	public:
-// 		static Hitable_AABB*	create	(SceneObject_Hitable* *list, int size_list, int size_leaf, int size_node);
-//
-// 	// Data
-// 	public:
-// 		Hitable_AABB		*aabb_left;
-// 		Hitable_AABB		*aabb_right;
-// 		int					hitable_size	= 0;
-//
-// 	// Operation
-// 	public:
-// 		// init
-// 		Hitable_AABBNode()
-// 		{}
-//
-// 		~Hitable_AABBNode()
-// 		{}
-//
-// 		// operation
-// 		virtual bool	addHitable		(SceneObject_Hitable *hitable) override;
-// 		virtual bool	rmHitable		(SceneObject_Hitable *hitable) override;
-// 		virtual int		getHitableSize	() const override;
-//
-// 		// interface
-// 		virtual bool	hit				(RecordHit *record, double t_min, double t_max) const override;
-// };
 
 
 // Macro Function

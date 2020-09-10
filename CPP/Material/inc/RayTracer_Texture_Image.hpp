@@ -28,9 +28,9 @@
 class Texture_Image: public Texture {
 	// Data
 	public:
-		Vec3f	*color	= nullptr;
-		int		width	= 0;
-		int		height	= 0;
+		Vec3f		*color	= nullptr;
+		int32_t		width	= 0;
+		int32_t		height	= 0;
 
 	// Operation
 	public:
@@ -39,7 +39,7 @@ class Texture_Image: public Texture {
 		{
 			input_size	= 1;
 			input_list	= new Texture*[input_size];
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// interface
@@ -48,8 +48,7 @@ class Texture_Image: public Texture {
 
 	protected:
 		// interface
-		// backu
-		// virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
+		// ...
 };
 
 

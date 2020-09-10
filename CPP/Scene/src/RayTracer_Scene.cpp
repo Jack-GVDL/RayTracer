@@ -60,23 +60,23 @@ Vec3f Scene::getAmbientIntensity() const {
 }
 
 
-
-bool Scene::hit(RecordHit *record) const {
+int8_t Scene::hit(RecordHit_Extend *record) const {
 	RecordHit	temp_record;
-	bool		is_hit			= false;
-	double		closest			= std::numeric_limits<double>::max();
+	int8_t		is_hit			= 0;
+	fp_t		closest			= record->length_max;
 
 	// set ray
-	temp_record.ray = record->ray;
+	temp_record.ray = record->record.ray;
 
 	// search for hitable in child
 	for (auto *hitable : hitable_list) {
-		if (!hitable->hit(&temp_record, 0.0, closest)) continue;
+		
+		if (!hitable->hit(&temp_record, record->length_min, closest)) continue;
 		// if (temp_record.distance > closest) continue;
 
-		is_hit			= true;
+		is_hit			= 1;
 		closest			= temp_record.distance;
-		*record			= temp_record;
+		record->record	= temp_record;
 	}
 
 	return is_hit;

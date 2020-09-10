@@ -25,26 +25,27 @@ static source_func_t source_func_list[Scatter_Gradient::SOURCE_MAX] = {
 
 
 // Operation Handling
-ScatterState Scatter_Gradient::scatter_shootRay(RecordScatter *dst, RecordScatter *src, ScatterState state) const {
+void Scatter_Gradient::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
 	if (!src->is_hit) {
-		dst->intensity = Vec3f(0);
-		return SCATTER_YIELD;
+		src->threshold = Vec3f(0);
+		return;
 	}
 
 	// get source
-	Vec3f vec_source = source_func_list[source](&(src->record_hit));
+	Vec3f vec_source = source_func_list[source](&(src->record_hit.record));
 	
 	// value addition and multiplication
-	const double intensity_0 = (vec_source[0] + additor[0]) * multiplier[0];
-	const double intensity_1 = (vec_source[1] + additor[1]) * multiplier[1];
-	const double intensity_2 = (vec_source[2] + additor[2]) * multiplier[2];
+	const fp_t	intensity_0	= (vec_source[0] + additor[0]) * multiplier[0];
+	const fp_t	intensity_1	= (vec_source[1] + additor[1]) * multiplier[1];
+	const fp_t	intensity_2	= (vec_source[2] + additor[2]) * multiplier[2];
 
 	// need clamping
-	dst->intensity[0] = UtilMath::clamp<double>(intensity_0, 0.0, 1.0);
-	dst->intensity[1] = UtilMath::clamp<double>(intensity_1, 0.0, 1.0);
-	dst->intensity[2] = UtilMath::clamp<double>(intensity_2, 0.0, 1.0);
+	vec_source[0]	= UtilMath::clamp<fp_t>(intensity_0, 0.0, 1.0);
+	vec_source[1]	= UtilMath::clamp<fp_t>(intensity_1, 0.0, 1.0);
+	vec_source[2]	= UtilMath::clamp<fp_t>(intensity_2, 0.0, 1.0);
 
-	return SCATTER_YIELD;
+	src->intensity	+= (src->threshold * vec_source);
+	src->threshold	= 0;
 }
 
 

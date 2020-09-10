@@ -45,7 +45,8 @@ class Scene: public SceneElement {
 		bool	rmAmbientLight		(SceneObject_Light *light);
 
 		Vec3f	getAmbientIntensity	() const;
-		bool	hit					(RecordHit *hit) const;
+
+		int8_t	hit					(RecordHit_Extend *hit) const;
 };
 
 

@@ -35,7 +35,7 @@ class Material {
 	public:
 		Texture					*transmissive;
 		// Texture					*index;
-		double					index;
+		fp_t					index;
 
 	// Operation
 	public:
@@ -44,12 +44,6 @@ class Material {
 		transmissive	(new Texture_Constant()),
 		index			(RAY_INDEX_AIR)
 		{}
-		
-		// TODO: backup
-		// Material(Texture *transmissive, double index):
-		// transmissive	(transmissive),
-		// index			(index)
-		// {}
 };
 
 

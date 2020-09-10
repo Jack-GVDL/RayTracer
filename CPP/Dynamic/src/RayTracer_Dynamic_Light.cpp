@@ -22,7 +22,7 @@ static int			interact_point						(void *object, int type, void* *list, uint32_t 
 
 // table
 static int			config_directional_setOrientation	(void *object, uint8_t *data, uint32_t size);
-static int			config_point_setAttenuationCoeff	(void *object, uint8_t *data, uint32_t size);
+static int			config_point_setAttenuation			(void *object, uint8_t *data, uint32_t size);
 
 
 // Static Data
@@ -37,7 +37,7 @@ static std::vector<interact_type_func_t>	table_interact_point;
 void RayTracer_Dynamic_Light_init(std::vector<Dynamic_ContainerType*> *type_list) {
 	// table
 	table_config_light_directional.push_back(	config_directional_setOrientation	);
-	table_config_light_point.push_back(			config_point_setAttenuationCoeff	);
+	table_config_light_point.push_back(			config_point_setAttenuation	);
 
 	// create type
 	Dynamic_ContainerType *type;
@@ -108,10 +108,10 @@ static int config_directional_setOrientation(void *object, uint8_t *data, uint32
 }
 
 
-static int config_point_setAttenuationCoeff(void *object, uint8_t *data, uint32_t size) {
+static int config_point_setAttenuation(void *object, uint8_t *data, uint32_t size) {
 	SceneObject_Light_Point			*light			= (SceneObject_Light_Point*)object;
 	double							*coeff			= (double*)data;
 
-	light->setAttenuationCoeff(Vec3f(coeff[0], coeff[1], coeff[2]));
+	light->setAttenuation(Vec3f(coeff[0], coeff[1], coeff[2]));
 	return 0;
 }

@@ -7,13 +7,13 @@
 
 
 // Typedef
-typedef int(*compare_func_t)(const void*, const void*);
+typedef int32_t(*compare_func_t)(const void*, const void*);
 
 
 // Static Function Prototype
-static int	compare_x_axis	(const void *a, const void *b);
-static int	compare_y_axis	(const void *a, const void *b);
-static int	compare_z_axis	(const void *a, const void *b);
+static int32_t	compare_x_axis	(const void *a, const void *b);
+static int32_t	compare_y_axis	(const void *a, const void *b);
+static int32_t	compare_z_axis	(const void *a, const void *b);
 
 
 // Static Data
@@ -25,9 +25,16 @@ static compare_func_t compare_func_list[] = {
 
 
 // Operation Handling
-// aabb
+Hitable_AABB::Hitable_AABB() {
+}
+
+
+Hitable_AABB::~Hitable_AABB() {
+}
+
+
 Hitable_AABB* Hitable_AABB::create(
-	SceneObject_Hitable* *list, int size_list, int size_leaf) {
+	SceneObject_Hitable* *list, int32_t size_list, int32_t size_leaf) {
 
 	// create nothing if list is empty
 	if (size_list == 0) {
@@ -37,13 +44,13 @@ Hitable_AABB* Hitable_AABB::create(
 	// create leaf node if list size is smaller than max node size
 	if (size_list < size_leaf) {
 		Hitable_AABB *aabb = new Hitable_AABB();
-		for (int i = 0; i < size_list; i++) aabb->addHitable(list[i]);
+		for (int32_t i = 0; i < size_list; ++i) aabb->addHitable(list[i]);
 		return aabb;
 	}
 
 	// choose an axis
 	// then sort list
-	int index_compare = int(UtilMath::randDouble() * 3);
+	int32_t index_compare = int32_t(UtilMath::randFloat() * 3);
 	qsort(list, size_list, sizeof(SceneObject_Hitable*), compare_func_list[index_compare]);
 
 	// create aabb or aabb node
@@ -54,12 +61,12 @@ Hitable_AABB* Hitable_AABB::create(
 	Hitable_AABB		*aabb_right	= nullptr;
 	Hitable_AABB		*aabb_node	= new Hitable_AABB();
 
-	if (size_list < size_leaf * 2) {
+	if (size_list <= size_leaf * 2) {
 		aabb_left	= new Hitable_AABB();
 		aabb_right	= new Hitable_AABB();
-		
-		for (int i = 0;				i < size_list / 2;	i++)	aabb_left->addHitable(list[i]);
-		for (int i = size_list / 2;	i < size_list;		i++)	aabb_right->addHitable(list[i]);
+
+		for (int32_t i = 0;				i < size_list / 2;	++i)	aabb_left->addHitable(list[i]);
+		for (int32_t i = size_list / 2;	i < size_list;		++i)	aabb_right->addHitable(list[i]);
 
 	} else {
 		aabb_left	= create(list,					size_list / 2,				size_leaf);
@@ -74,22 +81,15 @@ Hitable_AABB* Hitable_AABB::create(
 
 
 // TODO: missing uniqueness check
-bool Hitable_AABB::addHitable(SceneObject_Hitable *hitable) {
-	// add to list
+int8_t Hitable_AABB::addHitable(SceneObject_Hitable *hitable) {
 	hitable_list.push_back(hitable);
-	
-	// update bounding box
-	for (int i = 0; i < 3; i++) {
-		bounding_min[i]	= std::min<double>(bounding_min[i], hitable->bounding_min[i]);
-		bounding_max[i]	= std::max<double>(bounding_max[i], hitable->bounding_max[i]);
-	}
-	
-	return true;
+	bounding.unionBounding(hitable->bounding);
+	return ERROR_NO;
 }
 
 
 // TODO: not yet completed
-bool Hitable_AABB::rmHitable(SceneObject_Hitable *hitable) {
+error_t Hitable_AABB::rmHitable(SceneObject_Hitable *hitable) {
 	// rm from list
 	// ...
 
@@ -97,44 +97,50 @@ bool Hitable_AABB::rmHitable(SceneObject_Hitable *hitable) {
 	// need to go through for all child bounding box
 	// ...
 
-	return false;
+	return ERROR_ANY;
 }
 
 
-int Hitable_AABB::getHitableSize() const {
+uint32_t Hitable_AABB::getHitableSize() const {
 	return hitable_list.size();
 }
 
 
 // only return hit child and never return self
-bool Hitable_AABB::hit(RecordHit *record, double t_min, double t_max) const {
+bool Hitable_AABB::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
+	// check if box is empty or not
+	// TODO: test
+	if (bounding.isEmpty()) return false;
+
 	// check if hit self bounding box
+	// TODO: modularization
 	const Vec3f	ray_pos	= record->ray.getPosition();
 	const Vec3f	ray_dir	= record->ray.getDirection();
 
-	for (int i = 0; i < 3; i++) {
+	for (uint8_t i = 0; i < 3; i++) {
 
-		double	inv_d	= 1.0 / ray_dir[i];
-		double	t0		= (bounding_min[i] - ray_pos[i]) * inv_d;
-		double	t1		= (bounding_max[i] - ray_pos[i]) * inv_d;
+		fp_t	inv_d	= 1.0 / ray_dir[i];
+		fp_t	t0		= (bounding.min[i] - ray_pos[i]) * inv_d;
+		fp_t	t1		= (bounding.max[i] - ray_pos[i]) * inv_d;
 
 		if (inv_d < 0.0) std::swap(t0, t1);
-		double temp_min	= std::min<double>(t0, t_min);
-		double temp_max	= std::max<double>(t1, t_max);
 
-		if (temp_max <= temp_min) return false;
+		t_min	= std::max<fp_t>(t0, t_min);
+		t_max	= std::min<fp_t>(t1, t_max);
+
+		if (t_max <= t_min) return false;
 	}
 
 	// check child
 	RecordHit	temp_record;
 	bool		is_hit			= false;
-	double		closest			= t_max;
+	fp_t		closest			= t_max;
 
 	// set ray
 	temp_record.ray = record->ray;
 
 	// search for hit in child
-	for (auto *hitable : hitable_list) {
+	for (SceneObject_Hitable* hitable : hitable_list) {
 		if (!hitable->hit(&temp_record, t_min, closest)) continue;
 
 		is_hit		= true;
@@ -142,8 +148,9 @@ bool Hitable_AABB::hit(RecordHit *record, double t_min, double t_max) const {
 		*record		= temp_record;
 	}
 
-	// there must be a hit
-	return true;
+	// cannot return true
+	// hit bounding does not mean it must hit a hitable in the bounding
+	return is_hit;
 }
 
 
@@ -155,7 +162,7 @@ bool Hitable_AABB::hit(RecordHit *record, double t_min, double t_max) const {
 bool Hitable_AABBNode::addHitable(SceneObject_Hitable *hitable) {
 	// first check if hitable bounding box is either in left node or right node
 	// if in the bounding box, then if is oversize, the need to split
-	// if not in bounding box, then random add it into one of the box
+	// if not in bounding box, then random add it int32_to one of the box
 	return false;
 }
 
@@ -166,49 +173,49 @@ bool Hitable_AABBNode::rmHitable(SceneObject_Hitable *hitable) {
 }
 
 
-int Hitable_AABBNode::getHitableSize() const {
+int32_t Hitable_AABBNode::getHitableSize() const {
 	return hitable_size;
 }
 */
 
 
 // Static Function Implementation
-static int compare_x_axis(const void *a, const void *b) {
+static int32_t compare_x_axis(const void *a, const void *b) {
 	SceneObject_Hitable *hitable_1 = *(SceneObject_Hitable**)a;
 	SceneObject_Hitable *hitable_2 = *(SceneObject_Hitable**)b;
 
-	int	mid_1	= hitable_1->bounding_min[0] + hitable_1->bounding_max[0];
-	int	mid_2	= hitable_2->bounding_min[0] + hitable_2->bounding_max[0];
+	int32_t	mid_1	= hitable_1->bounding.min[0] + hitable_1->bounding.max[0];
+	int32_t	mid_2	= hitable_2->bounding.min[0] + hitable_2->bounding.max[0];
 
-	// compare by mid-point of hitable
+	// compare by mid-point32_t of hitable
 	if (mid_1 < mid_2)	return -1;
 	if (mid_1 == mid_2)	return 0;
 	return 1;
 }
 
 
-static int compare_y_axis(const void *a, const void *b) {
+static int32_t compare_y_axis(const void *a, const void *b) {
 	SceneObject_Hitable *hitable_1 = *(SceneObject_Hitable**)a;
 	SceneObject_Hitable *hitable_2 = *(SceneObject_Hitable**)b;
 
-	int	mid_1	= hitable_1->bounding_min[1] + hitable_1->bounding_max[1];
-	int	mid_2	= hitable_2->bounding_min[1] + hitable_2->bounding_max[1];
+	int32_t	mid_1	= hitable_1->bounding.min[1] + hitable_1->bounding.max[1];
+	int32_t	mid_2	= hitable_2->bounding.min[1] + hitable_2->bounding.max[1];
 
-	// compare by mid-point of hitable
+	// compare by mid-point32_t of hitable
 	if (mid_1 < mid_2)	return -1;
 	if (mid_1 == mid_2)	return 0;
 	return 1;
 }
 
 
-static int compare_z_axis(const void *a, const void *b) {
+static int32_t compare_z_axis(const void *a, const void *b) {
 	SceneObject_Hitable *hitable_1 = *(SceneObject_Hitable**)a;
 	SceneObject_Hitable *hitable_2 = *(SceneObject_Hitable**)b;
 
-	int	mid_1	= hitable_1->bounding_min[2] + hitable_1->bounding_max[2];
-	int	mid_2	= hitable_2->bounding_min[2] + hitable_2->bounding_max[2];
+	int32_t	mid_1	= hitable_1->bounding.min[2] + hitable_1->bounding.max[2];
+	int32_t	mid_2	= hitable_2->bounding.min[2] + hitable_2->bounding.max[2];
 
-	// compare by mid-point of hitable
+	// compare by mid-point32_t of hitable
 	if (mid_1 < mid_2)	return -1;
 	if (mid_1 == mid_2)	return 0;
 	return 1;

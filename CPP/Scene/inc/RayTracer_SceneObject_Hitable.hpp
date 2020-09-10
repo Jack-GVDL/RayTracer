@@ -43,8 +43,15 @@ struct RecordHit {
 
 	// info on the point of intersection
 	Vec3f					normal;
-	Vec3f					point;
-	double					distance;
+	Vec3f					point;  // remove this when need to reduce size of struct
+	fp_t					distance;
+};
+
+
+struct RecordHit_Extend {
+	RecordHit				record;
+	fp_t					length_min		= RAY_EPSILON;
+	fp_t					length_max		= std::numeric_limits<fp_t>::max();
 };
 
 
@@ -58,23 +65,20 @@ class SceneObject_Hitable: public SceneElement {
 	// Operation
 	public:
 		// init
-		SceneObject_Hitable()
-		{}
-
-		// TODO: backup
-		// SceneObject_Hitable(Material *material):
-		// material(*material)
-		// {}
+		SceneObject_Hitable		();
+		~SceneObject_Hitable	();
 		
 		// operation
 		bool			hit		(RecordHit *record) const;
-		bool			hit		(RecordHit *record, double t_max) const;
+		bool			hit		(RecordHit *record, fp_t t_max) const;
 
 		// interface
-		virtual bool	hit		(RecordHit *record, double t_min, double t_max) const = 0;
+		virtual bool	hit		(RecordHit *record, fp_t t_min, fp_t t_max) const = 0;
 };
 
 
+// TODO: remove
+/*
 class SceneObject_HitableList: public SceneObject_Hitable {
 	// Data
 	public:
@@ -87,8 +91,9 @@ class SceneObject_HitableList: public SceneObject_Hitable {
 		virtual bool	rmHitable	(SceneObject_Hitable *hitable);
 		
 		// interface
-		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
+		virtual bool	hit			(RecordHit *record, fp_t t_mix, fp_t t_max) const override;
 };
+*/
 
 
 // Inline Function Implementation

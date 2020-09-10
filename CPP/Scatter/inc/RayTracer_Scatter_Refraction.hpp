@@ -44,10 +44,10 @@ class Scatter_Refraction: public Scatter {
 		
 	protected:
 		// interface
-		virtual ScatterState	scatter_shootRay	(RecordScatter *dst, RecordScatter *src, ScatterState state) const override;
+		virtual void			scatter				(RecordRay *src, MemoryControl_Scatter *memory_control) const;
 
 		// helper
-		bool 					createRecord_outer	(RecordScatter *dst, RecordScatter *src, double *index_from, double *index_to) const;
+		bool 					setRecord_outer		(RecordRay *dst, RecordRay *src, fp_t *index_from, fp_t *index_to) const;
 };
 
 

@@ -1,9 +1,9 @@
 from .Tracer_Ops import Ops_Tracer
-from .Tracer_Base import Tracer_Base
+from .Tracer_ObjectBase import Tracer_ObjectBase
 from .Tracer_Texture import Texture
 
 
-class Surface(Tracer_Base):
+class Surface(Tracer_ObjectBase):
 
 	@ classmethod
 	def _getType_(cls, ops: Ops_Tracer, name: str) -> int:
@@ -22,13 +22,16 @@ class Surface(Tracer_Base):
 
 	# Operation
 	def convertToTexture(self, texture: Texture) -> bool:
-		result: int = self._ops_tracer.Surface_interact(self._object_index, 0, [texture.object_index], [2])
+		assert self._ops_tracer is not None
+		result: int = self._ops_tracer.Surface_interact(self.object_index, 0, (texture.object_index,), (2,))
 		return True if result == 0 else False
 
 	def load(self) -> bool:
-		result: int = self._ops_tracer.Surface_load(self._object_index)
+		assert self._ops_tracer is not None
+		result: int = self._ops_tracer.Surface_load(self.object_index)
 		return True if result == 0 else False
 
 	def dump(self) -> bool:
-		result: int = self._ops_tracer.Surface_dump(self._object_index)
+		assert self._ops_tracer is not None
+		result: int = self._ops_tracer.Surface_dump(self.object_index)
 		return True if result == 0 else False

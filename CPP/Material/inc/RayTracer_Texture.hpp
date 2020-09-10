@@ -35,7 +35,7 @@ class Texture {
 		// as order matter
 		// std::vector<Mapper*>	mapper_list;
 		Texture*				*input_list		= nullptr;
-		int						input_size		= 0;
+		int32_t					input_size		= 0;
 
 	// Operation
 	public:
@@ -46,11 +46,8 @@ class Texture {
 		}
 
 		// operation
-		// bool			addMapper	(Mapper *mapper);
-		// bool			rmMapper	(Mapper *mapper);
-
-		bool			addInput	(Texture *texture, int index);
-		bool			rmInput		(int index);
+		bool			addInput	(Texture *texture, int32_t index);
+		bool			rmInput		(int32_t index);
 
 		void			getPixel	(Vec3f &dst, const Vec3f &src) const;
 
@@ -60,8 +57,7 @@ class Texture {
 
 	protected:
 		// interface
-		// backup
-		// virtual void	_getPixel_	(Vec3f &dst, std::vector<Vec3f> *src) const = 0;
+		// ...
 };
 
 

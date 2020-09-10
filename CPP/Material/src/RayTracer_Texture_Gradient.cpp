@@ -30,31 +30,16 @@ void Texture_Gradient::setPixel(const Vec3f &point, const Vec3f &pixel) {
 
 void Texture_Gradient::_getPixel_(Vec3f &dst, Vec3f *src) const {
 	// value addition and multiplication
-	const double intensity_0 = (src[0][0] + additor[0]) * multiplier[0];
-	const double intensity_1 = (src[0][1] + additor[1]) * multiplier[1];
-	const double intensity_2 = (src[0][2] + additor[2]) * multiplier[2];
+	const fp_t	intensity_0 = (src[0][0] + additor[0]) * multiplier[0];
+	const fp_t	intensity_1 = (src[0][1] + additor[1]) * multiplier[1];
+	const fp_t	intensity_2 = (src[0][2] + additor[2]) * multiplier[2];
 
 	// need clamping
 	dst = Vec3f(
-		UtilMath::clamp<double>(intensity_0, 0.0, 1.0),
-		UtilMath::clamp<double>(intensity_1, 0.0, 1.0),
-		UtilMath::clamp<double>(intensity_2, 0.0, 1.0));
+		UtilMath::clamp<fp_t>(intensity_0, 0.0, 1.0),
+		UtilMath::clamp<fp_t>(intensity_1, 0.0, 1.0),
+		UtilMath::clamp<fp_t>(intensity_2, 0.0, 1.0));
 }
-
-
-// TODO: backup
-// void Texture_Gradient::_getPixel_(Vec3f &dst, const Vec3f &src) const {
-// 	// value addition and multiplication
-// 	const double intensity_0 = (src[0] + additor[0]) * multiplier[0];
-// 	const double intensity_1 = (src[1] + additor[1]) * multiplier[1];
-// 	const double intensity_2 = (src[2] + additor[2]) * multiplier[2];
-
-// 	// need clamping
-// 	dst = Vec3f(
-// 		UtilMath::clamp<double>(intensity_0, 0.0, 1.0),
-// 		UtilMath::clamp<double>(intensity_1, 0.0, 1.0),
-// 		UtilMath::clamp<double>(intensity_2, 0.0, 1.0));
-// }
 
 
 // Static Function Implementation

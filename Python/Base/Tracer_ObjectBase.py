@@ -1,24 +1,29 @@
-from .Tracer_Base import Tracer_Base
+from typing import List, Any
 from .Tracer_Ops import Ops_Tracer
 
 
-class Tracer:
+class Tracer_ObjectBase:
 
 	def __init__(self):
+		# super
 		super().__init__()
 
 		# data
-		self._is_started:	bool		= False
+		self._object_index: int			= 0
 		self._ops_tracer:	Ops_Tracer	= None
 
 	# Operation
+	# operation
+	@ property
+	def object_index(self) -> int:
+		return self._object_index
+
 	def setOps_tracer(self, ops: Ops_Tracer) -> None:
 		self._ops_tracer = ops
 
+	# interface
 	def start(self) -> None:
-		Tracer_Base.setGlobal_ops_tracer(self._ops_tracer)
-		self._is_started = True
+		pass
 
 	def end(self) -> None:
-		Tracer_Base.setGlobal_ops_tracer(None)
-		self._is_started = False
+		pass

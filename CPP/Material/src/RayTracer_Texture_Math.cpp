@@ -34,12 +34,6 @@ void Texture_Math_Additor::_getPixel_(Vec3f &dst, Vec3f *src) const {
 }
 
 
-// TODO: backup
-// void Texture_Math_Additor::_getPixel_(Vec3f &dst, const Vec3f &src) const {
-// 	dst += additor;
-// }
-
-
 // multiplier
 void Texture_Math_Multiplier::setMultiplier(const Vec3f &value) {
 	this->multiplier = value;
@@ -54,12 +48,6 @@ void Texture_Math_Multiplier::setPixel(const Vec3f &point, const Vec3f &pixel) {
 void Texture_Math_Multiplier::_getPixel_(Vec3f &dst, Vec3f *src) const {
 	dst = src[0] * multiplier;
 }
-
-
-// TODO: backup
-// void Texture_Math_Multiplier::_getPixel_(Vec3f &dst, const Vec3f &src) const {
-// 	dst *= multiplier;
-// }
 
 
 // Static Function Implementation

@@ -58,7 +58,7 @@ bool Surface_BMP::load() {
 	//
 	// for BMP
 	// BGR (from low bit to high bit), actually need to see mask header
-	for (int i = 0; i < width * height; i++) {
+	for (int32_t i = 0; i < width * height; i++) {
 		data[i * 3 + 0] = file->data.data()[i * 3 + 2];
 		data[i * 3 + 1] = file->data.data()[i * 3 + 1];
 		data[i * 3 + 2] = file->data.data()[i * 3 + 0];

@@ -30,13 +30,13 @@
 class Surface {
 	// Data
 	public:
-		uint8_t	*data	= nullptr;
+		uint8_t		*data	= nullptr;
 
-		int 	width, height;		// image width and height (in pixel)
-		int 	byte_data;			// byte size of data
-		int 	bit_pixel;			// bit size per pixel
-		int 	bit_channel;		// bit size per channel
-		int 	size_channel;		// number of channel per pixel
+		int32_t 	width, height;		// image width and height (in pixel)
+		int32_t 	byte_data;			// byte size of data
+		int32_t 	bit_pixel;			// bit size per pixel
+		int32_t 	bit_channel;		// bit size per channel
+		int32_t 	size_channel;		// number of channel per pixel
 
 	// Operation
 	public:

@@ -14,11 +14,15 @@ class Texture_Input(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "input")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	# ...
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "input")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Convolutor(Texture):
@@ -30,12 +34,11 @@ class Texture_Convolutor(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "convolutor")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	def setTexture(self, texture: Texture) -> None:
-		result: int = self._ops_tracer.Texture_interact(self._object_index, 0, [texture.object_index], [2])
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (texture.object_index,), (2,))
 
 	def setKernel(self, kernel: List[float]) -> None:
 		kernel_width: float = math.sqrt(len(kernel))
@@ -45,8 +48,13 @@ class Texture_Convolutor(Texture):
 		data_width:		bytes	= struct.pack("i" * 2, int(kernel_width), 0)  # TODO: find a better way of implementation
 		data_kernel:	bytes	= struct.pack("d" * len(kernel), *kernel)
 
-		self._ops_tracer.Texture_config(self._object_index, 0, data_width, 8)
-		self._ops_tracer.Texture_config(self._object_index, 1, data_kernel, len(kernel) * 8)
+		self._ops_tracer.Texture_config(self.object_index, 0, data_width)
+		self._ops_tracer.Texture_config(self.object_index, 1, data_kernel)
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "convolutor")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Constant(Texture):
@@ -58,11 +66,15 @@ class Texture_Constant(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "constant")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	# ...
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "constant")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Checkerboard(Texture):
@@ -74,13 +86,17 @@ class Texture_Checkerboard(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "checkerboard")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	def setBoardSize(self, size: Vec3f) -> None:
 		data:	bytes	= size.convertToBytes()
-		result:	int		= self._ops_tracer.Texture_config(self._object_index, 0, data, len(data))
+		result:	int		= self._ops_tracer.Texture_config(self._object_index, 0, data)
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "checkerboard")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Image(Texture):
@@ -92,11 +108,15 @@ class Texture_Image(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "image")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	# ...
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "image")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Additor(Texture):
@@ -108,13 +128,17 @@ class Texture_Additor(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "math_additor")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	def setAdditor(self, value: Vec3f) -> None:
 		data:	bytes	= value.convertToBytes()
-		result: int		= self._ops_tracer.Texture_config(self._object_index, 0, data, len(data))
+		result: int		= self._ops_tracer.Texture_config(self.object_index, 0, data)
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "math_additor")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Multiplier(Texture):
@@ -126,13 +150,17 @@ class Texture_Multiplier(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "math_multiplier")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	def setMultiplier(self, value: Vec3f) -> None:
 		data:	bytes	= value.convertToBytes()
-		result: int		= self._ops_tracer.Texture_config(self._object_index, 0, data, len(data))
+		result: int		= self._ops_tracer.Texture_config(self.object_index, 0, data)
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "math_multiplier")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Mapper_Sphere(Texture):
@@ -144,12 +172,16 @@ class Texture_Mapper_Sphere(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "mapper_sphere")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	def setSphere(self, sphere: Hitable_Sphere) -> None:
-		result: int = self._ops_tracer.Texture_interact(self._object_index, 0, [sphere.object_index], [4])
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (sphere.object_index,), (4,))
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "mapper_sphere")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Mapper_Trimesh(Texture):
@@ -161,12 +193,16 @@ class Texture_Mapper_Trimesh(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "mapper_trimesh")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	def setTrimesh(self, trimesh: Hitable_Trimesh) -> None:
-		result: int = self._ops_tracer.Texture_interact(self._object_index, 0, [trimesh.object_index], [4])
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (trimesh.object_index,), (4,))
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "mapper_trimesh")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Direction_Sphere(Texture):
@@ -178,12 +214,16 @@ class Texture_Direction_Sphere(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "dir_sphere")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	def setSphere(self, sphere: Hitable_Sphere) -> None:
-		result: int = self._ops_tracer.Texture_interact(self._object_index, 0, [sphere.object_index], [4])
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (sphere.object_index,), (4,))
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "dir_sphere")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)
 
 
 class Texture_Direction_Trimesh(Texture):
@@ -195,9 +235,13 @@ class Texture_Direction_Trimesh(Texture):
 		# ...
 
 		# init
-		type_index: int		= self._getType_(self._ops_tracer, "dir_trimesh")
-		self._object_index	= self._ops_tracer.Texture_create(type_index)
+		# ...
 
 	# Operation
 	def setTrimesh(self, trimesh: Hitable_Trimesh) -> None:
-		result: int = self._ops_tracer.Texture_interact(self._object_index, 0, [trimesh.object_index], [2])
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (trimesh.object_index,), (2,))
+
+	# Interface
+	def start(self) -> None:
+		type_index: int		= self._getType_(self._ops_tracer, "dir_trimesh")
+		self._object_index	= self._ops_tracer.Texture_create(type_index)

@@ -16,21 +16,31 @@
 
 // Operation Handling
 // hitable
-bool SceneObject_Hitable::hit(RecordHit *record) const {
-	return hit(record, std::numeric_limits<double>::max());
+SceneObject_Hitable::SceneObject_Hitable() {
 }
 
 
-bool SceneObject_Hitable::hit(RecordHit *record, double t_max) const {
+SceneObject_Hitable::~SceneObject_Hitable() {
+}
+
+
+bool SceneObject_Hitable::hit(RecordHit *record) const {
+	return hit(record, std::numeric_limits<fp_t>::max());
+}
+
+
+bool SceneObject_Hitable::hit(RecordHit *record, fp_t t_max) const {
 	return hit(record, 0.0, t_max);
 }
 
 
 // hitable list
-bool SceneObject_HitableList::hit(RecordHit *record, double t_min, double t_max) const {
+// TODO: remove
+/*
+bool SceneObject_HitableList::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 	RecordHit	temp_record;
 	bool		is_hit			= false;
-	double		closest			= t_max;
+	fp_t		closest			= t_max;
 
 	// set ray
 	temp_record.ray = record->ray;
@@ -59,6 +69,7 @@ bool SceneObject_HitableList::addHitable(SceneObject_Hitable *hitable) {
 bool SceneObject_HitableList::rmHitable(SceneObject_Hitable *hitable) {
 	return false;
 }
+*/
 
 
 // Static Function Implementation

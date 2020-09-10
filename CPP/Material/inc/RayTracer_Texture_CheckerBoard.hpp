@@ -39,7 +39,7 @@ class Texture_CheckerBoard: public Texture {
 		{
 			input_size	= 0;
 			input_list	= nullptr;
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation

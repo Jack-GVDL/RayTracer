@@ -36,7 +36,7 @@ class Texture_Constant: public Texture {
 		{
 			input_size	= 0;
 			input_list	= nullptr;
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// Texture_Constant(const Vec3f &color):
@@ -49,8 +49,7 @@ class Texture_Constant: public Texture {
 
 	protected:
 		// interface
-		// backup
-		// virtual void	_getPixel_	(Vec3f &dst, const Vec3f &src) const override;
+		// ...
 };
 
 

@@ -1,56 +1,52 @@
 from typing import *
-from Base import *
-from Lib import *
+from Tracer import *
 from Display.Display_Tracer import Display_Tracer
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import *
-from ctypes import CDLL
-import ctypes
 import sys
 import os
+import numpy as np
+import cv2
 
 
-""" tracer """
-# add dll path
-os.add_dll_directory("C:/WINDOWS/system32")
-os.add_dll_directory("D:/Anaconda/Library/mingw-w64/bin")  # TODO: it should not use Anaconda
+# tracer ops
+path_tracer:	str				= os.path.join(os.getcwd(), "../Base/bin/Tracer.dll")
+ops_tracer:		Ops_Tracer_DLL	= Ops_Tracer_DLL()
+ops_tracer.setDLLPath_tracer(path_tracer)
 
-# import dll file
-path_tracer:	str = os.path.join(os.getcwd(), "../Base/bin/Tracer.dll")
-dll_tracer:		CDLL = ctypes.CDLL(path_tracer)
-
-# create ops
-ops_tracer:		Ops_Tracer_DLL = Ops_Tracer_DLL()
-ops_tracer.setDLL_tracer(dll_tracer)
-ops_tracer.RayTracer_init()
-
+# tracer
 tracer:			Tracer = Tracer()
 tracer.setOps_tracer(ops_tracer)
 tracer.start()
 
-# check
-ops_tracer.RayTracer_info()
+Tracer_Sample.buildScene_0(tracer, 1)
+# Tracer_Sample.buildScene_1(tracer)
+# Tracer_Sample.buildScene_2(tracer)
+# Tracer_Sample.buildScene_3(tracer, 2)
 
-# build sample scene
-# ops_tracer.Sample_buildScene(0)
+camera_1: Camera_Default = tracer.Camera_Default()
+camera_1.setLookFrom(		Vec3f(0, 0, 2)	)
+camera_1.setLookAt(			Vec3f(0, 0, 0)	)
+camera_1.setAspectRatio(	1				)
 
-
-""" object creation """
-scene:	Scene	= Scene()
-Tracer_Sample.buildScene_0(scene)
-# Tracer_Sample.buildScene_1(scene)
-# Tracer_Sample.buildScene_2(scene)
-# Tracer_Sample.buildScene_3(scene)
-
-ops_tracer.Test_checkStatus(0, bytes(), 0)
-ops_tracer.Test_checkStatus(1, bytes(), 0)
-
-ops_tracer.Camera_setLookFrom(	1,	Vec3f(0, 0, 2))
-ops_tracer.Camera_setLookAt(	1,	Vec3f(0, 0, 0))
-ops_tracer.Camera_setAspectRatio(1, 1)
+# TODO: test
+ops_tracer.Test_checkStatus(0, [], 0)
 
 
 """ display """
+# OpenCV
+array: np.ndarray = np.zeros(500 * 500 * 3, dtype=np.uint8)
+camera_1.traceRect(array, 500, 500, 5, False, True, 0)
+
+image = array.reshape((500, 500, 3))
+image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
+cv2.imshow("Image", image)
+cv2.waitKey(0)
+
+
+"""
+# PyQt5
 app = QApplication(sys.argv)
 color_background: List[int] = [33, 36, 43]
 
@@ -75,11 +71,12 @@ widget.setLayout(layout)
 layout.addWidget(display_tracer)
 
 # update
-display_tracer.setDisplaySize(1080, 720)
-display_tracer.setOps_tracer(ops_tracer)
+display_tracer.setDisplaySize(800, 800)
+display_tracer.setCamera(camera_1)
 display_tracer.update()
 
 # show
 widget.show()
 
 sys.exit(app.exec_())
+"""

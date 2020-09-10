@@ -30,7 +30,7 @@ class Hitable_Sphere: public SceneObject_Hitable {
 	// Data
 	public:
 		Vec3f		center	= Vec3f();
-		double		radius	= 0;
+		fp_t		radius	= 0;
 
 	// Operation
 	public:
@@ -40,44 +40,17 @@ class Hitable_Sphere: public SceneObject_Hitable {
 			updateBoundingBox();
 		}
 
-		// backup
-		// SceneObject_Sphere(Vec3f center, double radius)
-		// {
-		// 	setCenter(center);
-		// 	setRadius(radius);
-		// }
-
 		// operation
 		void			setCenter	(const Vec3f &center);
-		void			setRadius	(double radius);
+		void			setRadius	(fp_t radius);
 
 		// interface
-		virtual bool	hit			(RecordHit *record, double t_min, double t_max) const override;
+		virtual bool	hit			(RecordHit *record, fp_t t_min, fp_t t_max) const override;
 	
 	protected:
 		// operation
 		void			updateBoundingBox	();
 };
-
-
-// TODO: backup
-// class Mapper_Sphere: public Mapper {
-// 	// Data
-// 	public:
-// 		Hitable_Sphere		*sphere;
-
-// 	// Operation
-// 	public:
-// 		// init
-// 		Mapper_Sphere()
-// 		{}
-
-// 		// operation
-// 		void			setSphere		(Hitable_Sphere *sphere);
-
-// 		// interface
-// 		virtual void	map				(Vec3f &vector) const override;
-// };
 
 
 class Texture_Mapper_Sphere: public Texture {
@@ -92,7 +65,7 @@ class Texture_Mapper_Sphere: public Texture {
 		{
 			input_size	= 1;
 			input_list	= new Texture*[input_size];
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation
@@ -104,8 +77,7 @@ class Texture_Mapper_Sphere: public Texture {
 
 	protected:
 		// interface
-		// TODO: backup
-		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+		// ...
 };
 
 
@@ -121,7 +93,7 @@ class Texture_Direction_Sphere: public Texture {
 		{
 			input_size	= 2;
 			input_list	= new Texture*[input_size];
-			for (int i = 0; i < input_size; i++) input_list[i] = nullptr;
+			for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
 		}
 
 		// operation
@@ -133,8 +105,7 @@ class Texture_Direction_Sphere: public Texture {
 
 	protected:
 		// interface
-		// TODO: backup
-		// virtual void	_getPixel_		(Vec3f &dst, const Vec3f &src) const override;
+		// ...
 };
 
 
