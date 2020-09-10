@@ -35,13 +35,8 @@ class Hitable_Trimesh: public SceneObject_Hitable {
 	// Operation
 	public:
 		// init
-		Hitable_Trimesh() {
-			point[0]	= Vec3f(0);
-			point[1]	= Vec3f(0);
-			point[2]	= Vec3f(0);
-
-			updateBoundingBox();
-		}
+		Hitable_Trimesh		();
+		~Hitable_Trimesh	();
 
 		// operation
 		void			setPoint	(const Vec3f &p0, const Vec3f &p1, const Vec3f &p2);

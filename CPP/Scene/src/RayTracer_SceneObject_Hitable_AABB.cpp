@@ -33,8 +33,6 @@ Hitable_AABB::~Hitable_AABB() {
 }
 
 
-// backup
-/*
 Hitable_AABB* Hitable_AABB::create(
 	SceneObject_Hitable* *list, int32_t size_list, int32_t size_leaf) {
 
@@ -46,7 +44,7 @@ Hitable_AABB* Hitable_AABB::create(
 	// create leaf node if list size is smaller than max node size
 	if (size_list < size_leaf) {
 		Hitable_AABB *aabb = new Hitable_AABB();
-		for (int32_t i = 0; i < size_list; i++) aabb->addHitable(list[i]);
+		for (int32_t i = 0; i < size_list; ++i) aabb->addHitable(list[i]);
 		return aabb;
 	}
 
@@ -63,12 +61,12 @@ Hitable_AABB* Hitable_AABB::create(
 	Hitable_AABB		*aabb_right	= nullptr;
 	Hitable_AABB		*aabb_node	= new Hitable_AABB();
 
-	if (size_list < size_leaf * 2) {
+	if (size_list <= size_leaf * 2) {
 		aabb_left	= new Hitable_AABB();
 		aabb_right	= new Hitable_AABB();
-		
-		for (int32_t i = 0;				i < size_list / 2;	i++)	aabb_left->addHitable(list[i]);
-		for (int32_t i = size_list / 2;	i < size_list;		i++)	aabb_right->addHitable(list[i]);
+
+		for (int32_t i = 0;				i < size_list / 2;	++i)	aabb_left->addHitable(list[i]);
+		for (int32_t i = size_list / 2;	i < size_list;		++i)	aabb_right->addHitable(list[i]);
 
 	} else {
 		aabb_left	= create(list,					size_list / 2,				size_leaf);
@@ -80,24 +78,12 @@ Hitable_AABB* Hitable_AABB::create(
 	aabb_node->addHitable(aabb_right);
 	return aabb_node;
 }
-*/
 
 
 // TODO: missing uniqueness check
 int8_t Hitable_AABB::addHitable(SceneObject_Hitable *hitable) {
 	hitable_list.push_back(hitable);
 	bounding.unionBounding(hitable->bounding);
-	
-	// TODO: test
-	// printf(
-	// 	"Bounding: %f %f %f - %f %f %f \n",
-	// 	hitable->bounding.min[0], hitable->bounding.min[1], hitable->bounding.min[2],
-	// 	hitable->bounding.max[0], hitable->bounding.max[1], hitable->bounding.max[2]);
-	// printf(
-	// 	"Bounding: %f %f %f - %f %f %f \n",
-	// 	bounding.min[0], bounding.min[1], bounding.min[2],
-	// 	bounding.max[0], bounding.max[1], bounding.max[2]);
-
 	return ERROR_NO;
 }
 
@@ -131,9 +117,6 @@ bool Hitable_AABB::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 	const Vec3f	ray_pos	= record->ray.getPosition();
 	const Vec3f	ray_dir	= record->ray.getDirection();
 
-	fp_t temp_min	= t_min;
-	fp_t temp_max	= t_max;
-
 	for (uint8_t i = 0; i < 3; i++) {
 
 		fp_t	inv_d	= 1.0 / ray_dir[i];
@@ -142,14 +125,10 @@ bool Hitable_AABB::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 
 		if (inv_d < 0.0) std::swap(t0, t1);
 
-		temp_min		= std::max<fp_t>(t0, temp_min);
-		temp_max		= std::min<fp_t>(t1, temp_max);
+		t_min	= std::max<fp_t>(t0, t_min);
+		t_max	= std::min<fp_t>(t1, t_max);
 
-		if (temp_max <= temp_min) {
-			// TODO: test
-			// printf("Enter \n");
-			return false;
-		}
+		if (t_max <= t_min) return false;
 	}
 
 	// check child
@@ -161,7 +140,7 @@ bool Hitable_AABB::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 	temp_record.ray = record->ray;
 
 	// search for hit in child
-	for (auto *hitable : hitable_list) {
+	for (SceneObject_Hitable* hitable : hitable_list) {
 		if (!hitable->hit(&temp_record, t_min, closest)) continue;
 
 		is_hit		= true;

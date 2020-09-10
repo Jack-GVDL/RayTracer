@@ -35,6 +35,7 @@ typedef int		(*interact_type_func_t)	(void*, void**, uint32_t);
 
 
 // Data Structure
+// TODO: rename: Dynamic_ContainerSubType
 struct Dynamic_ContainerType {
 	// Data
 	std::string			name;
@@ -100,6 +101,7 @@ class Dynamic_Container: public Dynamic_ContainerBase {
 };
 
 
+// TODO: rename: Dynamic_ContainerType
 // use this to hide implementation detail
 class Dynamic_ContainerListBase {
 	// Data
@@ -161,7 +163,65 @@ class Dynamic_ContainerList: public Dynamic_ContainerListBase {
 		int						config			(int index, int type, uint8_t *data, uint32_t size);
 		int						interact		(int index, int type, Dynamic_ContainerBase* *list, uint32_t size);
 		int						size			();
+
+		
 };
+
+
+/*
+// TODO: reanme: Dynamic_ContainerList
+class Dynamic_ContainerClusterBase {
+	// Data
+	public:
+		std::vector<int>						index_list;
+		std::vector<Dynamic_ContainerBase>		container_list;
+
+	// Operation
+	protected:
+		// init, del
+		Dynamic_ContainerClusterBase()
+		{}
+
+		~Dynamic_ContainerClusterBase()
+		{}
+
+		// operation
+		error_t					_setList_		(std::vector<int> index_list);
+		error_t					_load_			();
+		error_t					_dump_			();
+
+		Dynamic_ContainerBase*	_data_			();
+		int32_t					_size_			();
+		error_t					_isLoaded_		();
+};
+
+
+template <class T>
+class Dynamic_ContainerCluster: public Dynamic_ContainerCluster {
+	// Data
+	public:
+		// ...
+
+	// Operation
+	public:
+		// init, del
+		Dynamic_ContainerCluster():
+		Dynamic_ContainerClusterBase()
+		{}
+
+		~Dynamic_ContainerCluster()
+		{}
+
+		// operation
+		error_t					setList			(std::vector<int> index_list);
+		error_t					load			();
+		error_t					dump			();
+
+		Dynamic_Container<T>*	data			();
+		int32_t					size			();
+		error_t					isLoaded		();
+};
+*/
 
 
 // Macro Function

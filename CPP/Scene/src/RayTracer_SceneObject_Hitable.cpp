@@ -35,6 +35,8 @@ bool SceneObject_Hitable::hit(RecordHit *record, fp_t t_max) const {
 
 
 // hitable list
+// TODO: remove
+/*
 bool SceneObject_HitableList::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 	RecordHit	temp_record;
 	bool		is_hit			= false;
@@ -67,6 +69,7 @@ bool SceneObject_HitableList::addHitable(SceneObject_Hitable *hitable) {
 bool SceneObject_HitableList::rmHitable(SceneObject_Hitable *hitable) {
 	return false;
 }
+*/
 
 
 // Static Function Implementation

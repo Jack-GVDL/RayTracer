@@ -174,6 +174,25 @@ class Ops_Tracer:
 	def SceneObject_Hitable_setIndex(self, index: int, value: float) -> int:
 		raise NotImplementedError
 
+	# aabb
+	def SceneObject_AABB_Type_getIndex(self, name: str) -> int:
+		raise NotImplementedError
+
+	def SceneObject_AABB_create(self, type_: int) -> int:
+		raise NotImplementedError
+
+	def SceneObject_AABB_destroy(self, index: int) -> int:
+		raise NotImplementedError
+
+	def SceneObject_AABB_config(self, index: int, type_: int , data: bytes) -> int:
+		raise NotImplementedError
+
+	def SceneObject_AABB_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		raise NotImplementedError
+
+	def SceneObject_AABB_load(self, index: int) -> int:
+		raise NotImplementedError
+
 	# light
 	def SceneObject_Light_Type_getIndex(self, name: str) -> int:
 		raise NotImplementedError
@@ -203,8 +222,14 @@ class Ops_Tracer:
 	def Scene_addHitable(self, index_hitable: int) -> int:
 		raise NotImplementedError
 
+	def Scene_addAABB(self, index_aabb: int) -> int:
+		raise NotImplementedError
+
 	def Scene_rmLight(self, index_light: int) -> int:
 		raise NotImplementedError
 
 	def Scene_rmHitable(self, index_hitable: int) -> int:
+		raise NotImplementedError
+
+	def Scene_rmAABB(self, index_aabb: int) -> int:
 		raise NotImplementedError

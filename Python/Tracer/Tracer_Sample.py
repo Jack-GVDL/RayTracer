@@ -6,7 +6,7 @@ from .Tracer import Tracer
 class Tracer_Sample:
 
 	@ classmethod
-	def buildScene_0(cls, tracer: Tracer) -> None:
+	def buildScene_0(cls, tracer: Tracer, aabb_level: int = 0) -> None:
 		# object
 		texture_emissive:		Texture_Constant	= tracer.Texture_Constant()
 		texture_ambient:		Texture_Constant	= tracer.Texture_Constant()
@@ -32,9 +32,13 @@ class Tracer_Sample:
 		hitable_trimesh_3:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 		hitable_trimesh_4:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 
+		aabb_1:					AABB_Default		= tracer.AABB_Default()
+
 		light_point_1:			Light_Point			= tracer.Light_Point()
 		light_point_2:			Light_Point			= tracer.Light_Point()
 		light_dir_1:			Light_Directional	= tracer.Light_Directional()
+
+		scene: 					Scene				= tracer.Scene()
 
 		# texture
 		texture_emissive.setPixel(		Vec3f(), Vec3f(0)	)
@@ -112,6 +116,20 @@ class Tracer_Sample:
 		hitable_trimesh_4.setPoint_2(Vec3f(5, 5, -5))
 		hitable_trimesh_4.addScatter(scatter_light_1)
 
+		if aabb_level == 0:
+			scene.addHitable(hitable_trimesh_1)
+			scene.addHitable(hitable_trimesh_2)
+			scene.addHitable(hitable_trimesh_3)
+			scene.addHitable(hitable_trimesh_4)
+
+			scene.addHitable(hitable_sphere_1)
+			scene.addHitable(hitable_sphere_2)
+			scene.addHitable(hitable_sphere_3)
+
+		else:
+			aabb_1.load()
+			scene.addAABB(aabb_1)
+
 		# light
 		light_point_1.setOrigin(Vec3f(1, 1, 1))
 		light_point_1.setAttenuation(Vec3f(0, 0, 0.4))
@@ -125,18 +143,6 @@ class Tracer_Sample:
 		light_dir_1.setColor(Vec3f(0.03))
 
 		# scene
-		scene: Scene = tracer.Scene()
-
-		# aabb disabled
-		scene.addHitable(hitable_sphere_1)
-		scene.addHitable(hitable_sphere_2)
-		scene.addHitable(hitable_sphere_3)
-
-		scene.addHitable(hitable_trimesh_1)
-		scene.addHitable(hitable_trimesh_2)
-		scene.addHitable(hitable_trimesh_3)
-		scene.addHitable(hitable_trimesh_4)
-
 		scene.addLight(light_point_1)
 		scene.addLight(light_point_2)
 		scene.addLight(light_dir_1)
@@ -353,7 +359,7 @@ class Tracer_Sample:
 		scene.addLight(light_dir_1)
 
 	@ classmethod
-	def buildScene_3(cls, tracer: Tracer, is_aabb: bool = True) -> None:
+	def buildScene_3(cls, tracer: Tracer, aabb_level: int = 0) -> None:
 		# object
 		texture_emissive:		Texture_Constant	= tracer.Texture_Constant()
 		texture_ambient:		Texture_Constant	= tracer.Texture_Constant()
@@ -365,6 +371,8 @@ class Tracer_Sample:
 
 		scatter_light_1:		Scatter_Light		= tracer.Scatter_Light()
 		scatter_any_hit_1:		Scatter_AnyHit		= tracer.Scatter_AnyHit()
+
+		aabb_1:					AABB_Default		= tracer.AABB_Default()
 
 		light_point_1:			Light_Point			= tracer.Light_Point()
 		light_point_2:			Light_Point			= tracer.Light_Point()
@@ -391,11 +399,22 @@ class Tracer_Sample:
 		scatter_light_1.addScatter(scatter_any_hit_1)
 
 		# hitable
-		w_half: int = 10
-		h_half: int = 10
+		w_half: int		= 3
+		h_half: int		= 3
+		radius: float	= 0.2
 
-		# aabb enable
-		if is_aabb:
+		if aabb_level == 0:
+			for z in range(-2, 2):
+				for y in range(-h_half, h_half + 1):
+					for x in range(-w_half, w_half + 1):
+
+						hitable_sphere: Hitable_Sphere = tracer.Hitable_Sphere()
+						hitable_sphere.setCenter(Vec3f(x / w_half, y / h_half, z / 2))
+						hitable_sphere.setRadius(radius)
+						hitable_sphere.addScatter(scatter_light_1)
+						scene.addHitable(hitable_sphere)
+
+		elif aabb_level == 1:
 			hitable_aabb_1: Hitable_AABB = tracer.Hitable_AABB()
 			hitable_aabb_2: Hitable_AABB = tracer.Hitable_AABB()
 
@@ -405,7 +424,7 @@ class Tracer_Sample:
 
 						hitable_sphere: Hitable_Sphere = tracer.Hitable_Sphere()
 						hitable_sphere.setCenter(Vec3f(x / w_half, y / h_half, z / 2))
-						hitable_sphere.setRadius(0.2)
+						hitable_sphere.setRadius(radius)
 						hitable_sphere.addScatter(scatter_light_1)
 
 						if x <= 0:
@@ -416,7 +435,6 @@ class Tracer_Sample:
 			scene.addHitable(hitable_aabb_1)
 			scene.addHitable(hitable_aabb_2)
 
-		# aabb disable
 		else:
 			for z in range(-2, 2):
 				for y in range(-h_half, h_half + 1):
@@ -424,9 +442,11 @@ class Tracer_Sample:
 
 						hitable_sphere: Hitable_Sphere = tracer.Hitable_Sphere()
 						hitable_sphere.setCenter(Vec3f(x / w_half, y / h_half, z / 2))
-						hitable_sphere.setRadius(0.2)
+						hitable_sphere.setRadius(radius)
 						hitable_sphere.addScatter(scatter_light_1)
-						scene.addHitable(hitable_sphere)
+
+			aabb_1.load()
+			scene.addAABB(aabb_1)
 
 		# light
 		light_point_1.setOrigin(Vec3f(1, 1, 1))

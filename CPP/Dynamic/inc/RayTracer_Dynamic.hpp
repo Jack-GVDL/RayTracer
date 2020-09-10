@@ -97,6 +97,12 @@ EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_rmScatter			(int index_hitable, i
 EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_setTransmissive	(int index, double *transmissive);
 EXPORT_DLL(int)		RayTracer_SceneObject_Hitable_setIndex			(int index, double value);
 
+EXPORT_DLL(int)		RayTracer_SceneObject_AABB_create				(int type);
+EXPORT_DLL(int)		RayTracer_SceneObject_AABB_destroy				(int index);
+EXPORT_DLL(int)		RayTracer_SceneObject_AABB_config				(int index, int type, uint8_t *data, uint32_t size);
+EXPORT_DLL(int)		RayTracer_SceneObject_AABB_interact				(int index, int type, int *index_list, int *type_list, uint32_t size);
+EXPORT_DLL(int)		RayTracer_SceneObject_AABB_load					(int index);
+
 EXPORT_DLL(int)		RayTracer_SceneObject_Light_Type_getIndex		(const char *name);
 EXPORT_DLL(int)		RayTracer_SceneObject_Light_create				(int type);
 EXPORT_DLL(int)		RayTracer_SceneObject_Light_destroy				(int index);
@@ -107,8 +113,20 @@ EXPORT_DLL(int)		RayTracer_SceneObject_Light_setColor			(int index, double *colo
 
 EXPORT_DLL(int)		RayTracer_Scene_addLight						(int index_light);
 EXPORT_DLL(int)		RayTracer_Scene_addHitable						(int index_hitable);
+EXPORT_DLL(int)		RayTracer_Scene_addAABB							(int index_aabb);
 EXPORT_DLL(int)		RayTracer_Scene_rmLight							(int index_light);
 EXPORT_DLL(int)		RayTracer_Scene_rmHitable						(int index_hitable);
+EXPORT_DLL(int)		RayTracer_Scene_rmAABB							(int index_aabb);
+
+
+// TODO: future: standarded object interface in order to reduce number of interface
+/*
+EXPORT_DLL(int)		RayTracer_Dynamic_getType						(const char* *name_list, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Dynamic_create						(int type, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Dynamic_destroy						(int index);
+EXPORT_DLL(int)		RayTracer_Dynamic_config						(int index, int type, int index_config, uint8_t *data, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Dynamic_interact						(int index, int type, int index_interact, int *object_list, int *type_list, uint32_t size);
+*/
 
 
 // Inline Function Implementation

@@ -165,6 +165,13 @@ class Tracer(Tracer_Base):
 		obj.start()
 		return obj
 
+	# aabb
+	def AABB_Default(self) -> AABB_Default:
+		obj = AABB_Default()
+		obj.setOps_tracer(self._ops_tracer)
+		obj.start()
+		return obj
+
 	# light
 	def Light_Directional(self) -> Light_Directional:
 		obj = Light_Directional()

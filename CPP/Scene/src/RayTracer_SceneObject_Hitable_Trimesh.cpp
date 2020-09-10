@@ -15,6 +15,19 @@
 
 // Operation Handling
 // hitable
+Hitable_Trimesh::Hitable_Trimesh() {
+	point[0]	= Vec3f(0);
+	point[1]	= Vec3f(0);
+	point[2]	= Vec3f(0);
+
+	updateBoundingBox();
+}
+
+
+Hitable_Trimesh::~Hitable_Trimesh() {
+}
+
+
 void Hitable_Trimesh::setPoint(const Vec3f &p0, const Vec3f &p1, const Vec3f &p2) {
 	this->point[0]	= p0;
 	this->point[1]	= p1;
@@ -71,9 +84,18 @@ bool Hitable_Trimesh::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 
 
 void Hitable_Trimesh::updateBoundingBox() {
-	bounding.setBounding(point[0], point[0]);
+	bounding.setEmpty();
+	bounding.unionBounding(point[0]);
 	bounding.unionBounding(point[1]);
 	bounding.unionBounding(point[2]);
+	
+	// if plane is along axis, then the bounding have no thickness
+	// give the bounding some thickness
+	for (uint8_t i = 0; i < 3; ++i) {
+		if (bounding.min[i] != bounding.max[i]) continue;
+		bounding.min[i] -= RAY_EPSILON;
+		bounding.max[i] += RAY_EPSILON;
+	}
 }
 
 

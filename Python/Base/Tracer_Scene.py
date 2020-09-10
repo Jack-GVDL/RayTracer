@@ -1,6 +1,7 @@
 from .Tracer_ObjectBase import Tracer_ObjectBase
 from .Tracer_Hitable import Hitable
 from .Tracer_Light import Light
+from .Tracer_AABB import AABB
 
 
 class Scene(Tracer_ObjectBase):
@@ -23,6 +24,11 @@ class Scene(Tracer_ObjectBase):
 	def addHitable(self, hitable: Hitable) -> bool:
 		assert self._ops_tracer is not None
 		result:	int	= self._ops_tracer.Scene_addHitable(hitable.object_index)
+		return True if result == 0 else False
+
+	def addAABB(self, aabb: AABB) -> bool:
+		assert self._ops_tracer is not None
+		result: int = self._ops_tracer.Scene_addAABB(aabb.object_index)
 		return True if result == 0 else False
 
 	def rmLight(self, light: Light) -> bool:

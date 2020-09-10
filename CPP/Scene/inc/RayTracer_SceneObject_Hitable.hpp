@@ -77,6 +77,8 @@ class SceneObject_Hitable: public SceneElement {
 };
 
 
+// TODO: remove
+/*
 class SceneObject_HitableList: public SceneObject_Hitable {
 	// Data
 	public:
@@ -91,6 +93,7 @@ class SceneObject_HitableList: public SceneObject_Hitable {
 		// interface
 		virtual bool	hit			(RecordHit *record, fp_t t_mix, fp_t t_max) const override;
 };
+*/
 
 
 // Inline Function Implementation

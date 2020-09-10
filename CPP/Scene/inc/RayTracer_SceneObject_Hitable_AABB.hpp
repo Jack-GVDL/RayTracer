@@ -27,7 +27,8 @@
 class Hitable_AABB: public SceneObject_Hitable {
 	// Static Function
 	public:
-		// static Hitable_AABB*	create	(SceneObject_Hitable* *list, int32_t size_list, int32_t size_leaf);
+		// TODO: static -> member function
+		static Hitable_AABB*	create	(SceneObject_Hitable* *list, int32_t size_list, int32_t size_leaf);
 
 	// Data
 	public:

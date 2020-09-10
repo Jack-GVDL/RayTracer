@@ -69,8 +69,13 @@ class Bounding {
 			return true;
 		}
 
+		void setEmpty() {
+			min	= Vec3f(1);
+			max	= Vec3f(-1);
+		}
+
 		void setBounding(const Vec3f &min, const Vec3f &max) {
-			for (uint8_t i = 0; i < 3; i++) {
+			for (uint8_t i = 0; i < 3; ++i) {
 
 				if (min[i] <= max[i]) {
 					this->min[i]	= min[i];
@@ -93,7 +98,7 @@ class Bounding {
 				return;
 			}
 
-			for (uint8_t i = 0; i < 3; i++) {
+			for (uint8_t i = 0; i < 3; ++i) {
 				min[i]	= std::min<fp_t>(min[i], bounding.min[i]);
 				max[i]	= std::max<fp_t>(max[i], bounding.max[i]);
 			}
@@ -106,7 +111,7 @@ class Bounding {
 				return;
 			}
 
-			for (uint8_t i = 0; i < 3; i++) {
+			for (uint8_t i = 0; i < 3; ++i) {
 				min[i]	= std::min<fp_t>(min[i], point[i]);
 				max[i]	= std::max<fp_t>(max[i], point[i]);
 			}

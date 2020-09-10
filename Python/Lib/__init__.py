@@ -28,6 +28,8 @@ from .Tracer_Lib_Hitable import Hitable_Sphere
 from .Tracer_Lib_Hitable import Hitable_Trimesh
 from .Tracer_Lib_Hitable import Hitable_AABB
 
+from .Tracer_Lib_AABB import AABB_Default
+
 from .Tracer_Lib_Light import Light_Directional
 from .Tracer_Lib_Light import Light_Point
 

@@ -106,7 +106,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
-		return self._dll_tracer.RayTracer_Camera_interact(c_int(index), c_int(type_), array_index, array_type, size)
+		return self._dll_tracer.RayTracer_Camera_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
 
 	def Camera_setLookFrom(self, index: int, look_from: Vec3f) -> int:
 		array_data = (c_double * 3)(*look_from)
@@ -147,7 +147,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
-		return self._dll_tracer.RayTracer_Surface_interact(c_int(index), c_int(type_), array_index, array_type, size)
+		return self._dll_tracer.RayTracer_Surface_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
 
 	def Surface_load(self, index: int) -> int:
 		return self._dll_tracer.RayTracer_Surface_load(c_int(index))
@@ -176,7 +176,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
-		return self._dll_tracer.RayTracer_Texture_interact(c_int(index), c_int(type_), array_index, array_type, size)
+		return self._dll_tracer.RayTracer_Texture_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
 
 	def Texture_addInput(self, index_texture: int, index_input: int, offset: int) -> int:
 		return self._dll_tracer.RayTracer_Texture_addInput(c_int(index_texture), c_int(index_input), c_int(offset))
@@ -224,7 +224,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
-		return self._dll_tracer.RayTracer_Scatter_interact(c_int(index), c_int(type_), array_index, array_type, size)
+		return self._dll_tracer.RayTracer_Scatter_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
 
 	def Scatter_setTexture(self, index_scatter: int, index_texture: int, offset: int) -> int:
 		return self._dll_tracer.RayTracer_Scatter_setTexture(c_int(index_scatter), c_int(index_texture), c_int(offset))
@@ -256,7 +256,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
-		return self._dll_tracer.RayTracer_SceneObject_Hitable_interact(c_int(index), c_int(type_), array_index, array_type, size)
+		return self._dll_tracer.RayTracer_SceneObject_Hitable_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
 
 	def SceneObject_Hitable_addScatter(self, index_hitable: int, index_scatter: int) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Hitable_addScatter(c_int(index_hitable), c_int(index_scatter))
@@ -270,6 +270,32 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	def SceneObject_Hitable_setIndex(self, index: int, value: float) -> int:
 		return self._dll_tracer.RayTracer_SceneObject_Hitable_setIndex(c_int(index), c_double(value))
+
+	# aabb
+	def SceneObject_AABB_Type_getIndex(self, name: str) -> int:
+		byte_str: bytes = name.encode('utf-8')
+		return self._dll_tracer.RayTracer_SceneObject_AABB_Type_getIndex(c_char_p(byte_str))
+
+	def SceneObject_AABB_create(self, type_: int) -> int:
+		return self._dll_tracer.RayTracer_SceneObject_AABB_create(c_int(type_))
+
+	def SceneObject_AABB_destroy(self, index: int) -> int:
+		return self._dll_tracer.RayTracer_SceneObject_AABB_destroy(c_int(index))
+
+	def SceneObject_AABB_config(self, index: int, type_: int , data: bytes) -> int:
+		# TODO: currently data is const uint8_t*, cannot pass out value from dll
+		size		= len(data)
+		array_data	= (c_uint8 * size)(*data)
+		return self._dll_tracer.RayTracer_SceneObject_AABB_config(c_int(index), c_int(type_), array_data, c_int(size))
+
+	def SceneObject_AABB_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		size		= len(index_list)
+		array_index = (c_int * size)(*index_list)
+		array_type	= (c_int * size)(*type_list)
+		return self._dll_tracer.RayTracer_SceneObject_AABB_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
+
+	def SceneObject_AABB_load(self, index: int) -> int:
+		return self._dll_tracer.RayTracer_SceneObject_AABB_load(c_int(index))
 
 	# light
 	def SceneObject_Light_Type_getIndex(self, name: str) -> int:
@@ -292,7 +318,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
-		return self._dll_tracer.RayTracer_SceneObject_Light_interact(c_int(index), c_int(type_), array_index, array_type, size)
+		return self._dll_tracer.RayTracer_SceneObject_Light_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
 
 	def SceneObject_Light_setOrigin(self, index: int, origin: Vec3f) -> int:
 		array_origin = (c_double * 3)(*origin.array)
@@ -313,8 +339,14 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def Scene_addHitable(self, index_hitable: int) -> int:
 		return self._dll_tracer.RayTracer_Scene_addHitable(c_int(index_hitable))
 
+	def Scene_addAABB(self, index_aabb: int) -> int:
+		return self._dll_tracer.RayTracer_Scene_addAABB(c_int(index_aabb))
+
 	def Scene_rmLight(self, index_light: int) -> int:
 		return self._dll_tracer.RayTracer_Scene_rmLight(c_int(index_light))
 
 	def Scene_rmHitable(self, index_hitable: int) -> int:
 		return self._dll_tracer.RayTracer_Scene_rmHitable(c_int(index_hitable))
+
+	def Scene_rmAABB(self, index_aabb: int) -> int:
+		return self._dll_tracer.RayTracer_Scene_rmAABB(c_int(index_aabb))
