@@ -18,20 +18,20 @@
 
 
 // Operation Handling
-SceneObject_Light_Point::SceneObject_Light_Point() {
+Light_Point::Light_Point() {
 }
 
 
-SceneObject_Light_Point::~SceneObject_Light_Point() {
+Light_Point::~Light_Point() {
 }
 
 
-void SceneObject_Light_Point::setAttenuation(const Vec3f &coeff) {
+void Light_Point::setAttenuation(const Vec3f &coeff) {
 	this->attenuation = coeff;
 }
 
 
-fp_t SceneObject_Light_Point::getAttenuation(const Vec3f &point) const {
+fp_t Light_Point::getAttenuation(const Vec3f &point) const {
 	const fp_t		coeff_1	= attenuation[0];
 	const fp_t		coeff_2	= attenuation[1];
 	const fp_t		coeff_3	= attenuation[2];
@@ -45,17 +45,17 @@ fp_t SceneObject_Light_Point::getAttenuation(const Vec3f &point) const {
 }
 
 
-fp_t SceneObject_Light_Point::getDistance(const Vec3f &point) const {
+fp_t Light_Point::getDistance(const Vec3f &point) const {
 	return (origin - point).length();
 }
 
 
-Vec3f SceneObject_Light_Point::getColor(const Vec3f &point) const {
+Vec3f Light_Point::getColor(const Vec3f &point) const {
 	return color;
 }
 
 
-Vec3f SceneObject_Light_Point::getDirection(const Vec3f &point) const {
+Vec3f Light_Point::getDirection(const Vec3f &point) const {
 	return (origin - point).normalize();
 }
 

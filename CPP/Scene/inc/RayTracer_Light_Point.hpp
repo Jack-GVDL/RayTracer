@@ -24,7 +24,7 @@
 
 
 // Data Structure
-class SceneObject_Light_Point: public SceneObject_Light {
+class Light_Point: public SceneObject_Light {
 	// Data
 	public:
 		Vec3f	attenuation	= Vec3f(0, 0, 0.25);
@@ -32,8 +32,8 @@ class SceneObject_Light_Point: public SceneObject_Light {
 	// Operation
 	public:
 		// init
-		SceneObject_Light_Point		();
-		~SceneObject_Light_Point	();
+		Light_Point		();
+		~Light_Point	();
 
 		// operation
 		void			setAttenuation			(const Vec3f &coeff);

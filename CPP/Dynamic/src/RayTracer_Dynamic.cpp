@@ -164,15 +164,6 @@ EXPORT_DLL(void) RayTracer_info() {
 // ...
 
 
-// sample
-// TODO: remove
-// EXPORT_DLL(int) RayTracer_Sample_buildScene(int index) {
-// 	// camera 0 is used for testing and is created at init stage
-// 	Dynamic_Container<Camera> *container_camera = camera_list.get(1);
-// 	return RayTracer_Dynamic_Sample_buildScene(index, container_camera->getObject(), &scene);
-// }
-
-
 // tracer
 // TODO: move to Dynamic_Tracer
 // EXPORT_DLL(int) RayTracer_Tracer_tracePoint(int index_camera, void *pixel, double x, double y, int depth, int format) {
@@ -307,28 +298,28 @@ EXPORT_DLL(int) RayTracer_Texture_addInput(int index_output, int index_input, in
 
 EXPORT_DLL(int) RayTracer_Texture_rmInput(int index_output, int offset) {
 	Dynamic_Container<Texture> *container_texture = texture_list.get(index_output);
-	if (container_texture == nullptr) return -1;
+	if (container_texture == nullptr) return ERROR_ANY;
 
-	if (!container_texture->getObject()->rmInput(offset)) return -1;
-	return 0;
+	if (!container_texture->getObject()->rmInput(offset)) return ERROR_ANY;
+	return ERROR_NO;
 }
 
 
 EXPORT_DLL(int) RayTracer_Texture_setPixel(int index, const double *pixel, const double *point) {
 	Dynamic_Container<Texture> *texture = texture_list.get(index);
-	if (texture == nullptr) return -1;
+	if (texture == nullptr) return ERROR_ANY;
 
 	texture->getObject()->setPixel(
 		Vec3f(point[0], point[1], point[2]),
 		Vec3f(pixel[0], pixel[1], pixel[2]));
 
-	return 0;
+	return ERROR_NO;
 }
 
 
 EXPORT_DLL(int) RayTracer_Texture_getPixel(int index, double *pixel, const double *point) {
 	Dynamic_Container<Texture> *texture = texture_list.get(index);
-	if (texture == nullptr) return -1;
+	if (texture == nullptr) return ERROR_ANY;
 
 	Vec3f vec_pixel;
 	texture->getObject()->getPixel(vec_pixel, Vec3f(point[0], point[1], point[2]));
@@ -337,7 +328,7 @@ EXPORT_DLL(int) RayTracer_Texture_getPixel(int index, double *pixel, const doubl
 	pixel[1] = vec_pixel[1];
 	pixel[2] = vec_pixel[2];
 
-	return 0;
+	return ERROR_NO;
 }
 
 

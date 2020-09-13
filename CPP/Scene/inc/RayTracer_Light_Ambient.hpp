@@ -24,7 +24,7 @@
 
 
 // Data Structure
-class SceneObject_Light_Ambient: public SceneObject_Light {
+class Light_Ambient: public SceneObject_Light {
 	// Data
 	public:
 		// ...

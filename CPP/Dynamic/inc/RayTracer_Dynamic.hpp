@@ -43,9 +43,6 @@ EXPORT_DLL(void)	RayTracer_Test_testUint8Array				(uint8_t *array, uint32_t size
 EXPORT_DLL(int)		RayTracer_Test_checkStatus					(int index, uint8_t *data, uint32_t size);
 EXPORT_DLL(int)		RayTracer_Test_setPrintInfo					(int is_enabled);
 
-// TODO: remove
-// EXPORT_DLL(int)		RayTracer_Sample_buildScene					(int index);
-
 // TODO: NOT backup
 // EXPORT_DLL(int)		RayTracer_Tracer_tracePoint					(int index_camera, void *pixel, double x, double y, int depth, int format);
 EXPORT_DLL(int)		RayTracer_Tracer_traceRect					(int index_camera, void *pixel, int w, int h, int depth, int is_reverse_x, int is_reverse_y, int format);

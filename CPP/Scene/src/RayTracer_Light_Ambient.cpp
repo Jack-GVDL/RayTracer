@@ -18,22 +18,22 @@
 
 
 // Operation Handling
-fp_t SceneObject_Light_Ambient::getAttenuation(const Vec3f &point) const {
+fp_t Light_Ambient::getAttenuation(const Vec3f &point) const {
 	return 1.0;
 }
 
 
-fp_t SceneObject_Light_Ambient::getDistance(const Vec3f &point) const {
+fp_t Light_Ambient::getDistance(const Vec3f &point) const {
 	return std::numeric_limits<fp_t>::max();
 }
 
 
-Vec3f SceneObject_Light_Ambient::getColor(const Vec3f &point) const {
+Vec3f Light_Ambient::getColor(const Vec3f &point) const {
 	return color;
 }
 
 
-Vec3f SceneObject_Light_Ambient::getDirection(const Vec3f &point) const {
+Vec3f Light_Ambient::getDirection(const Vec3f &point) const {
 	return Vec3f(0);
 }
 

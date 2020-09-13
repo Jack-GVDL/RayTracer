@@ -24,7 +24,7 @@
 
 
 // Data Structure
-class SceneObject_Light_Directional: public SceneObject_Light {
+class Light_Directional: public SceneObject_Light {
 	// Data
 	public:
 		Vec3f	orientation		= Vec3f(0, 0, -1);
@@ -32,8 +32,8 @@ class SceneObject_Light_Directional: public SceneObject_Light {
 	// Operation
 	public:
 		// init
-		SceneObject_Light_Directional	();
-		~SceneObject_Light_Directional	();
+		Light_Directional	();
+		~Light_Directional	();
 
 		// operation
 		void			setOrientation			(const Vec3f &orientation);
