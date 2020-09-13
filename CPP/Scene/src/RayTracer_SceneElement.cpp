@@ -19,15 +19,16 @@ void SceneElement::setOrigin(const Vec3f &origin) {
 }
 
 
-bool SceneElement::addChild(SceneElement *scene) {
+// TODO: missing uniqueness check
+error_t SceneElement::addChild(SceneElement *scene) {
 	child.push_back(scene);
-	return true;
+	return ERROR_NO;
 }
 
 
 // TODO: not yet completed
-bool SceneElement::rmChild(SceneElement *scene) {
-	return false;
+error_t SceneElement::rmChild(SceneElement *scene) {
+	return ERROR_ANY;
 }
 
 

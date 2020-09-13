@@ -17,12 +17,12 @@ class Light_Directional(Light):
 	def setOrientation(self, orientation: Vec3f) -> None:
 		assert self._ops_tracer is not None
 		data:	bytes	= orientation.convertToBytes()
-		result: int		= self._ops_tracer.SceneObject_Light_config(self.object_index, 0, data)
+		result: int		= self._ops_tracer.Light_config(self.object_index, 0, data)
 
 	# Interface
 	def start(self) -> None:
 		type_index: int		= self._getType_(self._ops_tracer, "directional")
-		self._object_index	= self._ops_tracer.SceneObject_Light_create(type_index)
+		self._object_index	= self._ops_tracer.Light_create(type_index)
 
 
 class Light_Point(Light):
@@ -40,9 +40,9 @@ class Light_Point(Light):
 	def setAttenuation(self, coeff: Vec3f) -> None:
 		assert self._ops_tracer is not None
 		data: bytes		= coeff.convertToBytes()
-		result:	int		= self._ops_tracer.SceneObject_Light_config(self.object_index, 0, data)
+		result:	int		= self._ops_tracer.Light_config(self.object_index, 0, data)
 
 	# Interface
 	def start(self) -> None:
 		type_index: int		= self._getType_(self._ops_tracer, "point")
-		self._object_index	= self._ops_tracer.SceneObject_Light_create(type_index)
+		self._object_index	= self._ops_tracer.Light_create(type_index)

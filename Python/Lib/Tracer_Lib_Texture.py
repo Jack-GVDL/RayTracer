@@ -1,7 +1,7 @@
 import struct
 import math
 from typing import List, Any
-from Base import Texture, Vec3f
+from Base import Texture, Vec3f, TracerType
 from .Tracer_Lib_Hitable import Hitable_Trimesh, Hitable_Sphere
 
 
@@ -38,7 +38,7 @@ class Texture_Convolutor(Texture):
 
 	# Operation
 	def setTexture(self, texture: Texture) -> None:
-		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (texture.object_index,), (2,))
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (texture.object_index,), (TracerType.TEXTURE,))
 
 	def setKernel(self, kernel: List[float]) -> None:
 		kernel_width: float = math.sqrt(len(kernel))
@@ -176,7 +176,7 @@ class Texture_Mapper_Sphere(Texture):
 
 	# Operation
 	def setSphere(self, sphere: Hitable_Sphere) -> None:
-		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (sphere.object_index,), (4,))
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (sphere.object_index,), (TracerType.HITABLE,))
 
 	# Interface
 	def start(self) -> None:
@@ -197,7 +197,7 @@ class Texture_Mapper_Trimesh(Texture):
 
 	# Operation
 	def setTrimesh(self, trimesh: Hitable_Trimesh) -> None:
-		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (trimesh.object_index,), (4,))
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (trimesh.object_index,), (TracerType.HITABLE,))
 
 	# Interface
 	def start(self) -> None:
@@ -218,7 +218,7 @@ class Texture_Direction_Sphere(Texture):
 
 	# Operation
 	def setSphere(self, sphere: Hitable_Sphere) -> None:
-		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (sphere.object_index,), (4,))
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (sphere.object_index,), (TracerType.HITABLE,))
 
 	# Interface
 	def start(self) -> None:
@@ -239,7 +239,7 @@ class Texture_Direction_Trimesh(Texture):
 
 	# Operation
 	def setTrimesh(self, trimesh: Hitable_Trimesh) -> None:
-		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (trimesh.object_index,), (2,))
+		result: int = self._ops_tracer.Texture_interact(self.object_index, 0, (trimesh.object_index,), (TracerType.HITABLE,))
 
 	# Interface
 	def start(self) -> None:

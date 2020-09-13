@@ -43,7 +43,7 @@ void Scatter_AnyHit::scatter(RecordRay *src, MemoryControl_Scatter *memory_contr
 
 	// new intensity *= transmissive
 	RecordHit		*record_hit	= &(src->record_hit.record);
-	const Material	*material	= &(record_hit->object->material);
+	const Material	*material	= record_hit->object->material;
 
 	Vec3f vec_transmissive;
 	material->transmissive->getPixel(vec_transmissive, record_hit->point);

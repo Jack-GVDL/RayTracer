@@ -23,7 +23,7 @@ Scatter_Refraction::Scatter_Refraction() {
 void Scatter_Refraction::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
 	// variable preparation
 	RecordHit		*record_hit	= &(src->record_hit.record);
-	Material		*material	= &(record_hit->object->material);
+	Material		*material	= record_hit->object->material;
 
 	// check if this material is refractive
 	Vec3f vec_transmissive;
@@ -71,7 +71,7 @@ void Scatter_Refraction::scatter(RecordRay *src, MemoryControl_Scatter *memory_c
 bool Scatter_Refraction::setRecord_outer(RecordRay *dst, RecordRay *src, fp_t *index_from, fp_t *index_to) const {
 	// variable preparation
 	const RecordHit	*record_hit		= &(src->record_hit.record);
-	const Material	*material		= &(record_hit->object->material);
+	const Material	*material		= record_hit->object->material;
 	const RecordRay	*record_outer	= src->outer;
 	
 	// check if outer space is air
@@ -96,14 +96,14 @@ bool Scatter_Refraction::setRecord_outer(RecordRay *dst, RecordRay *src, fp_t *i
 		}
 
 		*index_from	= material->index;
-		*index_to	= record_outer->outer->record_hit.record.object->material.index;
+		*index_to	= record_outer->outer->record_hit.record.object->material->index;
 		dst->outer	= record_outer->outer;
 		return true;
 	}
 
 	// if entering from outer space
 	// TODO: hard read code
-	*index_from	= record_outer->record_hit.record.object->material.index;
+	*index_from	= record_outer->record_hit.record.object->material->index;
 	*index_to	= material->index;
 	dst->outer	= src;
 	return false;

@@ -1,9 +1,5 @@
-#include <algorithm>
-#include <limits>
 #include "../../Utility/Utility.hpp"
 #include "../inc/RayTracer_SceneObject_Light.hpp"
-#include "../inc/RayTracer_SceneObject_Hitable.hpp"
-#include "../inc/RayTracer_Scene.hpp"
 
 
 // Define

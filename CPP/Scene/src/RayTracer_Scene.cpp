@@ -15,41 +15,41 @@
 
 // Operation Handling
 // TODO: missing uniqueness checking
-bool Scene::addHitable(SceneObject_Hitable *hitable) {
+error_t Scene::addHitable(SceneObject_Hitable *hitable) {
 	hitable_list.push_back(hitable);
-	return true;
+	return ERROR_NO;
 }
 
 
 // TODO: not yet completed
-bool Scene::rmHitable(SceneObject_Hitable *hitable) {
-	return false;
+error_t Scene::rmHitable(SceneObject_Hitable *hitable) {
+	return ERROR_ANY;
 }
 
 
 // TODO: missing uniqueness checking
-bool Scene::addLight(SceneObject_Light *light) {
+error_t Scene::addLight(SceneObject_Light *light) {
 	light_list.push_back(light);
-	return true;
+	return ERROR_NO;
 }
 
 
 // TODO: not yet completed
-bool Scene::rmLight(SceneObject_Light *light) {
-	return false;
+error_t Scene::rmLight(SceneObject_Light *light) {
+	return ERROR_ANY;
 }
 
 
 // TODO: missing uniqueness checking
-bool Scene::addAmbientLight(SceneObject_Light *light) {
+error_t Scene::addAmbientLight(SceneObject_Light *light) {
 	ambient_list.push_back(light);
-	return true;
+	return ERROR_NO;
 }
 
 
 // TODO: not yet completed
-bool Scene::rmAmbientLight(SceneObject_Light *light) {
-	return false;
+error_t Scene::rmAmbientLight(SceneObject_Light *light) {
+	return ERROR_ANY;
 }
 
 

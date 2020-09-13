@@ -103,6 +103,13 @@ class Tracer(Tracer_Base):
 		obj.start()
 		return obj
 
+	# material
+	def Material_Default(self) -> Material_Default:
+		obj = Material_Default()
+		obj.setOps_tracer(self._ops_tracer)
+		obj.start()
+		return obj
+
 	# scatter
 	def Scatter_Light(self) -> Scatter_Light:
 		obj = Scatter_Light()

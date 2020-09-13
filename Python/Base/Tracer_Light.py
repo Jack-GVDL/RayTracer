@@ -7,7 +7,7 @@ class Light(Tracer_ObjectBase):
 
 	@ classmethod
 	def _getType_(cls, ops: Ops_Tracer, name: str) -> int:
-		index: int = ops.SceneObject_Light_Type_getIndex(name)
+		index: int = ops.Light_Type_getIndex(name)
 		assert index != -1, "Type not exist"
 		return index
 
@@ -24,8 +24,8 @@ class Light(Tracer_ObjectBase):
 	# TODO: in C++, it should be in SceneElement
 	def setOrigin(self, origin: Vec3f) -> None:
 		assert self._ops_tracer is not None
-		result:	int	= self._ops_tracer.SceneObject_Light_setOrigin(self._object_index, origin)
+		result:	int	= self._ops_tracer.Light_setOrigin(self._object_index, origin)
 
 	def setColor(self, color: Vec3f) -> None:
 		assert self._ops_tracer is not None
-		result:	int	= self._ops_tracer.SceneObject_Light_setColor(self._object_index, color)
+		result:	int	= self._ops_tracer.Light_setColor(self._object_index, color)

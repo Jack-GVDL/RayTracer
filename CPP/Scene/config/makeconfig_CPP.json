@@ -5,14 +5,17 @@
     "OBJ_FILE"  : ["RayTracer_Camera.o ",
                    "RayTracer_Scene.o ",
                    "RayTracer_SceneElement.o ",
+
                    "RayTracer_SceneObject_Hitable.o ",
-                   "RayTracer_SceneObject_Hitable_Sphere.o ",
-                   "RayTracer_SceneObject_Hitable_Trimesh.o ",
-                   "RayTracer_SceneObject_Hitable_AABB.o ",
                    "RayTracer_SceneObject_Light.o ",
-                   "RayTracer_SceneObject_Light_Ambient.o ",
-                   "RayTracer_SceneObject_Light_Directional.o ",
-                   "RayTracer_SceneObject_Light_Point.o ",
+
+                   "RayTracer_Hitable_Sphere.o ",
+                   "RayTracer_Hitable_Trimesh.o ",
+                   "RayTracer_Hitable_AABB.o ",
+                   
+                   "RayTracer_Light_Ambient.o ",
+                   "RayTracer_Light_Directional.o ",
+                   "RayTracer_Light_Point.o ",
                    ""],
 
     "MACRO"     : [""],

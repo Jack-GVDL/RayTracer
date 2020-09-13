@@ -2,13 +2,16 @@
     "OBJ_FILE"  : ["obj_x64/RayTracer_Camera.o ",
                    "obj_x64/RayTracer_Scene.o ",
                    "obj_x64/RayTracer_SceneElement.o ",
+
                    "obj_x64/RayTracer_SceneObject_Hitable.o ",
-                   "obj_x64/RayTracer_SceneObject_Hitable_Sphere.o ",
-                   "obj_x64/RayTracer_SceneObject_Hitable_Trimesh.o ",
-                   "obj_x64/RayTracer_SceneObject_Hitable_AABB.o ",
                    "obj_x64/RayTracer_SceneObject_Light.o ",
-                   "obj_x64/RayTracer_SceneObject_Light_Ambient.o ",
-                   "obj_x64/RayTracer_SceneObject_Light_Directional.o ",
-                   "obj_x64/RayTracer_SceneObject_Light_Point.o ",
+
+                   "obj_x64/RayTracer_Hitable_Sphere.o ",
+                   "obj_x64/RayTracer_Hitable_Trimesh.o ",
+                   "obj_x64/RayTracer_Hitable_AABB.o ",
+                   
+                   "obj_x64/RayTracer_Light_Ambient.o ",
+                   "obj_x64/RayTracer_Light_Directional.o ",
+                   "obj_x64/RayTracer_Light_Point.o ",
                    ""]
 }

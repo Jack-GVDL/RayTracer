@@ -37,16 +37,16 @@ class Scene: public SceneElement {
 	// Operation
 	public:
 		// operation
-		bool	addHitable			(SceneObject_Hitable *hitable);
-		bool	rmHitable			(SceneObject_Hitable *hitable);
-		bool	addLight			(SceneObject_Light *light);
-		bool	rmLight				(SceneObject_Light *light);
-		bool	addAmbientLight		(SceneObject_Light *light);
-		bool	rmAmbientLight		(SceneObject_Light *light);
+		error_t		addHitable			(SceneObject_Hitable *hitable);
+		error_t		rmHitable			(SceneObject_Hitable *hitable);
+		error_t		addLight			(SceneObject_Light *light);
+		error_t		rmLight				(SceneObject_Light *light);
+		error_t		addAmbientLight		(SceneObject_Light *light);
+		error_t		rmAmbientLight		(SceneObject_Light *light);
 
-		Vec3f	getAmbientIntensity	() const;
+		Vec3f		getAmbientIntensity	() const;
 
-		int8_t	hit					(RecordHit_Extend *hit) const;
+		int8_t		hit					(RecordHit_Extend *hit) const;
 };
 
 

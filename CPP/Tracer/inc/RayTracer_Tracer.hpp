@@ -13,7 +13,6 @@
 
 #include "../../Utility/Utility.hpp"
 #include "../../Scatter/Scatter.hpp"
-#include "../../Shader/Shader.hpp"
 #include "../../Scene/Scene.hpp"
 
 
