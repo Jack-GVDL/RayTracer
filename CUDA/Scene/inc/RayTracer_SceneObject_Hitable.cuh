@@ -49,7 +49,7 @@ struct RecordHit {
 struct RecordHit_Extend {
 	RecordHit				record;
 	fp_t					length_min		= RAY_EPSILON;
-	fp_t					length_max		= std::numeric_limits<fp_t>::max();
+	fp_t					length_max		= FLOAT_MAX;
 };
 
 

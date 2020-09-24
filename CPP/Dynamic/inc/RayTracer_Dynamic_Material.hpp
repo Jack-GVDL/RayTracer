@@ -2,7 +2,7 @@
 // Email:  jacktsetcy@gmail.com
 //
 // Log
-// 2020/09/12   initial update
+// 2020/09/12	initial update
 
 
 #ifndef RAYTRACER_DYNAMIC_MATERIAL_HPP
@@ -44,4 +44,4 @@ void	RayTracer_Dynamic_Material_del	();
 // ...
 
 
-#endif  // RAYTRACER_DYNAMIC_MATERIAL_HPP
+#endif	// RAYTRACER_DYNAMIC_MATERIAL_HPP

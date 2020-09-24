@@ -1,0 +1,6 @@
+{
+    "OBJ_FILE"  : ["obj/RayTracer_Material.o ",
+                   "obj/RayTracer_Texture.o ",
+                   "obj/RayTracer_Texture_Constant.o ",
+                   ""]
+}

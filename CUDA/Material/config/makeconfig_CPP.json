@@ -1,0 +1,20 @@
+{
+    "SRC_PATH"  : "src",
+    "OBJ_PATH"  : "obj",
+    
+    "OBJ_FILE"  : ["RayTracer_Material.o ",
+                   "RayTracer_Texture.o ",
+                   "RayTracer_Texture_Constant.o ",
+                   ""],
+
+    "MACRO"     : [""],
+    
+    "INCLUDE"   : [""],
+
+    "FLAG"      : [""],
+
+    "CONFIG_IS_STANDALONE"      : "false",
+    "CONFIG_IMPORT_MACRO"       : "false",
+    "CONFIG_IMPORT_INCLUDE"     : "false",
+    "CONFIG_IMPORT_FLAG"        : "false"
+}

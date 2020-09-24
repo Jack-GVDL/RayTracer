@@ -221,7 +221,6 @@ int8_t Scheduler_Scatter::schedule() {
 	
 	RecordRay		*top		= (RecordRay*)memory_control.getRecord(0);
 	RecordRay		*record;
-	const Shader	*shader;
 
 	// collision check
 	// currently no parallel processing

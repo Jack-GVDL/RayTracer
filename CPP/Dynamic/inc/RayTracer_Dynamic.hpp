@@ -1,8 +1,8 @@
 // Created by Jack Tse on 2020/07/28
 //
 // Log
-// 2020/07/28   initial update
-// 2020/08/09   change structure
+// 2020/07/28	initial update
+// 2020/08/09	change structure
 
 
 #ifndef RAYTRACER_DYNAMIC_HPP

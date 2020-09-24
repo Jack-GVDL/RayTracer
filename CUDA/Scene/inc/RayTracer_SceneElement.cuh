@@ -32,9 +32,6 @@ class SceneElement {
 		Vec3f						origin		= Vec3f(0);
 		Bounding					bounding;
 
-		// TODO: need to change this
-		std::vector<SceneElement*>	child;
-
 	// Operation
 	public:
 		// init
@@ -46,8 +43,11 @@ class SceneElement {
 		__device__ void				setBounding		(const Bounding &bounding);
 
 		// interface
+		// backup
+		/*
 		__device__ virtual error_t	addChild		(SceneElement *scene);
 		__device__ virtual error_t	rmChild			(SceneElement *scene);
+		*/
 };
 
 

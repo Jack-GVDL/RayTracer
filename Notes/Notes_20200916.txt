@@ -1,0 +1,4 @@
+GPU specific optimizations
+* using shared memory and registers whenever possible is many times faster than using global / local memory
+* memory alignment for coalesced reads from GPU memory
+* thread compaction; since CUDA launches a kernel in groups of 32 threads in parallel("warps"), threads taking different code paths can give rise to thread divergence which reduces the GPU's occupancy. Thread compaction aims to mitigate the effects of thread divergence by bundling threads folowing similar code paths

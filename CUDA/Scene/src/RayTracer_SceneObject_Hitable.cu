@@ -23,13 +23,13 @@ __device__ SceneObject_Hitable::~SceneObject_Hitable() {
 }
 
 
-__device__ SceneObject_Hitable::setMaterial(Material *material) {
+__device__ void SceneObject_Hitable::setMaterial(Material *material) {
 	this->material = material;
 }
 
 
 __device__ int8_t SceneObject_Hitable::hit(RecordHit *record) const {
-	return hit(record, std::numeric_limits<fp_t>::max());
+	return hit(record, FLOAT_MAX);
 }
 
 

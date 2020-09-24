@@ -31,7 +31,6 @@
 
 // Data Structure
 class SceneObject_Hitable;
-class Shader;
 
 
 struct RecordHit {

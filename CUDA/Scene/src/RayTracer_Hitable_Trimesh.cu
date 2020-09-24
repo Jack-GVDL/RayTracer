@@ -92,9 +92,9 @@ __device__ void Hitable_Trimesh::updateBoundingBox() {
 	// if plane is along axis, then the bounding have no thickness
 	// give the bounding some thickness
 	for (uint8_t i = 0; i < 3; ++i) {
-		if (bounding.min[i] != bounding.max[i]) continue;
-		bounding.min[i] -= RAY_EPSILON;
-		bounding.max[i] += RAY_EPSILON;
+		if (bounding.min_[i] != bounding.max_[i]) continue;
+		bounding.min_[i] -= RAY_EPSILON;
+		bounding.max_[i] += RAY_EPSILON;
 	}
 }
 

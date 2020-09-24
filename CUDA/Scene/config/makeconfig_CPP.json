@@ -1,0 +1,26 @@
+{
+    "SRC_PATH"  : "src",
+    "OBJ_PATH"  : "obj",
+    
+    "OBJ_FILE"  : ["RayTracer_Camera.o ",
+                   "RayTracer_SceneElement.o ",
+                   "RayTracer_SceneObject_Hitable.o ",
+                   "RayTracer_SceneObject_Light.o ",
+                   "RayTracer_Scene.o ",
+                   "RayTracer_Hitable_Sphere.o ",
+                   "RayTracer_Hitable_Trimesh.o ",
+                   "RayTracer_Light_Directional.o ",
+                   "RayTracer_Light_Point.o ",
+                   ""],
+
+    "MACRO"     : [""],
+    
+    "INCLUDE"   : [""],
+
+    "FLAG"      : [""],
+
+    "CONFIG_IS_STANDALONE"      : "false",
+    "CONFIG_IMPORT_MACRO"       : "false",
+    "CONFIG_IMPORT_INCLUDE"     : "false",
+    "CONFIG_IMPORT_FLAG"        : "false"
+}

@@ -1,0 +1,20 @@
+{
+    "SRC_PATH"  : "src",
+    "OBJ_PATH"  : "obj",
+    
+    "OBJ_FILE"  : ["RayTracer_Scatter.o ",
+                   "RayTracer_Scatter_Light.o ",
+                   "RayTracer_Scatter_AnyHit.o ",
+                   ""],
+
+    "MACRO"     : [""],
+    
+    "INCLUDE"   : [""],
+
+    "FLAG"      : [""],
+
+    "CONFIG_IS_STANDALONE"      : "false",
+    "CONFIG_IMPORT_MACRO"       : "false",
+    "CONFIG_IMPORT_INCLUDE"     : "false",
+    "CONFIG_IMPORT_FLAG"        : "false"
+}

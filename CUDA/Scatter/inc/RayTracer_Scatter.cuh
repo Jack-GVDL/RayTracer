@@ -110,7 +110,6 @@ class MemoryControl_Scatter {
 class Scatter {
 	// Data
 	public:
-		// TODO: consider to use vector
 		Texture*	*texture_list	= nullptr;
 		int32_t		texture_size	= 0;
 

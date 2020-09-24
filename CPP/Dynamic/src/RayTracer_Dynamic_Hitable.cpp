@@ -34,14 +34,25 @@ static int			interact_aabb_rmHitable				(void *object, void* *list, uint32_t siz
 // Operation Handling
 void RayTracer_Dynamic_Hitable_init(std::vector<Dynamic_ContainerType*> *type_list) {
 	// table
-	table_config_sphere.push_back(	config_sphere_setCenter		);
-	table_config_sphere.push_back(	config_sphere_setRadius		);
-	table_config_trimesh.push_back(	config_trimesh_setPoint_0	);
-	table_config_trimesh.push_back(	config_trimesh_setPoint_1	);
-	table_config_trimesh.push_back(	config_trimesh_setPoint_2	);
+	// TODO: remove
+	// table_config_sphere.push_back(	config_sphere_setCenter		);
+	// table_config_sphere.push_back(	config_sphere_setRadius		);
+	// table_config_trimesh.push_back(	config_trimesh_setPoint_0	);
+	// table_config_trimesh.push_back(	config_trimesh_setPoint_1	);
+	// table_config_trimesh.push_back(	config_trimesh_setPoint_2	);
 
-	table_interact_aabb.push_back(	interact_aabb_addHitable	);
-	table_interact_aabb.push_back(	interact_aabb_rmHitable		);
+	// TODO: remove
+	// table_interact_aabb.push_back(	interact_aabb_addHitable	);
+	// table_interact_aabb.push_back(	interact_aabb_rmHitable		);
+
+	Dynamic_addTypeConfig(sphere,	config_sphere_setCenter);
+	Dynamic_addTypeConfig(sphere,	config_sphere_setRadius);
+	Dynamic_addTypeConfig(trimesh,	config_trimesh_setPoint_0);
+	Dynamic_addTypeConfig(trimesh,	config_trimesh_setPoint_1);
+	Dynamic_addTypeConfig(trimesh,	config_trimesh_setPoint_2);
+
+	Dynamic_addTypeInteract(aabb,	interact_aabb_addHitable);
+	Dynamic_addTypeInteract(aabb,	interact_aabb_rmHitable);
 
 	// create type
 	Dynamic_ContainerType *type;
@@ -66,7 +77,7 @@ void RayTracer_Dynamic_Hitable_del() {
 
 // table
 static int config_sphere_setCenter(void *object, uint8_t *data, uint32_t size) {
-	Hitable_Sphere	*hitable	= (Hitable_Sphere*)object;
+	Hitable_Sphere		*hitable	= (Hitable_Sphere*)object;
 	double				*center		= (double*)data;
 
 	hitable->setCenter(Vec3f(center[0], center[1], center[2]));
@@ -75,7 +86,7 @@ static int config_sphere_setCenter(void *object, uint8_t *data, uint32_t size) {
 
 
 static int config_sphere_setRadius(void *object, uint8_t *data, uint32_t size) {
-	Hitable_Sphere	*hitable	= (Hitable_Sphere*)object;
+	Hitable_Sphere		*hitable	= (Hitable_Sphere*)object;
 	double				radius		= *((double*)data);
 
 	hitable->setRadius(radius);
@@ -84,7 +95,7 @@ static int config_sphere_setRadius(void *object, uint8_t *data, uint32_t size) {
 
 
 static int config_trimesh_setPoint_0(void *object, uint8_t *data, uint32_t size) {
-	Hitable_Trimesh	*hitable	= (Hitable_Trimesh*)object;
+	Hitable_Trimesh		*hitable	= (Hitable_Trimesh*)object;
 	double				*point		= (double*)data;
 	Vec3f				vec_point	= Vec3f(point[0], point[1], point[2]);
 
@@ -94,7 +105,7 @@ static int config_trimesh_setPoint_0(void *object, uint8_t *data, uint32_t size)
 
 
 static int config_trimesh_setPoint_1(void *object, uint8_t *data, uint32_t size) {
-	Hitable_Trimesh *hitable = (Hitable_Trimesh*)object;
+	Hitable_Trimesh		*hitable = (Hitable_Trimesh*)object;
 	double				*point		= (double*)data;
 	Vec3f				vec_point	= Vec3f(point[0], point[1], point[2]);
 
@@ -104,7 +115,7 @@ static int config_trimesh_setPoint_1(void *object, uint8_t *data, uint32_t size)
 
 
 static int config_trimesh_setPoint_2(void *object, uint8_t *data, uint32_t size) {
-	Hitable_Trimesh *hitable = (Hitable_Trimesh*)object;
+	Hitable_Trimesh		*hitable = (Hitable_Trimesh*)object;
 	double				*point		= (double*)data;
 	Vec3f				vec_point	= Vec3f(point[0], point[1], point[2]);
 

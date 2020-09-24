@@ -1,8 +1,8 @@
 // Created by Jack Tse on 2020/07/30
 //
 // Log
-// 2020/07/30   initial update
-// 2020/08/09   change structure: Dynamic_ContainerType
+// 2020/07/30	initial update
+// 2020/08/09	change structure: Dynamic_ContainerType
 
 
 #ifndef RAYTRACER_DYNAMIC_SCATTER_HPP
@@ -36,7 +36,7 @@
 
 // Operation Handling
 void	RayTracer_Dynamic_Scatter_init	(std::vector<Dynamic_ContainerType*> *type_list);
-void    RayTracer_Dynamic_Scatter_info  ();
+void	RayTracer_Dynamic_Scatter_info	();
 void	RayTracer_Dynamic_Scatter_del	();
 
 

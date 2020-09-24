@@ -22,6 +22,9 @@
 #define ERROR_ANY       -1
 #define ERROR_AT(i)     (ERROR_ANY - i)
 
+#define FLOAT_MAX		FLT_MAX
+#define FLOAT_MIN		FLT_MIN
+
 
 // Typedef
 // floating point: double or float

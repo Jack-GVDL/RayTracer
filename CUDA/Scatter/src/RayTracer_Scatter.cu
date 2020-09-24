@@ -1,4 +1,4 @@
-#include "../inc/RayTracer_Scatter.hpp"
+#include "../inc/RayTracer_Scatter.cuh"
 
 
 // Define
@@ -158,7 +158,7 @@ __device__ void Scatter::setRecord_tree(RecordRay *dst, RecordRay *src) const {
 	dst->scatter_source			= 1;
 
 	dst->record_hit.length_min	= RAY_EPSILON;
-	dst->record_hit.length_max	= std::numeric_limits<fp_t>::max();
+	dst->record_hit.length_max	= FLOAT_MAX;
 }
 
 
@@ -203,7 +203,7 @@ __device__ void Scheduler_Scatter::setRoot(RecordRay *record) {
 	if (temp == nullptr) return;
 
 	// copy from other source
-	cudaMemcpy(temp, record, sizeof(RecordRay));
+	memcpy(temp, record, sizeof(RecordRay));
 }
 
 
@@ -214,7 +214,7 @@ __device__ void Scheduler_Scatter::getRoot(RecordRay *record) {
 	// need to normalize resultant intensity
 	// it should be ranging between 0 and 1
 	temp->intensity = temp->intensity.clamp(0, 1);
-	cudaMemcpy(record, temp, sizeof(RecordRay));
+	memcpy(record, temp, sizeof(RecordRay));
 }
 
 
@@ -236,7 +236,6 @@ __device__ int8_t Scheduler_Scatter::schedule() {
 	
 	RecordRay		*top		= (RecordRay*)memory_control.getRecord(0);
 	RecordRay		*record;
-	const Shader	*shader;
 
 	// collision check
 	// currently no parallel processing
@@ -274,8 +273,8 @@ __device__ int8_t Scheduler_Scatter::schedule() {
 			case 1:
 				SceneObject_Hitable *object = record->record_hit.record.object;
 				if (record->is_hit)	{
-					record->record_scatter.scatter_list = object->shader.scatter_list.data();
-					record->record_scatter.size			= object->shader.scatter_list.size();
+					record->record_scatter.scatter_list = object->material->scatter_list;
+					record->record_scatter.size			= object->material->scatter_index;
 					record->record_scatter.index		= 0;
 
 				} else {

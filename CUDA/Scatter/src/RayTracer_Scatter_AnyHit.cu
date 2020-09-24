@@ -23,7 +23,8 @@ __device__ Scatter_AnyHit::Scatter_AnyHit() {
 	// ...
 
 	// scatter
-	scatter_list.push_back(this);
+	scatter_list[scatter_index] = this;
+	scatter_index++;
 }
 
 
@@ -43,7 +44,7 @@ __device__ void Scatter_AnyHit::scatter(RecordRay *src, MemoryControl_Scatter *m
 
 	// new intensity *= transmissive
 	RecordHit		*record_hit	= &(src->record_hit.record);
-	const Material	*material	= &(record_hit->object->material);
+	const Material	*material	= record_hit->object->material;
 
 	Vec3f vec_transmissive;
 	material->transmissive->getPixel(vec_transmissive, record_hit->point);

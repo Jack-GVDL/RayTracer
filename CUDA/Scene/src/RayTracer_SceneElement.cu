@@ -14,11 +14,11 @@
 
 
 // Operation Handling
-__device__ SceneElement() {
+__device__ SceneElement::SceneElement() {
 }
 
 
-__device__ ~SceneElement() {
+__device__ SceneElement::~SceneElement() {
 }
 
 
@@ -27,6 +27,8 @@ __device__ void SceneElement::setOrigin(const Vec3f &origin) {
 }
 
 
+// backup
+/*
 __device__ error_t SceneElement::addChild(SceneElement *scene) {
 	child.push_back(scene);
 	return ERROR_NO;
@@ -37,6 +39,7 @@ __device__ error_t SceneElement::addChild(SceneElement *scene) {
 __device__ error_t SceneElement::rmChild(SceneElement *scene) {
 	return ERROR_ANY;
 }
+*/
 
 
 // Static Function Implementation
