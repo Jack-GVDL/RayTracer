@@ -12,12 +12,14 @@
 
 // Static Function Prototype
 // skeleton
-// Dynamic_constructTypeSkeleton(constant,	Surface,	Surface);
-Dynamic_constructTypeSkeleton(bmp,		Surface,	Surface_BMP);
-
 // table
-__device__ static int			config_bmp_setPath					(void *object, uint8_t *data, uint32_t size);
-__device__ static int			interact_bmp_convertToTexture		(void *object, void* *list, uint32_t size);
+__host__ static int8_t			config_bmp_setPath					(void *object, uint8_t *data, uint32_t size);
+__host__ static int8_t			interact_bmp_convertToTexture		(void *object, void* *list, uint32_t size);
+
+// skeleton
+Dynamic_CPP_constructTypeSkeleton(constant,	Surface,	Surface);
+Dynamic_CPP_constructTypeSkeleton(bmp,		Surface,	Surface_BMP);
+
 
 // Static Data
 // ...
@@ -26,14 +28,17 @@ __device__ static int			interact_bmp_convertToTexture		(void *object, void* *lis
 // Operation Handling
 __host__ void RayTracer_Dynamic_Surface_init(std::vector<Dynamic_ContainerType*> *type_list) {
 	// table
-	table_config_bmp.push_back(		config_bmp_setPath				);
-	table_interact_bmp.push_back(	interact_bmp_convertToTexture	);
+	Dynamic_CPP_addTypeConfig(bmp,		config_bmp_setPath);
+	Dynamic_CPP_addTypeInteract(bmp,	interact_bmp_convertToTexture);
+
+	// table_config_bmp.push_back(		config_bmp_setPath				);
+	// table_interact_bmp.push_back(	interact_bmp_convertToTexture	);
 
 	// create type
 	Dynamic_ContainerType *type;
 
-	// Dynamic_addType(constant,	constant,	type_list);
-	Dynamic_addType(bmp,	bmp,	type_list);
+	Dynamic_CPP_addType(constant,	constant,	type_list);
+	Dynamic_CPP_addType(bmp,		bmp,		type_list);
 }
 
 
@@ -47,7 +52,7 @@ __host__ void RayTracer_Dynamic_Surface_del() {
 
 // Static Function Implementation
 // table
-__device__ static int config_bmp_setPath(void *object, uint8_t *data, uint32_t size) {
+__host__ static int8_t config_bmp_setPath(void *object, uint8_t *data, uint32_t size) {
 	Surface_BMP	*surface	= (Surface_BMP*)object;
 	const char	*path		= (const char*)data;
 
@@ -63,7 +68,7 @@ __device__ static int config_bmp_setPath(void *object, uint8_t *data, uint32_t s
 }
 
 
-__device__ static int interact_bmp_convertToTexture(void *object, void* *list, uint32_t size) {
+__host__ static int8_t interact_bmp_convertToTexture(void *object, void* *list, uint32_t size) {
 	Surface_BMP		*surface	= (Surface_BMP*)object;
 	Texture_Image	*texture	= (Texture_Image*)(list[0]);
 

@@ -16,7 +16,7 @@
 
 // Static Data
 // skeleton
-Dynamic_constructTypeSkeleton(default,	Material,	Material);
+Dynamic_CUDA_constructTypeSkeleton(default,	Material,	Material);
 
 
 // Operation Handling
@@ -26,7 +26,7 @@ __host__ void RayTracer_Dynamic_Material_init(std::vector<Dynamic_ContainerType*
 
 	// create type
 	Dynamic_ContainerType *type;
-	Dynamic_addType(default,	default,	type_list);
+	Dynamic_CUDA_addType(default,	default,	type_list);
 }
 
 

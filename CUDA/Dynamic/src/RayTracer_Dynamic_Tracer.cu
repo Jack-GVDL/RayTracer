@@ -13,8 +13,9 @@
 
 
 // Static Function Prototype
-// __device__ static function so function name isn't that serious
-__host__ static void	fix_index	(int *index_x_start, int *index_y_start, int *index_x_next, int *index_y_next, int w, int h, int is_reverse_x, int is_reverse_y);
+__host__ static void	fix_index		(int *index_x_start, int *index_y_start, int *index_x_next, int *index_y_next, int w, int h, int is_reverse_x, int is_reverse_y);
+__host__ static Vec3f	host_trace		(Camera *camera, fp_t x, fp_t y, int depth);
+__global__ static void	global_trace	(fp_t *value, void *camera, fp_t *x, fp_t *y, int depth);
 
 
 // Static Data
@@ -59,7 +60,7 @@ __host__ int RayTracer_Dynamic_Tracer_tracePoint_RGB888(int index_camera, void *
 			const double u = (double(index_x) - x_half) / x_half;
 			const double v = (double(index_y) - y_half) / y_half;
 
-			Vec3f result = tracer.trace(container_camera->getObject(), u, v, depth);
+			Vec3f result = host_trace(container_camera->getObject(), u, v, depth);
 			pixel[index + 0] = (int)(result[0] * 255);
 			pixel[index + 1] = (int)(result[1] * 255);
 			pixel[index + 2] = (int)(result[2] * 255);
@@ -111,7 +112,7 @@ __host__ int RayTracer_Dynamic_Tracer_tracePoint_RGB64F(int index_camera, void *
 			const double u = (double(index_x) - x_half) / x_half;
 			const double v = (double(index_y) - y_half) / y_half;
 
-			Vec3f result = tracer.trace(container_camera->getObject(), u, v, depth);
+			Vec3f result = host_trace(container_camera->getObject(), u, v, depth);
 			pixel[index + 0] = (double)(result[0]);
 			pixel[index + 1] = (double)(result[1]);
 			pixel[index + 2] = (double)(result[2]);
@@ -149,4 +150,14 @@ __host__ static void fix_index(
 		*index_y_start	= h - 1;
 		*index_y_next	= -1;
 	}
+}
+
+
+__host__ static Vec3f host_trace(Camera *camera, fp_t x, fp_t y, int depth) {
+	
+}
+
+
+__global__ static void global_trace(fp_t *value, void *camera, fp_t *x, fp_t *y, int depth) {
+
 }
