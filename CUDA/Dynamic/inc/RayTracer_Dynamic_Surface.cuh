@@ -11,6 +11,7 @@
 
 #include <vector>
 #include "../../Tracer/Tracer.cuh"
+#include "../../Material/Material.cuh"
 #include "../inc/RayTracer_DynamicContainer.cuh"
 
 

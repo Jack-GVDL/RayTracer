@@ -28,9 +28,9 @@ Dynamic_CUDA_constructTypeSkeleton(trimesh,	SceneObject_Hitable,	Hitable_Trimesh
 
 Dynamic_CUDA_constructTypeConfigLinker(sphere_setCenter,		config_sphere_setCenter);
 Dynamic_CUDA_constructTypeConfigLinker(sphere_setRadius,		config_sphere_setRadius);
-Dynamic_CUDA_constructTypeConfigLinker(trimesh_setPoint_0,	config_trimesh_setPoint_0);
-Dynamic_CUDA_constructTypeConfigLinker(trimesh_setPoint_1,	config_trimesh_setPoint_1);
-Dynamic_CUDA_constructTypeConfigLinker(trimesh_setPoint_2,	config_trimesh_setPoint_2);
+Dynamic_CUDA_constructTypeConfigLinker(trimesh_setPoint_0,		config_trimesh_setPoint_0);
+Dynamic_CUDA_constructTypeConfigLinker(trimesh_setPoint_1,		config_trimesh_setPoint_1);
+Dynamic_CUDA_constructTypeConfigLinker(trimesh_setPoint_2,		config_trimesh_setPoint_2);
 
 // Dynamic_CUDA_constructTypeInteractLinker(aabb_addHitable,	interact_aabb_addHitable);
 // Dynamic_CUDA_constructTypeInteractLinker(aabb_rmHitable,		interact_aabb_rmHitable);
@@ -45,9 +45,9 @@ __host__ void RayTracer_Dynamic_Hitable_init(std::vector<Dynamic_ContainerType*>
 	// table
 	Dynamic_CUDA_addTypeConfigLinker(sphere,		sphere_setCenter);
 	Dynamic_CUDA_addTypeConfigLinker(sphere,		sphere_setRadius);
-	Dynamic_CUDA_addTypeConfigLinker(trimesh,	trimesh_setPoint_0);
-	Dynamic_CUDA_addTypeConfigLinker(trimesh,	trimesh_setPoint_1);
-	Dynamic_CUDA_addTypeConfigLinker(trimesh,	trimesh_setPoint_2);
+	Dynamic_CUDA_addTypeConfigLinker(trimesh,		trimesh_setPoint_0);
+	Dynamic_CUDA_addTypeConfigLinker(trimesh,		trimesh_setPoint_1);
+	Dynamic_CUDA_addTypeConfigLinker(trimesh,		trimesh_setPoint_2);
 
 	// Dynamic_CUDA_addTypeInteractLinker(aabb,		aabb_addHitable);
 	// Dynamic_CUDA_addTypeInteractLinker(aabb,		aabb_rmHitable);
@@ -55,7 +55,7 @@ __host__ void RayTracer_Dynamic_Hitable_init(std::vector<Dynamic_ContainerType*>
 	// create type
 	Dynamic_ContainerType *type;
 
-	Dynamic_CUDA_addType(sphere,		sphere,		type_list);
+	Dynamic_CUDA_addType(sphere,	sphere,		type_list);
 	Dynamic_CUDA_addType(trimesh,	trimesh,	type_list);
 	// Dynamic_CUDA_addType(aabb,		aabb,		type_list);
 }

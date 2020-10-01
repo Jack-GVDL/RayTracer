@@ -27,6 +27,9 @@
 #define Dynamic_CUDA_Function_Host_config(name)			CUDA_Host_config_##name
 #define Dynamic_CUDA_Function_Host_interact(name)		CUDA_Host_interact_##name
 
+#define Dynamic_CUDA_Function_Linker_config(name)		CUDA_Linker_config_##name
+#define Dynamic_CUDA_Function_Linker_interact(name)		CUDA_Linker_interact_##name
+
 
 // Macro Function
 // type
@@ -64,7 +67,7 @@ __host__ static int Dynamic_CUDA_Function_Host_interact(name)(void *object, int 
 
 
 #define Dynamic_CUDA_constructTypeConfigLinker(name, func)																	\
-__host__ int Dynamic_Function_configCuda(name)(void *object, uint8_t *data, uint32_t size) {								\
+__host__ int Dynamic_CUDA_Function_Linker_config(name)(void *object, uint8_t *data, uint32_t size) {								\
 	/* data */																												\
 	uint8_t *data_device;																									\
 	cudaMalloc(&data_device, size * sizeof(uint8_t));																		\
@@ -89,7 +92,7 @@ __host__ int Dynamic_Function_configCuda(name)(void *object, uint8_t *data, uint
 
 
 #define Dynamic_CUDA_constructInteractLinker(name_type, name_interact, func)												\
-__host__ int Dynamic_Function_interactCuda(name)(void *object, void* *list, uint32_t size) {								\
+__host__ int Dynamic_CUDA_Function_Linker_interact(name)(void *object, void* *list, uint32_t size) {								\
 	/* data */																												\
 	void* *data_device;																										\
 	cudaMalloc(&data_device, size * sizeof(void*));																			\
@@ -116,26 +119,26 @@ __host__ int Dynamic_Function_interactCuda(name)(void *object, void* *list, uint
 #define Dynamic_CUDA_addType(name, tag, type_list)														\
 type = new Dynamic_ContainerType();																		\
 type->setName(#tag);																					\
-type->setOps( 	Dynamic_Function_init(name), 															\
-				Dynamic_Function_config(name), 															\
-				Dynamic_Function_interact(name));														\
+type->setOps( 	Dynamic_CUDA_Function_Host_init(name), 													\
+				Dynamic_CUDA_Function_Host_config(name), 												\
+				Dynamic_CUDA_Function_Host_interact(name));												\
 type_list->push_back(type);
 
 
 #define Dynamic_CUDA_addTypeConfig(name, func)															\
-Dynamic_Variable_tableConfig(name).push_back(func);
+Dynamic_CUDA_Variable_tableConfig(name).push_back(func);
 
 
 #define Dynamic_CUDA_addTypeInteract(name, func)														\
-Dynamic_Variable_tableInteract(name).push_back(func)
+Dynamic_CUDA_Variable_tableInteract(name).push_back(func)
 
 
 #define Dynamic_CUDA_addTypeConfigLinker(name, func)													\
-Dynamic_addTypeConfig(name, Dynamic_Function_configCuda(func))
+Dynamic_CUDA_addTypeConfig(name, Dynamic_CUDA_Function_Linker_config(func))
 
 
 #define Dynamic_CUDA_addTypeInteractLinker(name, func)													\
-Dynamic_addTypeConfig(name, Dynamic_Function_interactCuda(func))
+Dynamic_CUDA_addTypeInteract(name, Dynamic_CUDA_Function_Linker_interact(func))
 
 
 // type interface

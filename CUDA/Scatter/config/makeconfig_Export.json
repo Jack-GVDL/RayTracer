@@ -1,6 +1,6 @@
 {
-    "OBJ_FILE"  : ["obj_x64/RayTracer_Scatter.o ",
-                   "obj_x64/RayTracer_Scatter_Light.o ",
-                   "obj_x64/RayTracer_Scatter_AnyHit.o ",
+    "OBJ_FILE"  : ["obj/RayTracer_Scatter.o ",
+                   "obj/RayTracer_Scatter_Light.o ",
+                   "obj/RayTracer_Scatter_AnyHit.o ",
                    ""]
 }

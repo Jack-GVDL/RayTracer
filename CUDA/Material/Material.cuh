@@ -9,9 +9,12 @@
 #define MATERIAL_CUH
 
 
+#include "./inc/RayTracer_Material.cuh"
+#include "./inc/RayTracer_Surface.cuh"
+#include "./inc/RayTracer_Surface_BMP.cuh"
 #include "./inc/RayTracer_Texture.cuh"
 #include "./inc/RayTracer_Texture_Constant.cuh"
-#include "./inc/RayTracer_Material.cuh"
+#include "./inc/RayTracer_Texture_Input.cuh"
 
 
 // Define

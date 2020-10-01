@@ -30,7 +30,6 @@ __device__ Texture_Constant::~Texture_Constant() {
 
 
 __device__ void Texture_Constant::setPixel(const Vec3f &point, const Vec3f &pixel) {
-	// UNUSED(pixel)
 	color = pixel;
 }
 

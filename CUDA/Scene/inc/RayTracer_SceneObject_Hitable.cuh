@@ -9,6 +9,7 @@
 #define RAYTRACER_SCENEOBJECT_HITABLE_CUH
 
 
+#include <limits>
 #include "RayTracer_SceneElement.cuh"
 
 
@@ -49,7 +50,7 @@ struct RecordHit {
 struct RecordHit_Extend {
 	RecordHit				record;
 	fp_t					length_min		= RAY_EPSILON;
-	fp_t					length_max		= FLOAT_MAX;
+	fp_t					length_max		= std::numeric_limits<fp_t>::max();
 };
 
 

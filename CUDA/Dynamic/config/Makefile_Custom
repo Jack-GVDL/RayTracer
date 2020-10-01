@@ -67,17 +67,17 @@ OBJ_FILE			=
 
 # TODO: find a better way to do same thing
 LOCLA_OBJ_FILE		=
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_DynamicContainer.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Camera.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Tracer.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Surface.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Texture.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Material.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Scatter.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Hitable.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Light.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Test.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_DynamicContainer.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Camera.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Tracer.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Surface.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Texture.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Material.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Scatter.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Hitable.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Light.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Test.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic.o
 
 
 # --------------------------------------------------

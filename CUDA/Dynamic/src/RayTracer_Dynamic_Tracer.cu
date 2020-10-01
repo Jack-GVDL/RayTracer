@@ -14,16 +14,30 @@
 
 // Static Function Prototype
 __host__ static void	fix_index		(int *index_x_start, int *index_y_start, int *index_x_next, int *index_y_next, int w, int h, int is_reverse_x, int is_reverse_y);
-__host__ static Vec3f	host_trace		(Camera *camera, fp_t x, fp_t y, int depth);
-__global__ static void	global_trace	(fp_t *value, void *camera, fp_t *x, fp_t *y, int depth);
+
+__host__ static inline Vec3f	host_init			();
+__host__ static inline Vec3f	host_trace			(Camera *camera, fp_t x, fp_t y, int depth);
+__host__ static inline int8_t	host_add_light		(SceneObject_Light *light);
+__host__ static inline int8_t	host_add_hitable	(SceneObject_Hitable *hitable);
+__host__ static inline int8_t	host_rm_light		(SceneObject_Light *light);
+__host__ static inline int8_t	host_rm_hitable		(SceneObject_Hitable *hitable);
+
+__global__ static void	global_init		();
+__global__ static void	global_trace	(fp_t *value, void *camera, fp_t x, fp_t y, int depth);
 
 
 // Static Data
-extern	RayTracer						tracer;
+__device__	RayTracer					*tracer;
+__device__	Scene						*scene;
 extern	Dynamic_ContainerList<Camera>	camera_list;
 
 
 // Operation Handling
+__host__ void RayTracer_Dynamic_Tracer_init() {
+	host_init();
+}
+
+
 __host__ int RayTracer_Dynamic_Tracer_tracePoint_RGB888(int index_camera, void *data, int w, int h, int depth, int is_reverse_x, int is_reverse_y) {
 	// pointer casting
 	uint8_t *pixel = (uint8_t*)data;
@@ -128,6 +142,26 @@ __host__ int RayTracer_Dynamic_Tracer_tracePoint_RGB64F(int index_camera, void *
 }
 
 
+__host__ int8_t RayTracer_Dynamic_Scene_addHitable(SceneObject_Hitable *hitable) {
+
+}
+
+
+__host__ int8_t RayTracer_Dynamic_Scene_addLight(SceneObject_Light *light) {
+
+}
+
+
+__host__ int8_t RayTracer_Dynamic_Scene_rmHitable(SceneObject_Hitable *hitable) {
+
+}
+
+
+__host__ int8_t RayTracer_Dynamic_Scene_rmLight(SceneObject_Light *light) {
+
+}
+
+
 // Static Function Implementation
 __host__ static void fix_index(
 	int *index_x_start, int *index_y_start, int *index_x_next, int *index_y_next, 
@@ -153,11 +187,40 @@ __host__ static void fix_index(
 }
 
 
-__host__ static Vec3f host_trace(Camera *camera, fp_t x, fp_t y, int depth) {
-	
+__host__ static Vec3f host_init() {
+	global_init <<< 1, 1 >>> ();
 }
 
 
-__global__ static void global_trace(fp_t *value, void *camera, fp_t *x, fp_t *y, int depth) {
+__host__ static Vec3f host_trace(Camera *camera, fp_t x, fp_t y, int depth) {
+	// create device memory space for resultant pixel
+	fp_t *pixel_device;
+	cudaMalloc(&pixel_device, 3 * sizeof(fp_t));
 
+	// kernel operation
+	global_trace<<< 1, 1 >>>(pixel_device, camera, x, y, depth);
+
+	// get resultant pixel
+	fp_t pixel_host[3];
+	cudaMemcpy(pixel_host, pixel_device, 3 * sizeof(fp_t), cudaMemcpyDeviceToHost);
+	cudaFree(pixel_device);
+
+	return Vec3f(pixel_host[0], pixel_host[1], pixel_host[2]);
+}
+
+
+__global__ static void global_init() {
+	tracer	= new RayTracer();
+	scene	= new Scene();
+
+	tracer->setScene(scene);
+}
+
+
+__global__ static void global_trace(fp_t *value, void *camera, fp_t x, fp_t y, int depth) {
+	Vec3f result = tracer.trace((Camera*)camera, x, y, depth);
+
+	value[0] = result[0];
+	value[1] = result[1];
+	value[2] = result[2];
 }
