@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/09/24	initial update
+// 2020/10/04   add Dynamic_Surface_XXX function
 
 
 #ifndef RAYTRACER_DYNAMIC_SURFACE_CUH
@@ -40,9 +41,12 @@ enum TypeSurface {
 
 
 // Operation Handling
-__host__ void	RayTracer_Dynamic_Surface_init	(std::vector<Dynamic_ContainerType*> *type_list);
-__host__ void	RayTracer_Dynamic_Surface_info	();
-__host__ void	RayTracer_Dynamic_Surface_del	();
+__host__ void		RayTracer_Dynamic_Surface_init	(std::vector<Dynamic_ContainerType*> *type_list);
+__host__ void		RayTracer_Dynamic_Surface_info	();
+__host__ void		RayTracer_Dynamic_Surface_del	();
+
+__host__ error_t	Dynamic_Surface_load			(Surface *surface);
+__host__ error_t	Dynamic_Surface_dump			(Surface *surface);
 
 
 // Inline Function Implementation

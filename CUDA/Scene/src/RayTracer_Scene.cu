@@ -22,7 +22,17 @@ __device__ Scene::~Scene() {
 }
 
 
-__device__ error_t Scene::allocateHitable(int32_t size) {
+__device__ error_t Scene::allocateHitable(void *memory, int32_t size) {
+	// free old
+	cudaFree(hitable_list);
+
+	// set new
+	hitable_list	= (SceneObject_Hitable**)memory;
+	hitable_size	= size;
+	hitable_index	= 0;
+
+	// backup
+	/*
 	// free old
 	cudaFree(hitable_list);
 
@@ -30,6 +40,7 @@ __device__ error_t Scene::allocateHitable(int32_t size) {
 	cudaMalloc(&hitable_list, size * sizeof(SceneObject_Hitable*));
 	hitable_size	= size;
 	hitable_index	= 0;
+	*/
 
 	return ERROR_NO;
 }
@@ -49,7 +60,17 @@ __device__ error_t Scene::rmHitable(SceneObject_Hitable *hitable) {
 }
 
 
-__device__ error_t Scene::allocateLight(int32_t size) {
+__device__ error_t Scene::allocateLight(void *memory, int32_t size) {
+	// free old
+	cudaFree(hitable_list);
+
+	// set new
+	light_list		= (SceneObject_Light**)memory;
+	light_size		= size;
+	light_index		= 0;
+
+	// backup
+	/*
 	// free old
 	cudaFree(light_list);
 
@@ -57,6 +78,7 @@ __device__ error_t Scene::allocateLight(int32_t size) {
 	cudaMalloc(&light_list, size * sizeof(SceneObject_Light*));
 	light_size	= size;
 	light_index	= 0;
+	*/
 
 	return ERROR_NO;
 }
@@ -76,7 +98,17 @@ __device__ error_t Scene::rmLight(SceneObject_Light *light) {
 }
 
 
-__device__ error_t Scene::allocateAmbient(int32_t size) {
+__device__ error_t Scene::allocateAmbient(void *memory, int32_t size) {
+	// free old
+	cudaFree(hitable_list);
+
+	// set new
+	ambient_list	= (SceneObject_Light**)memory;
+	ambient_size	= size;
+	ambient_index	= 0;
+
+	// backup
+	/*
 	// free old
 	cudaFree(ambient_list);
 
@@ -84,6 +116,7 @@ __device__ error_t Scene::allocateAmbient(int32_t size) {
 	cudaMalloc(&ambient_list, size * sizeof(SceneObject_Light*));
 	ambient_size	= size;
 	ambient_index	= 0;
+	*/
 
 	return ERROR_NO;
 }

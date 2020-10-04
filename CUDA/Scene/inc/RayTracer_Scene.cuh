@@ -49,15 +49,15 @@ class Scene: public SceneElement {
 		__device__	~Scene	();
 
 		// operation
-		__device__ error_t	allocateHitable		(int32_t size);
+		__device__ error_t	allocateHitable		(void *memory, int32_t size);
 		__device__ error_t	addHitable			(SceneObject_Hitable *hitable);
 		__device__ error_t	rmHitable			(SceneObject_Hitable *hitable);
 
-		__device__ error_t	allocateLight		(int32_t size);
+		__device__ error_t	allocateLight		(void *memory, int32_t size);
 		__device__ error_t	addLight			(SceneObject_Light *light);
 		__device__ error_t	rmLight				(SceneObject_Light *light);
 
-		__device__ error_t	allocateAmbient		(int32_t size);
+		__device__ error_t	allocateAmbient		(void *memory, int32_t size);
 		__device__ error_t	addAmbient			(SceneObject_Light *light);
 		__device__ error_t	rmAmbient			(SceneObject_Light *light);
 

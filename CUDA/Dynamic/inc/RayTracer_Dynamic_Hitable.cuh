@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/09/24	initial update
+// 2020/10/04   add Dynamic_Hitable_XXX function
 
 
 #ifndef RAYTRACER_DYNAMIC_HITABLE_CUH
@@ -35,9 +36,11 @@
 
 
 // Operation Handling
-__host__ void	RayTracer_Dynamic_Hitable_init	(std::vector<Dynamic_ContainerType*> *type_list);
-__host__ void	RayTracer_Dynamic_Hitable_info	();
-__host__ void	RayTracer_Dynamic_Hitable_del	();
+__host__ void		RayTracer_Dynamic_Hitable_init	(std::vector<Dynamic_ContainerType*> *type_list);
+__host__ void		RayTracer_Dynamic_Hitable_info	();
+__host__ void		RayTracer_Dynamic_Hitable_del	();
+
+__host__ error_t	Dynamic_Hitable_setMaterial		(SceneObject_Hitable *hitable, Material *material);
 
 
 // Inline Function Implementation

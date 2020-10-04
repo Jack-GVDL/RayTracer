@@ -50,6 +50,18 @@ __host__ void RayTracer_Dynamic_Surface_del() {
 }
 
 
+__host__ error_t Dynamic_Surface_load(Surface *surface) {
+	surface->load();
+	return ERROR_NO;
+}
+
+
+__host__ error_t Dynamic_Surface_dump(Surface *surface) {
+	surface->load();
+	return ERROR_NO;
+}
+
+
 // Static Function Implementation
 // table
 __host__ static int8_t config_bmp_setPath(void *object, uint8_t *data, uint32_t size) {

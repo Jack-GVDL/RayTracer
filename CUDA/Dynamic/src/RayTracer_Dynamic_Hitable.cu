@@ -35,6 +35,8 @@ Dynamic_CUDA_constructTypeConfigLinker(trimesh_setPoint_2,		config_trimesh_setPo
 // Dynamic_CUDA_constructTypeInteractLinker(aabb_addHitable,	interact_aabb_addHitable);
 // Dynamic_CUDA_constructTypeInteractLinker(aabb_rmHitable,		interact_aabb_rmHitable);
 
+// cuda linker function
+__global__ static void	hitable_setMaterial	(SceneObject_Hitable *hitable, Material *material);
 
 // Static Data
 // ...
@@ -66,6 +68,12 @@ __host__ void RayTracer_Dynamic_Hitable_info() {
 
 
 __host__ void RayTracer_Dynamic_Hitable_del() {
+}
+
+
+__host__ error_t Dynamic_Hitable_setMaterial(SceneObject_Hitable *hitable, Material *material) {
+	hitable_setMaterial <<< 1, 1 >>> (hitable, material);
+	return ERROR_NO;
 }
 
 
@@ -138,3 +146,9 @@ __global__ static void config_trimesh_setPoint_2(int8_t *ret, void *object, uint
 // 	if (!hitable->rmHitable(child)) return -1;
 // 	*ret = 0;
 // }
+
+
+// cuda linker function
+__global__ static void hitable_setMaterial(SceneObject_Hitable *hitable, Material *material) {
+	hitable->setMaterial(material);
+}

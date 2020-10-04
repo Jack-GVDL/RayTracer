@@ -49,6 +49,12 @@ Dynamic_CUDA_constructTypeSkeleton(constant,		Texture,	Texture_Constant);
 // Dynamic_CUDA_constructTypeInteractLinker(mapTrimesh_setTrimesh, interact_mapTrimesh_setTrimesh);
 // Dynamic_CUDA_constructTypeInteractLinker(dirTrimesh_setTrimesh, interact_dirTrimesh_setTrimesh);
 
+// cuda linker function
+__global__ static void	texture_addInput	(Texture *texture, Texture *input, int32_t offset);
+__global__ static void	texture_rmInput		(Texture *texture, int32_t offset);
+__global__ static void	texture_setPixel	(Texture *texture, fp_t point_0, fp_t point_1, fp_t point_2, fp_t pixel_0, fp_t pixel_1, fp_t pixel_2);
+__global__ static void	texture_getPixel	(Texture *texture, fp_t *dst, fp_t src_0, fp_t src_1, fp_t src_2);
+
 
 // Static Data
 // ...
@@ -91,6 +97,41 @@ __host__ void RayTracer_Dynamic_Texture_info() {
 
 
 __host__ void RayTracer_Dynamic_Texture_del() {
+}
+
+
+__host__ error_t Dynamic_Texture_addInput(Texture *texture, Texture *input, int32_t offset) {
+	texture_addInput <<< 1, 1 >>> (texture, input, offset);
+	return ERROR_NO;
+}
+
+
+__host__ error_t Dynamic_Texture_rmInput(Texture *texture, int32_t offset) {
+	texture_rmInput <<< 1, 1 >>> (texture, offset);
+	return ERROR_NO;
+}
+
+
+__host__ error_t Dynamic_Texture_setPixel(Texture *texture, const Vec3f &point, const Vec3f &pixel) {
+	texture_setPixel <<< 1, 1 >>> (texture, point[0], point[1], point[2], pixel[0], pixel[1], pixel[2]);
+	return ERROR_NO;
+}
+
+
+__host__ error_t Dynamic_Texture_getPixel(Texture *texture, Vec3f &dst, const Vec3f &src) {
+	fp_t *dst_device;
+	cudaMalloc(&dst_device, 3 * sizeof(fp_t));
+
+	texture_getPixel <<< 1, 1 >>> (texture, dst_device, src[0], src[1], src[2]);
+	
+	fp_t dst_host[3];
+	cudaMemcpy(dst_host, dst_device, 3 * sizeof(fp_t), cudaMemcpyDeviceToHost);
+
+	dst[0]	= dst_host[0];
+	dst[1]	= dst_host[1];
+	dst[2]	= dst_host[2];
+
+	return ERROR_NO;
 }
 
 
@@ -198,3 +239,31 @@ __global__ static void interact_dirTrimesh_setTrimesh(int8_t *ret, void *object,
 
 }
 */
+
+
+// cuda linker function
+__global__ static void texture_addInput(Texture *texture, Texture *input, int32_t offset) {
+	texture->addInput(input, offset);
+}
+
+
+__global__ static void texture_rmInput(Texture *texture, int32_t offset) {
+	texture->rmInput(offset);
+}
+
+
+__global__ static void texture_setPixel(Texture *texture, fp_t point_0, fp_t point_1, fp_t point_2, fp_t pixel_0, fp_t pixel_1, fp_t pixel_2) {
+	texture->setPixel(
+		Vec3f(point_0, point_1, point_2),
+		Vec3f(pixel_0, pixel_1, pixel_2));
+}
+
+
+__global__ static void texture_getPixel(Texture *texture, fp_t *dst, fp_t src_0, fp_t src_1, fp_t src_2) {
+	Vec3f vec_pixel;
+	texture->getPixel(vec_pixel, Vec3f(src_0, src_1, src_2));
+
+	dst[0]	= vec_pixel[0];
+	dst[1]	= vec_pixel[1];
+	dst[2]	= vec_pixel[2];
+}

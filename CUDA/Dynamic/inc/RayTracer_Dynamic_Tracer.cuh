@@ -30,6 +30,8 @@
 
 
 // Operation Handling
+// TODO: may be rename to Dynamic_Tracer_init
+// do the same thing for rest of the function
 __host__ void		RayTracer_Dynamic_Tracer_init               ();
 
 __host__ int		RayTracer_Dynamic_Tracer_tracePoint_RGB888	(int index_camera, void *data, int w, int h, int depth, int is_reverse_x, int is_reverse_y);

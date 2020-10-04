@@ -29,6 +29,11 @@ Dynamic_CUDA_constructTypeSkeleton(anyHit,		Scatter,	Scatter_AnyHit);
 // Dynamic_CUDA_constructTypeConfigLinker(random_setParallel,	config_random_setParallel);
 // Dynamic_CUDA_constructTypeConfigLinker(random_setRaySize,	config_random_setRaySize);
 
+// cuda linker function
+__global__ static void	scatter_addScatter		(Scatter *scatter, Scatter *target);
+__global__ static void	scatter_rmScatter		(Scatter *scatter, Scatter *target);
+__global__ static void	scatter_setTexture		(Scatter *scatter, Texture *texture, int32_t offset);
+
 
 // Static Data
 // ...
@@ -62,6 +67,24 @@ __host__ void RayTracer_Dynamic_Scatter_del() {
 }
 
 
+__host__ error_t Dynamic_Scatter_addScatter(Scatter *scatter, Scatter *target) {
+	scatter_addScatter <<< 1, 1 >>> (scatter, target);
+	return ERROR_NO;
+}
+
+
+__host__ error_t Dynamic_Scatter_rmScatter(Scatter *scatter, Scatter *target) {
+	scatter_rmScatter <<< 1, 1 >>> (scatter, target);
+	return ERROR_NO;
+}
+
+
+__host__ error_t Dynamic_Scatter_setTexture(Scatter *scatter, Texture *texture, int32_t offset) {
+	scatter_setTexture <<< 1, 1 >>> (scatter, texture, offset);
+	return ERROR_NO;
+}
+
+
 // Static Function Implementation
 // table
 /*
@@ -91,3 +114,18 @@ __global__ static void config_random_setRaySize(int8_t *ret, void *object, uint8
 	*ret = 0;
 }
 */
+
+// cuda linker function
+__global__ static void scatter_addScatter(Scatter *scatter, Scatter *target) {
+	scatter->addScatter(target);
+}
+
+
+__global__ static void scatter_rmScatter(Scatter *scatter, Scatter *target) {
+	scatter->rmScatter(target);
+}
+
+
+__global__ static void scatter_setTexture(Scatter *scatter, Texture *texture, int32_t offset) {
+	scatter->setTexture(texture, offset);
+}

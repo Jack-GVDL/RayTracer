@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/09/24   initial update
+// 2020/10/04   add Dynamic_Camera_XXX function
 
 
 #ifndef RAYTRACER_DYNAMIC_CAMERA_CUH
@@ -38,10 +39,17 @@ enum TypeCamera {
 
 
 // Operation Handling
-__host__ void	RayTracer_Dynamic_Camera_init	(std::vector<Dynamic_ContainerType*> *type_list);
-__host__ void	RayTracer_Dynamic_Camera_info	();
-__host__ void	RayTracer_Dynamic_Camera_del	();
+__host__ void		RayTracer_Dynamic_Camera_init	(std::vector<Dynamic_ContainerType*> *type_list);
+__host__ void		RayTracer_Dynamic_Camera_info	();
+__host__ void		RayTracer_Dynamic_Camera_del	();
 
+// cuda linker function
+// __host__ void	Dynamic_Camera_setAll			(Camera *camera);
+__host__ error_t	Dynamic_Camera_setLookFrom		(Camera *camera, const Vec3f look_from);
+__host__ error_t	Dynamic_Camera_setLookAt		(Camera *camera, const Vec3f look_at);
+__host__ error_t	Dynamic_Camera_setUpDirection	(Camera *camera, const Vec3f up);
+__host__ error_t	Dynamic_Camera_setFOV			(Camera *camera, fp_t value);
+__host__ error_t	Dynamic_Camera_setAspectRatio	(Camera *camera, fp_t value);
 
 
 // Inline Function Implementation
