@@ -61,12 +61,13 @@ CONFIG_JSON_LOCAL	= makeconfig_$(MODULE).json
 
 PY					= py
 LD					= g++
-SHARED				= g++ -shared
+SHARED				= g++
 
 OBJ_FILE			=
 
 # TODO: find a better way to do same thing
 LOCLA_OBJ_FILE		=
+
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_DynamicContainer.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Camera.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Tracer.o
@@ -75,9 +76,21 @@ LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Texture.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Material.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Scatter.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Hitable.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Scene.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Light.o
-LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Test.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic.o
+
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_DynamicContainer.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Camera.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Tracer.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Surface.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Texture.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Material.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Scatter.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Hitable.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Scene.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Light.cu
+# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic.cu
 
 
 # --------------------------------------------------
@@ -130,7 +143,7 @@ OBJ_PATH	:= $(OBJ_PATH)_arm
 
 # cuda
 else ifeq ($(CONFIG_MACHINE),cuda)
-SHARED		:= nvcc -Xcompiler -shared
+SHARED		:= nvcc --shared
 OBJ_PATH	:= $(OBJ_PATH)
 FLAG		+=
 

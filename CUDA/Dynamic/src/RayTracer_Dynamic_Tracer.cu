@@ -13,20 +13,12 @@
 
 
 // Static Function Prototype
-__host__ static void	fix_index		(int *index_x_start, int *index_y_start, int *index_x_next, int *index_y_next, int w, int h, int is_reverse_x, int is_reverse_y);
+__host__ static void			fix_index			(int *index_x_start, int *index_y_start, int *index_x_next, int *index_y_next, int w, int h, int is_reverse_x, int is_reverse_y);
 
 __host__ static inline void		host_init			();
 __host__ static inline Vec3f	host_trace			(Camera *camera, fp_t x, fp_t y, int depth);
-__host__ static inline int8_t	host_add_light		(SceneObject_Light *light);
-__host__ static inline int8_t	host_add_hitable	(SceneObject_Hitable *hitable);
-__host__ static inline int8_t	host_rm_light		(SceneObject_Light *light);
-__host__ static inline int8_t	host_rm_hitable		(SceneObject_Hitable *hitable);
 
 __global__ static void			global_init			();
-__global__ static void			global_add_light	(SceneObject_Light *light);
-__global__ static void			global_add_hitable	(SceneObject_Hitable *hitable);
-__global__ static void			global_rm_light		(SceneObject_Light *light);
-__global__ static void			global_rm_hitable	(SceneObject_Hitable *hitable);
 __global__ static void			global_trace		(fp_t *value, void *camera, fp_t x, fp_t y, int depth);
 
 
@@ -146,26 +138,6 @@ __host__ int RayTracer_Dynamic_Tracer_tracePoint_RGB64F(int index_camera, void *
 }
 
 
-__host__ int8_t RayTracer_Dynamic_Scene_addHitable(SceneObject_Hitable *hitable) {
-	return host_add_hitable(hitable);
-}
-
-
-__host__ int8_t RayTracer_Dynamic_Scene_addLight(SceneObject_Light *light) {
-	return host_add_light(light);
-}
-
-
-__host__ int8_t RayTracer_Dynamic_Scene_rmHitable(SceneObject_Hitable *hitable) {
-	return host_rm_hitable(hitable);
-}
-
-
-__host__ int8_t RayTracer_Dynamic_Scene_rmLight(SceneObject_Light *light) {
-	return host_rm_light(light);
-}
-
-
 // Static Function Implementation
 __host__ static void fix_index(
 	int *index_x_start, int *index_y_start, int *index_x_next, int *index_y_next, 
@@ -194,30 +166,6 @@ __host__ static void fix_index(
 // host
 __host__ static inline void host_init() {
 	global_init <<< 1, 1 >>> ();
-}
-
-
-__host__ static inline int8_t host_add_light(SceneObject_Light *light) {
-	global_add_light <<< 1, 1 >>> (light);
-	return ERROR_NO;
-}
-
-
-__host__ static inline int8_t host_add_hitable(SceneObject_Hitable *hitable) {
-	global_add_hitable <<< 1, 1 >>> (hitable);
-	return ERROR_NO;
-}
-
-
-__host__ static inline int8_t host_rm_light(SceneObject_Light *light) {
-	global_rm_light <<< 1, 1 >>> (light);
-	return ERROR_NO;
-}
-
-
-__host__ static inline int8_t host_rm_hitable(SceneObject_Hitable *hitable) {
-	global_rm_hitable <<< 1, 1 >>> (hitable);
-	return ERROR_NO;
 }
 
 
@@ -259,26 +207,6 @@ __global__ static void global_init() {
 
 	scene->allocateHitable(hitable_list, size_hitable);
 	scene->allocateLight(light_list, size_light);
-}
-
-
-__global__ static void global_add_light(SceneObject_Light *light) {
-	scene->addLight(light);
-}
-
-
-__global__ static void global_add_hitable(SceneObject_Hitable *hitable) {
-	scene->addHitable(hitable);
-}
-
-
-__global__ static void global_rm_light(SceneObject_Light *light) {
-	scene->rmLight(light);
-}
-
-
-__global__ static void global_rm_hitable(SceneObject_Hitable *hitable) {
-	scene->rmHitable(hitable);
 }
 
 

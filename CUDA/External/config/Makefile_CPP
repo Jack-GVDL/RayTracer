@@ -149,7 +149,7 @@ FLAG		+= -MMD -MP -MF"$(@:%.o=%.d)"
 
 # cuda
 else ifeq ($(CONFIG_MACHINE),cuda)
-CPP			:= nvcc
+CPP			:= nvcc -dc -rdc=true
 OBJ_PATH	:= $(OBJ_PATH)
 FLAG		+=
 ASSOC_CPP	:= cu

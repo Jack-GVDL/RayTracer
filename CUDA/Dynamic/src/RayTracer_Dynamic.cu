@@ -14,6 +14,7 @@
 #include "../inc/RayTracer_Dynamic_AABB.cuh"
 #include "../inc/RayTracer_Dynamic_Light.cuh"
 #include "../inc/RayTracer_Dynamic_Material.cuh"
+#include "../inc/RayTracer_Dynamic_Scene.cuh"
 
 #include "../inc/RayTracer_Dynamic.cuh"
 

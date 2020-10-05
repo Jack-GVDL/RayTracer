@@ -31,7 +31,7 @@ __global__ static void	camera_setAspectRatio	(Camera *camera, fp_t value);
 
 
 // Operation Handling
-__host__ void RayTracer_CUDA_Dynamic_Camera_init(std::vector<Dynamic_ContainerType*> *type_list) {
+__host__ void RayTracer_Dynamic_Camera_init(std::vector<Dynamic_ContainerType*> *type_list) {
 	// table
 	// ...
 
@@ -42,11 +42,11 @@ __host__ void RayTracer_CUDA_Dynamic_Camera_init(std::vector<Dynamic_ContainerTy
 }
 
 
-__host__ void RayTracer_CUDA_Dynamic_Camera_info() {
+__host__ void RayTracer_Dynamic_Camera_info() {
 }
 
 
-__host__ void RayTracer_CUDA_Dynamic_Camera_del() {
+__host__ void RayTracer_Dynamic_Camera_del() {
 }
 
 

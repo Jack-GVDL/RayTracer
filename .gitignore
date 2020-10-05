@@ -1,13 +1,16 @@
+# folder
 obj_*/
 obj/
 backup/
 .idea/
 .vscode/
+__pycache__
+Example/
+example/
+
+# file association
 *.ppm
 *.exe
 *.dll
 *.bmp
 *.o
-__pycache__
-Example/
-example/

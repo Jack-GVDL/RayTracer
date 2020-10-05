@@ -37,12 +37,6 @@ __host__ void		RayTracer_Dynamic_Tracer_init               ();
 __host__ int		RayTracer_Dynamic_Tracer_tracePoint_RGB888	(int index_camera, void *data, int w, int h, int depth, int is_reverse_x, int is_reverse_y);
 __host__ int		RayTracer_Dynamic_Tracer_tracePoint_RGB64F	(int index_camera, void *data, int w, int h, int depth, int is_reverse_x, int is_reverse_y);  // 64-bit floating point array, aka double
 
-__host__ int8_t		RayTracer_Dynamic_Scene_addHitable			(SceneObject_Hitable *hitable);
-__host__ int8_t		RayTracer_Dynamic_Scene_addLight			(SceneObject_Light *light);
-
-__host__ int8_t		RayTracer_Dynamic_Scene_rmHitable			(SceneObject_Hitable *hitable);
-__host__ int8_t		RayTracer_Dynamic_Scene_rmLight				(SceneObject_Light *light);
-
 
 // Inline Function Implementation
 // ...
