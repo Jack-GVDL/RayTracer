@@ -1,4 +1,4 @@
-#include "../inc/RayTracer_Scatter_Reflection.hpp"
+#include "../inc/RayTracer_Scatter_Reflection.cuh"
 
 
 // Define
@@ -10,11 +10,11 @@
 
 
 // Static Function Prototype
-static inline Vec3f	reflect	(const Vec3f &incident, const Vec3f &normal);
+__device__ static inline Vec3f  reflect (const Vec3f &incident, const Vec3f &normal);
 
 
 // Operation Handling
-Scatter_Reflection::Scatter_Reflection() {
+__device__ Scatter_Reflection::Scatter_Reflection() {
 	texture_list				= new Texture*[MAX];
 	texture_size				= MAX;
 
@@ -22,7 +22,11 @@ Scatter_Reflection::Scatter_Reflection() {
 }
 
 
-void Scatter_Reflection::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
+__device__ Scatter_Reflection::~Scatter_Reflection() {
+}
+
+
+__device__ void Scatter_Reflection::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
 	// variable preparation
 	RecordHit		*record_hit	= &(src->record_hit.record);
 	Material		*material	= record_hit->object->material;
@@ -54,6 +58,6 @@ void Scatter_Reflection::scatter(RecordRay *src, MemoryControl_Scatter *memory_c
 // Static Function Implementation
 // or from the another source
 // return v - 2 * dot(incident, normal) * normal;
-static inline Vec3f reflect(const Vec3f &incident, const Vec3f &normal) {
+__device__ static inline Vec3f reflect(const Vec3f &incident, const Vec3f &normal) {
 	return (2.0 * normal.dot(-incident) * normal + incident).normalize();
 }

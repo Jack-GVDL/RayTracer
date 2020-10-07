@@ -10,13 +10,13 @@
 
 
 #include "./inc/RayTracer_Scatter.cuh"
-// #include "./inc/RayTracer_Scatter_Gradient.cuh"
-#include "./inc/RayTracer_Scatter_Light.cuh"
-// #include "./inc/RayTracer_Scatter_Reflection.cuh"
-// #include "./inc/RayTracer_Scatter_Refraction.cuh"
-// #include "./inc/RayTracer_Scatter_Emitter.cuh"
 #include "./inc/RayTracer_Scatter_AnyHit.cuh"
-// #include "./inc/RayTracer_Scatter_Random.cuh"
+#include "./inc/RayTracer_Scatter_Light.cuh"
+#include "./inc/RayTracer_Scatter_Reflection.cuh"
+#include "./inc/RayTracer_Scatter_Refraction.cuh"
+// #include "./inc/RayTracer_Scatter_Gradient.cuh"
+// #include "./inc/RayTracer_Scatter_Emitter.cuh"
+#include "./inc/RayTracer_Scatter_Random.cuh"
 
 
 // Define

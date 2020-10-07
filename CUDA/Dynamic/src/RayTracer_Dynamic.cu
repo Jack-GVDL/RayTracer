@@ -441,7 +441,7 @@ EXPORT_DLL(int) RayTracer_Material_setIndex(int index, double value) {
 Dynamic_constructTypeInterface(Scatter, Scatter, &scatter_list);
 
 
-EXPORT_DLL(int)RayTracer_Scatter_addScatter(int index_scatter, int index_target) {
+EXPORT_DLL(int) RayTracer_Scatter_addScatter(int index_scatter, int index_target) {
 	// get container
 	Dynamic_Container<Scatter> *scatter = scatter_list.get(index_scatter);
 	if (scatter == nullptr) return ERROR_ANY;
@@ -461,7 +461,7 @@ EXPORT_DLL(int)RayTracer_Scatter_addScatter(int index_scatter, int index_target)
 }
 
 
-EXPORT_DLL(int)RayTracer_Scatter_rmScatter(int index_scatter, int index_target) {
+EXPORT_DLL(int) RayTracer_Scatter_rmScatter(int index_scatter, int index_target) {
 	// get container
 	Dynamic_Container<Scatter> *scatter = scatter_list.get(index_scatter);
 	if (scatter == nullptr) return ERROR_ANY;

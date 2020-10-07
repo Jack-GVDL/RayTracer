@@ -9,7 +9,8 @@
 #define SHARED_DLL_H
 
 
-#define EXPORT_DLL(type) extern "C" type __stdcall
+// #define EXPORT_DLL(type) extern "C" __stdcall type
+#define EXPORT_DLL(type) extern "C" _declspec(dllexport) type
 
 
 // Define

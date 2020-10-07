@@ -19,7 +19,7 @@ tracer:			Tracer = Tracer()
 tracer.setOps_tracer(ops_tracer)
 tracer.start()
 
-Tracer_Sample.buildScene_0(tracer, 1)
+Tracer_Sample.buildScene_0(tracer, 0)
 # Tracer_Sample.buildScene_1(tracer)
 # Tracer_Sample.buildScene_2(tracer)
 # Tracer_Sample.buildScene_3(tracer, 2)
