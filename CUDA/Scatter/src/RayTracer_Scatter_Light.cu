@@ -57,7 +57,7 @@ __device__ void Scatter_Light::scatter(RecordRay *src, MemoryControl_Scatter *me
 	Vec3f	vec_shininess;
 	Vec3f	vec_normal;
 	Vec3f	vec_transmissive;
-
+	
 	texture_list[EMISSIVE]->getPixel(	vec_emissive,		record_hit->point	);
 	texture_list[AMBIENT]->getPixel(	vec_ambient,		record_hit->point	);
 	texture_list[DIFFUSE]->getPixel(	vec_diffuse,		record_hit->point	);

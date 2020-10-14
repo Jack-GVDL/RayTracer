@@ -23,8 +23,11 @@ __device__ Scatter_AnyHit::Scatter_AnyHit() {
 	// ...
 
 	// scatter
-	scatter_list[scatter_index] = this;
-	scatter_index++;
+	// backup
+	// scatter_list[scatter_index] = this;
+	// scatter_index++;
+
+	addScatter(this);
 }
 
 

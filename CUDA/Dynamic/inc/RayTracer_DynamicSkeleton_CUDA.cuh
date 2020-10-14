@@ -49,10 +49,16 @@ __global__ void Dynamic_CUDA_Function_Global_init(name)(void* *dst) {											
 																															\
 /* host function */																											\
 __host__ static void* Dynamic_CUDA_Function_Host_init(name)() {																\
-	void *obj_device;																										\
+	void*	*obj_device;																									\
+	void	*obj_host;																										\
+																															\
 	cudaMalloc(&obj_device, sizeof(void*));																					\
-	Dynamic_CUDA_Function_Global_init(name)<<< 1, 1 >>>(&obj_device);														\
-	return obj_device;																										\
+																															\
+	Dynamic_CUDA_Function_Global_init(name) <<< 1, 1 >>> (obj_device);														\
+																															\
+	cudaMemcpy(&obj_host, obj_device, sizeof(void*), cudaMemcpyDeviceToHost);												\
+	cudaFree(obj_device);																									\
+	return obj_host;																										\
 }																															\
 																															\
 																															\
@@ -67,7 +73,7 @@ __host__ static int Dynamic_CUDA_Function_Host_interact(name)(void *object, int 
 
 
 #define Dynamic_CUDA_constructTypeConfigLinker(name, func)																	\
-__host__ int Dynamic_CUDA_Function_Linker_config(name)(void *object, uint8_t *data, uint32_t size) {								\
+__host__ int Dynamic_CUDA_Function_Linker_config(name)(void *object, uint8_t *data, uint32_t size) {						\
 	/* data */																												\
 	uint8_t *data_device;																									\
 	cudaMalloc(&data_device, size * sizeof(uint8_t));																		\
@@ -92,7 +98,7 @@ __host__ int Dynamic_CUDA_Function_Linker_config(name)(void *object, uint8_t *da
 
 
 #define Dynamic_CUDA_constructInteractLinker(name_type, name_interact, func)												\
-__host__ int Dynamic_CUDA_Function_Linker_interact(name)(void *object, void* *list, uint32_t size) {								\
+__host__ int Dynamic_CUDA_Function_Linker_interact(name)(void *object, void* *list, uint32_t size) {						\
 	/* data */																												\
 	void* *data_device;																										\
 	cudaMalloc(&data_device, size * sizeof(void*));																			\

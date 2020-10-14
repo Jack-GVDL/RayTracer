@@ -113,9 +113,12 @@ class Scatter {
 		Texture*	*texture_list	= nullptr;
 		int32_t		texture_size	= 0;
 
-		Scatter*	*scatter_list	= nullptr;
-		int32_t		scatter_size	= 0;
-		int32_t		scatter_index	= 0;
+		// backup
+		// Scatter*	*scatter_list	= nullptr;
+		// int32_t		scatter_size	= 0;
+		// int32_t		scatter_index	= 0;
+
+		Vector		scatter_list;
 
 	// Operation
 	public:
@@ -126,7 +129,7 @@ class Scatter {
 		// operation
 		// ...
 
-		__device__ error_t				allocateScatter			(int size);
+		// __device__ error_t				allocateScatter			(int size);
 		__device__ error_t				addScatter				(Scatter *scatter);
 		__device__ error_t				rmScatter				(Scatter *scatter);
 

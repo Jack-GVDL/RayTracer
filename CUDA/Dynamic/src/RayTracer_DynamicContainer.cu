@@ -78,9 +78,9 @@ __host__ int Dynamic_ContainerListBase::_destroy_(int index) {
 
 	// move target container to end of list
 	Dynamic_ContainerBase *target = container_list[index_target];
-	Dynamic_ContainerBase *temp;
+	// Dynamic_ContainerBase *temp;
 	for (int i = index_target; i < container_list.size() - 2; i++) {
-		temp					= container_list[i];
+		// temp					= container_list[i];
 		container_list[i]		= container_list[i + 1];
 		container_list[i + 1]	= container_list[i];
 	}

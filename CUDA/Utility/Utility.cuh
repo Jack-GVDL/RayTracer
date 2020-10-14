@@ -3,12 +3,14 @@
 //
 // Log
 // 2020/09/11   initial update
+// 2020/10/13   add Util_Vector
 
 
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
 
 
+#include "./inc/Util_Vector.cuh"
 #include "./inc/RayTracer_Base.cuh"
 #include "./inc/RayTracer_Vec3f.cuh"
 #include "./inc/RayTracer_UtilMath.cuh"

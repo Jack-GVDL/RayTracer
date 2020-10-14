@@ -101,6 +101,8 @@ __device__ Scatter::~Scatter() {
 }
 
 
+// backup
+/*
 // TODO: missing: CUDA operation check (checkCudaErrors)
 __device__ error_t Scatter::allocateScatter(int size) {
 	// free the original memory space
@@ -113,13 +115,17 @@ __device__ error_t Scatter::allocateScatter(int size) {
 
 	return ERROR_NO;
 }
+*/
 
 
 // TODO: missing: uniqueness check
 __device__ error_t Scatter::addScatter(Scatter *scatter) {
-	if (scatter_index == scatter_size) return ERROR_ANY;
-	scatter_list[scatter_index] = scatter;
-	scatter_index++;
+	// bakcup
+	// if (scatter_index == scatter_size) return ERROR_ANY;
+	// scatter_list[scatter_index] = scatter;
+	// scatter_index++;
+
+	scatter_list.push_back(&scatter, sizeof(void*));
 	return ERROR_NO;
 }
 
@@ -130,16 +136,16 @@ __device__ error_t Scatter::rmScatter(Scatter *scatter) {
 }
 
 
-__device__ error_t Scatter::setTexture(Texture *texture, int offset) {
-	if (texture_list == nullptr)				return false;
-	if (offset < 0 || offset >= texture_size)	return false;
+__device__ error_t Scatter::setTexture(Texture *texture, int32_t offset) {
+	if (texture_list == nullptr)				return ERROR_ANY;
+	if (offset < 0 || offset >= texture_size)	return ERROR_ANY;
 	
 	texture_list[offset] = texture;
-	return true;
+	return ERROR_NO;
 }
 
 
-__device__ Texture* Scatter::getTexture(int offset) {
+__device__ Texture* Scatter::getTexture(int32_t offset) {
 	if (offset < 0 || offset >= texture_size) return nullptr;
 	return texture_list[offset];
 }
@@ -174,14 +180,14 @@ __device__ void Scatter::setRecord_threshold(RecordRay *dst, RecordRay *src, con
 
 
 __device__ void Scatter::setRecord_scatter(RecordRay *dst, RecordRay *src) const {
-	if (scatter_index == 0) {
+	if (scatter_list.index == 0) {
 		dst->scatter_source = 1;
 		return;
 	}
 
 	dst->scatter_source					= 0;
-	dst->record_scatter.scatter_list	= scatter_list;
-	dst->record_scatter.size			= scatter_index;
+	dst->record_scatter.scatter_list	= (Scatter**)scatter_list.list;
+	dst->record_scatter.size			= scatter_list.index / sizeof(Scatter*);
 }
 
 
@@ -255,7 +261,7 @@ __device__ int8_t Scheduler_Scatter::schedule() {
 			record->is_hit = false;
 			continue;
 		}
-	
+
 		record->is_hit = scene->hit(&(record->record_hit));
 	}
 
@@ -273,8 +279,8 @@ __device__ int8_t Scheduler_Scatter::schedule() {
 			case 1:
 				SceneObject_Hitable *object = record->record_hit.record.object;
 				if (record->is_hit)	{
-					record->record_scatter.scatter_list = object->material->scatter_list;
-					record->record_scatter.size			= object->material->scatter_index;
+					record->record_scatter.scatter_list = (Scatter**)object->material->scatter_list.list;
+					record->record_scatter.size			= object->material->scatter_list.index / sizeof(Scatter*);
 					record->record_scatter.index		= 0;
 
 				} else {

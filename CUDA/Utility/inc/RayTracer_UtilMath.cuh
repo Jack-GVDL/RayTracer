@@ -3,12 +3,15 @@
 //
 // Log
 // 2020/09/11   initial update
+// 2020/10/11   add curand
 
 
 #ifndef RAYTRACER_UTILMATH_CUH
 #define RAYTRACER_UTILMATH_CUH
 
 
+#include <curand.h>
+#include <curand_kernel.h>
 #include "RayTracer_Vec3f.cuh"
 #include "RayTracer_Ray.cuh"
 #include "RayTracer_Bounding.cuh"
@@ -34,21 +37,29 @@
 // ...
 
 
+// Operation Handling
+// ...
+
+
 // Inline Function Implementation
 namespace UtilMath {
 	template <class T>
-	__host__ __device__ const T& clamp(const T &v, const T &lo, const T &hi) {
+	__device__ const T& clamp(const T &v, const T &lo, const T &hi) {
 		return (v < lo) ? lo : (hi < v) ? hi : v;
 	}
 
-	__host__ __device__ static inline fp_t randFloat() {
-		return rand() / (RAND_MAX + 1.0);
+	__device__ static inline fp_t randFloat() {
+		// return rand() / (RAND_MAX + 1.0);
+		
+		curandState state;
+		curand_init(0, 0, 0, &state);
+		return curand_uniform(&state);
 	}
 
 
 	// reference
 	// 1. https://stackoverflow.com/questions/9718453/extract-n-most-significant-non-zero-bits-from-int-in-c-without-loops
-	__host__ __device__ static inline int32_t getLeadingZero(int32_t value) {
+	__device__ static inline int32_t getLeadingZero(int32_t value) {
 		uint8_t count = 0;
 
 		if ((value & 0xffff0000u) == 0) {

@@ -27,7 +27,7 @@
 // Data Structure
 class Camera {
 	// Data
-	protected:
+	public:
 		Vec3f	look_from;
 		Vec3f	look_at, up;
 		Vec3f	w, u, v;

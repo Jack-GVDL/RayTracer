@@ -16,7 +16,7 @@
 
 // Static Data
 // skeleton
-Dynamic_CUDA_constructTypeSkeleton(default,	Material,	Material);
+Dynamic_CUDA_constructTypeSkeleton(material_default,	Material,	Material);
 
 // cuda linker function
 __global__ static void	material_addScatter			(Material *material, Scatter *scatter);
@@ -32,7 +32,8 @@ __host__ void RayTracer_Dynamic_Material_init(std::vector<Dynamic_ContainerType*
 
 	// create type
 	Dynamic_ContainerType *type;
-	Dynamic_CUDA_addType(default,	default,	type_list);
+	
+	Dynamic_CUDA_addType(material_default,	material_default,	type_list);
 }
 
 

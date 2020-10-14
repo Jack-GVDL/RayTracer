@@ -16,7 +16,7 @@
 
 // Operation Handling
 __device__ Material::Material() {
-    transmissive    = nullptr;
+    transmissive    = new Texture_Constant();
     index           = RAY_INDEX_AIR;
 }
 
@@ -25,6 +25,8 @@ __device__ Material::~Material() {
 }
 
 
+// backup
+/*
 __device__ error_t Material::allocateScatter(int32_t size) {
     // free old
     cudaFree(scatter_list);
@@ -36,14 +38,16 @@ __device__ error_t Material::allocateScatter(int32_t size) {
 
     return ERROR_NO;
 }
+*/
 
 
 // TODO: missing uniquness check
 __device__ error_t Material::addScatter(Scatter *scatter) {
-    if (scatter_index == scatter_size) return ERROR_ANY;
+    // if (scatter_index == scatter_size) return ERROR_ANY;
+    // scatter_list[scatter_index] = scatter;
+    // scatter_index++;
 
-    scatter_list[scatter_index] = scatter;
-    scatter_index++;
+    scatter_list.push_back(&scatter, sizeof(void*));
     return ERROR_NO;
 }
 

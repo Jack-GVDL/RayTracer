@@ -6,6 +6,64 @@ from .Tracer import Tracer
 class Tracer_Sample:
 
 	@ classmethod
+	def buildScene_singleSphere(cls, tracer: Tracer) -> None:
+		# object
+		texture_emissive:		Texture_Constant	= tracer.Texture_Constant()
+		texture_ambient:		Texture_Constant	= tracer.Texture_Constant()
+		texture_diffuse:		Texture_Constant	= tracer.Texture_Constant()
+		texture_specular:		Texture_Constant	= tracer.Texture_Constant()
+		texture_shininess:		Texture_Constant	= tracer.Texture_Constant()
+		texture_normal:			Texture_Constant	= tracer.Texture_Constant()
+		texture_reflective:		Texture_Constant	= tracer.Texture_Constant()
+
+		scatter_light_1:		Scatter_Light		= tracer.Scatter_Light()
+		scatter_any_hit_1:		Scatter_AnyHit		= tracer.Scatter_AnyHit()
+
+		material_diffuse_1:		Material_Default	= tracer.Material_Default()
+
+		hitable_sphere_1:		Hitable_Sphere		= tracer.Hitable_Sphere()
+
+		light_point_1:			Light_Point			= tracer.Light_Point()
+
+		scene: 					Scene				= tracer.Scene()
+
+		# texture
+		texture_emissive.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_ambient.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_diffuse.setPixel(		Vec3f(), Vec3f(1)	)
+		texture_specular.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_shininess.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_reflective.setPixel(	Vec3f(), Vec3f(0)	)
+
+		# scatter
+		scatter_light_1.setTexture(texture_emissive,	Scatter_Light.TextureOffset.EMISSIVE)
+		scatter_light_1.setTexture(texture_ambient,		Scatter_Light.TextureOffset.AMBIENT)
+		scatter_light_1.setTexture(texture_diffuse,		Scatter_Light.TextureOffset.DIFFUSE)
+		scatter_light_1.setTexture(texture_specular,	Scatter_Light.TextureOffset.SPECULAR)
+		scatter_light_1.setTexture(texture_shininess,	Scatter_Light.TextureOffset.SHININESS)
+		scatter_light_1.setTexture(texture_normal,		Scatter_Light.TextureOffset.NORMAL)
+
+		scatter_light_1.addScatter(scatter_any_hit_1)
+
+		# material
+		material_diffuse_1.addScatter(scatter_light_1)
+
+		# hitable
+		hitable_sphere_1.setCenter(Vec3f(0, 0, 0))
+		hitable_sphere_1.setRadius(0.45)
+		hitable_sphere_1.setMaterial(material_diffuse_1)
+
+		# light
+		light_point_1.setOrigin(Vec3f(1, 1, 1))
+		light_point_1.setAttenuation(Vec3f(0, 0, 0.4))
+		light_point_1.setColor(Vec3f(0.5))
+
+		# scene
+		scene.addHitable(hitable_sphere_1)
+		scene.addLight(light_point_1)
+
+
+	@ classmethod
 	def buildScene_0(cls, tracer: Tracer, aabb_level: int = 0) -> None:
 		# object
 		texture_emissive:		Texture_Constant	= tracer.Texture_Constant()
@@ -37,7 +95,8 @@ class Tracer_Sample:
 		hitable_trimesh_3:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 		hitable_trimesh_4:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 
-		aabb_1:					AABB_Default		= tracer.AABB_Default()
+		# TODO: test
+		# aabb_1:					AABB_Default		= tracer.AABB_Default()
 
 		light_point_1:			Light_Point			= tracer.Light_Point()
 		light_point_2:			Light_Point			= tracer.Light_Point()
@@ -139,8 +198,10 @@ class Tracer_Sample:
 			scene.addHitable(hitable_sphere_3)
 
 		else:
-			aabb_1.load()
-			scene.addAABB(aabb_1)
+			# TODO: test
+			# aabb_1.load()
+			# scene.addAABB(aabb_1)
+			pass
 
 		# light
 		light_point_1.setOrigin(Vec3f(1, 1, 1))

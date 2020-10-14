@@ -48,6 +48,8 @@ __device__ error_t Scene::allocateHitable(void *memory, int32_t size) {
 
 // TODO: missing uniqueness checking
 __device__ error_t Scene::addHitable(SceneObject_Hitable *hitable) {
+	if (hitable_index == hitable_size) return ERROR_ANY;
+
 	hitable_list[hitable_index] = hitable;
 	hitable_index++;
 	return ERROR_NO;
@@ -62,7 +64,7 @@ __device__ error_t Scene::rmHitable(SceneObject_Hitable *hitable) {
 
 __device__ error_t Scene::allocateLight(void *memory, int32_t size) {
 	// free old
-	cudaFree(hitable_list);
+	cudaFree(light_list);
 
 	// set new
 	light_list		= (SceneObject_Light**)memory;
@@ -86,6 +88,8 @@ __device__ error_t Scene::allocateLight(void *memory, int32_t size) {
 
 // TODO: missing uniqueness checking
 __device__ error_t Scene::addLight(SceneObject_Light *light) {
+	if (light_index == light_size) return ERROR_ANY;
+
 	light_list[light_index] = light;
 	light_index++;
 	return ERROR_NO;
@@ -100,7 +104,7 @@ __device__ error_t Scene::rmLight(SceneObject_Light *light) {
 
 __device__ error_t Scene::allocateAmbient(void *memory, int32_t size) {
 	// free old
-	cudaFree(hitable_list);
+	cudaFree(ambient_list);
 
 	// set new
 	ambient_list	= (SceneObject_Light**)memory;
@@ -124,6 +128,8 @@ __device__ error_t Scene::allocateAmbient(void *memory, int32_t size) {
 
 // TODO: missing uniqueness checking
 __device__ error_t Scene::addAmbient(SceneObject_Light *light) {
+	if (ambient_index == ambient_size) return ERROR_ANY;
+
 	ambient_list[ambient_index] = light;
 	ambient_index++;
 	return ERROR_NO;

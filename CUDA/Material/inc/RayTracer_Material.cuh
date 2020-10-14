@@ -37,9 +37,12 @@ class Material {
 		// backup
 		// Texture					*index;
 
-		Scatter*				*scatter_list;
-		int32_t					scatter_size;
-		int32_t					scatter_index;
+		// backup
+		// Scatter*				*scatter_list;
+		// int32_t					scatter_size;
+		// int32_t					scatter_index;
+
+		Vector					scatter_list;
 
 	// Operation
 	public:
@@ -48,7 +51,8 @@ class Material {
 		__device__	~Material	();
 
 		// operation
-		__device__ error_t	allocateScatter		(int32_t size);
+		// backup
+		// __device__ error_t	allocateScatter		(int32_t size);
 		__device__ error_t	addScatter			(Scatter *scatter);
 		__device__ error_t	rmScatter			(Scatter *scatter);
 };

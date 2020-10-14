@@ -16,7 +16,10 @@
 // Operation Handling
 __device__ RayTracer::RayTracer() {
 	// TODO: temporary allocate some space for memory control
-	void *memory = malloc(sizeof(uint8_t) * 1024 * 50);
+	// void *memory = malloc(sizeof(uint8_t) * 1024 * 50);
+	void *memory;
+	cudaMalloc(&memory, 1024 * 50 * sizeof(uint8_t));
+
 	scheduler.memory_control.setMemory(memory, sizeof(uint8_t) * 1024 * 20);
 }
 

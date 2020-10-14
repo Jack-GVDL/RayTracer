@@ -3,6 +3,9 @@
 #include "../inc/RayTracer_DynamicContainer.cuh"
 #include "../inc/RayTracer_Dynamic_Tracer.cuh"
 
+// TEST
+#include "../inc/RayTracer_Dynamic_Scene.cuh"
+
 
 // Define
 // ...
@@ -25,7 +28,7 @@ __global__ static void			global_trace		(fp_t *value, void *camera, fp_t x, fp_t 
 // Static Data
 __device__	RayTracer					*tracer;
 __device__	Scene						*scene;
-extern	Dynamic_ContainerList<Camera>	camera_list;
+extern Dynamic_ContainerList<Camera>	camera_list;
 
 
 // Operation Handling
@@ -44,7 +47,7 @@ __host__ int RayTracer_Dynamic_Tracer_tracePoint_RGB888(int index_camera, void *
 		pixel[0] = 0;
 		pixel[1] = 0;
 		pixel[2] = 0;
-		return -1;
+		return ERROR_ANY;
 	}
 
 	// based on property of export image
@@ -71,6 +74,8 @@ __host__ int RayTracer_Dynamic_Tracer_tracePoint_RGB888(int index_camera, void *
 			const double v = (double(index_y) - y_half) / y_half;
 
 			Vec3f result = host_trace(container_camera->getObject(), u, v, depth);
+
+			// TODO: should it be uint8 instead of int ?
 			pixel[index + 0] = (int)(result[0] * 255);
 			pixel[index + 1] = (int)(result[1] * 255);
 			pixel[index + 2] = (int)(result[2] * 255);
@@ -82,7 +87,7 @@ __host__ int RayTracer_Dynamic_Tracer_tracePoint_RGB888(int index_camera, void *
 		index_y	+= index_y_next;
 	}
 
-	return 0;
+	return ERROR_NO;
 }
 
 
@@ -182,6 +187,8 @@ __host__ static Vec3f host_trace(Camera *camera, fp_t x, fp_t y, int depth) {
 	cudaMemcpy(pixel_host, pixel_device, 3 * sizeof(fp_t), cudaMemcpyDeviceToHost);
 	cudaFree(pixel_device);
 
+	// printf("%f %f %f \n", pixel_host[0], pixel_host[1], pixel_host[2]);
+
 	return Vec3f(pixel_host[0], pixel_host[1], pixel_host[2]);
 }
 
@@ -212,6 +219,14 @@ __global__ static void global_init() {
 
 __global__ static void global_trace(fp_t *value, void *camera, fp_t x, fp_t y, int depth) {
 	Vec3f result = tracer->trace((Camera*)camera, x, y, depth);
+
+	// TODO: remove
+	// Camera *c = (Camera*)camera;
+	// printf(
+	// 	"%f %f %f %f %f %f %f\n",
+	// 	c->look_from[0], c->look_from[1], c->look_from[2],
+	// 	c->look_at[0], c->look_at[1], c->look_at[2],
+	// 	c->aspect);
 
 	value[0] = result[0];
 	value[1] = result[1];
