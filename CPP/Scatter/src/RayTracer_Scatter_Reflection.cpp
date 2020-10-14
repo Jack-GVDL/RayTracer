@@ -10,7 +10,7 @@
 
 
 // Static Function Prototype
-static inline Vec3f reflect(const Vec3f &incident, const Vec3f &normal);
+static inline Vec3f	reflect	(const Vec3f &incident, const Vec3f &normal);
 
 
 // Operation Handling
@@ -25,7 +25,7 @@ Scatter_Reflection::Scatter_Reflection() {
 void Scatter_Reflection::scatter(RecordRay *src, MemoryControl_Scatter *memory_control) const {
 	// variable preparation
 	RecordHit		*record_hit	= &(src->record_hit.record);
-	Material		*material	= &(record_hit->object->material);
+	Material		*material	= record_hit->object->material;
 
 	// get proportion of reflection
 	Vec3f vec_reflective;

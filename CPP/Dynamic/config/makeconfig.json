@@ -10,8 +10,6 @@
                        "../Material ",
                        "../Scene ",
                        "../Scatter ",
-                       "../Shader ",
-                       "../SuperSampler ",
                        "../Tracer ",
                        ""],
 

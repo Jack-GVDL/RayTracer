@@ -17,5 +17,5 @@ class Camera_Default(Camera):
 
 	# Interface
 	def start(self) -> None:
-		type_index: int		= self._getType_(self._ops_tracer, "camera_0")
+		type_index: int		= self._getType_(self._ops_tracer, "camera_default")
 		self._object_index	= self._ops_tracer.Camera_create(type_index)

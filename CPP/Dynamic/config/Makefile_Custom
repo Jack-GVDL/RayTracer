@@ -72,11 +72,11 @@ LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Camera.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Tracer.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Surface.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Texture.o
+LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Material.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Scatter.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Hitable.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_AABB.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Light.o
-LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Sample.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic_Test.o
 LOCAL_OBJ_FILE		+= ../obj_x64/RayTracer_Dynamic.o
 

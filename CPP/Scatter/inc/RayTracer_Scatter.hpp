@@ -129,7 +129,7 @@ class Scatter {
 		int8_t					addScatter				(Scatter *scatter);
 		int8_t					rmScatter				(Scatter *scatter);
 
-		bool					setTexture				(Texture *texture, int32_t offset);
+		error_t					setTexture				(Texture *texture, int32_t offset);
 		Texture*				getTexture				(int32_t offset);
 
 		// interface

@@ -1,0 +1,9 @@
+Blender Cycles Engine
+- unidirectional path tracing
+- multiple importance sampling
+- GPU rendering with NVidia CUDA & AMD OpenCL
+- Multi-GPU support
+- Unified rendering kernel for CPU and GPU
+
+Reference
+1. https://www.blender.org/features/rendering

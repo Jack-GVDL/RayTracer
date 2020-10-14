@@ -1,0 +1,9 @@
+{
+    "OBJ_FILE"  : ["obj/RayTracer_Scatter.o ",
+                   "obj/RayTracer_Scatter_Light.o ",
+                   "obj/RayTracer_Scatter_AnyHit.o ",
+                   "obj/RayTracer_Scatter_Reflection.o ",
+                   "obj/RayTracer_Scatter_Refraction.o ",
+                   "obj/RayTracer_Scatter_Random.o ",
+                   ""]
+}

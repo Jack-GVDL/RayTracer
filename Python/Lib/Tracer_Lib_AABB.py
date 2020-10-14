@@ -18,4 +18,4 @@ class AABB_Default(AABB):
 	# Interface
 	def start(self) -> None:
 		type_index:	int		= self._getType_(self._ops_tracer, "default")
-		self._object_index	= self._ops_tracer.SceneObject_AABB_create(type_index)
+		self._object_index	= self._ops_tracer.AABB_create(type_index)

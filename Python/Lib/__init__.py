@@ -16,6 +16,8 @@ from .Tracer_Lib_Texture import Texture_Mapper_Trimesh
 from .Tracer_Lib_Texture import Texture_Direction_Sphere
 from .Tracer_Lib_Texture import Texture_Direction_Trimesh
 
+from .Tracer_Lib_Material import Material_Default
+
 from .Tracer_Lib_Scatter import Scatter_Emitter
 from .Tracer_Lib_Scatter import Scatter_Gradient
 from .Tracer_Lib_Scatter import Scatter_Light

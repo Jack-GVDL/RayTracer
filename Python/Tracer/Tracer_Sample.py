@@ -6,6 +6,64 @@ from .Tracer import Tracer
 class Tracer_Sample:
 
 	@ classmethod
+	def buildScene_singleSphere(cls, tracer: Tracer) -> None:
+		# object
+		texture_emissive:		Texture_Constant	= tracer.Texture_Constant()
+		texture_ambient:		Texture_Constant	= tracer.Texture_Constant()
+		texture_diffuse:		Texture_Constant	= tracer.Texture_Constant()
+		texture_specular:		Texture_Constant	= tracer.Texture_Constant()
+		texture_shininess:		Texture_Constant	= tracer.Texture_Constant()
+		texture_normal:			Texture_Constant	= tracer.Texture_Constant()
+		texture_reflective:		Texture_Constant	= tracer.Texture_Constant()
+
+		scatter_light_1:		Scatter_Light		= tracer.Scatter_Light()
+		scatter_any_hit_1:		Scatter_AnyHit		= tracer.Scatter_AnyHit()
+
+		material_diffuse_1:		Material_Default	= tracer.Material_Default()
+
+		hitable_sphere_1:		Hitable_Sphere		= tracer.Hitable_Sphere()
+
+		light_point_1:			Light_Point			= tracer.Light_Point()
+
+		scene: 					Scene				= tracer.Scene()
+
+		# texture
+		texture_emissive.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_ambient.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_diffuse.setPixel(		Vec3f(), Vec3f(1)	)
+		texture_specular.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_shininess.setPixel(		Vec3f(), Vec3f(0)	)
+		texture_reflective.setPixel(	Vec3f(), Vec3f(0)	)
+
+		# scatter
+		scatter_light_1.setTexture(texture_emissive,	Scatter_Light.TextureOffset.EMISSIVE)
+		scatter_light_1.setTexture(texture_ambient,		Scatter_Light.TextureOffset.AMBIENT)
+		scatter_light_1.setTexture(texture_diffuse,		Scatter_Light.TextureOffset.DIFFUSE)
+		scatter_light_1.setTexture(texture_specular,	Scatter_Light.TextureOffset.SPECULAR)
+		scatter_light_1.setTexture(texture_shininess,	Scatter_Light.TextureOffset.SHININESS)
+		scatter_light_1.setTexture(texture_normal,		Scatter_Light.TextureOffset.NORMAL)
+
+		scatter_light_1.addScatter(scatter_any_hit_1)
+
+		# material
+		material_diffuse_1.addScatter(scatter_light_1)
+
+		# hitable
+		hitable_sphere_1.setCenter(Vec3f(0, 0, 0))
+		hitable_sphere_1.setRadius(0.45)
+		hitable_sphere_1.setMaterial(material_diffuse_1)
+
+		# light
+		light_point_1.setOrigin(Vec3f(1, 1, 1))
+		light_point_1.setAttenuation(Vec3f(0, 0, 0.4))
+		light_point_1.setColor(Vec3f(0.5))
+
+		# scene
+		scene.addHitable(hitable_sphere_1)
+		scene.addLight(light_point_1)
+
+
+	@ classmethod
 	def buildScene_0(cls, tracer: Tracer, aabb_level: int = 0) -> None:
 		# object
 		texture_emissive:		Texture_Constant	= tracer.Texture_Constant()
@@ -24,6 +82,11 @@ class Tracer_Sample:
 		scatter_random_2:		Scatter_Random		= tracer.Scatter_Random()
 		scatter_any_hit_1:		Scatter_AnyHit		= tracer.Scatter_AnyHit()
 
+		material_diffuse_1:		Material_Default	= tracer.Material_Default()
+		material_diffuse_2:		Material_Default	= tracer.Material_Default()
+		material_reflective:	Material_Default	= tracer.Material_Default()
+		material_refractive:	Material_Default	= tracer.Material_Default()
+
 		hitable_sphere_1:		Hitable_Sphere		= tracer.Hitable_Sphere()
 		hitable_sphere_2:		Hitable_Sphere		= tracer.Hitable_Sphere()
 		hitable_sphere_3:		Hitable_Sphere		= tracer.Hitable_Sphere()
@@ -32,7 +95,8 @@ class Tracer_Sample:
 		hitable_trimesh_3:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 		hitable_trimesh_4:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 
-		aabb_1:					AABB_Default		= tracer.AABB_Default()
+		# TODO: test
+		# aabb_1:					AABB_Default		= tracer.AABB_Default()
 
 		light_point_1:			Light_Point			= tracer.Light_Point()
 		light_point_2:			Light_Point			= tracer.Light_Point()
@@ -79,42 +143,49 @@ class Tracer_Sample:
 
 		scatter_reflection_1.addScatter(scatter_random_2)
 
+		# material
+		material_diffuse_1.addScatter(scatter_light_1)
+
+		material_diffuse_2.addScatter(scatter_light_2)
+
+		material_reflective.addScatter(scatter_reflection_1)
+		material_reflective.addScatter(scatter_light_1)
+
+		material_refractive.addScatter(scatter_refraction_1)
+		material_refractive.addScatter(scatter_light_1)
+
 		# hitable
 		hitable_sphere_1.setCenter(Vec3f(0, 0, 0))
 		hitable_sphere_1.setRadius(0.45)
-		hitable_sphere_1.addScatter(scatter_light_1)
+		hitable_sphere_1.setMaterial(material_diffuse_1)
 
 		hitable_sphere_2.setCenter(Vec3f(1, 0, 0))
 		hitable_sphere_2.setRadius(0.45)
-		hitable_sphere_2.addScatter(scatter_reflection_1)
-		hitable_sphere_2.addScatter(scatter_light_1)
+		hitable_sphere_2.setMaterial(material_reflective)
 
 		hitable_sphere_3.setCenter(Vec3f(-1, 0, 0))
 		hitable_sphere_3.setRadius(0.45)
-		hitable_sphere_3.setTransmissive(Vec3f(0.8))
-		hitable_sphere_3.setIndex(2)
-		hitable_sphere_3.addScatter(scatter_refraction_1)
-		hitable_sphere_3.addScatter(scatter_light_1)
+		hitable_sphere_3.setMaterial(material_refractive)
 
 		hitable_trimesh_1.setPoint_0(Vec3f(-5, -0.45, 2))
 		hitable_trimesh_1.setPoint_1(Vec3f(5, -0.45, 2))
 		hitable_trimesh_1.setPoint_2(Vec3f(-5, -0.45, -5))
-		hitable_trimesh_1.addScatter(scatter_light_2)
+		hitable_trimesh_1.setMaterial(material_diffuse_2)
 
 		hitable_trimesh_2.setPoint_0(Vec3f(-5, -0.45, -5))
 		hitable_trimesh_2.setPoint_1(Vec3f(5, -0.45, 2))
 		hitable_trimesh_2.setPoint_2(Vec3f(5, -0.45, -5))
-		hitable_trimesh_2.addScatter(scatter_light_2)
+		hitable_trimesh_2.setMaterial(material_diffuse_2)
 
 		hitable_trimesh_3.setPoint_0(Vec3f(-5, -0.45, -5))
 		hitable_trimesh_3.setPoint_1(Vec3f(5, -0.45, -5))
 		hitable_trimesh_3.setPoint_2(Vec3f(-5, 5, -5))
-		hitable_trimesh_3.addScatter(scatter_light_1)
+		hitable_trimesh_3.setMaterial(material_diffuse_1)
 
 		hitable_trimesh_4.setPoint_0(Vec3f(-5, 5, -5))
 		hitable_trimesh_4.setPoint_1(Vec3f(5, -0.45, -5))
 		hitable_trimesh_4.setPoint_2(Vec3f(5, 5, -5))
-		hitable_trimesh_4.addScatter(scatter_light_1)
+		hitable_trimesh_4.setMaterial(material_diffuse_1)
 
 		if aabb_level == 0:
 			scene.addHitable(hitable_trimesh_1)
@@ -127,8 +198,10 @@ class Tracer_Sample:
 			scene.addHitable(hitable_sphere_3)
 
 		else:
-			aabb_1.load()
-			scene.addAABB(aabb_1)
+			# TODO: test
+			# aabb_1.load()
+			# scene.addAABB(aabb_1)
+			pass
 
 		# light
 		light_point_1.setOrigin(Vec3f(1, 1, 1))
@@ -168,6 +241,9 @@ class Tracer_Sample:
 		texture_image_2:	Texture_Image			= tracer.Texture_Image()
 		texture_kernel_1:	Texture_Convolutor		= tracer.Texture_Convolutor()
 
+		material_1:			Material_Default		= tracer.Material_Default()
+		material_2:			Material_Default		= tracer.Material_Default()
+
 		scatter_light_1:	Scatter_Light			= tracer.Scatter_Light()
 		scatter_light_2:	Scatter_Light			= tracer.Scatter_Light()
 		scatter_any_hit_1:	Scatter_AnyHit			= tracer.Scatter_AnyHit()
@@ -203,6 +279,8 @@ class Tracer_Sample:
 		texture_add_1.setAdditor(Vec3f(2, 1.5, 0))
 		texture_multi_1.setMultiplier(Vec3f(500))
 
+		texture_trimesh_1.setTrimesh(hitable_trimesh_1)
+
 		# scatter
 		scatter_light_1.setTexture(texture_emissive,	Scatter_Light.TextureOffset.EMISSIVE)
 		scatter_light_1.setTexture(texture_ambient,		Scatter_Light.TextureOffset.AMBIENT)
@@ -221,17 +299,20 @@ class Tracer_Sample:
 		scatter_light_1.addScatter(scatter_any_hit_1)
 		scatter_light_2.addScatter(scatter_any_hit_1)
 
+		# material
+		material_1.addScatter(scatter_light_1)
+		material_2.addScatter(scatter_light_2)
+
 		# scene
 		hitable_trimesh_1.setPoint_0(Vec3f(-2, -4, 0))
 		hitable_trimesh_1.setPoint_1(Vec3f(2, -4, 0))
 		hitable_trimesh_1.setPoint_2(Vec3f(-2, 4, 0))
-		hitable_trimesh_1.addScatter(scatter_light_1)
-		texture_trimesh_1.setTrimesh(hitable_trimesh_1)
+		hitable_trimesh_1.setMaterial(material_1)
 
 		hitable_trimesh_2.setPoint_0(Vec3f(-2, 4.05, 0))
 		hitable_trimesh_2.setPoint_1(Vec3f(2, -3.95, 0))
 		hitable_trimesh_2.setPoint_2(Vec3f(2, 4.05, 0))
-		hitable_trimesh_2.addScatter(scatter_light_2)
+		hitable_trimesh_2.setMaterial(material_2)
 
 		# light
 		light_dir_1.setColor(Vec3f(0.8))
@@ -270,6 +351,8 @@ class Tracer_Sample:
 
 		scatter_light_1:		Scatter_Light				= tracer.Scatter_Light()
 		scatter_any_hit_1:		Scatter_AnyHit				= tracer.Scatter_AnyHit()
+
+		material_1:				Material_Default			= tracer.Material_Default()
 
 		hitable_sphere_1:		Hitable_Sphere				= tracer.Hitable_Sphere()
 
@@ -329,10 +412,13 @@ class Tracer_Sample:
 
 		scatter_light_1.addScatter(scatter_any_hit_1)
 
+		# material
+		material_1.addScatter(scatter_light_1)
+
 		# hitable
 		hitable_sphere_1.setRadius(1)
 		hitable_sphere_1.setCenter(Vec3f(0))
-		hitable_sphere_1.addScatter(scatter_light_1)
+		hitable_sphere_1.setMaterial(material_1)
 
 		texture_map_sphere_1.setSphere(hitable_sphere_1)
 		texture_dir_sphere_1.setSphere(hitable_sphere_1)
@@ -372,6 +458,8 @@ class Tracer_Sample:
 		scatter_light_1:		Scatter_Light		= tracer.Scatter_Light()
 		scatter_any_hit_1:		Scatter_AnyHit		= tracer.Scatter_AnyHit()
 
+		material_1:				Material_Default	= tracer.Material_Default()
+
 		aabb_1:					AABB_Default		= tracer.AABB_Default()
 
 		light_point_1:			Light_Point			= tracer.Light_Point()
@@ -398,6 +486,9 @@ class Tracer_Sample:
 
 		scatter_light_1.addScatter(scatter_any_hit_1)
 
+		# material
+		material_1.addScatter(scatter_light_1)
+
 		# hitable
 		w_half: int		= 3
 		h_half: int		= 3
@@ -411,7 +502,7 @@ class Tracer_Sample:
 						hitable_sphere: Hitable_Sphere = tracer.Hitable_Sphere()
 						hitable_sphere.setCenter(Vec3f(x / w_half, y / h_half, z / 2))
 						hitable_sphere.setRadius(radius)
-						hitable_sphere.addScatter(scatter_light_1)
+						hitable_sphere.setMaterial(material_1)
 						scene.addHitable(hitable_sphere)
 
 		elif aabb_level == 1:
@@ -425,7 +516,7 @@ class Tracer_Sample:
 						hitable_sphere: Hitable_Sphere = tracer.Hitable_Sphere()
 						hitable_sphere.setCenter(Vec3f(x / w_half, y / h_half, z / 2))
 						hitable_sphere.setRadius(radius)
-						hitable_sphere.addScatter(scatter_light_1)
+						hitable_sphere.setMaterial(material_1)
 
 						if x <= 0:
 							hitable_aabb_1.addHitable(hitable_sphere)
@@ -443,7 +534,7 @@ class Tracer_Sample:
 						hitable_sphere: Hitable_Sphere = tracer.Hitable_Sphere()
 						hitable_sphere.setCenter(Vec3f(x / w_half, y / h_half, z / 2))
 						hitable_sphere.setRadius(radius)
-						hitable_sphere.addScatter(scatter_light_1)
+						hitable_sphere.setMaterial(material_1)
 
 			aabb_1.load()
 			scene.addAABB(aabb_1)

@@ -42,12 +42,12 @@ class SceneElement {
 		{}
 
 		// operation
-		void		setOrigin		(const Vec3f &origin);
-		void		setBounding		(const Bounding &bounding);
+		void			setOrigin		(const Vec3f &origin);
+		void			setBounding		(const Bounding &bounding);
 
 		// interface
-		virtual bool addChild		(SceneElement *scene);
-		virtual bool rmChild		(SceneElement *scene);
+		virtual error_t addChild		(SceneElement *scene);
+		virtual error_t rmChild			(SceneElement *scene);
 };
 
 

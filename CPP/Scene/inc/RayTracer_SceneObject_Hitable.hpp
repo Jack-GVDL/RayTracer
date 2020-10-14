@@ -1,8 +1,9 @@
-// Created by Jack Tse on 2020/06/20
-// Follow TrackingStandard 0.1
+// Author: Jack Tse 
+// Email:  jacktsetcy@gmail.com
 //
 // Log
-// 2020/06/20   initial update
+// 2020/06/21   initial update
+// 2020/09/12   remove Shader
 
 
 #ifndef RAYTRACER_SCENEOBJECT_HITABLE_HPP
@@ -10,7 +11,6 @@
 
 
 #include "RayTracer_SceneElement.hpp"
-#include "../../Shader/Shader.hpp"
 
 
 // Define
@@ -31,7 +31,6 @@
 
 // Data Structure
 class SceneObject_Hitable;
-class Shader;
 
 
 struct RecordHit {
@@ -58,9 +57,7 @@ struct RecordHit_Extend {
 class SceneObject_Hitable: public SceneElement {
 	// Data
 	public:
-		// TODO: but the problem is that not all the hitable need the material
-		Material	material;
-		Shader		shader;
+		Material	*material;
 
 	// Operation
 	public:
@@ -69,31 +66,14 @@ class SceneObject_Hitable: public SceneElement {
 		~SceneObject_Hitable	();
 		
 		// operation
-		bool			hit		(RecordHit *record) const;
-		bool			hit		(RecordHit *record, fp_t t_max) const;
-
-		// interface
-		virtual bool	hit		(RecordHit *record, fp_t t_min, fp_t t_max) const = 0;
-};
-
-
-// TODO: remove
-/*
-class SceneObject_HitableList: public SceneObject_Hitable {
-	// Data
-	public:
-		std::vector<SceneObject_Hitable*>	hitable_list;
-
-	// Operation
-	public:
-		// operation
-		virtual bool	addHitable	(SceneObject_Hitable *hitable);
-		virtual bool	rmHitable	(SceneObject_Hitable *hitable);
+		void			setMaterial	(Material *material);
 		
+		int8_t			hit			(RecordHit *record) const;
+		int8_t			hit			(RecordHit *record, fp_t t_max) const;
+
 		// interface
-		virtual bool	hit			(RecordHit *record, fp_t t_mix, fp_t t_max) const override;
+		virtual int8_t	hit			(RecordHit *record, fp_t t_min, fp_t t_max) const = 0;
 };
-*/
 
 
 // Inline Function Implementation

@@ -1,0 +1,14 @@
+{
+    "OBJ_FILE"  : ["obj/RayTracer_Material.o ",
+                   "obj/RayTracer_Surface.o ",
+                   "obj/RayTracer_Surface_BMP.o ",
+                   "obj/RayTracer_Texture.o ",
+                   "obj/RayTracer_Texture_Input.o ",
+                   "obj/RayTracer_Texture_Constant.o ",
+                   "obj/RayTracer_Texture_Convolutor.o ",
+                   "obj/RayTracer_Texture_Gradient.o ",
+                   "obj/RayTracer_Texture_CheckerBoard.o ",
+                   "obj/RayTracer_Texture_Image.o ",
+                   "obj/RayTracer_Texture_Math.o ",
+                   ""]
+}

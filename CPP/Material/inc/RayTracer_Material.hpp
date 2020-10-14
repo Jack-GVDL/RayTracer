@@ -1,8 +1,10 @@
-// Created by Jack Tse on 2020/07/20
-// Follow TrackingStandard 0.1
+// Author: Jack Tse 
+// Email:  jacktsetcy@gmail.com
 //
 // Log
 // 2020/07/20   initial update
+// 2020/09/12   add Scatter
+
 
 
 #ifndef RAYTRACER_MATERIAL_HPP
@@ -37,13 +39,17 @@ class Material {
 		// Texture					*index;
 		fp_t					index;
 
+		std::vector<Scatter*>	scatter_list;
+
 	// Operation
 	public:
 		// init
-		Material():
-		transmissive	(new Texture_Constant()),
-		index			(RAY_INDEX_AIR)
-		{}
+		Material	();
+		~Material	();
+
+		// operation
+		error_t addScatter	(Scatter *scatter);
+		error_t	rmScatter	(Scatter *scatter);
 };
 
 

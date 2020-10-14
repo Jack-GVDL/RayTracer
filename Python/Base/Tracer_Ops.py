@@ -1,6 +1,18 @@
 from typing import List, Tuple
+from enum import IntEnum
 from .Tracer_Vec3f import Vec3f
 import numpy as np
+
+
+class TracerType(IntEnum):
+	CAMERA:		int = 0,
+	SURFACE:	int = 1,
+	TEXTURE:	int = 2,
+	MATERIAL:	int = 3,
+	SCATTER:	int = 4,
+	HITABLE:	int = 5,
+	LIGHT:		int = 6,
+	AABB:		int = 7
 
 
 class Ops_Tracer:
@@ -29,9 +41,10 @@ class Ops_Tracer:
 	def Test_checkStatus(self, index: int, array: bytes, size: int) -> None:
 		raise NotImplementedError
 
+	# TODO: remove
 	# sample
-	def Sample_buildScene(self, index: int) -> int:
-		raise NotImplementedError
+	# def Sample_buildScene(self, index: int) -> int:
+	# 	raise NotImplementedError
 
 	# tracer
 	def Tracer_tracePoint(self, index_camera: int, pixel: Vec3f, x: float, y: float, depth: int) -> int:
@@ -121,6 +134,34 @@ class Ops_Tracer:
 	def Texture_getPixel(self, index: int, pixel: Vec3f, point: Vec3f) -> int:
 		raise NotImplementedError
 
+	# material
+	def Material_Type_getIndex(self, name: str) -> int:
+		raise NotImplementedError
+
+	def Material_create(self, type_: int) -> int:
+		raise NotImplementedError
+
+	def Material_destroy(self, index: int) -> int:
+		raise NotImplementedError
+
+	def Material_config(self, index: int, type_: int, data: bytes) -> int:
+		raise NotImplementedError
+
+	def Material_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		raise NotImplementedError
+
+	def Material_addScatter(self, index_material: int, index_scatter: int) -> int:
+		raise NotImplementedError
+
+	def Material_rmScatter(self, index_material: int, index_scatter: int) -> int:
+		raise NotImplementedError
+
+	def Material_setTransmissive(self, index: int, transmissive: Vec3f) -> int:
+		raise NotImplementedError
+
+	def Material_setIndex(self, index: int, value: float) -> int:
+		raise NotImplementedError
+
 	# scatter
 	def Scatter_Type_getIndex(self, name: str) -> int:
 		raise NotImplementedError
@@ -147,72 +188,63 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	# hitable
-	def SceneObject_Hitable_Type_getIndex(self, name: str) -> int:
+	def Hitable_Type_getIndex(self, name: str) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Hitable_create(self, type_: int) -> int:
+	def Hitable_create(self, type_: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Hitable_destroy(self, index: int) -> int:
+	def Hitable_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Hitable_config(self, index: int, type_: int, data: bytes) -> int:
+	def Hitable_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Hitable_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+	def Hitable_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Hitable_addScatter(self, index_hitable: int, index_scatter: int) -> int:
-		raise NotImplementedError
-
-	def SceneObject_Hitable_rmScatter(self, index_hitable: int, index_scatter: int) -> int:
-		raise NotImplementedError
-
-	def SceneObject_Hitable_setTransmissive(self, index: int, transmissive: Vec3f) -> int:
-		raise NotImplementedError
-
-	def SceneObject_Hitable_setIndex(self, index: int, value: float) -> int:
+	def Hitable_setMaterial(self, index_hitable: int, index_material: int) -> int:
 		raise NotImplementedError
 
 	# aabb
-	def SceneObject_AABB_Type_getIndex(self, name: str) -> int:
+	def AABB_Type_getIndex(self, name: str) -> int:
 		raise NotImplementedError
 
-	def SceneObject_AABB_create(self, type_: int) -> int:
+	def AABB_create(self, type_: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_AABB_destroy(self, index: int) -> int:
+	def AABB_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_AABB_config(self, index: int, type_: int , data: bytes) -> int:
+	def AABB_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
-	def SceneObject_AABB_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+	def AABB_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
-	def SceneObject_AABB_load(self, index: int) -> int:
+	def AABB_load(self, index: int) -> int:
 		raise NotImplementedError
 
 	# light
-	def SceneObject_Light_Type_getIndex(self, name: str) -> int:
+	def Light_Type_getIndex(self, name: str) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Light_create(self, type_: int) -> int:
+	def Light_create(self, type_: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Light_destroy(self, index: int) -> int:
+	def Light_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Light_config(self, index: int, type_: int, data: bytes) -> int:
+	def Light_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Light_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+	def Light_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Light_setOrigin(self, index: int, origin: Vec3f) -> int:
+	def Light_setOrigin(self, index: int, origin: Vec3f) -> int:
 		raise NotImplementedError
 
-	def SceneObject_Light_setColor(self, index: int, color: Vec3f) -> int:
+	def Light_setColor(self, index: int, color: Vec3f) -> int:
 		raise NotImplementedError
 
 	# scene
