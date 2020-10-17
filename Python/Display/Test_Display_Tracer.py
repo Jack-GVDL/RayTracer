@@ -28,7 +28,7 @@ Tracer_Sample.buildScene_singleSphere(tracer)
 camera_1: Camera_Default = tracer.Camera_Default()
 camera_1.setLookFrom(		Vec3f(0, 0, 2)	)
 camera_1.setLookAt(			Vec3f(0, 0, 0)	)
-camera_1.setAspectRatio(	1				)
+camera_1.setAspectRatio(	1920 / 1080		)
 
 # TODO: test
 # ops_tracer.Test_checkStatus(0, [], 0)
@@ -36,10 +36,10 @@ camera_1.setAspectRatio(	1				)
 
 """ display """
 # OpenCV
-array: np.ndarray = np.zeros(200 * 200 * 3, dtype=np.uint8)
-camera_1.traceRect(array, 200, 200, 5, False, True, 0)
+array: np.ndarray = np.zeros(1920 * 1080 * 3, dtype=np.uint8)
+camera_1.traceRect(array, 1920, 1080, 5, False, True, 0)
 
-image = array.reshape((200, 200, 3))
+image = array.reshape((1080, 1920, 3))
 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
 cv2.imshow("Image", image)
