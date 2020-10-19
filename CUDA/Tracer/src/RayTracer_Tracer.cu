@@ -15,12 +15,6 @@
 
 // Operation Handling
 __device__ Tracer::Tracer() {
-	// TODO: remove
-	// TODO: temporary allocate some space for memory control
-	// void *memory = malloc(sizeof(uint8_t) * 1024 * 50);
-	// void *memory;
-	// cudaMalloc(&memory, 1024 * 50 * sizeof(uint8_t));
-	// scheduler.memory_control.setMemory(memory, sizeof(uint8_t) * 1024 * 20);
 }
 
 
@@ -30,9 +24,6 @@ __device__ Tracer::~Tracer() {
 
 __device__ void Tracer::setScene(Scene *scene) {
 	this->scene = scene;
-
-	// TODO: remove
-	// scheduler.setScene(scene);
 }
 
 
@@ -48,14 +39,6 @@ __device__ error_t Tracer::addScheduler(Scheduler_Scatter *scheduler) {
 __device__ error_t Tracer::rmScheduler(Scheduler_Scatter *scheduler) {
 	return ERROR_ANY;
 }
-
-
-// backup
-/*
-__device__ void Tracer::resetScheduler() {
-	scheduler_index = 0;
-}
-*/
 
 
 __device__ Vec3f Tracer::trace(const Camera *camera, fp_t x, fp_t y, int32_t depth, int32_t index) {

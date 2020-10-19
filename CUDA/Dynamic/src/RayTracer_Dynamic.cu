@@ -216,9 +216,6 @@ Dynamic_constructTypeInterface(Camera, Camera, &camera_list);
 EXPORT_DLL(int) RayTracer_Camera_setLookFrom(int index, double *look_from) {
 	Dynamic_Container<Camera> *camera = camera_list.get(index);
 	if (camera == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// container_camera->getObject()->setLookFrom(Vec3f(look_from[0], look_from[1], look_from[2]));
 	
 	Dynamic_Camera_setLookFrom(camera->getObject(), Vec3f(look_from[0], look_from[1], look_from[2]));
 	return ERROR_NO;
@@ -228,9 +225,6 @@ EXPORT_DLL(int) RayTracer_Camera_setLookFrom(int index, double *look_from) {
 EXPORT_DLL(int) RayTracer_Camera_setLookAt(int index, double *look_at) {
 	Dynamic_Container<Camera> *camera = camera_list.get(index);
 	if (camera == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// container_camera->getObject()->setLookAt(Vec3f(look_at[0], look_at[1], look_at[2]));
 	
 	Dynamic_Camera_setLookAt(camera->getObject(), Vec3f(look_at[0], look_at[1], look_at[2]));
 	return ERROR_NO;
@@ -241,9 +235,6 @@ EXPORT_DLL(int) RayTracer_Camera_setUpDirection(int index, double *up_dir) {
 	Dynamic_Container<Camera> *camera = camera_list.get(index);
 	if (camera == nullptr) return -1;
 
-	// TODO: remove
-	// container_camera->getObject()->setUpDirection(Vec3f(up_dir[0], up_dir[1], up_dir[2]));
-
 	Dynamic_Camera_setUpDirection(camera->getObject(), Vec3f(up_dir[0], up_dir[1], up_dir[2]));
 	return ERROR_NO;
 }
@@ -252,9 +243,6 @@ EXPORT_DLL(int) RayTracer_Camera_setUpDirection(int index, double *up_dir) {
 EXPORT_DLL(int) RayTracer_Camera_setFOV(int index, double value) {
 	Dynamic_Container<Camera> *camera = camera_list.get(index);
 	if (camera == nullptr) return -1;
-
-	// TODO: remove
-	// container_camera->getObject()->setFOV(value);
 	
 	Dynamic_Camera_setFOV(camera->getObject(), value);
 	return ERROR_NO;
@@ -264,9 +252,6 @@ EXPORT_DLL(int) RayTracer_Camera_setFOV(int index, double value) {
 EXPORT_DLL(int) RayTracer_Camera_setAspectRatio(int index, double value) {
 	Dynamic_Container<Camera> *camera = camera_list.get(index);
 	if (camera == nullptr) return -1;
-
-	// TODO: remove
-	// container_camera->getObject()->setAspectRatio(value);
 
 	Dynamic_Camera_setAspectRatio(camera->getObject(), value);
 	return ERROR_NO;
@@ -280,9 +265,6 @@ Dynamic_constructTypeInterface(Surface, Surface, &surface_list);
 EXPORT_DLL(int) RayTracer_Surface_load(int index) {
 	Dynamic_Container<Surface> *surface = surface_list.get(index);
 	if (surface == nullptr) return -1;
-
-	// TODO: remove
-	// if (!container_surface->getObject()->load()) return -1;
 	
 	if (!Dynamic_Surface_load(surface->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
@@ -292,9 +274,6 @@ EXPORT_DLL(int) RayTracer_Surface_load(int index) {
 EXPORT_DLL(int) RayTracer_Surface_dump(int index) {
 	Dynamic_Container<Surface> *surface = surface_list.get(index);
 	if (surface == nullptr) return -1;
-
-	// TODO: remove
-	// if (!container_surface->getObject()->dump()) return -1;
 	
 	if (!Dynamic_Surface_dump(surface->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
@@ -311,9 +290,6 @@ EXPORT_DLL(int) RayTracer_Texture_addInput(int index_output, int index_input, in
 
 	Dynamic_Container<Texture> *input = texture_list.get(index_input);
 	if (input == nullptr) return -1;
-
-	// TODO: remove
-	// if (!texture->getObject()->addInput(container_input->getObject(), offset)) return -1;
 	
 	if (!Dynamic_Texture_addInput(texture->getObject(), input->getObject(), offset) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
@@ -323,9 +299,6 @@ EXPORT_DLL(int) RayTracer_Texture_addInput(int index_output, int index_input, in
 EXPORT_DLL(int) RayTracer_Texture_rmInput(int index_output, int offset) {
 	Dynamic_Container<Texture> *texture = texture_list.get(index_output);
 	if (texture == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// if (!texture->getObject()->rmInput(offset)) return ERROR_ANY;
 	
 	if (!Dynamic_Texture_rmInput(texture->getObject(), offset) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
@@ -335,11 +308,6 @@ EXPORT_DLL(int) RayTracer_Texture_rmInput(int index_output, int offset) {
 EXPORT_DLL(int) RayTracer_Texture_setPixel(int index, const double *pixel, const double *point) {
 	Dynamic_Container<Texture> *texture = texture_list.get(index);
 	if (texture == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// texture->getObject()->setPixel(
-	// 	Vec3f(point[0], point[1], point[2]),
-	// 	Vec3f(pixel[0], pixel[1], pixel[2]));
 
 	Dynamic_Texture_setPixel(
 		texture->getObject(),
@@ -354,10 +322,6 @@ EXPORT_DLL(int) RayTracer_Texture_getPixel(int index, double *pixel, const doubl
 	if (texture == nullptr) return ERROR_ANY;
 
 	Vec3f vec_pixel;
-	
-	// TODO: remove
-	// texture->getObject()->getPixel(vec_pixel, Vec3f(point[0], point[1], point[2]));
-	
 	Dynamic_Texture_getPixel(texture->getObject(), vec_pixel, Vec3f(point[0], point[1], point[2]));
 
 	pixel[0] = vec_pixel[0];
@@ -381,10 +345,6 @@ EXPORT_DLL(int) RayTracer_Material_addScatter(int index, int index_scatter) {
 	if (scatter == nullptr) return ERROR_ANY;
 
 	// add scatter
-
-	// TODO: remove
-	// if (!material->getObject()->addScatter(scatter->getObject())) return ERROR_ANY;
-	
 	if (!Dynamic_Material_addScatter(material->getObject(), scatter->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
@@ -399,10 +359,6 @@ EXPORT_DLL(int) RayTracer_Material_rmScatter(int index, int index_scatter) {
 	if (scatter == nullptr) return ERROR_ANY;
 
 	// remove scatter
-	
-	// TODO: remove
-	// if (!material->getObject()->rmScatter(scatter->getObject())) return ERROR_ANY;
-	
 	if (!Dynamic_Material_rmScatter(material->getObject(), scatter->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
@@ -411,11 +367,6 @@ EXPORT_DLL(int) RayTracer_Material_rmScatter(int index, int index_scatter) {
 EXPORT_DLL(int) RayTracer_Material_setTransmissive(int index, double *transmissive) {
 	Dynamic_Container<Material>	*material = material_list.get(index);
 	if (material == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// material->getObject()->transmissive->setPixel(
-	// 	Vec3f(),
-	// 	Vec3f(transmissive[0], transmissive[1], transmissive[2]));
 	
 	Dynamic_Material_setTransmissive(
 		material->getObject(), 
@@ -428,9 +379,6 @@ EXPORT_DLL(int) RayTracer_Material_setTransmissive(int index, double *transmissi
 EXPORT_DLL(int) RayTracer_Material_setIndex(int index, double value) {
 	Dynamic_Container<Material>	*material = material_list.get(index);
 	if (material == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// material->getObject()->index = value;
 	
 	Dynamic_Material_setIndex(material->getObject(), value);
 	return ERROR_NO;
@@ -450,12 +398,6 @@ EXPORT_DLL(int) RayTracer_Scatter_addScatter(int index_scatter, int index_target
 	if (target == nullptr) return ERROR_ANY;
 
 	// add scatter
-
-	// TODO: remove
-	// Scatter *scatter	= scatter->getObject();
-	// Scatter *target		= target->getObject();
-	// if (scatter->addScatter(target) != ERROR_NO) return ERROR_ANY;
-	
 	if (Dynamic_Scatter_addScatter(scatter->getObject(), target->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
@@ -470,12 +412,6 @@ EXPORT_DLL(int) RayTracer_Scatter_rmScatter(int index_scatter, int index_target)
 	if (target == nullptr) return ERROR_ANY;
 
 	// rm scatter
-
-	// TODO: remove
-	// Scatter *scatter	= scatter->getObject();
-	// Scatter *target		= target->getObject();
-	// if (scatter->rmScatter(target) != ERROR_NO) return ERROR_ANY;
-
 	if (Dynamic_Scatter_rmScatter(scatter->getObject(), target->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
@@ -490,12 +426,6 @@ EXPORT_DLL(int) RayTracer_Scatter_setTexture(int index_scatter, int index_textur
 	if (texture == nullptr) return ERROR_ANY;
 
 	// set texture
-
-	// TODO: remove
-	// Scatter	*scatter = scatter->getObject();
-	// Texture	*texture = texture->getObject();
-	// if (!scatter->setTexture(texture, offset)) return ERROR_ANY;
-
 	if (Dynamic_Scatter_setTexture(scatter->getObject(), texture->getObject(), offset) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
@@ -511,9 +441,6 @@ EXPORT_DLL(int) RayTracer_Hitable_setMaterial(int index_hitable, int index_mater
 
 	Dynamic_Container<Material> *material = material_list.get(index_material);
 	if (material == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// hitable->getObject()->setMaterial(material->getObject());
 	
 	Dynamic_Hitable_setMaterial(hitable->getObject(), material->getObject());
 	return ERROR_NO;
@@ -554,9 +481,6 @@ Dynamic_constructTypeInterface(Light, SceneObject_Light, &light_list);
 EXPORT_DLL(int) RayTracer_Light_setOrigin(int index, double *origin) {
 	Dynamic_Container<SceneObject_Light> *light = light_list.get(index);
 	if (light == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// light->getObject()->setOrigin(Vec3f(origin[0], origin[1], origin[2]));
 	
 	Dynamic_Light_setOrigin(light->getObject(), Vec3f(origin[0], origin[1], origin[2]));
 	return ERROR_NO;
@@ -566,9 +490,6 @@ EXPORT_DLL(int) RayTracer_Light_setOrigin(int index, double *origin) {
 EXPORT_DLL(int) RayTracer_Light_setColor(int index, double *color) {
 	Dynamic_Container<SceneObject_Light> *light = light_list.get(index);
 	if (light == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// light->getObject()->setColor(Vec3f(color[0], color[1], color[2]));
 	
 	Dynamic_Light_setColor(light->getObject(), Vec3f(color[0], color[1], color[2]));
 	return ERROR_NO;
@@ -580,10 +501,6 @@ EXPORT_DLL(int) RayTracer_Scene_addLight(int index_light) {
 	Dynamic_Container<SceneObject_Light> *light = light_list.get(index_light);
 	if (light == nullptr) return ERROR_ANY;
 
-	// TODO: remove
-	// SceneObject_Light *light = light->getObject();
-	// if (!RayTracer_Dynamic_Scene_addLight(light)) return -1;
-
 	if (Dynamic_Scene_addLight(light->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
@@ -592,10 +509,6 @@ EXPORT_DLL(int) RayTracer_Scene_addLight(int index_light) {
 EXPORT_DLL(int) RayTracer_Scene_addHitable(int index_hitable) {
 	Dynamic_Container<SceneObject_Hitable> *hitable = hitable_list.get(index_hitable);
 	if (hitable == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// SceneObject_Hitable *hitable = hitable->getObject();
-	// if (!RayTracer_Dynamic_Scene_addHitable(hitable)) return ERROR_ANY;
 	
 	if (Dynamic_Scene_addHitable(hitable->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
@@ -615,10 +528,6 @@ EXPORT_DLL(int) RayTracer_Scene_addHitable(int index_hitable) {
 EXPORT_DLL(int) RayTracer_Scene_rmLight(int index_light) {
 	Dynamic_Container<SceneObject_Light> *light = light_list.get(index_light);
 	if (light == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// SceneObject_Light *light = light->getObject();
-	// if (!RayTracer_Dynamic_Scene_rmLight(light)) return ERROR_ANY;
 	
 	if (Dynamic_Scene_rmLight(light->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
@@ -628,10 +537,6 @@ EXPORT_DLL(int) RayTracer_Scene_rmLight(int index_light) {
 EXPORT_DLL(int) RayTracer_Scene_rmHitable(int index_hitable) {
 	Dynamic_Container<SceneObject_Hitable> *hitable = hitable_list.get(index_hitable);
 	if (hitable == nullptr) return ERROR_ANY;
-
-	// TODO: remove
-	// SceneObject_Hitable *hitable = hitable->getObject();
-	// if (!RayTracer_Dynamic_Scene_rmHitable(hitable)) return ERROR_ANY;
 	
 	if (Dynamic_Scene_rmHitable(hitable->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;

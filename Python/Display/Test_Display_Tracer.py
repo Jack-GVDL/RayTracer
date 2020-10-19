@@ -26,7 +26,7 @@ Tracer_Sample.buildScene_singleSphere(tracer)
 # Tracer_Sample.buildScene_3(tracer, 2)
 
 camera_1: Camera_Default = tracer.Camera_Default()
-camera_1.setLookFrom(		Vec3f(0, 0, 2)	)
+camera_1.setLookFrom(		Vec3f(0, 0, 1)	)
 camera_1.setLookAt(			Vec3f(0, 0, 0)	)
 camera_1.setAspectRatio(	1920 / 1080		)
 

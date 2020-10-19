@@ -36,12 +36,6 @@ class Tracer {
 
 		Vector				scheduler_list;
 
-		// backup
-		// int32_t				scheduler_index	= 0;
-
-		// TODO: remove
-		// Scheduler_Scatter	scheduler;
-
 	// Operation
 	public:
 		// init
@@ -53,9 +47,6 @@ class Tracer {
 
 		__device__	error_t	addScheduler		(Scheduler_Scatter *scheduler);
 		__device__	error_t	rmScheduler			(Scheduler_Scatter *scheduler);
-
-		// backup
-		// __device__	void	resetScheduler		();
 
 		__device__	Vec3f	trace				(const Camera *camera, fp_t x, fp_t y, int32_t depth, int32_t index);
 		__device__	Vec3f	trace				(const Ray *ray, int32_t depth, int32_t index);

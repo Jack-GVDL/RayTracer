@@ -41,11 +41,6 @@ class Ops_Tracer:
 	def Test_checkStatus(self, index: int, array: bytes, size: int) -> None:
 		raise NotImplementedError
 
-	# TODO: remove
-	# sample
-	# def Sample_buildScene(self, index: int) -> int:
-	# 	raise NotImplementedError
-
 	# tracer
 	def Tracer_tracePoint(self, index_camera: int, pixel: Vec3f, x: float, y: float, depth: int) -> int:
 		raise NotImplementedError
