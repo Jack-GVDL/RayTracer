@@ -271,10 +271,7 @@ __global__ static void global_Tracer_trace(void *camera, fp_t *dst, fp_t *positi
 		position_list[(offset + global_index) * 2 + 0],
 		position_list[(offset + global_index) * 2 + 1],
 		depth, global_index);
-
-	// TEST
-	// if (result[0] != 0 || result[1] != 0 || result[2] != 0) printf("%f %f %f \n", result[0], result[1], result[2]);
-
+	
 	// set to dst
 	dst[(offset + global_index) * 3 + 0] = result[0];
 	dst[(offset + global_index) * 3 + 1] = result[1];

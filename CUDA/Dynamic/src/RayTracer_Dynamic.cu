@@ -5,6 +5,7 @@
 #include "../inc/RayTracer_DynamicContainer.cuh"
 #include "../inc/RayTracer_DynamicSkeleton.cuh"
 
+#include "../inc/RayTracer_Dynamic_Base.cuh"
 #include "../inc/RayTracer_Dynamic_Camera.cuh"
 #include "../inc/RayTracer_Dynamic_Tracer.cuh"
 #include "../inc/RayTracer_Dynamic_Surface.cuh"
@@ -113,6 +114,7 @@ Dynamic_ContainerListBase*				container_list[] = {
 // Operation Handling
 EXPORT_DLL(void) RayTracer_init() {
 	// init
+	RayTracer_Dynamic_Base_init();
 	RayTracer_Dynamic_Tracer_init();
 
 	RayTracer_Dynamic_Camera_init(		&(camera_list.type_list)	);

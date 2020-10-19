@@ -63,10 +63,10 @@ __device__ void Scatter_Random::scatter(RecordRay *src, MemoryControl_Scatter *m
 		vector_radius_2.normalize();
 	}
 
-	for (uint8_t i = 0; i < count; i++) {
+	for (uint8_t i = 0; i < count; ++i) {
 		// set the length of the radius vectors	
-		const fp_t length_1 = radius * (UtilMath::randFloat() - 0.5) * 2;
-		const fp_t length_2 = radius * (UtilMath::randFloat() - 0.5) * 2;
+		fp_t length_1 = radius * (UtilMath::randFloat(src->thread_id) - 0.5) * 2;
+		fp_t length_2 = radius * (UtilMath::randFloat(src->thread_id) - 0.5) * 2;
 
 		Vec3f	vector_radius_3	= vector_radius_1.prod(Vec3f(length_1));
 		Vec3f	vector_radius_4	= vector_radius_2.prod(Vec3f(length_2));
@@ -77,8 +77,8 @@ __device__ void Scatter_Random::scatter(RecordRay *src, MemoryControl_Scatter *m
 		Vec3f	new_pos	= record_hit->ray.getPosition();
 		Vec3f	new_dir	= ref_dir;
 
-		if (is_parallel)	new_pos += vector_radius_3 + vector_radius_4;
-		else				new_dir += vector_radius_3 + vector_radius_4;
+		if (is_parallel)	new_pos += (vector_radius_3 + vector_radius_4);
+		else				new_dir += (vector_radius_3 + vector_radius_4);
 
 		// create new record
 		RecordRay *record = (RecordRay*)memory_control->createRecord();

@@ -62,7 +62,6 @@ class Tracer_Sample:
 		scene.addHitable(hitable_sphere_1)
 		scene.addLight(light_point_1)
 
-
 	@ classmethod
 	def buildScene_0(cls, tracer: Tracer, aabb_level: int = 0) -> None:
 		# object
@@ -153,6 +152,8 @@ class Tracer_Sample:
 
 		material_refractive.addScatter(scatter_refraction_1)
 		material_refractive.addScatter(scatter_light_1)
+		material_refractive.setTransmissive(Vec3f(0.5))
+		material_refractive.setIndex(1.5)
 
 		# hitable
 		hitable_sphere_1.setCenter(Vec3f(0, 0, 0))

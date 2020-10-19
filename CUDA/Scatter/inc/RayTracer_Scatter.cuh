@@ -36,6 +36,10 @@ struct RecordScatter {
 struct RecordRay {
 // Data
 public:
+	// gpu specific
+	// TODO: should it be here ?
+	int32_t				thread_id		= 0;
+
 	// tree
 	RecordRay			*parent			= nullptr;
 	int16_t				depth			= 0;

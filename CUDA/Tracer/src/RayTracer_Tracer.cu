@@ -50,12 +50,16 @@ __device__ Vec3f Tracer::trace(const Camera *camera, fp_t x, fp_t y, int32_t dep
 __device__ Vec3f Tracer::trace(const Ray *ray, int depth, int32_t index) {
 	// init scatter record
 	RecordRay scatter_record;
+
 	scatter_record.parent	= nullptr;
 	scatter_record.scene	= scene;
 	scatter_record.depth	= depth;
 
 	RecordHit *record_hit	= &(scatter_record.record_hit.record);
 	record_hit->ray 		= *ray;
+
+	// thread specific
+	scatter_record.thread_id = index;
 
 	return trace(&scatter_record, index);
 }

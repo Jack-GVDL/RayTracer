@@ -4,14 +4,13 @@
 // Log
 // 2020/09/11   initial update
 // 2020/10/11   add curand
+// 2020/10/19   move randFloat to cu from cuh
 
 
 #ifndef RAYTRACER_UTILMATH_CUH
 #define RAYTRACER_UTILMATH_CUH
 
 
-#include <curand.h>
-#include <curand_kernel.h>
 #include "RayTracer_Vec3f.cuh"
 #include "RayTracer_Ray.cuh"
 #include "RayTracer_Bounding.cuh"
@@ -43,18 +42,16 @@
 
 // Inline Function Implementation
 namespace UtilMath {
+	__device__ void initUtilMath(int32_t size_random);
+
 	template <class T>
 	__device__ const T& clamp(const T &v, const T &lo, const T &hi) {
 		return (v < lo) ? lo : (hi < v) ? hi : v;
 	}
 
-	__device__ static inline fp_t randFloat() {
-		// return rand() / (RAND_MAX + 1.0);
-		
-		curandState state;
-		curand_init(0, 0, 0, &state);
-		return curand_uniform(&state);
-	}
+	__device__ fp_t randFloat();
+	
+	__device__ fp_t randFloat(int32_t index);
 
 
 	// reference

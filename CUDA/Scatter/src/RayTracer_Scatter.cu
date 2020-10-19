@@ -152,6 +152,8 @@ __device__ Texture* Scatter::getTexture(int32_t offset) {
 
 
 __device__ void Scatter::setRecord_tree(RecordRay *dst, RecordRay *src) const {
+	dst->thread_id				= src->thread_id;
+
 	dst->parent					= src;
 	dst->scene					= src->scene;
 	dst->outer					= src->outer;

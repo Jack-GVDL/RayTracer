@@ -2,7 +2,8 @@
     "SRC_PATH"  : "src",
     "OBJ_PATH"  : "obj",
     
-    "OBJ_FILE"  : ["RayTracer_Dynamic_Camera.o ",
+    "OBJ_FILE"  : ["RayTracer_Dynamic_Base.o ",
+                   "RayTracer_Dynamic_Camera.o ",
                    "RayTracer_Dynamic_Hitable.o ",
                    "RayTracer_Dynamic_Light.o ",
                    "RayTracer_Dynamic_Material.o ",

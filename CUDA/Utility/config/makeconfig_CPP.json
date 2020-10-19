@@ -3,6 +3,8 @@
     "OBJ_PATH"  : "obj",
     
     "OBJ_FILE"  : ["Util_Vector.o ",
+                   "Util_Random.o ",
+                   "RayTracer_UtilMath.o ",
                    ""],
 
     "MACRO"     : [""],

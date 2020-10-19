@@ -1,4 +1,6 @@
 {
     "OBJ_FILE"  : ["obj/Util_Vector.o ",
+                   "obj/Util_Random.o ",
+                   "obj/RayTracer_UtilMath.o ",
                    ""]
 }
