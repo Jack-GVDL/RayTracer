@@ -292,7 +292,11 @@ class Tracer_Sample:
 
 		scatter_light_2.setTexture(texture_emissive,	Scatter_Light.TextureOffset.EMISSIVE)
 		scatter_light_2.setTexture(texture_ambient,		Scatter_Light.TextureOffset.AMBIENT)
-		scatter_light_2.setTexture(texture_kernel_1,	Scatter_Light.TextureOffset.DIFFUSE)
+
+		# TODO: in cuda version, currently there is problem about the stack and convolutor cannot be used
+		# scatter_light_2.setTexture(texture_kernel_1,	Scatter_Light.TextureOffset.DIFFUSE)
+		scatter_light_2.setTexture(texture_image_1,		Scatter_Light.TextureOffset.DIFFUSE)
+
 		scatter_light_2.setTexture(texture_specular,	Scatter_Light.TextureOffset.SPECULAR)
 		scatter_light_2.setTexture(texture_shininess,	Scatter_Light.TextureOffset.SHININESS)
 		scatter_light_2.setTexture(texture_normal,		Scatter_Light.TextureOffset.NORMAL)

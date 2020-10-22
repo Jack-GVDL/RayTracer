@@ -97,12 +97,12 @@ __host__ int Dynamic_CUDA_Function_Linker_config(name)(void *object, uint8_t *da
 }
 
 
-#define Dynamic_CUDA_constructInteractLinker(name_type, name_interact, func)												\
+#define Dynamic_CUDA_constructTypeInteractLinker(name, func)																\
 __host__ int Dynamic_CUDA_Function_Linker_interact(name)(void *object, void* *list, uint32_t size) {						\
 	/* data */																												\
 	void* *data_device;																										\
 	cudaMalloc(&data_device, size * sizeof(void*));																			\
-	cudaMemcpy(data_device, data, size * sizeof(void*), cudaMemcpyHostToDevice);											\
+	cudaMemcpy(data_device, list, size * sizeof(void*), cudaMemcpyHostToDevice);											\
 																															\
 	/* return value */																										\
 	int8_t *ret_device;																										\
@@ -136,7 +136,7 @@ Dynamic_CUDA_Variable_tableConfig(name).push_back(func);
 
 
 #define Dynamic_CUDA_addTypeInteract(name, func)														\
-Dynamic_CUDA_Variable_tableInteract(name).push_back(func)
+Dynamic_CUDA_Variable_tableInteract(name).push_back(func);
 
 
 #define Dynamic_CUDA_addTypeConfigLinker(name, func)													\

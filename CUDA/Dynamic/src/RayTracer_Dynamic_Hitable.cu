@@ -51,8 +51,8 @@ __host__ void RayTracer_Dynamic_Hitable_init(std::vector<Dynamic_ContainerType*>
 	Dynamic_CUDA_addTypeConfigLinker(trimesh,		trimesh_setPoint_1);
 	Dynamic_CUDA_addTypeConfigLinker(trimesh,		trimesh_setPoint_2);
 
-	// Dynamic_CUDA_addTypeInteractLinker(aabb,		aabb_addHitable);
-	// Dynamic_CUDA_addTypeInteractLinker(aabb,		aabb_rmHitable);
+	// Dynamic_CUDA_addInteractLinker(aabb,		aabb_addHitable);
+	// Dynamic_CUDA_addInteractLinker(aabb,		aabb_rmHitable);
 
 	// create type
 	Dynamic_ContainerType *type;

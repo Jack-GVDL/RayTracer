@@ -1,5 +1,8 @@
 #include "../inc/RayTracer_Texture_Input.cuh"
 
+// TODO: test
+#include <stdio.h>
+
 
 // Define
 // ...

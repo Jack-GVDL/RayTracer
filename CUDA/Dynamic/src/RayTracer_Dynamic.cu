@@ -288,10 +288,10 @@ Dynamic_constructTypeInterface(Texture, Texture, &texture_list);
 
 EXPORT_DLL(int) RayTracer_Texture_addInput(int index_output, int index_input, int offset) {
 	Dynamic_Container<Texture> *texture = texture_list.get(index_output);
-	if (texture == nullptr) return -1;
+	if (texture == nullptr) return ERROR_ANY;
 
 	Dynamic_Container<Texture> *input = texture_list.get(index_input);
-	if (input == nullptr) return -1;
+	if (input == nullptr) return ERROR_ANY;
 	
 	if (!Dynamic_Texture_addInput(texture->getObject(), input->getObject(), offset) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
@@ -585,6 +585,9 @@ static inline int Dynamic_ContainerList_Object_config(Dynamic_ContainerList<T> *
 template <class T>
 static inline int Dynamic_ContainerList_Object_interact(Dynamic_ContainerList<T> *list, int index, int type, int *index_list, int *type_list, uint32_t size) {
 	// get interaction object list
+	// TODO: future
+	// vector<Dynamic_ContainerBase*> interact_list;
+
 	Dynamic_ContainerBase* interact_list[BUFFER_MAX_LENGTH] = {0};
 	for (int i = 0; i < size; i++) {
 		const int target_index	= index_list[i];
