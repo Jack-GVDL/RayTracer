@@ -27,7 +27,7 @@
 class Bounding {
 	// Data
 	public:
-		Vec3f	min_ = Vec3f(1);
+		Vec3f	min_	= Vec3f(1);
 		Vec3f	max_	= Vec3f(-1);
 	
 	// Operation

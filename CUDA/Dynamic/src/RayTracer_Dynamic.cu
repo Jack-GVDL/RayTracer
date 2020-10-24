@@ -96,7 +96,7 @@ Dynamic_ContainerList<Texture>					texture_list;
 Dynamic_ContainerList<Scatter>					scatter_list;
 Dynamic_ContainerList<SceneObject_Hitable>		hitable_list;
 Dynamic_ContainerList<SceneObject_Light>		light_list;
-// Dynamic_ContainerList<Hitable_AABB>				aabb_list;
+Dynamic_ContainerList<Hitable_AABB>				aabb_list;
 Dynamic_ContainerList<Material>					material_list;
 
 Dynamic_ContainerListBase*				container_list[] = {
@@ -107,7 +107,7 @@ Dynamic_ContainerListBase*				container_list[] = {
 	&scatter_list,
 	&hitable_list,
 	&light_list,
-	// &aabb_list
+	&aabb_list
 };
 
 
@@ -123,7 +123,7 @@ EXPORT_DLL(void) RayTracer_init() {
 	RayTracer_Dynamic_Material_init(	&(material_list.type_list)	);
 	RayTracer_Dynamic_Scatter_init(		&(scatter_list.type_list)	);
 	RayTracer_Dynamic_Hitable_init(		&(hitable_list.type_list)	);
-	// RayTracer_Dynamic_AABB_init(		&(aabb_list.type_list)		);
+	RayTracer_Dynamic_AABB_init(		&(aabb_list.type_list)		);
 	RayTracer_Dynamic_Light_init(		&(light_list.type_list)		);
 
 	// load
@@ -134,7 +134,7 @@ EXPORT_DLL(void) RayTracer_init() {
 	scatter_list.Type_load();
 	hitable_list.Type_load();
 	light_list.Type_load();
-	// aabb_list.Type_load();
+	aabb_list.Type_load();
 
 	// create a deafult camera
 	// can / should be used for testing
@@ -235,7 +235,7 @@ EXPORT_DLL(int) RayTracer_Camera_setLookAt(int index, double *look_at) {
 
 EXPORT_DLL(int) RayTracer_Camera_setUpDirection(int index, double *up_dir) {
 	Dynamic_Container<Camera> *camera = camera_list.get(index);
-	if (camera == nullptr) return -1;
+	if (camera == nullptr) return ERROR_ANY;
 
 	Dynamic_Camera_setUpDirection(camera->getObject(), Vec3f(up_dir[0], up_dir[1], up_dir[2]));
 	return ERROR_NO;
@@ -244,7 +244,7 @@ EXPORT_DLL(int) RayTracer_Camera_setUpDirection(int index, double *up_dir) {
 
 EXPORT_DLL(int) RayTracer_Camera_setFOV(int index, double value) {
 	Dynamic_Container<Camera> *camera = camera_list.get(index);
-	if (camera == nullptr) return -1;
+	if (camera == nullptr) return ERROR_ANY;
 	
 	Dynamic_Camera_setFOV(camera->getObject(), value);
 	return ERROR_NO;
@@ -253,7 +253,7 @@ EXPORT_DLL(int) RayTracer_Camera_setFOV(int index, double value) {
 
 EXPORT_DLL(int) RayTracer_Camera_setAspectRatio(int index, double value) {
 	Dynamic_Container<Camera> *camera = camera_list.get(index);
-	if (camera == nullptr) return -1;
+	if (camera == nullptr) return ERROR_ANY;
 
 	Dynamic_Camera_setAspectRatio(camera->getObject(), value);
 	return ERROR_NO;
@@ -266,7 +266,7 @@ Dynamic_constructTypeInterface(Surface, Surface, &surface_list);
 
 EXPORT_DLL(int) RayTracer_Surface_load(int index) {
 	Dynamic_Container<Surface> *surface = surface_list.get(index);
-	if (surface == nullptr) return -1;
+	if (surface == nullptr) return ERROR_ANY;
 	
 	if (!Dynamic_Surface_load(surface->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
@@ -275,7 +275,7 @@ EXPORT_DLL(int) RayTracer_Surface_load(int index) {
 
 EXPORT_DLL(int) RayTracer_Surface_dump(int index) {
 	Dynamic_Container<Surface> *surface = surface_list.get(index);
-	if (surface == nullptr) return -1;
+	if (surface == nullptr) return ERROR_ANY;
 	
 	if (!Dynamic_Surface_dump(surface->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
@@ -450,15 +450,24 @@ EXPORT_DLL(int) RayTracer_Hitable_setMaterial(int index_hitable, int index_mater
 
 
 // aabb
-/*
 Dynamic_constructTypeInterface(AABB, Hitable_AABB, &aabb_list);
 
 
-// TODO: should actual aabb load operation be written here ?
 EXPORT_DLL(int) RayTracer_AABB_load (int index) {
 	Dynamic_Container<Hitable_AABB> *container_aabb = aabb_list.get(index);
 	if (container_aabb == nullptr) return ERROR_ANY;
 
+	// get object list
+	std::vector<SceneObject_Hitable*> hitables;
+	for (auto hitable : hitable_list.container_list) {
+		hitables.push_back((SceneObject_Hitable*)(hitable->object));
+	}
+
+	Dynamic_AABB_load(container_aabb->getObject(), hitables.data(), hitables.size());
+	return ERROR_NO;
+
+	// TODO: remove
+	/*
 	// get object list
 	// TODO: need copy the entire list, may be too slow
 	std::vector<SceneObject_Hitable*> hitables;
@@ -472,8 +481,8 @@ EXPORT_DLL(int) RayTracer_AABB_load (int index) {
 
 	if (container_aabb->getObject()->addHitable(aabb) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
+	*/
 }
-*/
 
 
 // light
@@ -517,14 +526,16 @@ EXPORT_DLL(int) RayTracer_Scene_addHitable(int index_hitable) {
 }
 
 
-// EXPORT_DLL(int) RayTracer_Scene_addAABB(int index_aabb) {
-// 	Dynamic_Container<Hitable_AABB> *container_aabb = aabb_list.get(index_aabb);
-// 	if (container_aabb == nullptr) return ERROR_ANY;
+/*
+EXPORT_DLL(int) RayTracer_Scene_addAABB(int index_aabb) {
+	Dynamic_Container<Hitable_AABB> *container_aabb = aabb_list.get(index_aabb);
+	if (container_aabb == nullptr) return ERROR_ANY;
 
-// 	Hitable_AABB *aabb = container_aabb->getObject();
-// 	if (!scene.addHitable(aabb)) return ERROR_ANY;
-// 	return ERROR_NO;
-// }
+	Hitable_AABB *aabb = container_aabb->getObject();
+	if (!scene.addHitable(aabb)) return ERROR_ANY;
+	return ERROR_NO;
+}
+*/
 
 
 EXPORT_DLL(int) RayTracer_Scene_rmLight(int index_light) {
@@ -545,14 +556,16 @@ EXPORT_DLL(int) RayTracer_Scene_rmHitable(int index_hitable) {
 }
 
 
-// EXPORT_DLL(int) RayTracer_Scene_rmAABB(int index_aabb) {
-// 	Dynamic_Container<Hitable_AABB> *container_aabb = aabb_list.get(index_aabb);
-// 	if (container_aabb == nullptr) return ERROR_ANY;
+/*
+EXPORT_DLL(int) RayTracer_Scene_rmAABB(int index_aabb) {
+	Dynamic_Container<Hitable_AABB> *container_aabb = aabb_list.get(index_aabb);
+	if (container_aabb == nullptr) return ERROR_ANY;
 
-// 	Hitable_AABB *aabb = container_aabb->getObject();
-// 	if (!scene.rmHitable(aabb)) return ERROR_ANY;
-// 	return ERROR_NO;
-// }
+	Hitable_AABB *aabb = container_aabb->getObject();
+	if (!scene.rmHitable(aabb)) return ERROR_ANY;
+	return ERROR_NO;
+}
+*/
 
 
 // Static Function Implementation

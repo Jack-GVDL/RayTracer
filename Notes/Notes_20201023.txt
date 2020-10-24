@@ -1,0 +1,17 @@
+Acceleration Structure
+* Grid
+* Octree
+* Binary Space Partitioning Tree (BSP Tree)
+* KD-Tree
+* BVH (Bounding Volume Hierarchy)
+
+
+Measure the efficiency of the different acceleration methods
+- render time
+- total number of rays cast in the scene
+- number of times the ray-triangle intersections test has been executed
+- number of ray-triangles hits
+
+Mis
+- Unified Shader Architecture
+- STL C++ atomic library (introduced in C++11)

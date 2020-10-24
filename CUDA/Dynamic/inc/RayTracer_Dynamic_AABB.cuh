@@ -41,6 +41,8 @@ __host__ void	RayTracer_Dynamic_AABB_init		(std::vector<Dynamic_ContainerType*> 
 __host__ void	RayTracer_Dynamic_AABB_info		();
 __host__ void	RayTracer_Dynamic_AABB_del		();
 
+__host__ error_t Dynamic_AABB_load(Hitable_AABB *aabb, SceneObject_Hitable* *hitable_list, int32_t size);
+
 
 // Inline Function Implementation
 // ...

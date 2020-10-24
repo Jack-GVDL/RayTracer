@@ -17,7 +17,7 @@
 
 #include "./inc/RayTracer_Hitable_Sphere.cuh"
 #include "./inc/RayTracer_Hitable_Trimesh.cuh"
-// #include "./inc/RayTracer_Hitable_AABB.cuh"
+#include "./inc/RayTracer_Hitable_AABB.cuh"
 
 // #include "./inc/RayTracer_Light_Ambient.cuh"
 #include "./inc/RayTracer_Light_Directional.cuh"
