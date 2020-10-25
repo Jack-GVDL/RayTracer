@@ -10,6 +10,10 @@
 
 
 #include "RayTracer_SceneObject_Hitable.cuh"
+#include <algorithm>
+
+// TODO: test
+#include <stdio.h>
 
 
 // Define
@@ -43,11 +47,13 @@ class AABB {
 			update();
 		}
 
-		__device__ AABB(AABB *aabb_left, AABB *aabb_right, SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right):
-		aabb_left(aabb_left),
-		aabb_right(aabb_right),
-		hitable_left(hitable_left),
-		hitable_right(hitable_right)
+		__device__ AABB(
+			AABB *aabb_left, AABB *aabb_right, 
+			SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right):
+		aabb_left		(aabb_left),
+		aabb_right		(aabb_right),
+		hitable_left	(hitable_left),
+		hitable_right	(hitable_right)
 		{
 			update();
 		}
@@ -82,34 +88,35 @@ class AABB {
 		// TODO: find a better way to show the below statement
 		// only check if self is hit or not
 		// not check if child is hit or not
-		__device__ int8_t hit(RecordHit *record, fp_t *t_min, fp_t *t_max) const {
-			const Vec3f	ray_pos	= record->ray.getPosition();
-			const Vec3f	ray_dir	= record->ray.getDirection();
+		__device__ int8_t hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
+			if (bounding.isEmpty()) return 0;
 
-			fp_t temp_min = *t_min;
-			fp_t temp_max = *t_max;
+			// variable preparation
+			const Vec3f&	ray_pos	= record->ray.getPosition();
+			const Vec3f&	ray_dir	= record->ray.getDirection();
 
+			fp_t inv_d, t0, t1;
+			fp_t temp;
+
+			// check if hit the bounding box
 			for (uint8_t i = 0; i < 3; ++i) {
 				
-				fp_t	inv_d	= 1.0 / ray_dir[i];
-				fp_t	t0		= (bounding.min_[i] - ray_pos[i]) * inv_d;
-				fp_t	t1		= (bounding.max_[i] - ray_pos[i]) * inv_d;
+				inv_d	= 1.0 / ray_dir[i];
+				t0		= (bounding.min_[i] - ray_pos[i]) * inv_d;
+				t1		= (bounding.max_[i] - ray_pos[i]) * inv_d;
 
 				// swap
 				if (inv_d < 0.0) {
-					fp_t temp = t0;
-					t0 = t1;
-					t1 = temp;
+					temp	= t0;
+					t0		= t1;
+					t1		= temp;
 				}
 
-				temp_min	= t0 > temp_min ? t0 : temp_min;
-				temp_max	= t1 < temp_max ? t1 : temp_max;
+				t_min = UtilMath::max<fp_t>(t_min, t0);
+				t_max = UtilMath::min<fp_t>(t_max, t1);
 
-				if (temp_max <= temp_min) return 0;
+				if (t_max <= t_min) return 0;
 			}
-
-			*t_min = temp_min;
-			*t_max = temp_max;
 
 			return 1;
 		}
@@ -126,18 +133,9 @@ class AABB {
 
 
 class Hitable_AABB: public SceneObject_Hitable {
-	// Static Function
-	public:
-		// TODO: remove
-		// TODO: static -> member function
-		// static Hitable_AABB*	create	(SceneObject_Hitable* *list, int32_t size_list, int32_t size_leaf);
-
 	// Data
 	public:
-		AABB		*aabb;
-
-		// TODO: remove
-		// std::vector<SceneObject_Hitable*>	hitable_list;
+		AABB		*root;
 
 	// Operation
 	public:
@@ -148,14 +146,8 @@ class Hitable_AABB: public SceneObject_Hitable {
 		// operation
 		__device__ void	setAABB		(AABB *aabb);
 
-		// backup
-		/*
-		__device__ error_t	load			(SceneObject_Hitable *hitable_list, int32_t size);
-		__device__ error_t	dump			();
-		*/
-
 		// interface
-		__device__ virtual int8_t	hit				(RecordHit *record, fp_t t_min, fp_t t_max) const override;
+		__device__ virtual int8_t	hit	(RecordHit *record, fp_t t_min, fp_t t_max) const override;
 };
 
 

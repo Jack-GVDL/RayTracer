@@ -94,8 +94,7 @@ class Tracer_Sample:
 		hitable_trimesh_3:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 		hitable_trimesh_4:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 
-		# TODO: test
-		# aabb_1:					AABB_Default		= tracer.AABB_Default()
+		aabb_1:					AABB_Default		= tracer.AABB_Default()
 
 		light_point_1:			Light_Point			= tracer.Light_Point()
 		light_point_2:			Light_Point			= tracer.Light_Point()
@@ -199,10 +198,8 @@ class Tracer_Sample:
 			scene.addHitable(hitable_sphere_3)
 
 		else:
-			# TODO: test
-			# aabb_1.load()
-			# scene.addAABB(aabb_1)
-			pass
+			aabb_1.load()
+			scene.addAABB(aabb_1)
 
 		# light
 		light_point_1.setOrigin(Vec3f(1, 1, 1))
@@ -495,9 +492,9 @@ class Tracer_Sample:
 		material_1.addScatter(scatter_light_1)
 
 		# hitable
-		w_half: int		= 3
-		h_half: int		= 3
-		radius: float	= 0.2
+		w_half: int		= 5
+		h_half: int		= 5
+		radius: float	= 0.1
 
 		if aabb_level == 0:
 			for z in range(-2, 2):

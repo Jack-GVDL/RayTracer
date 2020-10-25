@@ -465,23 +465,6 @@ EXPORT_DLL(int) RayTracer_AABB_load (int index) {
 
 	Dynamic_AABB_load(container_aabb->getObject(), hitables.data(), hitables.size());
 	return ERROR_NO;
-
-	// TODO: remove
-	/*
-	// get object list
-	// TODO: need copy the entire list, may be too slow
-	std::vector<SceneObject_Hitable*> hitables;
-	for (auto hitable : hitable_list.container_list) {
-		hitables.push_back((SceneObject_Hitable*)(hitable->object));
-	}
-
-	// aabb loading
-	Hitable_AABB *aabb = Hitable_AABB::create(hitables.data(), hitables.size(), 1);
-	if (aabb == nullptr) return ERROR_ANY;
-
-	if (container_aabb->getObject()->addHitable(aabb) != ERROR_NO) return ERROR_ANY;
-	return ERROR_NO;
-	*/
 }
 
 
@@ -526,16 +509,13 @@ EXPORT_DLL(int) RayTracer_Scene_addHitable(int index_hitable) {
 }
 
 
-/*
 EXPORT_DLL(int) RayTracer_Scene_addAABB(int index_aabb) {
-	Dynamic_Container<Hitable_AABB> *container_aabb = aabb_list.get(index_aabb);
-	if (container_aabb == nullptr) return ERROR_ANY;
+	Dynamic_Container<Hitable_AABB> *aabb = aabb_list.get(index_aabb);
+	if (aabb == nullptr) return ERROR_ANY;
 
-	Hitable_AABB *aabb = container_aabb->getObject();
-	if (!scene.addHitable(aabb)) return ERROR_ANY;
+	if (Dynamic_Scene_addHitable(aabb->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
-*/
 
 
 EXPORT_DLL(int) RayTracer_Scene_rmLight(int index_light) {
@@ -556,16 +536,13 @@ EXPORT_DLL(int) RayTracer_Scene_rmHitable(int index_hitable) {
 }
 
 
-/*
 EXPORT_DLL(int) RayTracer_Scene_rmAABB(int index_aabb) {
-	Dynamic_Container<Hitable_AABB> *container_aabb = aabb_list.get(index_aabb);
-	if (container_aabb == nullptr) return ERROR_ANY;
+	Dynamic_Container<Hitable_AABB> *aabb = aabb_list.get(index_aabb);
+	if (aabb == nullptr) return ERROR_ANY;
 
-	Hitable_AABB *aabb = container_aabb->getObject();
-	if (!scene.rmHitable(aabb)) return ERROR_ANY;
+	if (Dynamic_Scene_rmHitable(aabb->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
-*/
 
 
 // Static Function Implementation

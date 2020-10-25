@@ -3,8 +3,9 @@
 #include "../inc/RayTracer_DynamicContainer.cuh"
 #include "../inc/RayTracer_Dynamic_Tracer.cuh"
 
-// TEST
+// TODO: test
 #include "../inc/RayTracer_Dynamic_Scene.cuh"
+#include <stdio.h>
 
 
 // Define

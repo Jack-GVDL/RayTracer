@@ -42,6 +42,16 @@
 
 // Inline Function Implementation
 namespace UtilMath {
+	template <class T>
+	__device__ const T& min(const T &v1, const T &v2) {
+		return (v1 < v2) ? v1 : v2;
+	}
+
+	template <class T>
+	__device__ const T& max(const T &v1, const T &v2) {
+		return (v1 > v2) ? v1 : v2;
+	}
+
 	__device__ void initUtilMath(int32_t size_random);
 
 	template <class T>
