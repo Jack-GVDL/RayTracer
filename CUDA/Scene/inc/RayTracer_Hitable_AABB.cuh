@@ -10,10 +10,6 @@
 
 
 #include "RayTracer_SceneObject_Hitable.cuh"
-#include <algorithm>
-
-// TODO: test
-#include <stdio.h>
 
 
 // Define

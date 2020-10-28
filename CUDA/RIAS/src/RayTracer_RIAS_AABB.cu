@@ -1,16 +1,4 @@
-#include <algorithm>
-#include "../inc/RayTracer_Dynamic_AABB.cuh"
-#include "../inc/RayTracer_DynamicSkeleton.cuh"
-
-// TODO: test
-#include <stdio.h>
-
-
-// TODO: although this file is called AABB
-// but the purpose of this file is for the interface controlling difference ray intersection accleration structure
-// therefore, renaming this file is needed
-// the detail of each acceleration structure should be moved to its own file
-// which mean to create a new file for each acceleration structure
+#include "../inc/RayTracer_RIAS_AABB.cuh"
 
 
 // Define
@@ -18,32 +6,32 @@
 
 
 // Typedef
-typedef int32_t(*compare_func_t)(const void*, const void*);
+// ...
 
 
-// Data Structure
-struct RecordBounding {
-	Bounding				bounding;
-	SceneObject_Hitable		*hitable;
+// Static Data
+static Hitable_AABB*	*buffer_hitable	= nullptr;
+static AABB*			*buffer_aabb	= nullptr;
+
+static compare_func_t	compare_func_list[] = {
+	compare_x_axis,
+	compare_y_axis,
+	compare_z_axis
 };
 
 
 // Static Function Prototype
-// skeleton
-Dynamic_CUDA_constructTypeSkeleton(aabb_default, Hitable_AABB, Hitable_AABB);
-
 // host
-__host__ static inline void	host_aabb_getBounding		(RecordBounding *record_list, SceneObject_Hitable* *hitable_list, int32_t size);
-__host__ static void		host_aabb_buildTree			(AABB* *dst, RecordBounding *record_list, int32_t size);
-__host__ static void		host_aabb_createAABB		(AABB* *dst, AABB *aabb_left, AABB *aabb_right, SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right);
+__host__ static void			host_createHitable			(Hitable_AABB* *dst);
+__host__ static void			host_createAABB				(AABB* *dst, AABB *aabb_left, AABB *aabb_right, SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right);
+__host__ static inline void		host_getBounding			(RecordBounding *record_list, SceneObject_Hitable* *hitable_list, int32_t size);
+__host__ static void			host_buildTree				(AABB* *dst, RecordBounding *record_list, int32_t size);
 
 // global
-__global__ static void		global_aabb_getBounding		(RecordBounding *record_list, SceneObject_Hitable* *hitable_list, int32_t size, int32_t offset);
-__global__ static void		global_aabb_createAABB		(AABB* *dst, AABB *aabb_left, AABB *aabb_right, SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right);
-__global__ static void		global_aabb_setRoot			(Hitable_AABB *hitable_aabb, AABB *aabb);
-
-// device
-// ...
+__global__ static void			global_createHitable		(Hitable_AABB* *dst);
+__global__ static void			global_createAABB			(AABB* *dst, AABB *aabb_left, AABB *aabb_right, SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right);
+__global__ static void			global_getBounding			(RecordBounding *record_list, SceneObject_Hitable* *hitable_list, int32_t size, int32_t offset);
+__global__ static void			global_setRoot				(Hitable_AABB *hitable_aabb, AABB *aabb);
 
 // compare function
 __host__ static inline int32_t	select_compare_func			(RecordBounding *record_list, int32_t size);
@@ -52,51 +40,36 @@ __host__ static int32_t			compare_x_axis				(const void *a, const void *b);
 __host__ static int32_t			compare_y_axis				(const void *a, const void *b);
 __host__ static int32_t			compare_z_axis				(const void *a, const void *b);
 
-
-// Static Datas
-static AABB*			*buffer_aabb;
-static compare_func_t	compare_func_list[] = {
-	compare_x_axis,
-	compare_y_axis,
-	compare_z_axis
-};
+// device
+// ...
 
 
 // Operation Handling
-__host__ void RayTracer_Dynamic_AABB_init(std::vector<Dynamic_ContainerType*> *type_list) {
-	// table
-	// ...
-
-	// create type
-	Dynamic_ContainerType *type;
-	Dynamic_CUDA_addType(aabb_default,	aabb_default,	type_list);
-
-	// buffer
-	cudaMalloc(&buffer_aabb, sizeof(AABB*));
+__host__ RIAS_AABB() {
 }
 
 
-__host__ void RayTracer_Dynamic_AABB_info() {
+__host__ ~RIAS_AABB() {
 }
 
 
-__host__ void RayTracer_Dynamic_AABB_del() {
-	cudaFree(buffer_aabb);
-}
+// TODO: not yet corrected
+__host__ virtual error_t RIAS_AABB::load(SceneObject_Hitable* *hitable_list, int32_t size) {
+	// create hitable
+	host_createHitable(&hitable);
 
-
-__host__ error_t Dynamic_AABB_load(Hitable_AABB *hitable_aabb, SceneObject_Hitable* *hitable_list, int32_t size) {
+	// TODO: not yet corrected
 	// get bounding
 	RecordBounding *record_list;
 	record_list = (RecordBounding*)malloc(size * sizeof(RecordBounding));
 
-	host_aabb_getBounding(record_list, hitable_list, size);
+	host_getBounding(record_list, hitable_list, size);
 
 	// build tree
 	// TODO: should global_aabb_setRoot be inside host_aabb_buildTree ?
 	AABB *aabb_device;
-	host_aabb_buildTree(&aabb_device, record_list, size);
-	global_aabb_setRoot <<< 1, 1 >>> (hitable_aabb, aabb_device);
+	host_buildTree(&aabb_device, record_list, size);
+	global_setRoot <<< 1, 1 >>> (hitable, aabb_device);
 
 	// free space
 	free(record_list);
@@ -107,7 +80,34 @@ __host__ error_t Dynamic_AABB_load(Hitable_AABB *hitable_aabb, SceneObject_Hitab
 
 // Static Function Implementation
 // host
-__host__ static inline void host_aabb_getBounding(RecordBounding *record_list, SceneObject_Hitable* *hitable_list, int32_t size) {
+__host__ static void host_createHitable(Hitable_AABB* *dst) {
+	// check if need to allocate buffer
+	if (buffer_hitable == nullptr) cudaMalloc(&buffer_hitable, sizeof(Hitable_AABB*));
+
+	// create hitable
+	global_createHitable <<< 1, 1 >>> (buffer_hitable);
+
+	// transfer this pointer from device to host
+	cudaMemcpy(dst, buffer_hitable, sizeof(Hitable_AABB*), cudaMemcpyDeviceToHost);
+}
+
+
+__host__ static void host_createAABB(
+	AABB* *dst, 
+	AABB *aabb_left, AABB *aabb_right, SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right) {
+
+	// check if need to allocate buffer
+	if (buffer_aabb == nullptr) cudaMalloc(&buffer_aabb, sizeof(AABB*));
+
+	// create aabb
+	global_createAABB <<< 1, 1 >>> (buffer_aabb, aabb_left, aabb_right, hitable_left, hitable_right);
+
+	// transfer this pointer from device to host
+	cudaMemcpy(dst, buffer_aabb, sizeof(AABB*), cudaMemcpyDeviceToHost);
+}
+
+
+__host__ static inline void host_getBounding(RecordBounding *record_list, SceneObject_Hitable* *hitable_list, int32_t size) {
 	RecordBounding			*record_list_device;
 	SceneObject_Hitable*	*hitable_list_device;
 
@@ -119,7 +119,7 @@ __host__ static inline void host_aabb_getBounding(RecordBounding *record_list, S
 	cudaMemcpy(hitable_list_device, hitable_list, size * sizeof(SceneObject_Hitable*), cudaMemcpyHostToDevice);
 
 	// TODO: the number of thread should be dynamic
-	global_aabb_getBounding <<< 1, 10 >>> (record_list_device, hitable_list_device, size, 10);
+	global_getBounding <<< 1, 10 >>> (record_list_device, hitable_list_device, size, 10);
 
 	// transfer record_list from device to host
 	cudaMemcpy(record_list, record_list_device, size * sizeof(RecordBounding), cudaMemcpyDeviceToHost);
@@ -130,21 +130,21 @@ __host__ static inline void host_aabb_getBounding(RecordBounding *record_list, S
 }
 
 
-__host__ static void host_aabb_buildTree(AABB* *dst, RecordBounding *record_list, int32_t size) {	
+__host__ static void host_buildTree(AABB* *dst, RecordBounding *record_list, int32_t size) {	
 	// base case
 	// when size <= 2, then this aabb node is a leaf
 	if (size == 0) {
-		host_aabb_createAABB(dst, nullptr, nullptr, nullptr, nullptr);
+		host_createAABB(dst, nullptr, nullptr, nullptr, nullptr);
 		return;
 	}
 
 	if (size == 1) {
-		host_aabb_createAABB(dst, nullptr, nullptr, record_list[0].hitable, nullptr);
+		host_createAABB(dst, nullptr, nullptr, record_list[0].hitable, nullptr);
 		return;
 	}
 
 	if (size == 2) {
-		host_aabb_createAABB(dst, nullptr, nullptr, record_list[0].hitable, record_list[1].hitable);
+		host_createAABB(dst, nullptr, nullptr, record_list[0].hitable, record_list[1].hitable);
 		return;
 	}
 
@@ -155,28 +155,26 @@ __host__ static void host_aabb_buildTree(AABB* *dst, RecordBounding *record_list
 
 	// build the tree recursively
 	AABB *left, *right;
-	host_aabb_buildTree(&left, record_list, size / 2);
-	host_aabb_buildTree(&right, record_list + size / 2, size - size / 2);
+	host_buildTree(&left, record_list, size / 2);
+	host_buildTree(&right, record_list + size / 2, size - size / 2);
 	
 	// build this level of aabb
-	host_aabb_createAABB(dst, left, right, nullptr, nullptr);
-}
-
-
-__host__ static void host_aabb_createAABB(
-	AABB* *dst, 
-	AABB *aabb_left, AABB *aabb_right, SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right) {
-
-	// create aabb
-	global_aabb_createAABB <<< 1, 1 >>> (buffer_aabb, aabb_left, aabb_right, hitable_left, hitable_right);
-
-	// transfer this pointer from device to host
-	cudaMemcpy(dst, buffer_aabb, sizeof(AABB*), cudaMemcpyDeviceToHost);
+	host_createAABB(dst, left, right, nullptr, nullptr);
 }
 
 
 // global
-__global__ static void	global_aabb_getBounding(RecordBounding *record_list, SceneObject_Hitable* *hitable_list, int32_t size, int32_t offset) {
+__global__ static void global_createHitable(Hitable_AABB* *dst) {
+	*dst = new Hitable_AABB();
+}
+
+
+__global__ static void global_createAABB(AABB* *dst, AABB *aabb_left, AABB *aabb_right, SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right) {
+	*dst = new AABB(aabb_left, aabb_right, hitable_left, hitable_right);
+}
+
+
+__global__ static void global_getBounding(RecordBounding *record_list, SceneObject_Hitable* *hitable_list, int32_t size, int32_t offset) {
 	// parallle processing
 	int32_t global_index = blockIdx.x * blockDim.x + threadIdx.x; 
 
@@ -190,12 +188,7 @@ __global__ static void	global_aabb_getBounding(RecordBounding *record_list, Scen
 }
 
 
-__global__ static void	global_aabb_createAABB(AABB* *dst, AABB *aabb_left, AABB *aabb_right, SceneObject_Hitable *hitable_left, SceneObject_Hitable *hitable_right) {
-	*dst = new AABB(aabb_left, aabb_right, hitable_left, hitable_right);
-}
-
-
-__global__ static void	global_aabb_setRoot(Hitable_AABB *hitable_aabb, AABB *aabb) {
+__global__ static void global_setRoot(Hitable_AABB *hitable_aabb, AABB *aabb) {
 	hitable_aabb->setAABB(aabb);
 }
 

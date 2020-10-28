@@ -1,11 +1,8 @@
 #include "../inc/RayTracer_Hitable_AABB.cuh"
-#include <algorithm>
-
-// TODO: test
-#include <stdio.h>
 
 
 // Define
+// TODO: fixed number: change to dynamic
 #define MAX_LIST_SIZE_RECORD	24
 
 
@@ -39,6 +36,7 @@ __device__ void Hitable_AABB::setAABB(AABB *aabb) {
 
 
 // only return hit child and never return self
+// TODO: need to split the part
 __device__ int8_t Hitable_AABB::hit(RecordHit *record, fp_t t_min, fp_t t_max) const {
 	// iterative
 	// variable preparation

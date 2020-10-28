@@ -12,7 +12,7 @@
                    "RayTracer_Dynamic_Texture.o ",
                    "RayTracer_Dynamic_Tracer.o ",
                    "RayTracer_Dynamic_Scene.o ",
-                   "RayTracer_Dynamic_AABB.o ",
+                   "RayTracer_Dynamic_RIAS.o ",
                    "RayTracer_Dynamic.o ",
                    "RayTracer_DynamicContainer.o ",
                    ""],

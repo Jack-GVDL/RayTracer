@@ -1,0 +1,5 @@
+{
+    "OBJ_FILE"  : ["obj/RayTracer_RIAS.o ",
+                   "obj/RayTracer_RIAS_AABB.o ",
+                   ""]
+}

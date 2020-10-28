@@ -12,7 +12,7 @@
 #include "../inc/RayTracer_Dynamic_Texture.cuh"
 #include "../inc/RayTracer_Dynamic_Scatter.cuh"
 #include "../inc/RayTracer_Dynamic_Hitable.cuh"
-#include "../inc/RayTracer_Dynamic_AABB.cuh"
+#include "../inc/RayTracer_Dynamic_RIAS.cuh"
 #include "../inc/RayTracer_Dynamic_Light.cuh"
 #include "../inc/RayTracer_Dynamic_Material.cuh"
 #include "../inc/RayTracer_Dynamic_Scene.cuh"
@@ -96,7 +96,7 @@ Dynamic_ContainerList<Texture>					texture_list;
 Dynamic_ContainerList<Scatter>					scatter_list;
 Dynamic_ContainerList<SceneObject_Hitable>		hitable_list;
 Dynamic_ContainerList<SceneObject_Light>		light_list;
-Dynamic_ContainerList<Hitable_AABB>				aabb_list;
+Dynamic_ContainerList<RIAS>						rias_list;
 Dynamic_ContainerList<Material>					material_list;
 
 Dynamic_ContainerListBase*				container_list[] = {
@@ -107,7 +107,7 @@ Dynamic_ContainerListBase*				container_list[] = {
 	&scatter_list,
 	&hitable_list,
 	&light_list,
-	&aabb_list
+	&rias_list
 };
 
 
@@ -123,7 +123,7 @@ EXPORT_DLL(void) RayTracer_init() {
 	RayTracer_Dynamic_Material_init(	&(material_list.type_list)	);
 	RayTracer_Dynamic_Scatter_init(		&(scatter_list.type_list)	);
 	RayTracer_Dynamic_Hitable_init(		&(hitable_list.type_list)	);
-	RayTracer_Dynamic_AABB_init(		&(aabb_list.type_list)		);
+	RayTracer_Dynamic_RIAS_init(		&(rias_list.type_list)		);
 	RayTracer_Dynamic_Light_init(		&(light_list.type_list)		);
 
 	// load
@@ -134,7 +134,7 @@ EXPORT_DLL(void) RayTracer_init() {
 	scatter_list.Type_load();
 	hitable_list.Type_load();
 	light_list.Type_load();
-	aabb_list.Type_load();
+	rias_list.Type_load();
 
 	// create a deafult camera
 	// can / should be used for testing
@@ -449,13 +449,13 @@ EXPORT_DLL(int) RayTracer_Hitable_setMaterial(int index_hitable, int index_mater
 }
 
 
-// aabb
-Dynamic_constructTypeInterface(AABB, Hitable_AABB, &aabb_list);
+// rias
+Dynamic_constructTypeInterface(RIAS, RIAS, &rias_list);
 
 
-EXPORT_DLL(int) RayTracer_AABB_load (int index) {
-	Dynamic_Container<Hitable_AABB> *container_aabb = aabb_list.get(index);
-	if (container_aabb == nullptr) return ERROR_ANY;
+EXPORT_DLL(int) RayTracer_RIAS_load (int index) {
+	Dynamic_Container<RIAS> *rias = rias_list.get(index);
+	if (rias == nullptr) return ERROR_ANY;
 
 	// get object list
 	std::vector<SceneObject_Hitable*> hitables;
@@ -463,7 +463,7 @@ EXPORT_DLL(int) RayTracer_AABB_load (int index) {
 		hitables.push_back((SceneObject_Hitable*)(hitable->object));
 	}
 
-	Dynamic_AABB_load(container_aabb->getObject(), hitables.data(), hitables.size());
+	Dynamic_RIAS_load(rias->getObject(), hitables.data(), hitables.size());
 	return ERROR_NO;
 }
 
@@ -509,11 +509,14 @@ EXPORT_DLL(int) RayTracer_Scene_addHitable(int index_hitable) {
 }
 
 
-EXPORT_DLL(int) RayTracer_Scene_addAABB(int index_aabb) {
-	Dynamic_Container<Hitable_AABB> *aabb = aabb_list.get(index_aabb);
-	if (aabb == nullptr) return ERROR_ANY;
+EXPORT_DLL(int) RayTracer_Scene_addRIAS(int index_rias) {
+	Dynamic_Container<RIAS> *rias = rias_list.get(index_rias);
+	if (rias == nullptr) return ERROR_ANY;
 
-	if (Dynamic_Scene_addHitable(aabb->getObject()) != ERROR_NO) return ERROR_ANY;
+	Hitable *hitable = rias->getObject()->hitable;
+	if (hitable == nullptr) return ERROR_ANY;
+
+	if (Dynamic_Scene_addHitable(rias->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
 
@@ -536,11 +539,14 @@ EXPORT_DLL(int) RayTracer_Scene_rmHitable(int index_hitable) {
 }
 
 
-EXPORT_DLL(int) RayTracer_Scene_rmAABB(int index_aabb) {
-	Dynamic_Container<Hitable_AABB> *aabb = aabb_list.get(index_aabb);
-	if (aabb == nullptr) return ERROR_ANY;
+EXPORT_DLL(int) RayTracer_Scene_rmRIAS(int index_rias) {
+	Dynamic_Container<Hitable_RIAS> *rias = rias_list.get(index_rias);
+	if (rias == nullptr) return ERROR_ANY;
 
-	if (Dynamic_Scene_rmHitable(aabb->getObject()) != ERROR_NO) return ERROR_ANY;
+	Hitable *hitable = rias->getObject()->hitable;
+	if (hitable == nullptr) return ERROR_ANY;
+
+	if (Dynamic_Scene_rmHitable(rias->getObject()) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
 

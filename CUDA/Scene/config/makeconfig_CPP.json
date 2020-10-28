@@ -9,7 +9,7 @@
                    "RayTracer_Scene.o ",
                    "RayTracer_Hitable_Sphere.o ",
                    "RayTracer_Hitable_Trimesh.o ",
-                   "RayTracer_Hitable_AABB.o ",
+                   "RayTracer_RIAS_AABB.o ",
                    "RayTracer_Light_Directional.o ",
                    "RayTracer_Light_Point.o ",
                    ""],

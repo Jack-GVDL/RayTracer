@@ -79,7 +79,7 @@ LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Scatter.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Hitable.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Scene.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Light.o
-LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_AABB.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_RIAS.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic.o
 
 # LOCAL_OBJ_FILE		+= ../src/RayTracer_DynamicContainer.cu
