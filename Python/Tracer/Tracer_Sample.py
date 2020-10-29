@@ -62,7 +62,6 @@ class Tracer_Sample:
 		scene.addHitable(hitable_sphere_1)
 		scene.addLight(light_point_1)
 
-
 	@ classmethod
 	def buildScene_0(cls, tracer: Tracer, aabb_level: int = 0) -> None:
 		# object
@@ -95,8 +94,7 @@ class Tracer_Sample:
 		hitable_trimesh_3:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 		hitable_trimesh_4:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 
-		# TODO: test
-		# aabb_1:					AABB_Default		= tracer.AABB_Default()
+		iras_aabb_1:			RIAS_AABB		= tracer.RIAS_AABB()
 
 		light_point_1:			Light_Point			= tracer.Light_Point()
 		light_point_2:			Light_Point			= tracer.Light_Point()
@@ -153,6 +151,8 @@ class Tracer_Sample:
 
 		material_refractive.addScatter(scatter_refraction_1)
 		material_refractive.addScatter(scatter_light_1)
+		material_refractive.setTransmissive(Vec3f(0.5))
+		material_refractive.setIndex(1.5)
 
 		# hitable
 		hitable_sphere_1.setCenter(Vec3f(0, 0, 0))
@@ -198,10 +198,8 @@ class Tracer_Sample:
 			scene.addHitable(hitable_sphere_3)
 
 		else:
-			# TODO: test
-			# aabb_1.load()
-			# scene.addAABB(aabb_1)
-			pass
+			iras_aabb_1.load()
+			scene.addRIAS(iras_aabb_1)
 
 		# light
 		light_point_1.setOrigin(Vec3f(1, 1, 1))
@@ -291,7 +289,11 @@ class Tracer_Sample:
 
 		scatter_light_2.setTexture(texture_emissive,	Scatter_Light.TextureOffset.EMISSIVE)
 		scatter_light_2.setTexture(texture_ambient,		Scatter_Light.TextureOffset.AMBIENT)
-		scatter_light_2.setTexture(texture_kernel_1,	Scatter_Light.TextureOffset.DIFFUSE)
+
+		# TODO: in cuda version, currently there is problem about the stack and convolutor cannot be used
+		# scatter_light_2.setTexture(texture_kernel_1,	Scatter_Light.TextureOffset.DIFFUSE)
+		scatter_light_2.setTexture(texture_image_1,		Scatter_Light.TextureOffset.DIFFUSE)
+
 		scatter_light_2.setTexture(texture_specular,	Scatter_Light.TextureOffset.SPECULAR)
 		scatter_light_2.setTexture(texture_shininess,	Scatter_Light.TextureOffset.SHININESS)
 		scatter_light_2.setTexture(texture_normal,		Scatter_Light.TextureOffset.NORMAL)
@@ -460,7 +462,7 @@ class Tracer_Sample:
 
 		material_1:				Material_Default	= tracer.Material_Default()
 
-		aabb_1:					AABB_Default		= tracer.AABB_Default()
+		rias_aabb_1:			RIAS_AABB		= tracer.RIAS_AABB()
 
 		light_point_1:			Light_Point			= tracer.Light_Point()
 		light_point_2:			Light_Point			= tracer.Light_Point()
@@ -490,9 +492,9 @@ class Tracer_Sample:
 		material_1.addScatter(scatter_light_1)
 
 		# hitable
-		w_half: int		= 3
-		h_half: int		= 3
-		radius: float	= 0.2
+		w_half: int		= 5
+		h_half: int		= 5
+		radius: float	= 0.05
 
 		if aabb_level == 0:
 			for z in range(-2, 2):
@@ -536,8 +538,8 @@ class Tracer_Sample:
 						hitable_sphere.setRadius(radius)
 						hitable_sphere.setMaterial(material_1)
 
-			aabb_1.load()
-			scene.addAABB(aabb_1)
+			rias_aabb_1.load()
+			scene.addRIAS(rias_aabb_1)
 
 		# light
 		light_point_1.setOrigin(Vec3f(1, 1, 1))

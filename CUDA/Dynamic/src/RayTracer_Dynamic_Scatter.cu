@@ -21,9 +21,9 @@ Dynamic_CUDA_constructTypeSkeleton(light,		Scatter,	Scatter_Light);
 Dynamic_CUDA_constructTypeSkeleton(anyHit,		Scatter,	Scatter_AnyHit);
 Dynamic_CUDA_constructTypeSkeleton(reflection,	Scatter,	Scatter_Reflection);
 Dynamic_CUDA_constructTypeSkeleton(refraction,	Scatter,	Scatter_Refraction);
+Dynamic_CUDA_constructTypeSkeleton(random,		Scatter,	Scatter_Random);
 // Dynamic_CUDA_constructTypeSkeleton(gradient,	Scatter,	Scatter_Gradient);
 // Dynamic_CUDA_constructTypeSkeleton(emitter,		Scatter,	Scatter_Emitter);
-Dynamic_CUDA_constructTypeSkeleton(random,		Scatter,	Scatter_Random);
 
 Dynamic_CUDA_constructTypeConfigLinker(random_setRadius,	config_random_setRadius);
 Dynamic_CUDA_constructTypeConfigLinker(random_setParallel,	config_random_setParallel);
@@ -53,9 +53,9 @@ __host__ void RayTracer_Dynamic_Scatter_init(std::vector<Dynamic_ContainerType*>
 	Dynamic_CUDA_addType(anyHit,		any_hit,	type_list);
 	Dynamic_CUDA_addType(reflection,	reflection,	type_list);
 	Dynamic_CUDA_addType(refraction,	refraction,	type_list);
+	Dynamic_CUDA_addType(random,		random,		type_list);
 	// Dynamic_CUDA_addType(gradient,		gradient,	type_list);
 	// Dynamic_CUDA_addType(emitter,		emitter,	type_list);
-	Dynamic_CUDA_addType(random,		random,		type_list);
 }
 
 

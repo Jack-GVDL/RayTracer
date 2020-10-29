@@ -16,8 +16,9 @@
 // Operation Handling
 __device__ Texture_Image::Texture_Image() {
 	input_size	= 1;
-	input_list	= new Texture*[input_size];
-	for (int32_t i = 0; i < input_size; i++) input_list[i] = nullptr;
+	// input_list	= new Texture*[input_size];
+	cudaMalloc(&input_list, input_size * sizeof(Texture*));
+	for (int32_t i = 0; i < input_size; ++i) input_list[i] = nullptr;
 }
 
 

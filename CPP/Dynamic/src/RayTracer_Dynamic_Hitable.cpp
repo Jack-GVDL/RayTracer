@@ -34,17 +34,6 @@ static int			interact_aabb_rmHitable				(void *object, void* *list, uint32_t siz
 // Operation Handling
 void RayTracer_Dynamic_Hitable_init(std::vector<Dynamic_ContainerType*> *type_list) {
 	// table
-	// TODO: remove
-	// table_config_sphere.push_back(	config_sphere_setCenter		);
-	// table_config_sphere.push_back(	config_sphere_setRadius		);
-	// table_config_trimesh.push_back(	config_trimesh_setPoint_0	);
-	// table_config_trimesh.push_back(	config_trimesh_setPoint_1	);
-	// table_config_trimesh.push_back(	config_trimesh_setPoint_2	);
-
-	// TODO: remove
-	// table_interact_aabb.push_back(	interact_aabb_addHitable	);
-	// table_interact_aabb.push_back(	interact_aabb_rmHitable		);
-
 	Dynamic_addTypeConfig(sphere,	config_sphere_setCenter);
 	Dynamic_addTypeConfig(sphere,	config_sphere_setRadius);
 	Dynamic_addTypeConfig(trimesh,	config_trimesh_setPoint_0);

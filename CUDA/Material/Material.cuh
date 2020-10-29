@@ -15,6 +15,11 @@
 #include "./inc/RayTracer_Texture.cuh"
 #include "./inc/RayTracer_Texture_Constant.cuh"
 #include "./inc/RayTracer_Texture_Input.cuh"
+#include "./inc/RayTracer_Texture_CheckerBoard.cuh"
+#include "./inc/RayTracer_Texture_Convolutor.cuh"
+#include "./inc/RayTracer_Texture_Gradient.cuh"
+#include "./inc/RayTracer_Texture_Image.cuh"
+#include "./inc/RayTracer_Texture_Math.cuh"
 
 
 // Define

@@ -30,6 +30,7 @@ class Scene: public SceneElement {
 	// Data
 	public:
 		// TODO: may be use struct to make thing easier
+		// TODO: make it into Vector
 		SceneObject_Hitable*		*hitable_list	= nullptr;
 		int32_t						hitable_size	= 0;
 		int32_t						hitable_index	= 0;

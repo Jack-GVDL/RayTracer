@@ -10,6 +10,7 @@
 
 
 // Static Function Prototype
+// TODO: rename
 __global__ static void	setTextureImage_data	(Texture_Image *texture, Vec3f *data, int32_t w, int32_t h);
 
 
@@ -52,7 +53,7 @@ __host__ bool Surface::convertToTexture(Texture_Image *texture) {
 	setTextureImage_data <<< 1, 1 >>> (texture, color_device, width, height);
 
 	// free for temp space
-	delete[]  color_host;
+	delete[] color_host;
 
 	return true;
 }

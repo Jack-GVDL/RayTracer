@@ -41,11 +41,6 @@ class Ops_Tracer:
 	def Test_checkStatus(self, index: int, array: bytes, size: int) -> None:
 		raise NotImplementedError
 
-	# TODO: remove
-	# sample
-	# def Sample_buildScene(self, index: int) -> int:
-	# 	raise NotImplementedError
-
 	# tracer
 	def Tracer_tracePoint(self, index_camera: int, pixel: Vec3f, x: float, y: float, depth: int) -> int:
 		raise NotImplementedError
@@ -207,22 +202,22 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	# aabb
-	def AABB_Type_getIndex(self, name: str) -> int:
+	def RIAS_Type_getIndex(self, name: str) -> int:
 		raise NotImplementedError
 
-	def AABB_create(self, type_: int) -> int:
+	def RIAS_create(self, type_: int) -> int:
 		raise NotImplementedError
 
-	def AABB_destroy(self, index: int) -> int:
+	def RIAS_destroy(self, index: int) -> int:
 		raise NotImplementedError
 
-	def AABB_config(self, index: int, type_: int, data: bytes) -> int:
+	def RIAS_config(self, index: int, type_: int, data: bytes) -> int:
 		raise NotImplementedError
 
-	def AABB_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+	def RIAS_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		raise NotImplementedError
 
-	def AABB_load(self, index: int) -> int:
+	def RIAS_load(self, index: int) -> int:
 		raise NotImplementedError
 
 	# light
@@ -248,20 +243,20 @@ class Ops_Tracer:
 		raise NotImplementedError
 
 	# scene
-	def Scene_addLight(self, index_light: int) -> int:
+	def Scene_addLight(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Scene_addHitable(self, index_hitable: int) -> int:
+	def Scene_addHitable(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Scene_addAABB(self, index_aabb: int) -> int:
+	def Scene_addRIAS(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Scene_rmLight(self, index_light: int) -> int:
+	def Scene_rmLight(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Scene_rmHitable(self, index_hitable: int) -> int:
+	def Scene_rmHitable(self, index: int) -> int:
 		raise NotImplementedError
 
-	def Scene_rmAABB(self, index_aabb: int) -> int:
+	def Scene_rmRIAS(self, index: int) -> int:
 		raise NotImplementedError

@@ -31,9 +31,6 @@ __host__ void RayTracer_Dynamic_Surface_init(std::vector<Dynamic_ContainerType*>
 	Dynamic_CPP_addTypeConfig(	bmp,	config_bmp_setPath);
 	Dynamic_CPP_addTypeInteract(bmp,	interact_bmp_convertToTexture);
 
-	// table_config_bmp.push_back(		config_bmp_setPath				);
-	// table_interact_bmp.push_back(	interact_bmp_convertToTexture	);
-
 	// create type
 	Dynamic_ContainerType *type;
 
@@ -64,6 +61,7 @@ __host__ error_t Dynamic_Surface_dump(Surface *surface) {
 
 // Static Function Implementation
 // table
+// TODO: should it be load image ?
 __host__ static int config_bmp_setPath(void *object, uint8_t *data, uint32_t size) {
 	Surface_BMP	*surface	= (Surface_BMP*)object;
 	const char	*path		= (const char*)data;
@@ -80,6 +78,7 @@ __host__ static int config_bmp_setPath(void *object, uint8_t *data, uint32_t siz
 }
 
 
+// TODO: convert to Texture is the function of Texture, not only the Texture_BMP
 __host__ static int interact_bmp_convertToTexture(void *object, void* *list, uint32_t size) {
 	Surface_BMP		*surface	= (Surface_BMP*)object;
 	Texture_Image	*texture	= (Texture_Image*)(list[0]);
