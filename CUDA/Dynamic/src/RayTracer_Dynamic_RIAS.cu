@@ -7,20 +7,17 @@
 
 
 // Typedef
-typedef int32_t(*compare_func_t)(const void*, const void*);
+// ...
 
 
 // Data Structure
-struct RecordBounding {
-	Bounding				bounding;
-	SceneObject_Hitable		*hitable;
-};
+// ...
 
 
 // Static Function Prototype
 // skeleton
-Dynamic_CUDA_constructTypeSkeleton(aabb,	RIAS,	RIAS_AABB);
-// Dynamic_CUDA_constructTypeSkeleton(octree,	RIAS,	RIAS_Octree);
+Dynamic_CPP_constructTypeSkeleton(aabb,		RIAS,	RIAS_AABB);
+// Dynamic_CPP_constructTypeSkeleton(octree,	RIAS,	RIAS_Octree);
 
 
 // Static Data
@@ -34,7 +31,7 @@ __host__ void RayTracer_Dynamic_RIAS_init(std::vector<Dynamic_ContainerType*> *t
 
 	// create type
 	Dynamic_ContainerType *type;
-	Dynamic_CUDA_addType(aabb,	aabb,	type_list);
+	Dynamic_CPP_addType(aabb,	aabb,	type_list);
 }
 
 

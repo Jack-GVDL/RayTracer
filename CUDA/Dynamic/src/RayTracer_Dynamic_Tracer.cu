@@ -3,10 +3,6 @@
 #include "../inc/RayTracer_DynamicContainer.cuh"
 #include "../inc/RayTracer_Dynamic_Tracer.cuh"
 
-// TODO: test
-#include "../inc/RayTracer_Dynamic_Scene.cuh"
-#include <stdio.h>
-
 
 // Define
 #define SIZE_SCHEDULER	100

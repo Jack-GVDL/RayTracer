@@ -22,7 +22,7 @@ __host__ RIAS::RIAS() {
 }
 
 
-__host__ ~RIAS::RIAS() {
+__host__ RIAS::~RIAS() {
 }
 
 

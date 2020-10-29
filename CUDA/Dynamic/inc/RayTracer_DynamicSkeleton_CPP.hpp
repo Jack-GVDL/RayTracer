@@ -42,7 +42,7 @@ static int Dynamic_CPP_Function_config(name)(void *object, int type, uint8_t *da
 																											\
 static int Dynamic_CPP_Function_interact(name)(void *object, int type, void* *list, uint32_t size) {		\
 	return DynamicUtil::interactType(&Dynamic_CPP_Variable_tableInteract(name), object, type, list, size);	\
-}																											\
+}
 
 
 #define Dynamic_CPP_addType(name, tag, type_list)														\

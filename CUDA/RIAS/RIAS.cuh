@@ -9,9 +9,11 @@
 #define RIAS_CUH
 
 
+#include "./inc/RayTracer_Hitable_AABB.cuh"
+
 #include "./inc/RayTracer_RIAS.cuh"
 #include "./inc/RayTracer_RIAS_AABB.cuh"
-// #include "./inc/RayTracer_RIAS_Octree.cuh"
+#include "./inc/RayTracer_RIAS_Octree.cuh"
 
 
 // Define

@@ -10,6 +10,7 @@
 
 
 #include "RayTracer_RIAS.cuh"
+#include "RayTracer_Hitable_AABB.cuh"
 
 
 // Define

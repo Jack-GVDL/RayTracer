@@ -1,8 +1,5 @@
 #include "../inc/RayTracer_Dynamic_Scene.cuh"
 
-// TODO: test
-#include <stdio.h>
-
 
 // Define
 // ...

@@ -1,8 +1,5 @@
 #include "../inc/RayTracer_Texture.cuh"
 
-// TODO: test
-#include <stdio.h>
-
 
 // Define
 // TODO: may use stack buffer in future

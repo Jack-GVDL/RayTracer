@@ -24,11 +24,7 @@
 
 
 // Enum
-enum TypeRIAS {
-	RIAS_AABB	= 0,
-	// RIAS_OCTREE,
-	RIAS_MAX
-};
+// ...
 
 
 // Data Structure

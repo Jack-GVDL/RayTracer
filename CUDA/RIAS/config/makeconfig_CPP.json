@@ -4,6 +4,7 @@
     
     "OBJ_FILE"  : ["RayTracer_RIAS.o ",
                    "RayTracer_RIAS_AABB.o ",
+                   "RayTracer_Hitable_AABB.o ",
                    ""],
 
     "MACRO"     : [""],

@@ -21,40 +21,41 @@
 
 
 // Define
+// TODO: this value should be dynamic
 #define BUFFER_MAX_LENGTH	8
 
 
 #define Dynamic_constructTypeInterface_Type_getIndex(name, type, container_list)												\
 																																\
-EXPORT_DLL(int) RayTracer_##name##_Type_getIndex(const char *name_) {													\
+EXPORT_DLL(int) RayTracer_##name##_Type_getIndex(const char *name_) {															\
 	return Dynamic_ContainerList_Type_getIndex<type>(container_list, name_);													\
 }
 
 
 #define Dynamic_constructTypeInterface_Object_create(name, type, container_list)												\
 																																\
-EXPORT_DLL(int) RayTracer_##name##_create(int type_) {																	\
+EXPORT_DLL(int) RayTracer_##name##_create(int type_) {																			\
 	return Dynamic_ContainerList_Object_create<type>(container_list, type_);													\
 }
 
 
 #define Dynamic_constructTypeInterface_Object_destroy(name, type, container_list)												\
 																																\
-EXPORT_DLL(int) RayTracer_##name##_destroy(int index) {																\
+EXPORT_DLL(int) RayTracer_##name##_destroy(int index) {																			\
 	return Dynamic_ContainerList_Object_destroy<type>(container_list, index);													\
 }
 
 
 #define Dynamic_constructTypeInterface_Object_config(name, type, container_list)												\
 																																\
-EXPORT_DLL(int) RayTracer_##name##_config(int index, int type_, uint8_t *data, uint32_t size) {						\
+EXPORT_DLL(int) RayTracer_##name##_config(int index, int type_, uint8_t *data, uint32_t size) {									\
 	return Dynamic_ContainerList_Object_config<type>(container_list, index, type_, data, size);									\
 }
 
 
 #define Dynamic_constructTypeInterface_Object_interact(name, type, container_list)												\
 																																\
-EXPORT_DLL(int) RayTracer_##name##_interact(int index, int type_, int *index_list, int *type_list, uint32_t size) {	\
+EXPORT_DLL(int) RayTracer_##name##_interact(int index, int type_, int *index_list, int *type_list, uint32_t size) {				\
 	return Dynamic_ContainerList_Object_interact<type>(container_list, index, type_, index_list, type_list, size);				\
 }
 
@@ -513,10 +514,10 @@ EXPORT_DLL(int) RayTracer_Scene_addRIAS(int index_rias) {
 	Dynamic_Container<RIAS> *rias = rias_list.get(index_rias);
 	if (rias == nullptr) return ERROR_ANY;
 
-	Hitable *hitable = rias->getObject()->hitable;
+	SceneObject_Hitable *hitable = rias->getObject()->hitable;
 	if (hitable == nullptr) return ERROR_ANY;
 
-	if (Dynamic_Scene_addHitable(rias->getObject()) != ERROR_NO) return ERROR_ANY;
+	if (Dynamic_Scene_addHitable(hitable) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
 
@@ -540,13 +541,13 @@ EXPORT_DLL(int) RayTracer_Scene_rmHitable(int index_hitable) {
 
 
 EXPORT_DLL(int) RayTracer_Scene_rmRIAS(int index_rias) {
-	Dynamic_Container<Hitable_RIAS> *rias = rias_list.get(index_rias);
+	Dynamic_Container<RIAS> *rias = rias_list.get(index_rias);
 	if (rias == nullptr) return ERROR_ANY;
 
-	Hitable *hitable = rias->getObject()->hitable;
+	SceneObject_Hitable *hitable = rias->getObject()->hitable;
 	if (hitable == nullptr) return ERROR_ANY;
 
-	if (Dynamic_Scene_rmHitable(rias->getObject()) != ERROR_NO) return ERROR_ANY;
+	if (Dynamic_Scene_rmHitable(hitable) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
 

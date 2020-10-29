@@ -173,8 +173,8 @@ class Tracer(Tracer_Base):
 		return obj
 
 	# aabb
-	def AABB_Default(self) -> AABB_Default:
-		obj = AABB_Default()
+	def RIAS_AABB(self) -> RIAS_AABB:
+		obj = RIAS_AABB()
 		obj.setOps_tracer(self._ops_tracer)
 		obj.start()
 		return obj

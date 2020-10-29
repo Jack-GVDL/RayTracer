@@ -1,8 +1,5 @@
 #include "../inc/RayTracer_Surface.cuh"
 
-// TODO: test
-#include <stdio.h>
-
 
 // Define
 // ...

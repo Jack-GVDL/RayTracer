@@ -298,30 +298,30 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		return self._dll_tracer.RayTracer_Hitable_setMaterial(c_int(index_hitable), c_int(index_material))
 
 	# aabb
-	def AABB_Type_getIndex(self, name: str) -> int:
+	def RIAS_Type_getIndex(self, name: str) -> int:
 		byte_str: bytes = name.encode('utf-8')
-		return self._dll_tracer.RayTracer_AABB_Type_getIndex(c_char_p(byte_str))
+		return self._dll_tracer.RayTracer_RIAS_Type_getIndex(c_char_p(byte_str))
 
-	def AABB_create(self, type_: int) -> int:
-		return self._dll_tracer.RayTracer_AABB_create(c_int(type_))
+	def RIAS_create(self, type_: int) -> int:
+		return self._dll_tracer.RayTracer_RIAS_create(c_int(type_))
 
-	def AABB_destroy(self, index: int) -> int:
-		return self._dll_tracer.RayTracer_AABB_destroy(c_int(index))
+	def RIAS_destroy(self, index: int) -> int:
+		return self._dll_tracer.RayTracer_RIAS_destroy(c_int(index))
 
-	def AABB_config(self, index: int, type_: int, data: bytes) -> int:
+	def RIAS_config(self, index: int, type_: int, data: bytes) -> int:
 		# TODO: currently data is const uint8_t*, cannot pass out value from dll
 		size		= len(data)
 		array_data	= (c_uint8 * size)(*data)
-		return self._dll_tracer.RayTracer_AABB_config(c_int(index), c_int(type_), array_data, c_int(size))
+		return self._dll_tracer.RayTracer_RIAS_config(c_int(index), c_int(type_), array_data, c_int(size))
 
-	def AABB_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+	def RIAS_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
 		size		= len(index_list)
 		array_index = (c_int * size)(*index_list)
 		array_type	= (c_int * size)(*type_list)
-		return self._dll_tracer.RayTracer_AABB_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
+		return self._dll_tracer.RayTracer_RIAS_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
 
-	def AABB_load(self, index: int) -> int:
-		return self._dll_tracer.RayTracer_AABB_load(c_int(index))
+	def RIAS_load(self, index: int) -> int:
+		return self._dll_tracer.RayTracer_RIAS_load(c_int(index))
 
 	# light
 	def Light_Type_getIndex(self, name: str) -> int:
@@ -365,8 +365,8 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def Scene_addHitable(self, index_hitable: int) -> int:
 		return self._dll_tracer.RayTracer_Scene_addHitable(c_int(index_hitable))
 
-	def Scene_addAABB(self, index_aabb: int) -> int:
-		return self._dll_tracer.RayTracer_Scene_addAABB(c_int(index_aabb))
+	def Scene_addRIAS(self, index_rias: int) -> int:
+		return self._dll_tracer.RayTracer_Scene_addRIAS(c_int(index_rias))
 
 	def Scene_rmLight(self, index_light: int) -> int:
 		return self._dll_tracer.RayTracer_Scene_rmLight(c_int(index_light))
@@ -374,5 +374,5 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	def Scene_rmHitable(self, index_hitable: int) -> int:
 		return self._dll_tracer.RayTracer_Scene_rmHitable(c_int(index_hitable))
 
-	def Scene_rmAABB(self, index_aabb: int) -> int:
-		return self._dll_tracer.RayTracer_Scene_rmAABB(c_int(index_aabb))
+	def Scene_rmRIAS(self, index_rias: int) -> int:
+		return self._dll_tracer.RayTracer_Scene_rmRIAS(c_int(index_rias))

@@ -11,7 +11,7 @@ from .Tracer_Texture import Texture
 from .Tracer_Material import Material
 from .Tracer_Scatter import Scatter
 from .Tracer_Hitable import Hitable
-from .Tracer_AABB import AABB
+from .Tracer_RIAS import RIAS
 from .Tracer_Light import Light
 from .Tracer_Scene import Scene
 

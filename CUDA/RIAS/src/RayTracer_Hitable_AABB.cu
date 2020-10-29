@@ -49,6 +49,8 @@ __device__ int8_t Hitable_AABB::hit(RecordHit *record, fp_t t_min, fp_t t_max) c
 	const AABB	*aabb;
 	RecordHit	temp_record;
 
+	uint8_t		i;
+
 	// variable configuration
 	stack_aabb[index_aabb].aabb		= root;
 	stack_aabb[index_aabb].state	= 0;
@@ -69,18 +71,9 @@ __device__ int8_t Hitable_AABB::hit(RecordHit *record, fp_t t_min, fp_t t_max) c
 		// TODO: may use static inline to separate this long function
 		// leaf
 		if (aabb->getIsLeaf()) {
-			// left hitable
-			if (aabb->hitable_left != nullptr && 
-				aabb->hitable_left->hit(&temp_record, t_min, t_max)) {
 
-				is_hit	= 1;
-				t_max	= temp_record.distance;
-				*record	= temp_record;
-			}
-
-			// right hitable
-			if (aabb->hitable_right != nullptr && 
-				aabb->hitable_right->hit(&temp_record, t_min, t_max)) {
+			for (i = 0; i < aabb->hitable_size; ++i) {
+				if (!aabb->hitable_list[i]->hit(&temp_record, t_min, t_max)) continue;
 
 				is_hit	= 1;
 				t_max	= temp_record.distance;

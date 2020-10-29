@@ -9,6 +9,7 @@
 #define RAYTRACER_RIAS_CUH
 
 
+#include "../../Utility/Utility.cuh"
 #include "../../Scene/Scene.cuh"
 
 

@@ -9,6 +9,9 @@
 #define RAYTRACER_RIAS_OCTREE_CUH
 
 
+#include "RayTracer_RIAS.cuh"
+
+
 // Define
 // ...
 
@@ -22,7 +25,21 @@
 
 
 // Data Structure
-// ...
+// TODO: not yet completed
+class RIAS_Octree: public RIAS {
+	// Data
+	public:
+		// ...
+
+	// Operation
+	public:
+		// __init__
+		__host__	RIAS_Octree		();
+		__host__	~RIAS_Octree	();
+
+		// interface
+		__host__ virtual error_t	load	(SceneObject_Hitable* *hitable_list, int32_t size) override;
+};
 
 
 // Macro Function

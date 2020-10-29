@@ -31,10 +31,6 @@ __host__ void RayTracer_Dynamic_Surface_init(std::vector<Dynamic_ContainerType*>
 	Dynamic_CPP_addTypeConfig(	bmp,	config_bmp_setPath);
 	Dynamic_CPP_addTypeInteract(bmp,	interact_bmp_convertToTexture);
 
-	// TODO: remove
-	// table_config_bmp.push_back(		config_bmp_setPath				);
-	// table_interact_bmp.push_back(	interact_bmp_convertToTexture	);
-
 	// create type
 	Dynamic_ContainerType *type;
 

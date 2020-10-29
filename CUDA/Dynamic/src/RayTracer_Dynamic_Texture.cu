@@ -1,9 +1,6 @@
 #include "../inc/RayTracer_DynamicSkeleton.cuh"
 #include "../inc/RayTracer_Dynamic_Texture.cuh"
 
-// TODO: test
-#include <stdio.h>
-
 
 // Define
 // ...
