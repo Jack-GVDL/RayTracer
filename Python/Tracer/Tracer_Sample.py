@@ -5,6 +5,28 @@ from .Tracer import Tracer
 
 class Tracer_Sample:
 
+	def __init__(self):
+		super().__init__()
+
+		# data
+		self.tracer:	Tracer = None
+
+		# operation
+		# ...
+
+	def load(self, tracer: Tracer = None) -> bool:
+		if tracer is None:
+			tracer = self.tracer
+		if tracer is None:
+			return False
+
+		return self._load_(tracer)
+
+	# Interface
+	def _load_(self, tracer: Tracer) -> bool:
+		raise NotImplementedError
+
+	# TODO: convert all the below function into class which inherit this class
 	@ classmethod
 	def buildScene_singleSphere(cls, tracer: Tracer) -> None:
 		# object
@@ -42,7 +64,6 @@ class Tracer_Sample:
 		scatter_light_1.setTexture(texture_specular,	Scatter_Light.TextureOffset.SPECULAR)
 		scatter_light_1.setTexture(texture_shininess,	Scatter_Light.TextureOffset.SHININESS)
 		scatter_light_1.setTexture(texture_normal,		Scatter_Light.TextureOffset.NORMAL)
-
 		scatter_light_1.addScatter(scatter_any_hit_1)
 
 		# material
@@ -94,7 +115,7 @@ class Tracer_Sample:
 		hitable_trimesh_3:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 		hitable_trimesh_4:		Hitable_Trimesh		= tracer.Hitable_Trimesh()
 
-		iras_aabb_1:			RIAS_AABB		= tracer.RIAS_AABB()
+		rias_aabb_1:			RIAS_AABB			= tracer.RIAS_AABB()
 
 		light_point_1:			Light_Point			= tracer.Light_Point()
 		light_point_2:			Light_Point			= tracer.Light_Point()
@@ -198,8 +219,8 @@ class Tracer_Sample:
 			scene.addHitable(hitable_sphere_3)
 
 		else:
-			iras_aabb_1.load()
-			scene.addRIAS(iras_aabb_1)
+			rias_aabb_1.load()
+			scene.addRIAS(rias_aabb_1)
 
 		# light
 		light_point_1.setOrigin(Vec3f(1, 1, 1))

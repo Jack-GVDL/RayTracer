@@ -21,17 +21,20 @@ tracer.setOps_tracer(ops_tracer)
 tracer.start()
 
 # Tracer_Sample.buildScene_singleSphere(tracer)
-# Tracer_Sample.buildScene_0(tracer, 1)
+Tracer_Sample.buildScene_0(tracer, 1)
 # Tracer_Sample.buildScene_1(tracer)
-Tracer_Sample.buildScene_2(tracer)
+# Tracer_Sample.buildScene_2(tracer)
 # Tracer_Sample.buildScene_3(tracer, 2)
 
+# Tracer_Sample_Cube().load(tracer=tracer)
+# Tracer_Sample_Magnolia().load(tracer=tracer)
+
 camera_1: Camera_Default = tracer.Camera_Default()
-camera_1.setLookFrom(		Vec3f(0, 0, 2)	)
+camera_1.setLookFrom(		Vec3f(1.5, 2, 1.5)	)
 camera_1.setLookAt(			Vec3f(0, 0, 0)	)
 # camera_1.setAspectRatio(	1920 / 1080		)
-camera_1.setAspectRatio(	1080 / 720		)
-# camera_1.setAspectRatio(	1				)
+# camera_1.setAspectRatio(	1080 / 720		)
+camera_1.setAspectRatio(	1				)
 
 # TODO: test
 # ops_tracer.Test_checkStatus(0, [], 0)
@@ -43,7 +46,7 @@ while True:
 	# change look from
 	z = 2 * math.cos(math.radians(degree))
 	x = 2 * math.sin(math.radians(degree))
-	camera_1.setLookFrom(Vec3f(z, 0, x))
+	camera_1.setLookFrom(Vec3f(z, 3, x))
 
 	degree = (degree + 10) % 360
 
@@ -52,26 +55,30 @@ while True:
 	# camera_1.traceRect(array, 1920, 1080, 5, False, True, 0)
 	# image = array.reshape((1080, 1920, 3))
 
-	array: np.ndarray = np.zeros(1080 * 720 * 3, dtype=np.uint8)
-	camera_1.traceRect(array, 1080, 720, 5, False, True, 0)
-	image = array.reshape((720, 1080, 3))
+	# array: np.ndarray = np.zeros(1080 * 720 * 3, dtype=np.uint8)
+	# camera_1.traceRect(array, 1080, 720, 5, False, True, 0)
+	# image = array.reshape((720, 1080, 3))
 
-	# array: np.ndarray = np.zeros(200 * 200 * 3, dtype=np.uint8)
-	# camera_1.traceRect(array, 200, 200, 5, False, True, 0)
-	# image = array.reshape((200, 200, 3))
+	array: np.ndarray = np.zeros(200 * 200 * 3, dtype=np.uint8)
+	camera_1.traceRect(array, 200, 200, 5, False, True, 0)
+	image = array.reshape((200, 200, 3))
 
 	image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
 	cv2.imshow("Image", image)
 	cv2.waitKey(1)
 
-# array: np.ndarray = np.zeros(1920 * 1080 * 3, dtype=np.uint8)
-# camera_1.traceRect(array, 1920, 1080, 5, False, True, 0)
-# image = array.reshape((1080, 1920, 3))
+# # array: np.ndarray = np.zeros(1920 * 1080 * 3, dtype=np.uint8)
+# # camera_1.traceRect(array, 1920, 1080, 5, False, True, 0)
+# # image = array.reshape((1080, 1920, 3))
 #
-# array: np.ndarray = np.zeros(1080 * 720 * 3, dtype=np.uint8)
-# camera_1.traceRect(array, 1080, 720, 5, False, True, 0)
-# image = array.reshape((720, 1080, 3))
+# # array: np.ndarray = np.zeros(1080 * 720 * 3, dtype=np.uint8)
+# # camera_1.traceRect(array, 1080, 720, 5, False, True, 0)
+# # image = array.reshape((720, 1080, 3))
+#
+# array: np.ndarray = np.zeros(200 * 200 * 3, dtype=np.uint8)
+# camera_1.traceRect(array, 200, 200, 5, False, True, 0)
+# image = array.reshape((200, 200, 3))
 #
 # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 #
