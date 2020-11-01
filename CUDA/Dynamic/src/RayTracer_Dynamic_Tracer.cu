@@ -5,7 +5,9 @@
 
 
 // Define
-#define SIZE_SCHEDULER	100
+#define SIZE_SCHEDULER	128
+#define SIZE_BLOCK		2
+#define SIZE_THREAD		64
 
 
 // Typedef
