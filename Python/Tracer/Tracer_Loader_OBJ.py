@@ -31,9 +31,9 @@ class Loader_OBJ:
 
 		for face in self.file_obj.face_list:
 			# get vertex
-			vertex_0:	Tuple[float, float, float]	= self.file_obj.vertex_list[face[0] - 1]
-			vertex_1:	Tuple[float, float, float]	= self.file_obj.vertex_list[face[1] - 1]
-			vertex_2:	Tuple[float, float, float]	= self.file_obj.vertex_list[face[2] - 1]
+			vertex_0:	Tuple[float, float, float]	= self.file_obj.geometric_vertex_list[face[0] - 1]
+			vertex_1:	Tuple[float, float, float]	= self.file_obj.geometric_vertex_list[face[1] - 1]
+			vertex_2:	Tuple[float, float, float]	= self.file_obj.geometric_vertex_list[face[2] - 1]
 
 			# create hitable
 			hitable: Hitable_Trimesh = self.tracer.Hitable_Trimesh()

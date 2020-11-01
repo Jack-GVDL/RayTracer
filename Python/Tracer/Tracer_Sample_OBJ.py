@@ -88,14 +88,10 @@ class Tracer_Sample_Magnolia(Tracer_Sample):
 		texture_specular:		Texture_Constant	= tracer.Texture_Constant()
 		texture_shininess:		Texture_Constant	= tracer.Texture_Constant()
 		texture_normal:			Texture_Constant	= tracer.Texture_Constant()
-		texture_reflective:		Texture_Constant	= tracer.Texture_Constant()
 
 		scatter_light_1:		Scatter_Light		= tracer.Scatter_Light()
-		scatter_reflection_1:	Scatter_Reflection	= tracer.Scatter_Reflection()
-		scatter_random_1:		Scatter_Random		= tracer.Scatter_Random()
 		scatter_any_hit_1:		Scatter_AnyHit		= tracer.Scatter_AnyHit()
 		material_diffuse_1:		Material_Default	= tracer.Material_Default()
-
 
 		light_point_1:			Light_Point			= tracer.Light_Point()
 		light_point_2:			Light_Point			= tracer.Light_Point()
@@ -110,7 +106,7 @@ class Tracer_Sample_Magnolia(Tracer_Sample):
 		texture_diffuse.setPixel(		Vec3f(), Vec3f(1)	)
 		texture_specular.setPixel(		Vec3f(), Vec3f(1)	)
 		texture_shininess.setPixel(		Vec3f(), Vec3f(0)	)
-		texture_reflective.setPixel(	Vec3f(), Vec3f(0.1)	)
+		texture_normal.setPixel(		Vec3f(), Vec3f(0)	)
 
 		# scatter
 		scatter_light_1.setTexture(			texture_emissive,	Scatter_Light.TextureOffset.EMISSIVE		)
@@ -119,27 +115,18 @@ class Tracer_Sample_Magnolia(Tracer_Sample):
 		scatter_light_1.setTexture(			texture_specular,	Scatter_Light.TextureOffset.SPECULAR		)
 		scatter_light_1.setTexture(			texture_shininess,	Scatter_Light.TextureOffset.SHININESS		)
 		scatter_light_1.setTexture(			texture_normal,		Scatter_Light.TextureOffset.NORMAL			)
-		scatter_reflection_1.setTexture(	texture_reflective,	Scatter_Reflection.TextureOffset.REFLECTIVE	)
 
-		scatter_random_1.setRadius(0.05)
-		scatter_random_1.setParallel(False)
-		scatter_random_1.setRaySize(3)
-
-		scatter_reflection_1.addScatter(	scatter_random_1	)
-		scatter_random_1.addScatter(		scatter_any_hit_1	)
-		scatter_light_1.addScatter(			scatter_any_hit_1	)
+		scatter_light_1.addScatter(scatter_any_hit_1)
 
 		# material
-		# TODO: need to fix the intensity overflow
-		# material_diffuse_1.addScatter(scatter_reflection_1)
 		material_diffuse_1.addScatter(scatter_light_1)
 
 		# load object
-		file_obj_1:	File_OBJ	= File_OBJ()
+		file_obj_1 = File_OBJ()
 		file_obj_1.path = "../OBJ/magnolia.obj"
 		file_obj_1.load()
 
-		loader_obj_1:	Loader_OBJ	= Loader_OBJ()
+		loader_obj_1 = Loader_OBJ()
 		loader_obj_1.file_obj	= file_obj_1
 		loader_obj_1.tracer		= tracer
 		loader_obj_1.scale		= [0.05, 0.05, 0.05]
