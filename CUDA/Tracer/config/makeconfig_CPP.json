@@ -3,6 +3,8 @@
     "OBJ_PATH"  : "obj",
     
     "OBJ_FILE"  : ["RayTracer_Tracer.o ",
+                   "RayTracer_Sampler.o ",
+                   "RayTracer_Sampler_Grid.o ",
                    ""],
 
     "MACRO"     : [""],

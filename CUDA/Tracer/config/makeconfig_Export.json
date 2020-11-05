@@ -1,4 +1,6 @@
 {
     "OBJ_FILE"  : ["obj/RayTracer_Tracer.o ",
+                   "obj/RayTracer_Sampler.o ",
+                   "obj/RayTracer_Sampler_Grid.o ",
                    ""]
 }
