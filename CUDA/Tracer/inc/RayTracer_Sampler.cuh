@@ -54,6 +54,9 @@ class Sampler {
 		virtual __host__ error_t	setSizeImage		(int32_t w, int32_t h);
 		virtual __host__ error_t	convertPreMapper	(Vec3f *dir_list, int32_t size) = 0;
 		virtual __host__ error_t	convertPostMapper	(Vec3f *image_list, int32_t size) = 0;
+
+	protected:
+		virtual __host__ void		update				() = 0;
 };
 
 

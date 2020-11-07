@@ -12,7 +12,7 @@
 
 #include "../../Tracer/Tracer.cuh"
 #include "../../RIAS/RIAS.cuh"
-#include "../inc/RayTracer_DynamicContainer.cuh"
+#include "RayTracer_DynamicContainer.cuh"
 
 
 // Define

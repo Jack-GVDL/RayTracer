@@ -80,19 +80,8 @@ LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Hitable.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Scene.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Light.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_RIAS.o
+LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic_Sampler.o
 LOCAL_OBJ_FILE		+= ../obj/RayTracer_Dynamic.o
-
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_DynamicContainer.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Camera.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Tracer.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Surface.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Texture.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Material.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Scatter.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Hitable.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Scene.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic_Light.cu
-# LOCAL_OBJ_FILE		+= ../src/RayTracer_Dynamic.cu
 
 
 # --------------------------------------------------

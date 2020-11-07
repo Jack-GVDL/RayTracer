@@ -3,6 +3,7 @@
 //
 // Log
 // 2020/09/24   initial update
+// 2020/11/06   add Sampler, Sampler_Grid
 
 
 #ifndef TRACER_CUH
@@ -10,6 +11,8 @@
 
 
 #include "./inc/RayTracer_Tracer.cuh"
+#include "./inc/RayTracer_Sampler.cuh"
+#include "./inc/RayTracer_Sampler_Grid.cuh"
 
 
 // Define

@@ -15,6 +15,7 @@
 #include "../inc/RayTracer_Dynamic_RIAS.cuh"
 #include "../inc/RayTracer_Dynamic_Light.cuh"
 #include "../inc/RayTracer_Dynamic_Material.cuh"
+#include "../inc/RayTracer_Dynamic_Sampler.cuh"
 #include "../inc/RayTracer_Dynamic_Scene.cuh"
 
 #include "../inc/RayTracer_Dynamic.cuh"
@@ -99,6 +100,7 @@ Dynamic_ContainerList<SceneObject_Hitable>		hitable_list;
 Dynamic_ContainerList<SceneObject_Light>		light_list;
 Dynamic_ContainerList<RIAS>						rias_list;
 Dynamic_ContainerList<Material>					material_list;
+Dynamic_ContainerList<Sampler>					sampler_list;
 
 Dynamic_ContainerListBase*				container_list[] = {
 	&camera_list,
@@ -108,7 +110,8 @@ Dynamic_ContainerListBase*				container_list[] = {
 	&scatter_list,
 	&hitable_list,
 	&light_list,
-	&rias_list
+	&rias_list,
+	&sampler_list
 };
 
 
@@ -126,6 +129,7 @@ EXPORT_DLL(void) RayTracer_init() {
 	RayTracer_Dynamic_Hitable_init(		&(hitable_list.type_list)	);
 	RayTracer_Dynamic_RIAS_init(		&(rias_list.type_list)		);
 	RayTracer_Dynamic_Light_init(		&(light_list.type_list)		);
+	RayTracer_Dynamic_Sampler_init(		&(sampler_list.type_list)	);
 
 	// load
 	camera_list.Type_load();
@@ -136,6 +140,7 @@ EXPORT_DLL(void) RayTracer_init() {
 	hitable_list.Type_load();
 	light_list.Type_load();
 	rias_list.Type_load();
+	sampler_list.Type_load();
 
 	// create a deafult camera
 	// can / should be used for testing
@@ -209,6 +214,15 @@ EXPORT_DLL(int) RayTracer_Tracer_traceRect(
 
 	return ERROR_ANY;
 
+}
+
+
+EXPORT_DLL(int) RayTracer_Tracer_setSampler(int index_sampler) {
+	Dynamic_Container<Sampler> *sampler = sampler_list.get(index_sampler);
+	if (sampler == nullptr) return ERROR_ANY;
+
+	Dynamic_Tracer_setSampler(sampler->getObject());
+	return ERROR_NO;
 }
 
 
@@ -548,6 +562,19 @@ EXPORT_DLL(int) RayTracer_Scene_rmRIAS(int index_rias) {
 	if (hitable == nullptr) return ERROR_ANY;
 
 	if (Dynamic_Scene_rmHitable(hitable) != ERROR_NO) return ERROR_ANY;
+	return ERROR_NO;
+}
+
+
+// sampler
+Dynamic_constructTypeInterface(Sampler, Sampler, &sampler_list);
+
+
+EXPORT_DLL(int) RayTracer_Sampler_setSizeImage(int index, int32_t w, int32_t h) {
+	Dynamic_Container<Sampler> *sampler = sampler_list.get(index);
+	if (sampler == nullptr) return ERROR_ANY;
+
+	if (Dynamic_Sampler_setSizeImage(sampler->getObject(), w, h) != ERROR_NO) return ERROR_ANY;
 	return ERROR_NO;
 }
 

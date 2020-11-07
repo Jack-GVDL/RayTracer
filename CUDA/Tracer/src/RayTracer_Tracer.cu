@@ -41,6 +41,11 @@ __device__ error_t Tracer::rmScheduler(Scheduler_Scatter *scheduler) {
 }
 
 
+__device__ void Tracer::setSampler(Sampler *sampler) {
+	this->sampler = sampler;
+}
+
+
 __device__ Vec3f Tracer::trace(const Camera *camera, fp_t x, fp_t y, int32_t depth, int32_t index) {
 	Ray ray = camera->getRay(x, y);
 	return trace(&ray, depth, index);

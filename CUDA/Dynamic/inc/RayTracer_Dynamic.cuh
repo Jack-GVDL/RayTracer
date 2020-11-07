@@ -35,29 +35,30 @@
 
 
 // Operation Handling
-EXPORT_DLL(void)	RayTracer_init								    ();
-EXPORT_DLL(void)	RayTracer_del								    ();
-EXPORT_DLL(void)	RayTracer_info								    ();
+EXPORT_DLL(void)	RayTracer_init									();
+EXPORT_DLL(void)	RayTracer_del									();
+EXPORT_DLL(void)	RayTracer_info									();
 
-EXPORT_DLL(void)	RayTracer_Test_testDoubleArray				    (double *array, uint32_t size);
-EXPORT_DLL(void)	RayTracer_Test_testUint8Array				    (uint8_t *array, uint32_t size);
-EXPORT_DLL(int)		RayTracer_Test_checkStatus					    (int index, uint8_t *data, uint32_t size);
-EXPORT_DLL(int)		RayTracer_Test_setPrintInfo					    (int is_enabled);
+EXPORT_DLL(void)	RayTracer_Test_testDoubleArray					(double *array, uint32_t size);
+EXPORT_DLL(void)	RayTracer_Test_testUint8Array					(uint8_t *array, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Test_checkStatus						(int index, uint8_t *data, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Test_setPrintInfo						(int is_enabled);
 
 // TODO: NOT backup
 // EXPORT_DLL(int)		RayTracer_Tracer_tracePoint					(int index_camera, void *pixel, double x, double y, int depth, int format);
-EXPORT_DLL(int)		RayTracer_Tracer_traceRect					    (int index_camera, void *pixel, int w, int h, int depth, int is_reverse_x, int is_reverse_y, int format);
+EXPORT_DLL(int)		RayTracer_Tracer_traceRect						(int index_camera, void *pixel, int w, int h, int depth, int is_reverse_x, int is_reverse_y, int format);
+EXPORT_DLL(int)		RayTracer_Tracer_setSampler						(int index_sampler);
 
-EXPORT_DLL(int)		RayTracer_Camera_Type_getIndex				    (const char *name);
-EXPORT_DLL(int)		RayTracer_Camera_create						    (int type);
-EXPORT_DLL(int)		RayTracer_Camera_destroy					    (int index);
-EXPORT_DLL(int)		RayTracer_Camera_config						    (int index, int type, uint8_t *data, uint32_t size);
-EXPORT_DLL(int)		RayTracer_Camera_interact					    (int index, int type, int *index_list, int *type_list, uint32_t size);
-EXPORT_DLL(int)		RayTracer_Camera_setLookFrom				    (int index, double *look_from);
-EXPORT_DLL(int)		RayTracer_Camera_setLookAt					    (int index, double *look_at);
-EXPORT_DLL(int)		RayTracer_Camera_setUpDirection				    (int index, double *up_dir);
-EXPORT_DLL(int)		RayTracer_Camera_setFOV						    (int index, double value);
-EXPORT_DLL(int)		RayTracer_Camera_setAspectRatio				    (int index, double value);
+EXPORT_DLL(int)		RayTracer_Camera_Type_getIndex					(const char *name);
+EXPORT_DLL(int)		RayTracer_Camera_create							(int type);
+EXPORT_DLL(int)		RayTracer_Camera_destroy						(int index);
+EXPORT_DLL(int)		RayTracer_Camera_config							(int index, int type, uint8_t *data, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Camera_interact						(int index, int type, int *index_list, int *type_list, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Camera_setLookFrom					(int index, double *look_from);
+EXPORT_DLL(int)		RayTracer_Camera_setLookAt						(int index, double *look_at);
+EXPORT_DLL(int)		RayTracer_Camera_setUpDirection					(int index, double *up_dir);
+EXPORT_DLL(int)		RayTracer_Camera_setFOV							(int index, double value);
+EXPORT_DLL(int)		RayTracer_Camera_setAspectRatio					(int index, double value);
 
 EXPORT_DLL(int)		RayTracer_Surface_Type_getIndex					(const char *name);
 EXPORT_DLL(int)		RayTracer_Surface_create						(int type);
@@ -119,6 +120,13 @@ EXPORT_DLL(int)		RayTracer_Scene_addRIAS							(int index_aabb);
 EXPORT_DLL(int)		RayTracer_Scene_rmLight							(int index_light);
 EXPORT_DLL(int)		RayTracer_Scene_rmHitable						(int index_hitable);
 EXPORT_DLL(int)		RayTracer_Scene_rmRIAS							(int index_aabb);
+
+EXPORT_DLL(int)		RayTracer_Sampler_Type_getIndex					(const char *name);
+EXPORT_DLL(int)		RayTracer_Sampler_create						(int type);
+EXPORT_DLL(int)		RayTracer_Sampler_destroy						(int index);
+EXPORT_DLL(int)		RayTracer_Sampler_config						(int index, int type, uint8_t *data, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Sampler_interact						(int index, int type, int *index_list, int *type_list, uint32_t size);
+EXPORT_DLL(int)		RayTracer_Sampler_setSizeImage					(int index, int32_t w, int32_t h);
 
 
 // TODO: future: standarded object interface in order to reduce number of interface

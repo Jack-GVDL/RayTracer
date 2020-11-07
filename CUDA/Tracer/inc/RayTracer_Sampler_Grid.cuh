@@ -25,11 +25,11 @@
 
 
 // Data Structure
-class Sampler_Grid {
+class Sampler_Grid: public Sampler {
 	// Data
 	public:
-		int32_t		grid_w;
-		int32_t		grid_h;
+		int32_t	grid_w;
+		int32_t	grid_h;
 
 	// Operation
 	public:
@@ -40,9 +40,14 @@ class Sampler_Grid {
 		// operation
 		__host__ error_t			setSizeGrid			(int32_t w, int32_t h);
 
-		virtual __host__ error_t	setSizeImage		(int32_t w, int32_t h) override;
+		// backup
+		// virtual __host__ error_t	setSizeImage		(int32_t w, int32_t h) override;
+		
 		virtual __host__ error_t	convertPreMapper	(Vec3f *dir_list, int32_t size) override;
 		virtual __host__ error_t	convertPostMapper	(Vec3f *image_list, int32_t size) override;
+
+	protected:
+		virtual __host__ void		update				() override;
 };
 
 

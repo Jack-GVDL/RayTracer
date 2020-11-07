@@ -4,6 +4,7 @@
 // Log
 // 2020/09/14   initial update
 // 2020/10/16   support multi thread
+// 2020/11/06   support sampling
 
 
 #ifndef RAYTRACER_TRACER_CUH
@@ -13,6 +14,7 @@
 #include "../../Utility/Utility.cuh"
 #include "../../Scatter/Scatter.cuh"
 #include "../../Scene/Scene.cuh"
+#include "RayTracer_Sampler.cuh"
 
 
 // Define
@@ -32,9 +34,14 @@
 class Tracer {
 	// Data
 	public:
+		// scene
 		Scene				*scene		= nullptr;
 
+		// ray tracing
 		Vector				scheduler_list;
+
+		// ray tracing / render sequence
+		Sampler				*sampler	= nullptr;
 
 	// Operation
 	public:
@@ -47,6 +54,8 @@ class Tracer {
 
 		__device__	error_t	addScheduler		(Scheduler_Scatter *scheduler);
 		__device__	error_t	rmScheduler			(Scheduler_Scatter *scheduler);
+
+		__device__	void	setSampler			(Sampler *sampler);
 
 		__device__	Vec3f	trace				(const Camera *camera, fp_t x, fp_t y, int32_t depth, int32_t index);
 		__device__	Vec3f	trace				(const Ray *ray, int32_t depth, int32_t index);

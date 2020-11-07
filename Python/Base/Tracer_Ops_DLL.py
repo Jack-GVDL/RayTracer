@@ -1,6 +1,6 @@
 from typing import List, Tuple
 import ctypes
-from ctypes import c_int, c_double, c_uint8, c_uint32, c_char, c_char_p, c_void_p
+from ctypes import c_int, c_int32, c_double, c_uint8, c_uint32, c_char, c_char_p, c_void_p
 from ctypes import CDLL
 from .Tracer_Vec3f import Vec3f
 from .Tracer_Ops import Ops_Tracer
@@ -376,3 +376,33 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 	def Scene_rmRIAS(self, index_rias: int) -> int:
 		return self._dll_tracer.RayTracer_Scene_rmRIAS(c_int(index_rias))
+
+	# sampler
+	def Sampler_Type_getIndex(self, name: str) -> int:
+		byte_str: bytes = name.encode('utf-8')
+		return self._dll_tracer.RayTracer_Light_Type_getIndex(c_char_p(byte_str))
+
+	def Sampler_create(self, type_: int) -> int:
+		return self._dll_tracer.RayTracer_Sampler_create(c_int(type_))
+
+	def Sampler_destroy(self, index: int) -> int:
+		return self._dll_tracer.RayTracer_Sampler_destroy(c_int(index))
+
+	def Sampler_config(self, index: int, type_: int, data: bytes) -> int:
+		# TODO: currently data is const uint8_t*, cannot pass out value from dll
+		size		= len(data)
+		array_data	= (c_uint8 * size)(*data)
+		return self._dll_tracer.RayTracer_Sampler_config(c_int(index), c_int(type_), array_data, c_int(size))
+
+	def Sampler_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		size		= len(index_list)
+		array_index = (c_int * size)(*index_list)
+		array_type	= (c_int * size)(*type_list)
+		return self._dll_tracer.RayTracer_Sampler_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
+
+	def Sampler_setSizeImage(self, index: int, w: int, h: int) -> int:
+		array_dimension = (c_int32 * 2)()
+		array_dimension[0] = w
+		array_dimension[1] = h
+		return self._dll_tracer.RayTracer_Sampler_setSizeImage(c_int(index), array_dimension)
+

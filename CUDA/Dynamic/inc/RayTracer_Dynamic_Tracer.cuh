@@ -37,6 +37,8 @@ __host__ void		RayTracer_Dynamic_Tracer_init				();
 __host__ error_t    Dynamic_Tracer_addScheduler					(int32_t size_memory);
 // __host__ error_t	Dynamic_Tracer_resetScheduler				();
 
+__host__ error_t    Dynamic_Tracer_setSampler                   (Sampler *sampler);
+
 __host__ int		RayTracer_Dynamic_Tracer_tracePoint_RGB888	(int index_camera, void *data, int w, int h, int depth, int is_reverse_x, int is_reverse_y);
 __host__ int		RayTracer_Dynamic_Tracer_tracePoint_RGB64F	(int index_camera, void *data, int w, int h, int depth, int is_reverse_x, int is_reverse_y);  // 64-bit floating point array, aka double
 

@@ -260,3 +260,22 @@ class Ops_Tracer:
 
 	def Scene_rmRIAS(self, index: int) -> int:
 		raise NotImplementedError
+
+	# sampler
+	def Sampler_Type_getIndex(self, name: str) -> int:
+		raise NotImplementedError
+
+	def Sampler_create(self, type_: int) -> int:
+		raise NotImplementedError
+
+	def Sampler_destroy(self, index: int) -> int:
+		raise NotImplementedError
+
+	def Sampler_config(self, index: int, type_: int, data: bytes) -> int:
+		raise NotImplementedError
+
+	def Sampler_interact(self, index: int, type_: int, index_list: Tuple[int], type_list: Tuple[int]) -> int:
+		raise NotImplementedError
+
+	def Sampler_setSizeImage(self, index: int, w: int, h: int) -> int:
+		raise NotImplementedError

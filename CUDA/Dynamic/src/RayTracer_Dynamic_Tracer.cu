@@ -38,6 +38,9 @@ __device__	Tracer						*tracer;
 __device__	Scene						*scene;
 extern Dynamic_ContainerList<Camera>	camera_list;
 
+// TODO: sampler should not be here
+Sampler									*sampler = nullptr;
+
 
 // Operation Handling
 __host__ void RayTracer_Dynamic_Tracer_init() {
@@ -153,6 +156,12 @@ __host__ error_t Dynamic_Tracer_resetScheduler() {
 */
 
 
+__host__ error_t Dynamic_Tracer_setSampler(Sampler *s) {
+	sampler = s;
+	return ERROR_NO;
+}
+
+
 // Static Function Implementation
 __host__ static void fix_index(
 	int *index_x_start, int *index_y_start, int *index_x_next, int *index_y_next, 
@@ -200,6 +209,10 @@ __host__ static inline void host_Tracer_getPosition(
 __host__ static inline void host_Tracer_trace(
 	Camera *camera, fp_t *buffer_list, fp_t *position_list, int32_t size, int32_t depth) {
 
+	// pre operation
+	if (sampler != nullptr) sampler->convertPreMapper((Vec3f*)position_list, size);
+
+	// tracer operation
 	// TODO: currently number of scheduler is fixed
 	const int32_t	offset	= SIZE_SCHEDULER;
 	int32_t			index	= 0;
@@ -208,6 +221,9 @@ __host__ static inline void host_Tracer_trace(
 		global_Tracer_trace <<< 1, SIZE_SCHEDULER >>> (camera, buffer_list, position_list, index, depth);
 		index += offset;
 	}
+
+	// post operation
+	if (sampler != nullptr) sampler->convertPostMapper((Vec3f*)buffer_list, size);
 }
 
 

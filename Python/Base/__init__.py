@@ -14,6 +14,7 @@ from .Tracer_Hitable import Hitable
 from .Tracer_RIAS import RIAS
 from .Tracer_Light import Light
 from .Tracer_Scene import Scene
+from .Tracer_Sampler import Sampler
 
 
 # Operation

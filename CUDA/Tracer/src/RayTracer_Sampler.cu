@@ -38,8 +38,13 @@ __host__ Sampler::~Sampler() {
 
 
 __host__ error_t Sampler::setSizeImage(int32_t w, int32_t h) {
+	if (w <= 0 || h <= 0) return ERROR_ANY;
+
 	this->w = w;
 	this->h = h;
+	
+	update();
+	return ERROR_NO;
 }
 
 
