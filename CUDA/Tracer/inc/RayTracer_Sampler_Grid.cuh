@@ -43,8 +43,8 @@ class Sampler_Grid: public Sampler {
 		// backup
 		// virtual __host__ error_t	setSizeImage		(int32_t w, int32_t h) override;
 		
-		virtual __host__ error_t	convertPreMapper	(Vec3f *dir_list, int32_t size) override;
-		virtual __host__ error_t	convertPostMapper	(Vec3f *image_list, int32_t size) override;
+		virtual __host__ error_t	convertPreMapper	(fp_t *dir_list, int32_t size) override;
+		virtual __host__ error_t	convertPostMapper	(fp_t *image_list, int32_t size) override;
 
 	protected:
 		virtual __host__ void		update				() override;

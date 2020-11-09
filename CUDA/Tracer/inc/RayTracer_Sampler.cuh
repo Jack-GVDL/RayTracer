@@ -33,8 +33,8 @@ class Sampler {
 		// buffer
 		// reason why we need buffer is that if super sampling is used
 		// size of direction vector list and image list will increase 
-		Vec3f	*buffer_dir;
-		Vec3f	*buffer_image;
+		fp_t	*buffer_dir;
+		fp_t	*buffer_image;
 
 		int32_t	buffer_dir_size;
 		int32_t	buffer_image_size;
@@ -43,6 +43,7 @@ class Sampler {
 
 		// kernel block size
 		int32_t block_w, block_h;
+		int32_t	size_padded;
 
 	// Operation
 	public:
@@ -52,8 +53,8 @@ class Sampler {
 
 		// operation
 		virtual __host__ error_t	setSizeImage		(int32_t w, int32_t h);
-		virtual __host__ error_t	convertPreMapper	(Vec3f *dir_list, int32_t size) = 0;
-		virtual __host__ error_t	convertPostMapper	(Vec3f *image_list, int32_t size) = 0;
+		virtual __host__ error_t	convertPreMapper	(fp_t *dir_list, int32_t size) = 0;
+		virtual __host__ error_t	convertPostMapper	(fp_t *image_list, int32_t size) = 0;
 
 	protected:
 		virtual __host__ void		update				() = 0;

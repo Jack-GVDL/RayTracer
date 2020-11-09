@@ -85,6 +85,9 @@ class Ops_Tracer_DLL(Ops_Tracer):
 
 		return result
 
+	def Tracer_setSampler(self, index_sampler: int) -> None:
+		self._dll_tracer.RayTracer_Tracer_setSampler(c_int(index_sampler))
+
 	# camera
 	def Camera_Type_getIndex(self, name: str) -> int:
 		byte_str: bytes = name.encode('utf-8')
@@ -380,7 +383,7 @@ class Ops_Tracer_DLL(Ops_Tracer):
 	# sampler
 	def Sampler_Type_getIndex(self, name: str) -> int:
 		byte_str: bytes = name.encode('utf-8')
-		return self._dll_tracer.RayTracer_Light_Type_getIndex(c_char_p(byte_str))
+		return self._dll_tracer.RayTracer_Sampler_Type_getIndex(c_char_p(byte_str))
 
 	def Sampler_create(self, type_: int) -> int:
 		return self._dll_tracer.RayTracer_Sampler_create(c_int(type_))
@@ -401,8 +404,4 @@ class Ops_Tracer_DLL(Ops_Tracer):
 		return self._dll_tracer.RayTracer_Sampler_interact(c_int(index), c_int(type_), array_index, array_type, c_int(size))
 
 	def Sampler_setSizeImage(self, index: int, w: int, h: int) -> int:
-		array_dimension = (c_int32 * 2)()
-		array_dimension[0] = w
-		array_dimension[1] = h
-		return self._dll_tracer.RayTracer_Sampler_setSizeImage(c_int(index), array_dimension)
-
+		return self._dll_tracer.RayTracer_Sampler_setSizeImage(c_int(index), c_int32(w), c_int32(h))

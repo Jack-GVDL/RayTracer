@@ -48,6 +48,9 @@ class Ops_Tracer:
 	def Tracer_traceRect(self, index_camera: int, pixel_list: np.ndarray, w: int, h: int, depth: int, is_reverse_x: bool, is_reverse_y: bool, format_: bool) -> int:
 		raise NotImplementedError
 
+	def Tracer_setSampler(self, index_sampler: int) -> None:
+		raise NotImplementedError
+
 	# camera
 	def Camera_Type_getIndex(self, name: str) -> int:
 		raise NotImplementedError

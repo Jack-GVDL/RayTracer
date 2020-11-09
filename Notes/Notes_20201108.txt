@@ -1,0 +1,37 @@
+General Interface
+
+Interact
+	Use RayTracer_Sampler and it's child class as example
+	
+	Available interface
+		ObjectHandling
+			create
+			destroy
+
+		RayTracer_Sampler
+			setSizeImage
+
+		RayTracer_Sampler_Grid
+			setSizeGrid
+
+	Expected behavior (in Python)
+		Gen 1
+			interface.execute("Sampler/create", "%i", type_index)
+			interface.execute("Sampler/Grid/setSizeGrid", %i%i", w, h)
+			- not good on "%i": may be too messy and cost too much time if the function is used in multiple time
+			
+		Gen 2
+			interface.find("Sampler/create")
+			func = interface.loadFunction("Sampler/create")
+			func(type_index)
+
+			interface.find("Sampler/Grid/setSizeGrid")
+			func = interface.loadFunction("Sampler/Grid/setSizeGrid")
+			func(w, h)
+			- ok for now
+
+	For the current stage
+	Should not work on json file first
+	Mainly focus on Python
+	Should not change C++ code unless it is needed for Python side 
+		

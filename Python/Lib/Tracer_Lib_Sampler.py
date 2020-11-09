@@ -1,3 +1,4 @@
+import struct
 from Base import Sampler
 
 
@@ -13,9 +14,13 @@ class Sampler_Grid(Sampler):
 		# ...
 
 	# Operation
-	# TODO: not yet completed
 	def setGridSize(self, w: int, h: int) -> None:
-		raise NotImplementedError
+		data: bytearray = bytearray()
+
+		data.extend(struct.pack("i", w))
+		data.extend(struct.pack("i", h))
+
+		result: int = self._ops_tracer.Sampler_config(self.object_index, 0, bytes(data))
 
 	# Interface
 	def start(self) -> None:

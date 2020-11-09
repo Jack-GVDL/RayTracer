@@ -13,7 +13,8 @@ class Tracer(Tracer_Base):
 		# ...
 
 	# Operation
-	# ...
+	def setSampler(self, sampler: Sampler) -> None:
+		self._ops_tracer.Tracer_setSampler(sampler.object_index)
 
 	# Class Creator
 	# scene
@@ -195,6 +196,13 @@ class Tracer(Tracer_Base):
 	# camera
 	def Camera_Default(self) -> Camera_Default:
 		obj = Camera_Default()
+		obj.setOps_tracer(self._ops_tracer)
+		obj.start()
+		return obj
+
+	# sampler
+	def Sampler_Grid(self) -> Sampler_Grid:
+		obj = Sampler_Grid()
 		obj.setOps_tracer(self._ops_tracer)
 		obj.start()
 		return obj

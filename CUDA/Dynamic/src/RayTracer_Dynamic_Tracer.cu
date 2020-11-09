@@ -3,6 +3,9 @@
 #include "../inc/RayTracer_DynamicContainer.cuh"
 #include "../inc/RayTracer_Dynamic_Tracer.cuh"
 
+// TODO: test
+#include <stdio.h>
+
 
 // Define
 #define SIZE_SCHEDULER	128
@@ -139,7 +142,6 @@ __host__ int RayTracer_Dynamic_Tracer_tracePoint_RGB64F(
 }
 
 
-
 // TODO: should it be exposed or not ?
 __host__ error_t Dynamic_Tracer_addScheduler(int32_t size_memory) {
 	global_Tracer_addScheduler <<< 1, 1 >>> (size_memory);
@@ -207,23 +209,37 @@ __host__ static inline void host_Tracer_getPosition(
 
 
 __host__ static inline void host_Tracer_trace(
-	Camera *camera, fp_t *buffer_list, fp_t *position_list, int32_t size, int32_t depth) {
+	Camera *camera, fp_t *buffer_list, fp_t *dir_list, int32_t size, int32_t depth) {
+
+	// if sampler is used
+	// then the dir_list and buffer_list used will be changed
+	fp_t	*trace_dir_list		= dir_list;
+	fp_t	*trace_buffer_list	= buffer_list;
+	int32_t	trace_size			= size;
 
 	// pre operation
-	if (sampler != nullptr) sampler->convertPreMapper((Vec3f*)position_list, size);
+	if (sampler != nullptr) {
+		trace_dir_list		= sampler->buffer_dir;
+		trace_buffer_list	= sampler->buffer_image;
+		trace_size			= sampler->size_padded;
+		sampler->convertPreMapper(dir_list, size);
+	}
 
 	// tracer operation
 	// TODO: currently number of scheduler is fixed
 	const int32_t	offset	= SIZE_SCHEDULER;
 	int32_t			index	= 0;
 
-	for (int32_t i = 0; i < (size / offset); ++i) {
-		global_Tracer_trace <<< 1, SIZE_SCHEDULER >>> (camera, buffer_list, position_list, index, depth);
+	for (int32_t i = 0; i < (trace_size / offset); ++i) {
+		global_Tracer_trace <<< 1, SIZE_SCHEDULER >>> (camera, trace_buffer_list, trace_dir_list, index, depth);
 		index += offset;
 	}
 
+	// TODO: test
+	// memcpy(buffer_list, tracer_buffer_list, trace_size * 3 * sizeof(fp_t), cudaMemcpyDeviceToDevice);
+
 	// post operation
-	if (sampler != nullptr) sampler->convertPostMapper((Vec3f*)buffer_list, size);
+	if (sampler != nullptr) sampler->convertPostMapper(buffer_list, size);
 }
 
 
@@ -280,12 +296,22 @@ __global__ static void global_Tracer_trace(void *camera, fp_t *dst, fp_t *positi
 	// just use int type
 	int global_index = blockIdx.x * blockDim.x + threadIdx.x;
 
+	// TODO: test
+	// if (global_index == 0) {
+	// 	printf("%f %f \n", 
+	// 	position_list[(offset + global_index) * 2 + 0], 
+	// 	position_list[(offset + global_index) * 2 + 1]);
+	// }
+
 	// get pixel intensity
 	Vec3f result = tracer->trace(
 		(Camera*)camera,
 		position_list[(offset + global_index) * 2 + 0],
 		position_list[(offset + global_index) * 2 + 1],
 		depth, global_index);
+
+	// TODO: test
+	// if (global_index == 1) printf("%f %f %f \n", result[0], result[1], result[2]);
 	
 	// set to dst
 	dst[(offset + global_index) * 3 + 0] = result[0];

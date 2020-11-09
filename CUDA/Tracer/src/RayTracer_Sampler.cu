@@ -26,7 +26,8 @@ buffer_image_size	(0),
 w					(0),
 h					(0),
 block_w				(0),
-block_h				(0)
+block_h				(0),
+size_padded			(0)
 {
 }
 

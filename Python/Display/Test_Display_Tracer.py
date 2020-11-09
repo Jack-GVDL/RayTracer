@@ -39,6 +39,11 @@ camera_1.setAspectRatio(	1920 / 1080		)
 # TODO: test
 # ops_tracer.Test_checkStatus(0, [], 0)
 
+# sampler
+sampler: Sampler_Grid = tracer.Sampler_Grid()
+sampler.setGridSize(8, 8)
+tracer.setSampler(sampler)
+
 
 """ display """
 # degree: int = 0
@@ -68,6 +73,7 @@ camera_1.setAspectRatio(	1920 / 1080		)
 # 	cv2.imshow("Image", image)
 # 	cv2.waitKey(1)
 
+sampler.setSizeImage(1920, 1080)
 array: np.ndarray = np.zeros(1920 * 1080 * 3, dtype=np.uint8)
 camera_1.traceRect(array, 1920, 1080, 5, False, True, 0)
 image = array.reshape((1080, 1920, 3))

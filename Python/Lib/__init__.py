@@ -35,6 +35,8 @@ from .Tracer_Lib_RIAS import RIAS_AABB
 from .Tracer_Lib_Light import Light_Directional
 from .Tracer_Lib_Light import Light_Point
 
+from .Tracer_Lib_Sampler import Sampler_Grid
+
 
 # Operation
 # ...
